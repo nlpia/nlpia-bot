@@ -20,6 +20,16 @@ import argparse
 import logging
 import sys
 
+from chatbot.bots import Bot
+from chatbot.contrib import (
+    ChoiceFeature,
+    DiceFeature,
+    DictionaryFeature,
+    PyPIFeature,
+    SlapbackFeature,
+    WikipediaFeature
+)
+
 from nlpia_bot import __version__
 
 __author__ = "hobs"
@@ -61,10 +71,10 @@ def parse_args(args):
         action='version',
         version='nlpia_bot {ver}'.format(ver=__version__))
     parser.add_argument(
-        dest="n",
-        help="n-th Fibonacci number",
-        type=int,
-        metavar="INT")
+        dest="nickname",
+        help="IRC nick (nickname or username) for the bot",
+        type=str,
+        metavar="STR")
     parser.add_argument(
         '-v',
         '--verbose',
@@ -93,6 +103,33 @@ def setup_logging(loglevel):
                         format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
 
 
+def ircbot(args=None,
+           nickname='nlpia',
+           irc_server='chat.freenode.net',
+           port=6665,
+           server_password='my_bots_password',
+           channels=('#freenode', '#python'),
+           features=None):
+    """Entry point for console_script for shell command `ircbot --nickname nlpia` ... """
+    nickname = getattr(args, 'nickname', nickname)
+    irc_server = getattr(args, 'irc_server', irc_server)
+    port = int(float(getattr(args, 'port', port)))
+    server_password = getattr(args, 'server_password', server_password)
+    channels = eval(str(getattr(args, 'channels', channels)))
+    features = features or (PyPIFeature(), WikipediaFeature(), DictionaryFeature(),
+        DiceFeature(), ChoiceFeature(), SlapbackFeature())
+    bot = Bot(
+        nickname=nickname,
+        hostname=irc_server,
+        port=port,
+        server_password=server_password,
+        channels=channels,
+        features=features,
+    )
+
+    return bot.run()
+
+
 def main(args):
     """Main entry point allowing external calls
 
@@ -102,7 +139,7 @@ def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
     _logger.debug("Starting crazy calculations...")
-    print("The {}-th Fibonacci number is {}".format(args.n, fib(args.n)))
+    print("The ircbot returned: {}".format(ircbot(args)))
     _logger.info("Script ends here")
 
 
