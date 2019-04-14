@@ -4,29 +4,35 @@
 
 sudo: false
 language: python
-virtualenv:
-  system_site_packages: true
+#virtualenv:
+#  system_site_packages: true
+
 matrix:
   include:
-    - python: 3.4
-      env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py34" COVERAGE="true"
-    - env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
+    - python: 3.6
+      env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
+      env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
+      # $ source ~/virtualenv/python3.6_with_system_site_packages/bin/activate
+      # /home/travis/.travis/functions: line 104: /home/travis/virtualenv/python3.6_with_system_site_packages/bin/activate: No such file or directory
+
 install:
   - source tests/travis_install.sh
   - pip install -r requirements.txt
-  # ^  DEPRECATION WARNING:
-  # The automatic creation of a `requirements.txt` file is deprecated.
-  # See `Dependency Management` in the docs for other options.
+
 before_script:
-  - git config --global user.email "you@example.com"
-  - git config --global user.name "Your Name"
+  - git config --global user.email "nlpia-bot+travis@totalgood.com"
+  - git config --global user.name "Travis Admin for nlpia-bot"
+
 script:
   - python setup.py test
   # ^  Change here if using tox
+
 after_success:
   - if [[ "$COVERAGE" == "true" ]]; then coveralls || echo "failed"; fi
+
 after_script:
   - travis-cleanup
+
 cache:
   pip: true
   directories:
