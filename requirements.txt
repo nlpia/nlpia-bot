@@ -19,5 +19,4 @@ django
 django_extensions
 nlpia>=0.1.87
 psycopg2
-python_chatbot>=0.0.1
-service-identity>=18.1.0
+python_chatbot>=0.0.5
