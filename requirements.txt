@@ -18,5 +18,6 @@
 django
 django_extensions
 git+https://github.com/nlpia/python-chatbot.git@master#egg=chatbot
-nlpia
+nlpia>=0.1.186
 psycopg2
+service-identity>=18.1.0
