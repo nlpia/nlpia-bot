@@ -39,7 +39,7 @@ def encode_texts(texts=["That band rocks!", "That song is really cool."], use_en
     return usevectors
 
 
-def get_dataframe(filename):
+def get_dataframe(filename='train_5500.txt'):
     lines = open(filename, 'r').read().splitlines()
     data = []
     for i in range(0, len(lines)):
@@ -50,6 +50,8 @@ def get_dataframe(filename):
         data.append([label, text])
 
     df = pd.DataFrame(data, columns=['label', 'text'])
+    df = df[~df.label.isnull()]
+    df = df[df.label.str.len().astype(bool)]
     df['label'] = df.label.astype('category')
     return df
 
@@ -78,6 +80,9 @@ def normalize_trainset(df_train=QA_DF):
     return train_text, train_label
 
 
+TRAIN_TEXTS, TRAIN_LABELS = normalize_trainset()
+
+
 def build_use_classifier(num_classes=7):
     usevector_shape = (512,)
     input_text = layers.Input(shape=(1,), dtype=tf.string)
@@ -89,7 +94,7 @@ def build_use_classifier(num_classes=7):
     return model
 
 
-def train_model(model, train_texts, train_labels):
+def train_model(model, train_texts=TRAIN_TEXTS, train_labels=TRAIN_LABELS, filename='model.h5'):
     with tf.Session() as session:
         K.set_session(session)
         session.run(tf.global_variables_initializer())
@@ -98,24 +103,34 @@ def train_model(model, train_texts, train_labels):
                             # validation_data=(test_text, test_label),
                             epochs=10,
                             batch_size=32)
-        model.save_weights('model.h5')
+        model.save_weights(filename)
+    print(f'Saved model to {filename}.')
     return history
 
 
-def test_model(model, categories=QA_CATEGORIES):
-    new_text = ["In what year did the titanic sink ?",
-                "What is the highest peak in California ?",
-                "Who invented the light bulb ?"]
+TEST_TEXTS = ["In what year did the titanic sink ?",
+              "What is the highest peak in California ?",
+              "Who invented the light bulb ?"]
 
-    new_text = np.array(new_text, dtype=object)[:, np.newaxis]
+
+def test_model(model='model.h5', texts=TEST_TEXTS, categories=QA_CATEGORIES):
+    texts = np.array(texts, dtype=object)[:, np.newaxis]
     with tf.Session() as session:
         K.set_session(session)
         session.run(tf.global_variables_initializer())
         session.run(tf.tables_initializer())
-        model.load_weights('model.h5')
-        predictions = model.predict(new_text, batch_size=32)
+        if isinstance(model, str):
+            filename = model
+            model = build_use_classifier(num_classes=len(categories))
+            print(f'Loading model from {filename}')
+            model.load_weights(filename)
+        predictions = model.predict(texts, batch_size=32)
 
     predict_logits = predictions.argmax(axis=1)
     predicted_labels = [categories[logit] for logit in predict_logits]
     print(predicted_labels)
-    return predictions, predicted_labels
+    df = pd.DataFrame(predictions)
+    df.columns = categories
+    df['text'] = [t[0] for t in texts]
+    df['label'] = predicted_labels
+    return df
