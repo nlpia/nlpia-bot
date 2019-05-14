@@ -18,7 +18,9 @@ def load_trec_taxonomy(url='http://cogcomp.org/Data/QA/QC/definition.html'):
     df['class'] = df['class'].fillna(method='ffill')
     df = df.dropna()
     df = df['class subclass description'.split()]
-    df.columns = 'category subcategory description'.split()
+    df.columns = 'label sublabel description'.split()
+    df['label'] = df['label'].astype('category')
+    df['sublabel'] = df['sublabel'].astype('category')
     taxonomy = dict(question_types=df)
     for k, u in [('profession', 'http://cogcomp.org/Data/QA/QC/lists/prof'),
                  ('mountain', 'http://cogcomp.org/Data/QA/QC/lists/mount'),
@@ -28,10 +30,10 @@ def load_trec_taxonomy(url='http://cogcomp.org/Data/QA/QC/definition.html'):
     return taxonomy
 
 
-def load_trec_trainset(url='http://cogcomp.org/Data/QA/QC/train_1000.label'):
+def load_trec_trainset(url='http://cogcomp.org/Data/QA/QC/train_5500.label'):
     lines = []
     for i in [5500]:  # [1000, 2000, 3000, 4000, 5500]:
-        u = url.replace(str(1000), str(i))
+        u = url.replace(str(5500), str(i))
         resp = requests.get(u)
         lines.extend(resp.content.decode('latin').split('\n'))
     r = re.compile(r'\s*([A-Z]+)\s*:\s*([a-z]+)\s*(.*)')
@@ -53,4 +55,7 @@ def load_trec_trainset(url='http://cogcomp.org/Data/QA/QC/train_1000.label'):
                 row = row[0], 'unknown', str(row[-1])
                 break
         rows.append(row)
-    return pd.DataFrame(rows, columns='category subcategory question'.split())
+    df = pd.DataFrame(rows, columns='label sublabel text'.split())
+    df['label'] = df['label'].astype('category')
+    df['sublabel'] = df['sublabel'].astype('category')
+    return df

@@ -22,17 +22,21 @@ from keras import layers
 from keras import Model
 from keras import backend as K
 
+# from qa_datasets import load_trec_trainset
 
-module_url = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
+
 # Import the Universal Sentence Encoder's TF Hub module
-useencode = hub.Module(module_url)
+use_encode = hub.Module("https://tfhub.dev/google/universal-sentence-encoder-large/3")
 
-# Compute a representation for each message, showing various lengths supported.
-messages = ["That band rocks!", "That song is really cool."]
 
-with tf.Session() as session:
-    session.run([tf.global_variables_initializer(), tf.tables_initializer()])
-    usevectors = session.run(useencode(messages))
+def encode_texts(texts=["That band rocks!", "That song is really cool."], use_encode=use_encode):
+    texts = [texts] if isinstance(texts, str) else texts
+
+    with tf.Session() as session:
+        session.run([tf.global_variables_initializer(), tf.tables_initializer()])
+        usevectors = session.run(use_encode(texts))
+
+    return usevectors
 
 
 def get_dataframe(filename):
@@ -46,63 +50,72 @@ def get_dataframe(filename):
         data.append([label, text])
 
     df = pd.DataFrame(data, columns=['label', 'text'])
-    df.label = df.label.astype('category')
+    df['label'] = df.label.astype('category')
     return df
 
 
-df_train = get_dataframe('train_5500.txt')
-df_train.head()
+test_reviews = ["It was a decent movie, lots of ups and downs. Good thriller -- horrific, disturbing.",
+                "I didn't care for the unheroic Protagonist that chose to win the fight to avoid the melodramatic ending of curing his psychosis."]
+test_labels = [0, 1]
 
 
-train_text = df_train['text'].tolist()
-train_text = np.array(train_text, dtype=object)[:, np.newaxis]
-train_label = np.asarray(pd.get_dummies(df_train.label), dtype=np.int8)
+def use_lambda(x):
+    return use_encode(tf.squeeze(tf.cast(x, tf.string)), signature="default", as_dict=True)["default"]
 
 
-def uselambda(x):
-    return useencode(tf.squeeze(tf.cast(x, tf.string)), signature="default", as_dict=True)["default"]
+QA_DF = get_dataframe('train_5500.txt')
+QA_CATEGORIES = QA_DF.label.cat.categories.tolist()
 
 
-usevector_shape = (512,)
-input_text = layers.Input(shape=(1,), dtype=tf.string)
-usevector = layers.Lambda(uselambda, output_shape=usevector_shape)(input_text)
-dense = layers.Dense(256, activation='relu')(usevector)
-pred = layers.Dense(2, activation='softmax')(dense)
-model = Model(inputs=[input_text], outputs=pred)
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+def normalize_trainset(df_train=QA_DF):
+    # df_train = load_trec_trainset()
+    # print(df_train.head())
+    print(df_train.head())
+
+    train_text = df_train['text'].tolist()
+    train_text = np.array(train_text, dtype=object)[:, np.newaxis]
+    train_label = np.asarray(pd.get_dummies(df_train.label), dtype=np.int8)
+    return train_text, train_label
 
 
-test_text = ["It was a decent movie, lots of ups and downs. Good thriller -- horrific, disturbing.",
-             "I didn't care for the unheroic Protagonist that chose to win the fight to avoid the melodramatic ending of curing his psychosis."]
-
-test_label = [0, 1]
-
-with tf.Session() as session:
-    K.set_session(session)
-    session.run(tf.global_variables_initializer())
-    session.run(tf.tables_initializer())
-    history = model.fit(
-        train_text,
-        train_label,
-        validation_data=(test_text, test_label),
-        epochs=10,
-        batch_size=32)
-    model.save_weights('./model.h5')
+def build_use_classifier(num_classes=7):
+    usevector_shape = (512,)
+    input_text = layers.Input(shape=(1,), dtype=tf.string)
+    usevector = layers.Lambda(use_lambda, output_shape=usevector_shape)(input_text)
+    dense = layers.Dense(256, activation='relu')(usevector)
+    pred = layers.Dense(num_classes, activation='softmax')(dense)
+    model = Model(inputs=[input_text], outputs=pred)
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    return model
 
 
-new_text = ["In what year did the titanic sink ?",
-            "What is the highest peak in California ?",
-            "Who invented the light bulb ?"]
+def train_model(model, train_texts, train_labels):
+    with tf.Session() as session:
+        K.set_session(session)
+        session.run(tf.global_variables_initializer())
+        session.run(tf.tables_initializer())
+        history = model.fit(train_texts, train_labels,
+                            # validation_data=(test_text, test_label),
+                            epochs=10,
+                            batch_size=32)
+        model.save_weights('model.h5')
+    return history
 
-new_text = np.array(new_text, dtype=object)[:, np.newaxis]
-with tf.Session() as session:
-    K.set_session(session)
-    session.run(tf.global_variables_initializer())
-    session.run(tf.tables_initializer())
-    model.load_weights('./model.h5')
-    predicts = model.predict(new_text, batch_size=32)
 
-categories = df_train.label.cat.categories.tolist()
-predict_logits = predicts.argmax(axis=1)
-predict_labels = [categories[logit] for logit in predict_logits]
-print(predict_labels)
+def test_model(model, categories=QA_CATEGORIES):
+    new_text = ["In what year did the titanic sink ?",
+                "What is the highest peak in California ?",
+                "Who invented the light bulb ?"]
+
+    new_text = np.array(new_text, dtype=object)[:, np.newaxis]
+    with tf.Session() as session:
+        K.set_session(session)
+        session.run(tf.global_variables_initializer())
+        session.run(tf.tables_initializer())
+        model.load_weights('model.h5')
+        predictions = model.predict(new_text, batch_size=32)
+
+    predict_logits = predictions.argmax(axis=1)
+    predicted_labels = [categories[logit] for logit in predict_logits]
+    print(predicted_labels)
+    return predictions, predicted_labels
