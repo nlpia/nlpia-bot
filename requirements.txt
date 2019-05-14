@@ -17,6 +17,12 @@
 
 django
 django_extensions
-nlpia>=0.1.87
+jupyter
+keras
+nlpia>=0.1.89
+pandas
 psycopg2
-python_chatbot>=0.0.5
+# tensorflow_hub
+python_chatbot>=0.0.8
+tensorboard
+tensorflow
