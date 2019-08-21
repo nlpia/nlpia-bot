@@ -134,3 +134,17 @@ def test_model(model='model.h5', texts=TEST_TEXTS, categories=QA_CATEGORIES):
     df['text'] = [t[0] for t in texts]
     df['label'] = predicted_labels
     return df
+
+
+def generate_from_use(usevector=[]):
+    return "Dummy placeholder text until USE generator is working."
+
+
+def reply(text):
+    match = re.match(r'^\s*([Uu][Ss][Ee]\b)?(.*)$')
+    conf = 1e-6
+    if match:
+        text = match.groups()[1]
+        conf = 1.
+    usevector = encode_texts([text] if isinstance(text, str) else list(text))
+    return [(conf, str(pd.Series(usevector).round(2)))]
