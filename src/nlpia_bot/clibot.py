@@ -20,15 +20,15 @@ import argparse
 import logging
 import sys
 
-from chatbot.bots import Bot
-from chatbot.contrib import (
-    ChoiceFeature,
-    DiceFeature,
-    DictionaryFeature,
-    PyPIFeature,
-    SlapbackFeature,
-    WikipediaFeature
-)
+# from chatbot.bots import Bot
+# from chatbot.contrib import (
+#     ChoiceFeature,
+#     DiceFeature,
+#     DictionaryFeature,
+#     PyPIFeature,
+#     SlapbackFeature,
+#     WikipediaFeature
+# )
 
 from nlpia_bot import __version__
 
@@ -37,6 +37,16 @@ __copyright__ = "hobs"
 __license__ = "mit"
 
 _logger = logging.getLogger(__name__)
+
+
+class CLIBot:
+    def respond(statement):
+        """ Chatbot "main" function to respond to a user command or statement
+
+        >>> respond('Hi')
+        Hi!
+        """
+        return "Hi!"
 
 
 def parse_args(args):
@@ -49,14 +59,15 @@ def parse_args(args):
       :obj:`argparse.Namespace`: command line parameters namespace
     """
     parser = argparse.ArgumentParser(
-        description="Just a Fibonnaci demonstration")
+        description="Command line bot application, e.g. bot how do you work?")
     parser.add_argument(
         '--version',
         action='version',
         version='nlpia_bot {ver}'.format(ver=__version__))
     parser.add_argument(
+        default="bot",
         dest="nickname",
-        help="IRC nick (nickname or username) for the bot",
+        help="IRC nick or CLI command name for the bot",
         type=str,
         metavar="STR")
     parser.add_argument(
@@ -73,6 +84,11 @@ def parse_args(args):
         help="set loglevel to DEBUG",
         action='store_const',
         const=logging.DEBUG)
+    parser.add_argument(
+        'words',
+        type=str,
+        nargs='*',
+        help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
     return parser.parse_args(args)
 
 
@@ -87,44 +103,21 @@ def setup_logging(loglevel):
                         format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
 
 
-def ircbot(args=None,
-           nickname='nlpia',
-           irc_server='chat.freenode.net',
-           port=6665,
-           server_password='my_bots_password',
-           channels=('#freenode', '#python'),
-           features=None):
-    """Entry point for console_script for shell command `ircbot --nickname nlpia` ... """
-    nickname = getattr(args, 'nickname', nickname)
-    irc_server = getattr(args, 'irc_server', irc_server)
-    port = int(float(getattr(args, 'port', port)))
-    server_password = getattr(args, 'server_password', server_password)
-    channels = eval(str(getattr(args, 'channels', channels)))
-    features = features or (PyPIFeature(), WikipediaFeature(), DictionaryFeature(),
-                            DiceFeature(), ChoiceFeature(), SlapbackFeature())
-    bot = Bot(
-        nickname=nickname,
-        hostname=irc_server,
-        port=port,
-        server_password=server_password,
-        channels=channels,
-        features=features,
-    )
-
-    return bot.run()
-
-
 def main(args):
     """Main entry point allowing external calls
 
     Args:
       args ([str]): command line parameter list
     """
+    global BOT
     args = parse_args(args)
     setup_logging(args.loglevel)
-    _logger.debug("Starting crazy calculations...")
-    print("The ircbot returned: {}".format(ircbot(args)))
-    _logger.info("Script ends here")
+    if BOT is None:
+        _logger.warn("Building a BOT...")
+        BOT = CLIBot()
+        print("Started a CLIBot: {}".format(BOT))
+    _logger.warn("Computing a reply to {}...".format(args.words))
+    print(BOT.reply(args.words))
 
 
 def run():
