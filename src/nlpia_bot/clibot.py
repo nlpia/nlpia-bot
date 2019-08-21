@@ -20,6 +20,8 @@ import argparse
 import logging
 import sys
 
+from nlpia_bot.use_demo import reply as use_reply
+
 # from chatbot.bots import Bot
 # from chatbot.contrib import (
 #     ChoiceFeature,
@@ -38,15 +40,41 @@ __license__ = "mit"
 
 _logger = logging.getLogger(__name__)
 
+BOT = None
+
+
+def hi_reply(self, statement):
+    """ Chatbot "main" function to respond to a user command or statement
+
+    >>> respond('Hi')
+    Hi!
+    """
+    return [(0.1, "Hi!")]
+
 
 class CLIBot:
-    def respond(statement):
-        """ Chatbot "main" function to respond to a user command or statement
+    def __init__(self, repliers=(hi_reply, use_reply)):
+        self.repliers = repliers
 
-        >>> respond('Hi')
-        Hi!
-        """
-        return "Hi!"
+    def reply(self, statement=''):
+        replies = []
+        for replier in self.repliers:
+            try:
+                bot_replies = replier.reply(statement)
+                bot_replies = self.normalize_replies(bot_replies)
+                replies.extend(bot_replies)
+            except Exception as e:
+                _logger.error(str(e))
+        if len(replies):
+            return sorted(replies, reverse=True)[0][1]
+        # TODO: np.choice from list of more friendly random unknown error replies...
+        return "Sorry, something went wrong. Not sure what to say..."
+
+    def normalize_replies(replies):
+        return sorted([
+            ((0.0, r) if isinstance(r, str) else tuple(r))
+            for r in replies
+            ], reverse=True)
 
 
 def parse_args(args):
