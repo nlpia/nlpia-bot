@@ -20,7 +20,7 @@ import argparse
 import logging
 import sys
 
-from nlpia_bot.use_demo import reply as use_reply
+# from nlpia_bot.use_demo import reply as use_reply
 
 # from chatbot.bots import Bot
 # from chatbot.contrib import (
@@ -34,6 +34,10 @@ from nlpia_bot.use_demo import reply as use_reply
 
 from nlpia_bot import __version__
 
+from nlpia_bot.patterns import greeting
+from nlpia_bot.search_fuzzy import MovieBot
+
+
 __author__ = "hobs"
 __copyright__ = "hobs"
 __license__ = "mit"
@@ -41,40 +45,43 @@ __license__ = "mit"
 _logger = logging.getLogger(__name__)
 
 BOT = None
+moviebot = MovieBot()
 
 
-def hi_reply(self, statement):
-    """ Chatbot "main" function to respond to a user command or statement
-
-    >>> respond('Hi')
-    Hi!
-    """
-    return [(0.1, "Hi!")]
+def normalize_replies(replies):
+    if isinstance(replies, str):
+        replies = [(1e-10, replies)]
+    if isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
+        replies = [(replies[0], str(replies[1]))]
+    return sorted([
+        ((1e-10, r) if isinstance(r, str) else tuple(r))
+        for r in replies
+        ], reverse=True)
 
 
 class CLIBot:
-    def __init__(self, repliers=(hi_reply, use_reply)):
+    def __init__(self, repliers=(greeting, moviebot.reply)):
         self.repliers = repliers
 
     def reply(self, statement=''):
         replies = []
         for replier in self.repliers:
+            bot_replies = []
             try:
-                bot_replies = replier.reply(statement)
-                bot_replies = self.normalize_replies(bot_replies)
-                replies.extend(bot_replies)
+                bot_replies = normalize_replies(replier(statement))
             except Exception as e:
                 _logger.error(str(e))
+                try:
+                    bot_replies = normalize_replies(replier.reply(statement))
+                except AttributeError as e:
+                    _logger.debug(str(e))
+                except Exception as e:
+                    _logger.error(str(e))
+            replies.extend(bot_replies)
         if len(replies):
             return sorted(replies, reverse=True)[0][1]
         # TODO: np.choice from list of more friendly random unknown error replies...
         return "Sorry, something went wrong. Not sure what to say..."
-
-    def normalize_replies(replies):
-        return sorted([
-            ((0.0, r) if isinstance(r, str) else tuple(r))
-            for r in replies
-            ], reverse=True)
 
 
 def parse_args(args):
