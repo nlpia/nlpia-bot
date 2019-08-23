@@ -42,6 +42,7 @@ __copyright__ = "hobs"
 __license__ = "mit"
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.ERROR)
 
 BOT_PACKAGES = dict(pattern=pattern_bots, search_fuzzy=search_fuzzy_bots)
 BOT = None
@@ -67,11 +68,11 @@ def bots_from_personalities(personalities):
 
 
 class CLIBot:
-    def __init__(self, bots=[pattern_bots.Bot()]):
+    def __init__(self, bots=[pattern_bots.Bot(), search_fuzzy_bots.Bot()]):
         self.repliers = [bot.reply for bot in bots]
 
     def reply(self, statement=''):
-        print(f'statement={statement}')
+        log.info(f'statement={statement}')
         replies = []
         for replier in self.repliers:
             bot_replies = []
@@ -80,10 +81,10 @@ class CLIBot:
             except Exception as e:
                 log.error(str(e))
                 try:
-                    print(replier)
+                    log.debug(repr(replier))
                     bot_replies = normalize_replies(replier.reply(statement))
                 except AttributeError as e:
-                    log.debug(str(e))
+                    log.warn(str(e))
                 except Exception as e:
                     log.error(str(e))
             replies.extend(bot_replies)
@@ -109,6 +110,7 @@ def parse_args(args):
         action='version',
         version='nlpia_bot {ver}'.format(ver=__version__))
     parser.add_argument(
+        '--name',
         default="bot",
         dest="nickname",
         help="IRC nick or CLI command name for the bot",
@@ -138,7 +140,7 @@ def parse_args(args):
     parser.add_argument(
         'words',
         type=str,
-        nargs='*',
+        nargs='+',
         help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
     return parser.parse_args(args)
 
@@ -156,23 +158,21 @@ def setup_logging(loglevel):
 
 def run(argv=sys.argv):
     """Entry point for console_scripts"""
-    print(argv)
     new_argv = []
     if len(argv) > 1:
-        new_argv.extend(argv[1:])
-    print(new_argv)
+        new_argv.extend(list(argv[1:]))
     args = parse_args(new_argv)
-    print(args.words)
+    log.setLevel(args.loglevel or logging.WARNING)
 
     global BOT
     setup_logging(args.loglevel)
     if BOT is None or args.personality:
         args.personality = args.personality or 'search_fuzzy,pattern'
-        log.warn("Building a BOT...")
+        log.info("Building a BOT...")
         BOT = CLIBot()
-        log.warn(f"Started a CLIBot: {BOT}")
+        log.info(f"Started a CLIBot: {BOT}")
     log.warn(f"Computing a reply to {args.words}...")
-    print(BOT.reply(args.words))
+    print(BOT.reply(' '.join(args.words)))
 
 
 if __name__ == "__main__":
