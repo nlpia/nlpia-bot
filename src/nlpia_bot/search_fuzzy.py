@@ -7,7 +7,7 @@ import yaml
 from fuzzywuzzy import process
 from nlpia.loaders import get_data
 
-from constants import DATA_DIR
+from .constants import DATA_DIR
 
 log = logging.getLogger(__name__)
 
