@@ -6,7 +6,7 @@ import json
 
 import nltk
 import nltk.corpus
-import spacy
+import spacy  # noqa
 
 
 SRC_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -31,7 +31,9 @@ except LookupError:
     STOPWORDS_DICT = Counter(nltk.corpus.stopwords.words('english'))
 STOPWORDS = set(STOPWORDS_DICT)
 
-NLP = spacy.load('en_core_web_lg')
+SPACY_MODEL_NAME = 'en_core_web_sm'
+log.warn(f"Loading SpaCy model {SPACY_MODEL_NAME}...")
+NLP = spacy.load(SPACY_MODEL_NAME)
 TFHUB_USE_MODULE_URL = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
 SENTENCE_SPEC_PATH = os.path.join(os.path.dirname(__file__), 'data', 'medical_sentences.json')
 SENTENCE_SPEC = json.load(open(SENTENCE_SPEC_PATH, 'r'))
