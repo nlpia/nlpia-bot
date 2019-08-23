@@ -88,8 +88,9 @@ class Bot:
             self.db = db
         if self.db is None:
             self.db = self.load_dialog()
-        movie_reply, percent_match, movie_statement = process.extractOne(
+        movie_statement, percent_match, movie_reply = process.extractOne(
             normalize(statement), choices=self.db)
+        log.warn(f'movie_statement = {movie_statement}')
         return [((percent_match / 100.), movie_reply)]
 
 
