@@ -34,15 +34,16 @@ import sys
 
 from nlpia_bot import __version__
 
-from nlpia_bot import greeting_bots, search_fuzzy_bots, pattern_bots  # noqa
+from nlpia_bot import pattern_bots, search_fuzzy_bots  # noqa
 
 
 __author__ = "hobs"
 __copyright__ = "hobs"
 __license__ = "mit"
 
-_logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
+BOT_PACKAGES = dict(pattern=pattern_bots, search_fuzzy=search_fuzzy_bots)
 BOT = None
 
 
@@ -60,28 +61,31 @@ def normalize_replies(replies):
 def bots_from_personalities(personalities):
     if isinstance(personalities, str):
         personalities = ','.join(personalities.split()).split(',')
-    bot_dict = globals()
-    return [bot_dict[p].Bot() for p in personalities]
+    bot_dict = BOT_PACKAGES
+    globals_dict = globals()
+    return [bot_dict.get(p, globals_dict.get(p)).Bot() for p in personalities]
 
 
 class CLIBot:
-    def __init__(self, bots):
+    def __init__(self, bots=[pattern_bots.Bot()]):
         self.repliers = [bot.reply for bot in bots]
 
     def reply(self, statement=''):
+        print(f'statement={statement}')
         replies = []
         for replier in self.repliers:
             bot_replies = []
             try:
                 bot_replies = normalize_replies(replier(statement))
             except Exception as e:
-                _logger.error(str(e))
+                log.error(str(e))
                 try:
+                    print(replier)
                     bot_replies = normalize_replies(replier.reply(statement))
                 except AttributeError as e:
-                    _logger.debug(str(e))
+                    log.debug(str(e))
                 except Exception as e:
-                    _logger.error(str(e))
+                    log.error(str(e))
             replies.extend(bot_replies)
         if len(replies):
             return sorted(replies, reverse=True)[0][1]
@@ -150,26 +154,26 @@ def setup_logging(loglevel):
                         format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
 
 
-def run_bot(args=None):
+def run(argv=sys.argv):
     """Entry point for console_scripts"""
-    global BOT
-    setup_logging(args.loglevel)
-    if BOT is None or args.personality:
-        args.personality = args.personality or 'search_fuzzy,patterns'
-        _logger.warn("Building a BOT...")
-        BOT = CLIBot()
-        print("Started a CLIBot: {}".format(BOT))
-    _logger.warn("Computing a reply to {}...".format(args.words))
-    print(BOT.reply(args.words))
-
-
-def main(argv=sys.argv):
+    print(argv)
     new_argv = []
     if len(argv) > 1:
         new_argv.extend(argv[1:])
+    print(new_argv)
     args = parse_args(new_argv)
-    run_bot(args=args)
+    print(args.words)
+
+    global BOT
+    setup_logging(args.loglevel)
+    if BOT is None or args.personality:
+        args.personality = args.personality or 'search_fuzzy,pattern'
+        log.warn("Building a BOT...")
+        BOT = CLIBot()
+        log.warn(f"Started a CLIBot: {BOT}")
+    log.warn(f"Computing a reply to {args.words}...")
+    print(BOT.reply(args.words))
 
 
 if __name__ == "__main__":
-    main()
+    run()
