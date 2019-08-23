@@ -34,8 +34,7 @@ import sys
 
 from nlpia_bot import __version__
 
-from nlpia_bot.patterns import greeting
-from nlpia_bot.search_fuzzy import MovieBot
+from nlpia_bot import greeting_bots, search_fuzzy_bots, pattern_bots  # noqa
 
 
 __author__ = "hobs"
@@ -45,7 +44,6 @@ __license__ = "mit"
 _logger = logging.getLogger(__name__)
 
 BOT = None
-moviebot = MovieBot()
 
 
 def normalize_replies(replies):
@@ -59,9 +57,16 @@ def normalize_replies(replies):
         ], reverse=True)
 
 
+def bots_from_personalities(personalities):
+    if isinstance(personalities, str):
+        personalities = ','.join(personalities.split()).split(',')
+    bot_dict = globals()
+    return [bot_dict[p].Bot() for p in personalities]
+
+
 class CLIBot:
-    def __init__(self, repliers=(greeting, moviebot.reply)):
-        self.repliers = repliers
+    def __init__(self, bots):
+        self.repliers = [bot.reply for bot in bots]
 
     def reply(self, statement=''):
         replies = []
@@ -106,6 +111,13 @@ def parse_args(args):
         type=str,
         metavar="STR")
     parser.add_argument(
+        '--personality',
+        default="",
+        dest="personality",
+        help="comma-separated personalities to load into bot: search_movie,pattern_greet,search_ds,generate_spanish",
+        type=str,
+        metavar="STR")
+    parser.add_argument(
         '-v',
         '--verbose',
         dest="loglevel",
@@ -138,16 +150,12 @@ def setup_logging(loglevel):
                         format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
 
 
-def main(args):
-    """Main entry point allowing external calls
-
-    Args:
-      args ([str]): command line parameter list
-    """
+def run_bot(args=None):
+    """Entry point for console_scripts"""
     global BOT
-    args = parse_args(args)
     setup_logging(args.loglevel)
-    if BOT is None:
+    if BOT is None or args.personality:
+        args.personality = args.personality or 'search_fuzzy,patterns'
         _logger.warn("Building a BOT...")
         BOT = CLIBot()
         print("Started a CLIBot: {}".format(BOT))
@@ -155,11 +163,13 @@ def main(args):
     print(BOT.reply(args.words))
 
 
-def run():
-    """Entry point for console_scripts
-    """
-    main(sys.argv[1:])
+def main(argv=sys.argv):
+    new_argv = []
+    if len(argv) > 1:
+        new_argv.extend(argv[1:])
+    args = parse_args(new_argv)
+    run_bot(args=args)
 
 
 if __name__ == "__main__":
-    run()
+    main()
