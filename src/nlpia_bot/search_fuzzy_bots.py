@@ -50,7 +50,7 @@ def load_faq(faq_path=os.path.join(DATA_DIR, 'dsfaq_plus_faq_data_science_and_ma
     return faq
 
 
-class MovieBot:
+class Bot:
     db = None
 
     def __init__(self, name='movie_dialog'):
@@ -91,7 +91,7 @@ class MovieBot:
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        bot = MovieBot()
+        bot = Bot()
         statement = "Hi!"
         statement = ' '.join(sys.argv[1:])
         print(bot.reply(statement))

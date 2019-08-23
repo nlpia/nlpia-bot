@@ -2,6 +2,9 @@
 import re
 
 
+from .template_generators import generate_sentence  # noqa
+
+
 def greeting(statement):
     """ Chatbot "main" function to respond to a user command or statement
 
