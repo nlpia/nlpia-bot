@@ -1,6 +1,6 @@
 # nlpia_bot
 
-Build your own virtual assistant that actually assists! Most virtual assistants are trying to manipulate you into doing something to make some corporation some money.
+Build your own virtual assistant that actually assists! Most virtual assistants are built to manipulate you into doing things that make money for corporations. Your personal bot can help protect you and amplify your own abilities and prosocial instincts.
 
 This hybrid chatbot combines 4 techniques explained in [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action):
 
