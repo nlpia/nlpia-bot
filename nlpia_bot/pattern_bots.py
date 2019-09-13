@@ -22,4 +22,5 @@ class Bot:
                 responses.append((0.2, "Hi! You remembered me! How are you doing?"))
             if 'bot' in match.groups()[1].lower():
                 responses.append((0.2, "Hey. That's a good one."))
+        responses.append((0.05, "Wuh?"))
         return responses
