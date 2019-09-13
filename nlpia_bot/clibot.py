@@ -42,7 +42,7 @@ __copyright__ = "hobs"
 __license__ = "mit"
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.ERROR)
+log.setLevel(logging.INFO)
 
 BOT_PACKAGES = dict(pattern=pattern_bots, search_fuzzy=search_fuzzy_bots)
 BOT = None

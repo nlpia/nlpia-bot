@@ -47,3 +47,9 @@ MANIFEST
 
 # Per-project virtualenvs
 .venv*/
+
+# secrets
+*.csv
+.bash_env
+**/*secret*
+**/*private*
