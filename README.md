@@ -1,5 +1,8 @@
 # nlpia_bot
-Hybrid chatbot that combines 4 techniques taught [NLP in Action book](https://www.manning.com/books/natural-language-processing-in-action):
+
+Use [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action) to build your own virtual assistant that actually assists! Most virtual assistants are built to manipulate you into doing things that make money for corporations. Your personal bot can help protect you and amplify your own abilities and prosocial instincts.
+
+This hybrid chatbot combines 4 techniques explained in [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action):
 
     1. search: [chatterbot](https://github.com/gunthercox/ChatterBot), [will](https://github.com/skoczen/will)
     2. pattern matching and response templates: Alexa, [AIML](https://github.com/keiffster/program-y)
