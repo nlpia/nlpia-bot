@@ -1,22 +1,30 @@
 import os
+import logging
 
 import pandas as pd
 import sqlite3
+from tqdm import tqdm
 
 from django.db import models
+from django.db import IntegrityError
 
 from nlpia_bot.constants import BASE_DIR
 
+log = logging.getLogger(__name__)
 
-def load_csv(csv_path='/midata/private/journal/files.csv',
-             sqlite_path=os.path.join(BASE_DIR, 'db.sqlite3'), table_name='note'):
+
+def load_csv_sql(csv_path='/midata/private/journal/files.csv',
+                 sqlite_path=os.path.join(BASE_DIR, 'db.sqlite3'),
+                 table_name='note'):
     df_notes = pd.read_csv(csv_path, index_col=0)
+    df_notes['id'] = df_notes.index.values.astype(int)
     conn = sqlite3.connect(sqlite_path)
     df_notes.to_sql(table_name, conn, if_exists='replace', index=False)
     # inspectdb to create models.py class
 
 
 class Note(models.Model):
+    id = models.AutoField(primary_key=True)
     accessed = models.TextField(blank=True, null=True)
     changed_any = models.TextField(blank=True, null=True)
     dir = models.TextField(blank=True, null=True)
@@ -30,307 +38,749 @@ class Note(models.Model):
     basename = models.TextField(blank=True, null=True)
     is_journal = models.IntegerField(blank=True, null=True)
     encoding = models.TextField(blank=True, null=True)
-    number_0 = models.FloatField(db_column='0', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_1 = models.FloatField(db_column='1', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_2 = models.FloatField(db_column='2', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_3 = models.FloatField(db_column='3', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_4 = models.FloatField(db_column='4', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_5 = models.FloatField(db_column='5', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_6 = models.FloatField(db_column='6', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_7 = models.FloatField(db_column='7', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_8 = models.FloatField(db_column='8', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_9 = models.FloatField(db_column='9', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_10 = models.FloatField(db_column='10', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_11 = models.FloatField(db_column='11', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_12 = models.FloatField(db_column='12', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_13 = models.FloatField(db_column='13', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_14 = models.FloatField(db_column='14', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_15 = models.FloatField(db_column='15', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_16 = models.FloatField(db_column='16', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_17 = models.FloatField(db_column='17', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_18 = models.FloatField(db_column='18', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_19 = models.FloatField(db_column='19', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_20 = models.FloatField(db_column='20', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_21 = models.FloatField(db_column='21', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_22 = models.FloatField(db_column='22', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_23 = models.FloatField(db_column='23', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_24 = models.FloatField(db_column='24', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_25 = models.FloatField(db_column='25', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_26 = models.FloatField(db_column='26', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_27 = models.FloatField(db_column='27', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_28 = models.FloatField(db_column='28', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_29 = models.FloatField(db_column='29', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_30 = models.FloatField(db_column='30', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_31 = models.FloatField(db_column='31', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_32 = models.FloatField(db_column='32', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_33 = models.FloatField(db_column='33', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_34 = models.FloatField(db_column='34', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_35 = models.FloatField(db_column='35', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_36 = models.FloatField(db_column='36', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_37 = models.FloatField(db_column='37', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_38 = models.FloatField(db_column='38', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_39 = models.FloatField(db_column='39', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_40 = models.FloatField(db_column='40', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_41 = models.FloatField(db_column='41', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_42 = models.FloatField(db_column='42', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_43 = models.FloatField(db_column='43', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_44 = models.FloatField(db_column='44', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_45 = models.FloatField(db_column='45', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_46 = models.FloatField(db_column='46', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_47 = models.FloatField(db_column='47', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_48 = models.FloatField(db_column='48', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_49 = models.FloatField(db_column='49', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_50 = models.FloatField(db_column='50', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_51 = models.FloatField(db_column='51', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_52 = models.FloatField(db_column='52', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_53 = models.FloatField(db_column='53', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_54 = models.FloatField(db_column='54', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_55 = models.FloatField(db_column='55', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_56 = models.FloatField(db_column='56', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_57 = models.FloatField(db_column='57', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_58 = models.FloatField(db_column='58', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_59 = models.FloatField(db_column='59', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_60 = models.FloatField(db_column='60', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_61 = models.FloatField(db_column='61', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_62 = models.FloatField(db_column='62', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_63 = models.FloatField(db_column='63', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_64 = models.FloatField(db_column='64', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_65 = models.FloatField(db_column='65', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_66 = models.FloatField(db_column='66', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_67 = models.FloatField(db_column='67', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_68 = models.FloatField(db_column='68', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_69 = models.FloatField(db_column='69', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_70 = models.FloatField(db_column='70', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_71 = models.FloatField(db_column='71', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_72 = models.FloatField(db_column='72', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_73 = models.FloatField(db_column='73', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_74 = models.FloatField(db_column='74', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_75 = models.FloatField(db_column='75', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_76 = models.FloatField(db_column='76', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_77 = models.FloatField(db_column='77', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_78 = models.FloatField(db_column='78', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_79 = models.FloatField(db_column='79', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_80 = models.FloatField(db_column='80', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_81 = models.FloatField(db_column='81', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_82 = models.FloatField(db_column='82', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_83 = models.FloatField(db_column='83', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_84 = models.FloatField(db_column='84', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_85 = models.FloatField(db_column='85', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_86 = models.FloatField(db_column='86', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_87 = models.FloatField(db_column='87', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_88 = models.FloatField(db_column='88', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_89 = models.FloatField(db_column='89', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_90 = models.FloatField(db_column='90', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_91 = models.FloatField(db_column='91', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_92 = models.FloatField(db_column='92', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_93 = models.FloatField(db_column='93', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_94 = models.FloatField(db_column='94', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_95 = models.FloatField(db_column='95', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_96 = models.FloatField(db_column='96', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_97 = models.FloatField(db_column='97', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_98 = models.FloatField(db_column='98', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_99 = models.FloatField(db_column='99', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_100 = models.FloatField(db_column='100', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_101 = models.FloatField(db_column='101', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_102 = models.FloatField(db_column='102', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_103 = models.FloatField(db_column='103', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_104 = models.FloatField(db_column='104', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_105 = models.FloatField(db_column='105', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_106 = models.FloatField(db_column='106', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_107 = models.FloatField(db_column='107', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_108 = models.FloatField(db_column='108', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_109 = models.FloatField(db_column='109', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_110 = models.FloatField(db_column='110', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_111 = models.FloatField(db_column='111', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_112 = models.FloatField(db_column='112', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_113 = models.FloatField(db_column='113', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_114 = models.FloatField(db_column='114', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_115 = models.FloatField(db_column='115', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_116 = models.FloatField(db_column='116', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_117 = models.FloatField(db_column='117', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_118 = models.FloatField(db_column='118', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_119 = models.FloatField(db_column='119', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_120 = models.FloatField(db_column='120', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_121 = models.FloatField(db_column='121', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_122 = models.FloatField(db_column='122', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_123 = models.FloatField(db_column='123', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_124 = models.FloatField(db_column='124', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_125 = models.FloatField(db_column='125', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_126 = models.FloatField(db_column='126', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_127 = models.FloatField(db_column='127', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_128 = models.FloatField(db_column='128', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_129 = models.FloatField(db_column='129', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_130 = models.FloatField(db_column='130', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_131 = models.FloatField(db_column='131', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_132 = models.FloatField(db_column='132', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_133 = models.FloatField(db_column='133', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_134 = models.FloatField(db_column='134', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_135 = models.FloatField(db_column='135', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_136 = models.FloatField(db_column='136', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_137 = models.FloatField(db_column='137', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_138 = models.FloatField(db_column='138', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_139 = models.FloatField(db_column='139', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_140 = models.FloatField(db_column='140', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_141 = models.FloatField(db_column='141', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_142 = models.FloatField(db_column='142', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_143 = models.FloatField(db_column='143', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_144 = models.FloatField(db_column='144', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_145 = models.FloatField(db_column='145', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_146 = models.FloatField(db_column='146', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_147 = models.FloatField(db_column='147', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_148 = models.FloatField(db_column='148', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_149 = models.FloatField(db_column='149', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_150 = models.FloatField(db_column='150', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_151 = models.FloatField(db_column='151', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_152 = models.FloatField(db_column='152', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_153 = models.FloatField(db_column='153', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_154 = models.FloatField(db_column='154', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_155 = models.FloatField(db_column='155', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_156 = models.FloatField(db_column='156', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_157 = models.FloatField(db_column='157', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_158 = models.FloatField(db_column='158', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_159 = models.FloatField(db_column='159', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_160 = models.FloatField(db_column='160', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_161 = models.FloatField(db_column='161', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_162 = models.FloatField(db_column='162', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_163 = models.FloatField(db_column='163', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_164 = models.FloatField(db_column='164', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_165 = models.FloatField(db_column='165', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_166 = models.FloatField(db_column='166', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_167 = models.FloatField(db_column='167', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_168 = models.FloatField(db_column='168', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_169 = models.FloatField(db_column='169', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_170 = models.FloatField(db_column='170', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_171 = models.FloatField(db_column='171', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_172 = models.FloatField(db_column='172', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_173 = models.FloatField(db_column='173', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_174 = models.FloatField(db_column='174', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_175 = models.FloatField(db_column='175', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_176 = models.FloatField(db_column='176', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_177 = models.FloatField(db_column='177', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_178 = models.FloatField(db_column='178', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_179 = models.FloatField(db_column='179', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_180 = models.FloatField(db_column='180', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_181 = models.FloatField(db_column='181', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_182 = models.FloatField(db_column='182', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_183 = models.FloatField(db_column='183', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_184 = models.FloatField(db_column='184', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_185 = models.FloatField(db_column='185', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_186 = models.FloatField(db_column='186', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_187 = models.FloatField(db_column='187', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_188 = models.FloatField(db_column='188', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_189 = models.FloatField(db_column='189', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_190 = models.FloatField(db_column='190', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_191 = models.FloatField(db_column='191', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_192 = models.FloatField(db_column='192', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_193 = models.FloatField(db_column='193', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_194 = models.FloatField(db_column='194', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_195 = models.FloatField(db_column='195', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_196 = models.FloatField(db_column='196', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_197 = models.FloatField(db_column='197', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_198 = models.FloatField(db_column='198', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_199 = models.FloatField(db_column='199', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_200 = models.FloatField(db_column='200', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_201 = models.FloatField(db_column='201', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_202 = models.FloatField(db_column='202', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_203 = models.FloatField(db_column='203', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_204 = models.FloatField(db_column='204', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_205 = models.FloatField(db_column='205', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_206 = models.FloatField(db_column='206', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_207 = models.FloatField(db_column='207', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_208 = models.FloatField(db_column='208', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_209 = models.FloatField(db_column='209', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_210 = models.FloatField(db_column='210', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_211 = models.FloatField(db_column='211', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_212 = models.FloatField(db_column='212', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_213 = models.FloatField(db_column='213', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_214 = models.FloatField(db_column='214', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_215 = models.FloatField(db_column='215', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_216 = models.FloatField(db_column='216', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_217 = models.FloatField(db_column='217', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_218 = models.FloatField(db_column='218', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_219 = models.FloatField(db_column='219', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_220 = models.FloatField(db_column='220', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_221 = models.FloatField(db_column='221', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_222 = models.FloatField(db_column='222', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_223 = models.FloatField(db_column='223', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_224 = models.FloatField(db_column='224', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_225 = models.FloatField(db_column='225', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_226 = models.FloatField(db_column='226', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_227 = models.FloatField(db_column='227', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_228 = models.FloatField(db_column='228', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_229 = models.FloatField(db_column='229', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_230 = models.FloatField(db_column='230', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_231 = models.FloatField(db_column='231', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_232 = models.FloatField(db_column='232', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_233 = models.FloatField(db_column='233', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_234 = models.FloatField(db_column='234', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_235 = models.FloatField(db_column='235', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_236 = models.FloatField(db_column='236', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_237 = models.FloatField(db_column='237', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_238 = models.FloatField(db_column='238', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_239 = models.FloatField(db_column='239', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_240 = models.FloatField(db_column='240', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_241 = models.FloatField(db_column='241', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_242 = models.FloatField(db_column='242', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_243 = models.FloatField(db_column='243', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_244 = models.FloatField(db_column='244', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_245 = models.FloatField(db_column='245', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_246 = models.FloatField(db_column='246', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_247 = models.FloatField(db_column='247', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_248 = models.FloatField(db_column='248', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_249 = models.FloatField(db_column='249', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_250 = models.FloatField(db_column='250', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_251 = models.FloatField(db_column='251', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_252 = models.FloatField(db_column='252', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_253 = models.FloatField(db_column='253', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_254 = models.FloatField(db_column='254', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_255 = models.FloatField(db_column='255', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_256 = models.FloatField(db_column='256', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_257 = models.FloatField(db_column='257', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_258 = models.FloatField(db_column='258', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_259 = models.FloatField(db_column='259', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_260 = models.FloatField(db_column='260', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_261 = models.FloatField(db_column='261', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_262 = models.FloatField(db_column='262', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_263 = models.FloatField(db_column='263', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_264 = models.FloatField(db_column='264', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_265 = models.FloatField(db_column='265', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_266 = models.FloatField(db_column='266', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_267 = models.FloatField(db_column='267', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_268 = models.FloatField(db_column='268', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_269 = models.FloatField(db_column='269', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_270 = models.FloatField(db_column='270', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_271 = models.FloatField(db_column='271', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_272 = models.FloatField(db_column='272', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_273 = models.FloatField(db_column='273', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_274 = models.FloatField(db_column='274', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_275 = models.FloatField(db_column='275', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_276 = models.FloatField(db_column='276', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_277 = models.FloatField(db_column='277', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_278 = models.FloatField(db_column='278', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_279 = models.FloatField(db_column='279', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_280 = models.FloatField(db_column='280', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_281 = models.FloatField(db_column='281', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_282 = models.FloatField(db_column='282', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_283 = models.FloatField(db_column='283', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_284 = models.FloatField(db_column='284', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_285 = models.FloatField(db_column='285', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_286 = models.FloatField(db_column='286', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_287 = models.FloatField(db_column='287', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_288 = models.FloatField(db_column='288', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_289 = models.FloatField(db_column='289', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_290 = models.FloatField(db_column='290', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_291 = models.FloatField(db_column='291', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_292 = models.FloatField(db_column='292', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_293 = models.FloatField(db_column='293', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_294 = models.FloatField(db_column='294', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_295 = models.FloatField(db_column='295', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_296 = models.FloatField(db_column='296', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_297 = models.FloatField(db_column='297', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_298 = models.FloatField(db_column='298', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    number_299 = models.FloatField(db_column='299', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
+    v0 = models.FloatField(db_column='0', blank=True, null=True)
+    v1 = models.FloatField(db_column='1', blank=True, null=True)
+    v2 = models.FloatField(db_column='2', blank=True, null=True)
+    v3 = models.FloatField(db_column='3', blank=True, null=True)
+    v4 = models.FloatField(db_column='4', blank=True, null=True)
+    v5 = models.FloatField(db_column='5', blank=True, null=True)
+    v6 = models.FloatField(db_column='6', blank=True, null=True)
+    v7 = models.FloatField(db_column='7', blank=True, null=True)
+    v8 = models.FloatField(db_column='8', blank=True, null=True)
+    v9 = models.FloatField(db_column='9', blank=True, null=True)
+    v10 = models.FloatField(db_column='10', blank=True, null=True)
+    v11 = models.FloatField(db_column='11', blank=True, null=True)
+    v12 = models.FloatField(db_column='12', blank=True, null=True)
+    v13 = models.FloatField(db_column='13', blank=True, null=True)
+    v14 = models.FloatField(db_column='14', blank=True, null=True)
+    v15 = models.FloatField(db_column='15', blank=True, null=True)
+    v16 = models.FloatField(db_column='16', blank=True, null=True)
+    v17 = models.FloatField(db_column='17', blank=True, null=True)
+    v18 = models.FloatField(db_column='18', blank=True, null=True)
+    v19 = models.FloatField(db_column='19', blank=True, null=True)
+    v20 = models.FloatField(db_column='20', blank=True, null=True)
+    v21 = models.FloatField(db_column='21', blank=True, null=True)
+    v22 = models.FloatField(db_column='22', blank=True, null=True)
+    v23 = models.FloatField(db_column='23', blank=True, null=True)
+    v24 = models.FloatField(db_column='24', blank=True, null=True)
+    v25 = models.FloatField(db_column='25', blank=True, null=True)
+    v26 = models.FloatField(db_column='26', blank=True, null=True)
+    v27 = models.FloatField(db_column='27', blank=True, null=True)
+    v28 = models.FloatField(db_column='28', blank=True, null=True)
+    v29 = models.FloatField(db_column='29', blank=True, null=True)
+    v30 = models.FloatField(db_column='30', blank=True, null=True)
+    v31 = models.FloatField(db_column='31', blank=True, null=True)
+    v32 = models.FloatField(db_column='32', blank=True, null=True)
+    v33 = models.FloatField(db_column='33', blank=True, null=True)
+    v34 = models.FloatField(db_column='34', blank=True, null=True)
+    v35 = models.FloatField(db_column='35', blank=True, null=True)
+    v36 = models.FloatField(db_column='36', blank=True, null=True)
+    v37 = models.FloatField(db_column='37', blank=True, null=True)
+    v38 = models.FloatField(db_column='38', blank=True, null=True)
+    v39 = models.FloatField(db_column='39', blank=True, null=True)
+    v40 = models.FloatField(db_column='40', blank=True, null=True)
+    v41 = models.FloatField(db_column='41', blank=True, null=True)
+    v42 = models.FloatField(db_column='42', blank=True, null=True)
+    v43 = models.FloatField(db_column='43', blank=True, null=True)
+    v44 = models.FloatField(db_column='44', blank=True, null=True)
+    v45 = models.FloatField(db_column='45', blank=True, null=True)
+    v46 = models.FloatField(db_column='46', blank=True, null=True)
+    v47 = models.FloatField(db_column='47', blank=True, null=True)
+    v48 = models.FloatField(db_column='48', blank=True, null=True)
+    v49 = models.FloatField(db_column='49', blank=True, null=True)
+    v50 = models.FloatField(db_column='50', blank=True, null=True)
+    v51 = models.FloatField(db_column='51', blank=True, null=True)
+    v52 = models.FloatField(db_column='52', blank=True, null=True)
+    v53 = models.FloatField(db_column='53', blank=True, null=True)
+    v54 = models.FloatField(db_column='54', blank=True, null=True)
+    v55 = models.FloatField(db_column='55', blank=True, null=True)
+    v56 = models.FloatField(db_column='56', blank=True, null=True)
+    v57 = models.FloatField(db_column='57', blank=True, null=True)
+    v58 = models.FloatField(db_column='58', blank=True, null=True)
+    v59 = models.FloatField(db_column='59', blank=True, null=True)
+    v60 = models.FloatField(db_column='60', blank=True, null=True)
+    v61 = models.FloatField(db_column='61', blank=True, null=True)
+    v62 = models.FloatField(db_column='62', blank=True, null=True)
+    v63 = models.FloatField(db_column='63', blank=True, null=True)
+    v64 = models.FloatField(db_column='64', blank=True, null=True)
+    v65 = models.FloatField(db_column='65', blank=True, null=True)
+    v66 = models.FloatField(db_column='66', blank=True, null=True)
+    v67 = models.FloatField(db_column='67', blank=True, null=True)
+    v68 = models.FloatField(db_column='68', blank=True, null=True)
+    v69 = models.FloatField(db_column='69', blank=True, null=True)
+    v70 = models.FloatField(db_column='70', blank=True, null=True)
+    v71 = models.FloatField(db_column='71', blank=True, null=True)
+    v72 = models.FloatField(db_column='72', blank=True, null=True)
+    v73 = models.FloatField(db_column='73', blank=True, null=True)
+    v74 = models.FloatField(db_column='74', blank=True, null=True)
+    v75 = models.FloatField(db_column='75', blank=True, null=True)
+    v76 = models.FloatField(db_column='76', blank=True, null=True)
+    v77 = models.FloatField(db_column='77', blank=True, null=True)
+    v78 = models.FloatField(db_column='78', blank=True, null=True)
+    v79 = models.FloatField(db_column='79', blank=True, null=True)
+    v80 = models.FloatField(db_column='80', blank=True, null=True)
+    v81 = models.FloatField(db_column='81', blank=True, null=True)
+    v82 = models.FloatField(db_column='82', blank=True, null=True)
+    v83 = models.FloatField(db_column='83', blank=True, null=True)
+    v84 = models.FloatField(db_column='84', blank=True, null=True)
+    v85 = models.FloatField(db_column='85', blank=True, null=True)
+    v86 = models.FloatField(db_column='86', blank=True, null=True)
+    v87 = models.FloatField(db_column='87', blank=True, null=True)
+    v88 = models.FloatField(db_column='88', blank=True, null=True)
+    v89 = models.FloatField(db_column='89', blank=True, null=True)
+    v90 = models.FloatField(db_column='90', blank=True, null=True)
+    v91 = models.FloatField(db_column='91', blank=True, null=True)
+    v92 = models.FloatField(db_column='92', blank=True, null=True)
+    v93 = models.FloatField(db_column='93', blank=True, null=True)
+    v94 = models.FloatField(db_column='94', blank=True, null=True)
+    v95 = models.FloatField(db_column='95', blank=True, null=True)
+    v96 = models.FloatField(db_column='96', blank=True, null=True)
+    v97 = models.FloatField(db_column='97', blank=True, null=True)
+    v98 = models.FloatField(db_column='98', blank=True, null=True)
+    v99 = models.FloatField(db_column='99', blank=True, null=True)
+    v100 = models.FloatField(db_column='100', blank=True, null=True)
+    v101 = models.FloatField(db_column='101', blank=True, null=True)
+    v102 = models.FloatField(db_column='102', blank=True, null=True)
+    v103 = models.FloatField(db_column='103', blank=True, null=True)
+    v104 = models.FloatField(db_column='104', blank=True, null=True)
+    v105 = models.FloatField(db_column='105', blank=True, null=True)
+    v106 = models.FloatField(db_column='106', blank=True, null=True)
+    v107 = models.FloatField(db_column='107', blank=True, null=True)
+    v108 = models.FloatField(db_column='108', blank=True, null=True)
+    v109 = models.FloatField(db_column='109', blank=True, null=True)
+    v110 = models.FloatField(db_column='110', blank=True, null=True)
+    v111 = models.FloatField(db_column='111', blank=True, null=True)
+    v112 = models.FloatField(db_column='112', blank=True, null=True)
+    v113 = models.FloatField(db_column='113', blank=True, null=True)
+    v114 = models.FloatField(db_column='114', blank=True, null=True)
+    v115 = models.FloatField(db_column='115', blank=True, null=True)
+    v116 = models.FloatField(db_column='116', blank=True, null=True)
+    v117 = models.FloatField(db_column='117', blank=True, null=True)
+    v118 = models.FloatField(db_column='118', blank=True, null=True)
+    v119 = models.FloatField(db_column='119', blank=True, null=True)
+    v120 = models.FloatField(db_column='120', blank=True, null=True)
+    v121 = models.FloatField(db_column='121', blank=True, null=True)
+    v122 = models.FloatField(db_column='122', blank=True, null=True)
+    v123 = models.FloatField(db_column='123', blank=True, null=True)
+    v124 = models.FloatField(db_column='124', blank=True, null=True)
+    v125 = models.FloatField(db_column='125', blank=True, null=True)
+    v126 = models.FloatField(db_column='126', blank=True, null=True)
+    v127 = models.FloatField(db_column='127', blank=True, null=True)
+    v128 = models.FloatField(db_column='128', blank=True, null=True)
+    v129 = models.FloatField(db_column='129', blank=True, null=True)
+    v130 = models.FloatField(db_column='130', blank=True, null=True)
+    v131 = models.FloatField(db_column='131', blank=True, null=True)
+    v132 = models.FloatField(db_column='132', blank=True, null=True)
+    v133 = models.FloatField(db_column='133', blank=True, null=True)
+    v134 = models.FloatField(db_column='134', blank=True, null=True)
+    v135 = models.FloatField(db_column='135', blank=True, null=True)
+    v136 = models.FloatField(db_column='136', blank=True, null=True)
+    v137 = models.FloatField(db_column='137', blank=True, null=True)
+    v138 = models.FloatField(db_column='138', blank=True, null=True)
+    v139 = models.FloatField(db_column='139', blank=True, null=True)
+    v140 = models.FloatField(db_column='140', blank=True, null=True)
+    v141 = models.FloatField(db_column='141', blank=True, null=True)
+    v142 = models.FloatField(db_column='142', blank=True, null=True)
+    v143 = models.FloatField(db_column='143', blank=True, null=True)
+    v144 = models.FloatField(db_column='144', blank=True, null=True)
+    v145 = models.FloatField(db_column='145', blank=True, null=True)
+    v146 = models.FloatField(db_column='146', blank=True, null=True)
+    v147 = models.FloatField(db_column='147', blank=True, null=True)
+    v148 = models.FloatField(db_column='148', blank=True, null=True)
+    v149 = models.FloatField(db_column='149', blank=True, null=True)
+    v150 = models.FloatField(db_column='150', blank=True, null=True)
+    v151 = models.FloatField(db_column='151', blank=True, null=True)
+    v152 = models.FloatField(db_column='152', blank=True, null=True)
+    v153 = models.FloatField(db_column='153', blank=True, null=True)
+    v154 = models.FloatField(db_column='154', blank=True, null=True)
+    v155 = models.FloatField(db_column='155', blank=True, null=True)
+    v156 = models.FloatField(db_column='156', blank=True, null=True)
+    v157 = models.FloatField(db_column='157', blank=True, null=True)
+    v158 = models.FloatField(db_column='158', blank=True, null=True)
+    v159 = models.FloatField(db_column='159', blank=True, null=True)
+    v160 = models.FloatField(db_column='160', blank=True, null=True)
+    v161 = models.FloatField(db_column='161', blank=True, null=True)
+    v162 = models.FloatField(db_column='162', blank=True, null=True)
+    v163 = models.FloatField(db_column='163', blank=True, null=True)
+    v164 = models.FloatField(db_column='164', blank=True, null=True)
+    v165 = models.FloatField(db_column='165', blank=True, null=True)
+    v166 = models.FloatField(db_column='166', blank=True, null=True)
+    v167 = models.FloatField(db_column='167', blank=True, null=True)
+    v168 = models.FloatField(db_column='168', blank=True, null=True)
+    v169 = models.FloatField(db_column='169', blank=True, null=True)
+    v170 = models.FloatField(db_column='170', blank=True, null=True)
+    v171 = models.FloatField(db_column='171', blank=True, null=True)
+    v172 = models.FloatField(db_column='172', blank=True, null=True)
+    v173 = models.FloatField(db_column='173', blank=True, null=True)
+    v174 = models.FloatField(db_column='174', blank=True, null=True)
+    v175 = models.FloatField(db_column='175', blank=True, null=True)
+    v176 = models.FloatField(db_column='176', blank=True, null=True)
+    v177 = models.FloatField(db_column='177', blank=True, null=True)
+    v178 = models.FloatField(db_column='178', blank=True, null=True)
+    v179 = models.FloatField(db_column='179', blank=True, null=True)
+    v180 = models.FloatField(db_column='180', blank=True, null=True)
+    v181 = models.FloatField(db_column='181', blank=True, null=True)
+    v182 = models.FloatField(db_column='182', blank=True, null=True)
+    v183 = models.FloatField(db_column='183', blank=True, null=True)
+    v184 = models.FloatField(db_column='184', blank=True, null=True)
+    v185 = models.FloatField(db_column='185', blank=True, null=True)
+    v186 = models.FloatField(db_column='186', blank=True, null=True)
+    v187 = models.FloatField(db_column='187', blank=True, null=True)
+    v188 = models.FloatField(db_column='188', blank=True, null=True)
+    v189 = models.FloatField(db_column='189', blank=True, null=True)
+    v190 = models.FloatField(db_column='190', blank=True, null=True)
+    v191 = models.FloatField(db_column='191', blank=True, null=True)
+    v192 = models.FloatField(db_column='192', blank=True, null=True)
+    v193 = models.FloatField(db_column='193', blank=True, null=True)
+    v194 = models.FloatField(db_column='194', blank=True, null=True)
+    v195 = models.FloatField(db_column='195', blank=True, null=True)
+    v196 = models.FloatField(db_column='196', blank=True, null=True)
+    v197 = models.FloatField(db_column='197', blank=True, null=True)
+    v198 = models.FloatField(db_column='198', blank=True, null=True)
+    v199 = models.FloatField(db_column='199', blank=True, null=True)
+    v200 = models.FloatField(db_column='200', blank=True, null=True)
+    v201 = models.FloatField(db_column='201', blank=True, null=True)
+    v202 = models.FloatField(db_column='202', blank=True, null=True)
+    v203 = models.FloatField(db_column='203', blank=True, null=True)
+    v204 = models.FloatField(db_column='204', blank=True, null=True)
+    v205 = models.FloatField(db_column='205', blank=True, null=True)
+    v206 = models.FloatField(db_column='206', blank=True, null=True)
+    v207 = models.FloatField(db_column='207', blank=True, null=True)
+    v208 = models.FloatField(db_column='208', blank=True, null=True)
+    v209 = models.FloatField(db_column='209', blank=True, null=True)
+    v210 = models.FloatField(db_column='210', blank=True, null=True)
+    v211 = models.FloatField(db_column='211', blank=True, null=True)
+    v212 = models.FloatField(db_column='212', blank=True, null=True)
+    v213 = models.FloatField(db_column='213', blank=True, null=True)
+    v214 = models.FloatField(db_column='214', blank=True, null=True)
+    v215 = models.FloatField(db_column='215', blank=True, null=True)
+    v216 = models.FloatField(db_column='216', blank=True, null=True)
+    v217 = models.FloatField(db_column='217', blank=True, null=True)
+    v218 = models.FloatField(db_column='218', blank=True, null=True)
+    v219 = models.FloatField(db_column='219', blank=True, null=True)
+    v220 = models.FloatField(db_column='220', blank=True, null=True)
+    v221 = models.FloatField(db_column='221', blank=True, null=True)
+    v222 = models.FloatField(db_column='222', blank=True, null=True)
+    v223 = models.FloatField(db_column='223', blank=True, null=True)
+    v224 = models.FloatField(db_column='224', blank=True, null=True)
+    v225 = models.FloatField(db_column='225', blank=True, null=True)
+    v226 = models.FloatField(db_column='226', blank=True, null=True)
+    v227 = models.FloatField(db_column='227', blank=True, null=True)
+    v228 = models.FloatField(db_column='228', blank=True, null=True)
+    v229 = models.FloatField(db_column='229', blank=True, null=True)
+    v230 = models.FloatField(db_column='230', blank=True, null=True)
+    v231 = models.FloatField(db_column='231', blank=True, null=True)
+    v232 = models.FloatField(db_column='232', blank=True, null=True)
+    v233 = models.FloatField(db_column='233', blank=True, null=True)
+    v234 = models.FloatField(db_column='234', blank=True, null=True)
+    v235 = models.FloatField(db_column='235', blank=True, null=True)
+    v236 = models.FloatField(db_column='236', blank=True, null=True)
+    v237 = models.FloatField(db_column='237', blank=True, null=True)
+    v238 = models.FloatField(db_column='238', blank=True, null=True)
+    v239 = models.FloatField(db_column='239', blank=True, null=True)
+    v240 = models.FloatField(db_column='240', blank=True, null=True)
+    v241 = models.FloatField(db_column='241', blank=True, null=True)
+    v242 = models.FloatField(db_column='242', blank=True, null=True)
+    v243 = models.FloatField(db_column='243', blank=True, null=True)
+    v244 = models.FloatField(db_column='244', blank=True, null=True)
+    v245 = models.FloatField(db_column='245', blank=True, null=True)
+    v246 = models.FloatField(db_column='246', blank=True, null=True)
+    v247 = models.FloatField(db_column='247', blank=True, null=True)
+    v248 = models.FloatField(db_column='248', blank=True, null=True)
+    v249 = models.FloatField(db_column='249', blank=True, null=True)
+    v250 = models.FloatField(db_column='250', blank=True, null=True)
+    v251 = models.FloatField(db_column='251', blank=True, null=True)
+    v252 = models.FloatField(db_column='252', blank=True, null=True)
+    v253 = models.FloatField(db_column='253', blank=True, null=True)
+    v254 = models.FloatField(db_column='254', blank=True, null=True)
+    v255 = models.FloatField(db_column='255', blank=True, null=True)
+    v256 = models.FloatField(db_column='256', blank=True, null=True)
+    v257 = models.FloatField(db_column='257', blank=True, null=True)
+    v258 = models.FloatField(db_column='258', blank=True, null=True)
+    v259 = models.FloatField(db_column='259', blank=True, null=True)
+    v260 = models.FloatField(db_column='260', blank=True, null=True)
+    v261 = models.FloatField(db_column='261', blank=True, null=True)
+    v262 = models.FloatField(db_column='262', blank=True, null=True)
+    v263 = models.FloatField(db_column='263', blank=True, null=True)
+    v264 = models.FloatField(db_column='264', blank=True, null=True)
+    v265 = models.FloatField(db_column='265', blank=True, null=True)
+    v266 = models.FloatField(db_column='266', blank=True, null=True)
+    v267 = models.FloatField(db_column='267', blank=True, null=True)
+    v268 = models.FloatField(db_column='268', blank=True, null=True)
+    v269 = models.FloatField(db_column='269', blank=True, null=True)
+    v270 = models.FloatField(db_column='270', blank=True, null=True)
+    v271 = models.FloatField(db_column='271', blank=True, null=True)
+    v272 = models.FloatField(db_column='272', blank=True, null=True)
+    v273 = models.FloatField(db_column='273', blank=True, null=True)
+    v274 = models.FloatField(db_column='274', blank=True, null=True)
+    v275 = models.FloatField(db_column='275', blank=True, null=True)
+    v276 = models.FloatField(db_column='276', blank=True, null=True)
+    v277 = models.FloatField(db_column='277', blank=True, null=True)
+    v278 = models.FloatField(db_column='278', blank=True, null=True)
+    v279 = models.FloatField(db_column='279', blank=True, null=True)
+    v280 = models.FloatField(db_column='280', blank=True, null=True)
+    v281 = models.FloatField(db_column='281', blank=True, null=True)
+    v282 = models.FloatField(db_column='282', blank=True, null=True)
+    v283 = models.FloatField(db_column='283', blank=True, null=True)
+    v284 = models.FloatField(db_column='284', blank=True, null=True)
+    v285 = models.FloatField(db_column='285', blank=True, null=True)
+    v286 = models.FloatField(db_column='286', blank=True, null=True)
+    v287 = models.FloatField(db_column='287', blank=True, null=True)
+    v288 = models.FloatField(db_column='288', blank=True, null=True)
+    v289 = models.FloatField(db_column='289', blank=True, null=True)
+    v290 = models.FloatField(db_column='290', blank=True, null=True)
+    v291 = models.FloatField(db_column='291', blank=True, null=True)
+    v292 = models.FloatField(db_column='292', blank=True, null=True)
+    v293 = models.FloatField(db_column='293', blank=True, null=True)
+    v294 = models.FloatField(db_column='294', blank=True, null=True)
+    v295 = models.FloatField(db_column='295', blank=True, null=True)
+    v296 = models.FloatField(db_column='296', blank=True, null=True)
+    v297 = models.FloatField(db_column='297', blank=True, null=True)
+    v298 = models.FloatField(db_column='298', blank=True, null=True)
+    v299 = models.FloatField(db_column='299', blank=True, null=True)
+
+    def __str__(self):
+        return self.path
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'note'
+
+
+class Sentence(models.Model):
+    # id = AutoField(primary_key=True)
+    note = models.ForeignKey(Note, on_delete='cascade')
+    sentence_pos = models.IntegerField(blank=True, null=True)
+    text = models.TextField(blank=True, null=True)
+    v0 = models.FloatField(db_column='0', blank=True, null=True)
+    v1 = models.FloatField(db_column='1', blank=True, null=True)
+    v2 = models.FloatField(db_column='2', blank=True, null=True)
+    v3 = models.FloatField(db_column='3', blank=True, null=True)
+    v4 = models.FloatField(db_column='4', blank=True, null=True)
+    v5 = models.FloatField(db_column='5', blank=True, null=True)
+    v6 = models.FloatField(db_column='6', blank=True, null=True)
+    v7 = models.FloatField(db_column='7', blank=True, null=True)
+    v8 = models.FloatField(db_column='8', blank=True, null=True)
+    v9 = models.FloatField(db_column='9', blank=True, null=True)
+    v10 = models.FloatField(db_column='10', blank=True, null=True)
+    v11 = models.FloatField(db_column='11', blank=True, null=True)
+    v12 = models.FloatField(db_column='12', blank=True, null=True)
+    v13 = models.FloatField(db_column='13', blank=True, null=True)
+    v14 = models.FloatField(db_column='14', blank=True, null=True)
+    v15 = models.FloatField(db_column='15', blank=True, null=True)
+    v16 = models.FloatField(db_column='16', blank=True, null=True)
+    v17 = models.FloatField(db_column='17', blank=True, null=True)
+    v18 = models.FloatField(db_column='18', blank=True, null=True)
+    v19 = models.FloatField(db_column='19', blank=True, null=True)
+    v20 = models.FloatField(db_column='20', blank=True, null=True)
+    v21 = models.FloatField(db_column='21', blank=True, null=True)
+    v22 = models.FloatField(db_column='22', blank=True, null=True)
+    v23 = models.FloatField(db_column='23', blank=True, null=True)
+    v24 = models.FloatField(db_column='24', blank=True, null=True)
+    v25 = models.FloatField(db_column='25', blank=True, null=True)
+    v26 = models.FloatField(db_column='26', blank=True, null=True)
+    v27 = models.FloatField(db_column='27', blank=True, null=True)
+    v28 = models.FloatField(db_column='28', blank=True, null=True)
+    v29 = models.FloatField(db_column='29', blank=True, null=True)
+    v30 = models.FloatField(db_column='30', blank=True, null=True)
+    v31 = models.FloatField(db_column='31', blank=True, null=True)
+    v32 = models.FloatField(db_column='32', blank=True, null=True)
+    v33 = models.FloatField(db_column='33', blank=True, null=True)
+    v34 = models.FloatField(db_column='34', blank=True, null=True)
+    v35 = models.FloatField(db_column='35', blank=True, null=True)
+    v36 = models.FloatField(db_column='36', blank=True, null=True)
+    v37 = models.FloatField(db_column='37', blank=True, null=True)
+    v38 = models.FloatField(db_column='38', blank=True, null=True)
+    v39 = models.FloatField(db_column='39', blank=True, null=True)
+    v40 = models.FloatField(db_column='40', blank=True, null=True)
+    v41 = models.FloatField(db_column='41', blank=True, null=True)
+    v42 = models.FloatField(db_column='42', blank=True, null=True)
+    v43 = models.FloatField(db_column='43', blank=True, null=True)
+    v44 = models.FloatField(db_column='44', blank=True, null=True)
+    v45 = models.FloatField(db_column='45', blank=True, null=True)
+    v46 = models.FloatField(db_column='46', blank=True, null=True)
+    v47 = models.FloatField(db_column='47', blank=True, null=True)
+    v48 = models.FloatField(db_column='48', blank=True, null=True)
+    v49 = models.FloatField(db_column='49', blank=True, null=True)
+    v50 = models.FloatField(db_column='50', blank=True, null=True)
+    v51 = models.FloatField(db_column='51', blank=True, null=True)
+    v52 = models.FloatField(db_column='52', blank=True, null=True)
+    v53 = models.FloatField(db_column='53', blank=True, null=True)
+    v54 = models.FloatField(db_column='54', blank=True, null=True)
+    v55 = models.FloatField(db_column='55', blank=True, null=True)
+    v56 = models.FloatField(db_column='56', blank=True, null=True)
+    v57 = models.FloatField(db_column='57', blank=True, null=True)
+    v58 = models.FloatField(db_column='58', blank=True, null=True)
+    v59 = models.FloatField(db_column='59', blank=True, null=True)
+    v60 = models.FloatField(db_column='60', blank=True, null=True)
+    v61 = models.FloatField(db_column='61', blank=True, null=True)
+    v62 = models.FloatField(db_column='62', blank=True, null=True)
+    v63 = models.FloatField(db_column='63', blank=True, null=True)
+    v64 = models.FloatField(db_column='64', blank=True, null=True)
+    v65 = models.FloatField(db_column='65', blank=True, null=True)
+    v66 = models.FloatField(db_column='66', blank=True, null=True)
+    v67 = models.FloatField(db_column='67', blank=True, null=True)
+    v68 = models.FloatField(db_column='68', blank=True, null=True)
+    v69 = models.FloatField(db_column='69', blank=True, null=True)
+    v70 = models.FloatField(db_column='70', blank=True, null=True)
+    v71 = models.FloatField(db_column='71', blank=True, null=True)
+    v72 = models.FloatField(db_column='72', blank=True, null=True)
+    v73 = models.FloatField(db_column='73', blank=True, null=True)
+    v74 = models.FloatField(db_column='74', blank=True, null=True)
+    v75 = models.FloatField(db_column='75', blank=True, null=True)
+    v76 = models.FloatField(db_column='76', blank=True, null=True)
+    v77 = models.FloatField(db_column='77', blank=True, null=True)
+    v78 = models.FloatField(db_column='78', blank=True, null=True)
+    v79 = models.FloatField(db_column='79', blank=True, null=True)
+    v80 = models.FloatField(db_column='80', blank=True, null=True)
+    v81 = models.FloatField(db_column='81', blank=True, null=True)
+    v82 = models.FloatField(db_column='82', blank=True, null=True)
+    v83 = models.FloatField(db_column='83', blank=True, null=True)
+    v84 = models.FloatField(db_column='84', blank=True, null=True)
+    v85 = models.FloatField(db_column='85', blank=True, null=True)
+    v86 = models.FloatField(db_column='86', blank=True, null=True)
+    v87 = models.FloatField(db_column='87', blank=True, null=True)
+    v88 = models.FloatField(db_column='88', blank=True, null=True)
+    v89 = models.FloatField(db_column='89', blank=True, null=True)
+    v90 = models.FloatField(db_column='90', blank=True, null=True)
+    v91 = models.FloatField(db_column='91', blank=True, null=True)
+    v92 = models.FloatField(db_column='92', blank=True, null=True)
+    v93 = models.FloatField(db_column='93', blank=True, null=True)
+    v94 = models.FloatField(db_column='94', blank=True, null=True)
+    v95 = models.FloatField(db_column='95', blank=True, null=True)
+    v96 = models.FloatField(db_column='96', blank=True, null=True)
+    v97 = models.FloatField(db_column='97', blank=True, null=True)
+    v98 = models.FloatField(db_column='98', blank=True, null=True)
+    v99 = models.FloatField(db_column='99', blank=True, null=True)
+    v100 = models.FloatField(db_column='100', blank=True, null=True)
+    v101 = models.FloatField(db_column='101', blank=True, null=True)
+    v102 = models.FloatField(db_column='102', blank=True, null=True)
+    v103 = models.FloatField(db_column='103', blank=True, null=True)
+    v104 = models.FloatField(db_column='104', blank=True, null=True)
+    v105 = models.FloatField(db_column='105', blank=True, null=True)
+    v106 = models.FloatField(db_column='106', blank=True, null=True)
+    v107 = models.FloatField(db_column='107', blank=True, null=True)
+    v108 = models.FloatField(db_column='108', blank=True, null=True)
+    v109 = models.FloatField(db_column='109', blank=True, null=True)
+    v110 = models.FloatField(db_column='110', blank=True, null=True)
+    v111 = models.FloatField(db_column='111', blank=True, null=True)
+    v112 = models.FloatField(db_column='112', blank=True, null=True)
+    v113 = models.FloatField(db_column='113', blank=True, null=True)
+    v114 = models.FloatField(db_column='114', blank=True, null=True)
+    v115 = models.FloatField(db_column='115', blank=True, null=True)
+    v116 = models.FloatField(db_column='116', blank=True, null=True)
+    v117 = models.FloatField(db_column='117', blank=True, null=True)
+    v118 = models.FloatField(db_column='118', blank=True, null=True)
+    v119 = models.FloatField(db_column='119', blank=True, null=True)
+    v120 = models.FloatField(db_column='120', blank=True, null=True)
+    v121 = models.FloatField(db_column='121', blank=True, null=True)
+    v122 = models.FloatField(db_column='122', blank=True, null=True)
+    v123 = models.FloatField(db_column='123', blank=True, null=True)
+    v124 = models.FloatField(db_column='124', blank=True, null=True)
+    v125 = models.FloatField(db_column='125', blank=True, null=True)
+    v126 = models.FloatField(db_column='126', blank=True, null=True)
+    v127 = models.FloatField(db_column='127', blank=True, null=True)
+    v128 = models.FloatField(db_column='128', blank=True, null=True)
+    v129 = models.FloatField(db_column='129', blank=True, null=True)
+    v130 = models.FloatField(db_column='130', blank=True, null=True)
+    v131 = models.FloatField(db_column='131', blank=True, null=True)
+    v132 = models.FloatField(db_column='132', blank=True, null=True)
+    v133 = models.FloatField(db_column='133', blank=True, null=True)
+    v134 = models.FloatField(db_column='134', blank=True, null=True)
+    v135 = models.FloatField(db_column='135', blank=True, null=True)
+    v136 = models.FloatField(db_column='136', blank=True, null=True)
+    v137 = models.FloatField(db_column='137', blank=True, null=True)
+    v138 = models.FloatField(db_column='138', blank=True, null=True)
+    v139 = models.FloatField(db_column='139', blank=True, null=True)
+    v140 = models.FloatField(db_column='140', blank=True, null=True)
+    v141 = models.FloatField(db_column='141', blank=True, null=True)
+    v142 = models.FloatField(db_column='142', blank=True, null=True)
+    v143 = models.FloatField(db_column='143', blank=True, null=True)
+    v144 = models.FloatField(db_column='144', blank=True, null=True)
+    v145 = models.FloatField(db_column='145', blank=True, null=True)
+    v146 = models.FloatField(db_column='146', blank=True, null=True)
+    v147 = models.FloatField(db_column='147', blank=True, null=True)
+    v148 = models.FloatField(db_column='148', blank=True, null=True)
+    v149 = models.FloatField(db_column='149', blank=True, null=True)
+    v150 = models.FloatField(db_column='150', blank=True, null=True)
+    v151 = models.FloatField(db_column='151', blank=True, null=True)
+    v152 = models.FloatField(db_column='152', blank=True, null=True)
+    v153 = models.FloatField(db_column='153', blank=True, null=True)
+    v154 = models.FloatField(db_column='154', blank=True, null=True)
+    v155 = models.FloatField(db_column='155', blank=True, null=True)
+    v156 = models.FloatField(db_column='156', blank=True, null=True)
+    v157 = models.FloatField(db_column='157', blank=True, null=True)
+    v158 = models.FloatField(db_column='158', blank=True, null=True)
+    v159 = models.FloatField(db_column='159', blank=True, null=True)
+    v160 = models.FloatField(db_column='160', blank=True, null=True)
+    v161 = models.FloatField(db_column='161', blank=True, null=True)
+    v162 = models.FloatField(db_column='162', blank=True, null=True)
+    v163 = models.FloatField(db_column='163', blank=True, null=True)
+    v164 = models.FloatField(db_column='164', blank=True, null=True)
+    v165 = models.FloatField(db_column='165', blank=True, null=True)
+    v166 = models.FloatField(db_column='166', blank=True, null=True)
+    v167 = models.FloatField(db_column='167', blank=True, null=True)
+    v168 = models.FloatField(db_column='168', blank=True, null=True)
+    v169 = models.FloatField(db_column='169', blank=True, null=True)
+    v170 = models.FloatField(db_column='170', blank=True, null=True)
+    v171 = models.FloatField(db_column='171', blank=True, null=True)
+    v172 = models.FloatField(db_column='172', blank=True, null=True)
+    v173 = models.FloatField(db_column='173', blank=True, null=True)
+    v174 = models.FloatField(db_column='174', blank=True, null=True)
+    v175 = models.FloatField(db_column='175', blank=True, null=True)
+    v176 = models.FloatField(db_column='176', blank=True, null=True)
+    v177 = models.FloatField(db_column='177', blank=True, null=True)
+    v178 = models.FloatField(db_column='178', blank=True, null=True)
+    v179 = models.FloatField(db_column='179', blank=True, null=True)
+    v180 = models.FloatField(db_column='180', blank=True, null=True)
+    v181 = models.FloatField(db_column='181', blank=True, null=True)
+    v182 = models.FloatField(db_column='182', blank=True, null=True)
+    v183 = models.FloatField(db_column='183', blank=True, null=True)
+    v184 = models.FloatField(db_column='184', blank=True, null=True)
+    v185 = models.FloatField(db_column='185', blank=True, null=True)
+    v186 = models.FloatField(db_column='186', blank=True, null=True)
+    v187 = models.FloatField(db_column='187', blank=True, null=True)
+    v188 = models.FloatField(db_column='188', blank=True, null=True)
+    v189 = models.FloatField(db_column='189', blank=True, null=True)
+    v190 = models.FloatField(db_column='190', blank=True, null=True)
+    v191 = models.FloatField(db_column='191', blank=True, null=True)
+    v192 = models.FloatField(db_column='192', blank=True, null=True)
+    v193 = models.FloatField(db_column='193', blank=True, null=True)
+    v194 = models.FloatField(db_column='194', blank=True, null=True)
+    v195 = models.FloatField(db_column='195', blank=True, null=True)
+    v196 = models.FloatField(db_column='196', blank=True, null=True)
+    v197 = models.FloatField(db_column='197', blank=True, null=True)
+    v198 = models.FloatField(db_column='198', blank=True, null=True)
+    v199 = models.FloatField(db_column='199', blank=True, null=True)
+    v200 = models.FloatField(db_column='200', blank=True, null=True)
+    v201 = models.FloatField(db_column='201', blank=True, null=True)
+    v202 = models.FloatField(db_column='202', blank=True, null=True)
+    v203 = models.FloatField(db_column='203', blank=True, null=True)
+    v204 = models.FloatField(db_column='204', blank=True, null=True)
+    v205 = models.FloatField(db_column='205', blank=True, null=True)
+    v206 = models.FloatField(db_column='206', blank=True, null=True)
+    v207 = models.FloatField(db_column='207', blank=True, null=True)
+    v208 = models.FloatField(db_column='208', blank=True, null=True)
+    v209 = models.FloatField(db_column='209', blank=True, null=True)
+    v210 = models.FloatField(db_column='210', blank=True, null=True)
+    v211 = models.FloatField(db_column='211', blank=True, null=True)
+    v212 = models.FloatField(db_column='212', blank=True, null=True)
+    v213 = models.FloatField(db_column='213', blank=True, null=True)
+    v214 = models.FloatField(db_column='214', blank=True, null=True)
+    v215 = models.FloatField(db_column='215', blank=True, null=True)
+    v216 = models.FloatField(db_column='216', blank=True, null=True)
+    v217 = models.FloatField(db_column='217', blank=True, null=True)
+    v218 = models.FloatField(db_column='218', blank=True, null=True)
+    v219 = models.FloatField(db_column='219', blank=True, null=True)
+    v220 = models.FloatField(db_column='220', blank=True, null=True)
+    v221 = models.FloatField(db_column='221', blank=True, null=True)
+    v222 = models.FloatField(db_column='222', blank=True, null=True)
+    v223 = models.FloatField(db_column='223', blank=True, null=True)
+    v224 = models.FloatField(db_column='224', blank=True, null=True)
+    v225 = models.FloatField(db_column='225', blank=True, null=True)
+    v226 = models.FloatField(db_column='226', blank=True, null=True)
+    v227 = models.FloatField(db_column='227', blank=True, null=True)
+    v228 = models.FloatField(db_column='228', blank=True, null=True)
+    v229 = models.FloatField(db_column='229', blank=True, null=True)
+    v230 = models.FloatField(db_column='230', blank=True, null=True)
+    v231 = models.FloatField(db_column='231', blank=True, null=True)
+    v232 = models.FloatField(db_column='232', blank=True, null=True)
+    v233 = models.FloatField(db_column='233', blank=True, null=True)
+    v234 = models.FloatField(db_column='234', blank=True, null=True)
+    v235 = models.FloatField(db_column='235', blank=True, null=True)
+    v236 = models.FloatField(db_column='236', blank=True, null=True)
+    v237 = models.FloatField(db_column='237', blank=True, null=True)
+    v238 = models.FloatField(db_column='238', blank=True, null=True)
+    v239 = models.FloatField(db_column='239', blank=True, null=True)
+    v240 = models.FloatField(db_column='240', blank=True, null=True)
+    v241 = models.FloatField(db_column='241', blank=True, null=True)
+    v242 = models.FloatField(db_column='242', blank=True, null=True)
+    v243 = models.FloatField(db_column='243', blank=True, null=True)
+    v244 = models.FloatField(db_column='244', blank=True, null=True)
+    v245 = models.FloatField(db_column='245', blank=True, null=True)
+    v246 = models.FloatField(db_column='246', blank=True, null=True)
+    v247 = models.FloatField(db_column='247', blank=True, null=True)
+    v248 = models.FloatField(db_column='248', blank=True, null=True)
+    v249 = models.FloatField(db_column='249', blank=True, null=True)
+    v250 = models.FloatField(db_column='250', blank=True, null=True)
+    v251 = models.FloatField(db_column='251', blank=True, null=True)
+    v252 = models.FloatField(db_column='252', blank=True, null=True)
+    v253 = models.FloatField(db_column='253', blank=True, null=True)
+    v254 = models.FloatField(db_column='254', blank=True, null=True)
+    v255 = models.FloatField(db_column='255', blank=True, null=True)
+    v256 = models.FloatField(db_column='256', blank=True, null=True)
+    v257 = models.FloatField(db_column='257', blank=True, null=True)
+    v258 = models.FloatField(db_column='258', blank=True, null=True)
+    v259 = models.FloatField(db_column='259', blank=True, null=True)
+    v260 = models.FloatField(db_column='260', blank=True, null=True)
+    v261 = models.FloatField(db_column='261', blank=True, null=True)
+    v262 = models.FloatField(db_column='262', blank=True, null=True)
+    v263 = models.FloatField(db_column='263', blank=True, null=True)
+    v264 = models.FloatField(db_column='264', blank=True, null=True)
+    v265 = models.FloatField(db_column='265', blank=True, null=True)
+    v266 = models.FloatField(db_column='266', blank=True, null=True)
+    v267 = models.FloatField(db_column='267', blank=True, null=True)
+    v268 = models.FloatField(db_column='268', blank=True, null=True)
+    v269 = models.FloatField(db_column='269', blank=True, null=True)
+    v270 = models.FloatField(db_column='270', blank=True, null=True)
+    v271 = models.FloatField(db_column='271', blank=True, null=True)
+    v272 = models.FloatField(db_column='272', blank=True, null=True)
+    v273 = models.FloatField(db_column='273', blank=True, null=True)
+    v274 = models.FloatField(db_column='274', blank=True, null=True)
+    v275 = models.FloatField(db_column='275', blank=True, null=True)
+    v276 = models.FloatField(db_column='276', blank=True, null=True)
+    v277 = models.FloatField(db_column='277', blank=True, null=True)
+    v278 = models.FloatField(db_column='278', blank=True, null=True)
+    v279 = models.FloatField(db_column='279', blank=True, null=True)
+    v280 = models.FloatField(db_column='280', blank=True, null=True)
+    v281 = models.FloatField(db_column='281', blank=True, null=True)
+    v282 = models.FloatField(db_column='282', blank=True, null=True)
+    v283 = models.FloatField(db_column='283', blank=True, null=True)
+    v284 = models.FloatField(db_column='284', blank=True, null=True)
+    v285 = models.FloatField(db_column='285', blank=True, null=True)
+    v286 = models.FloatField(db_column='286', blank=True, null=True)
+    v287 = models.FloatField(db_column='287', blank=True, null=True)
+    v288 = models.FloatField(db_column='288', blank=True, null=True)
+    v289 = models.FloatField(db_column='289', blank=True, null=True)
+    v290 = models.FloatField(db_column='290', blank=True, null=True)
+    v291 = models.FloatField(db_column='291', blank=True, null=True)
+    v292 = models.FloatField(db_column='292', blank=True, null=True)
+    v293 = models.FloatField(db_column='293', blank=True, null=True)
+    v294 = models.FloatField(db_column='294', blank=True, null=True)
+    v295 = models.FloatField(db_column='295', blank=True, null=True)
+    v296 = models.FloatField(db_column='296', blank=True, null=True)
+    v297 = models.FloatField(db_column='297', blank=True, null=True)
+    v298 = models.FloatField(db_column='298', blank=True, null=True)
+    v299 = models.FloatField(db_column='299', blank=True, null=True)
+
+
+def load_csv_model(csv_path='/midata/private/journal/sentences.csv',
+                   model=Sentence,
+                   related_model=Note):
+    """ Only works for the Sentence table and related Note table """
+    df = pd.read_csv(csv_path, low_memory=False)
+    df[[f'{i}' for i in range(300)]].fillna(0, inplace=True)
+    sents = [None] * 1000
+    for i, r in tqdm(df.iterrows(), total=len(df)):
+        try:
+            s = model(
+                id=i + 1,
+                note=related_model.objects.get(pk=r['file_id'] + 1),
+                sentence_pos=int(r['sentence_pos'].split('-')[-1]),
+                text=r['text'])
+        except ValueError:
+            s = model()
+        for k in range(300):
+            # try:
+            setattr(s, f'v{k}', r[f'{k}'])
+            # except ValueError:
+            #     pass
+        sents[i % 1000] = s
+        if i % 1000 == 999:
+            try:
+                model.objects.bulk_create(sents)
+            except IntegrityError:
+                log.warning(f"Skipped {i-999}-{i}")
+    if len(df) % 1000:
+        model.objects.bulk_create(sents[:len(df) % 1000])
+    return len(df)
+
+
+def load_csv_dialog(csv_path='/midata/private/journal/sentences.csv',
+                    model=Sentence,
+                    related_model=Note):
+    """ Only works for the Sentence table and related Note table """
+    df = pd.read_csv(csv_path, low_memory=False)
+    df[[f'{i}' for i in range(300)]].fillna(0, inplace=True)
+    sents = [None] * 1000
+    for i, r in tqdm(df.iterrows(), total=len(df)):
+        try:
+            s = model(
+                id=i + 1,
+                note=related_model.objects.get(pk=r['file_id'] + 1),
+                sentence_pos=int(r['sentence_pos'].split('-')[-1]),
+                text=r['text'])
+        except ValueError:
+            s = model()
+        for k in range(300):
+            # try:
+            setattr(s, f'v{k}', r[f'{k}'])
+            # except ValueError:
+            #     pass
+        sents[i % 1000] = s
+        if i % 1000 == 999:
+            try:
+                model.objects.bulk_create(sents)
+            except IntegrityError:
+                log.warning(f"Skipped {i-999}-{i}")
+    if len(df) % 1000:
+        model.objects.bulk_create(sents[:len(df) % 1000])
+    return len(df)
+
+
+class URL(models.Model):
+    url = models.URLField()
+
+
+class Username(models.Model):
+    """ A Username (nick) and span of time over which it was used """
+    name = models.TextField(
+        blank=False, null=False, default='',
+        help_text="Informal name that agent has named themself.")
+    active = models.NullBooleanField(blank=True, null=True, default=False)
+    last_used = models.DateTimeField(
+        null=True,
+        help_text="Last time the username was used in a dialog (as a speaker/texter/chatter). " +
+                  "null: presumably still being used.")
+    first_used = models.DateTimeField()
+    url = models.ForeignKey(URL, blank=True, null=True, default=None, on_delete=models.PROTECT)
+
+
+class Contact(models.Model):
+    name = models.TextField(blank=False, null=False, default='',
+                            help_text="Informal name that a person prefers to be addressed by in spoken or text dialog.")
+    full_name = models.TextField(blank=True, null=False, default='')
+    first_name = models.TextField(blank=True, null=False, default='')
+    last_name = models.TextField(blank=True, null=False, default='')
+    urls = models.ManyToManyField(URL)
+    email = models.EmailField(blank=True, null=True, )
+
+
+class Speaker(models.Model):
+    spoken_name = models.TextField(blank=True, null=False, default='')
+    contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.PROTECT)
+    bot = models.NullBooleanField(blank=True, null=True, default=False)
+    username = models.TextField(blank=True, null=False, default='')
+    likelihood = models.FloatField(blank=True, default=1.0, null=False)
+
+
+class Attribution(models.Model):
+    name = models.TextField(blank=True, null=False, default='')
+    contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.PROTECT)
+    bibtext = models.TextField(blank=True, null=False, default='')
+    license = models.TextField(blank=True, null=False, default='')
+
+
+class Context(models.Model):
+    """ A tag indicating the conversation context """
+    name = models.CharField(blank=False, null=False, default='conversation', max_length=255)
+    subcontext = models.CharField(blank=True, null=True, max_length=255)
+    attribution = models.ForeignKey(Attribution, null=True, blank=True, on_delete=models.PROTECT)
+
+
+class Statement(models.Model):
+    text = models.TextField(blank=True, null=True)
+    reply = models.ForeignKey("self",
+                              through="Reply",
+                              on_delete=models.PROTECT,
+                              verbose_name="statements this is an acceptable reply to",
+                              related_name='statements', blank=True)
+    contexts = models.ManyToManyField(Context, blank=True)
+
+
+class Reply(models.Model):
+    """ Directed graph edge pointing from the prompting statement to the reply statement """
+    statement = models.ForeignKey(Statement, on_delete=models.PROTECT)
+    context = models.ForeignKey(Context, on_delete=models.PROTECT)
+    likelihood = models.FloatField(blank=True, default=1.0, null=False)
+    speaker = models.ForeignKey(Speaker, null=True, on_delete=models.PROTECT)
