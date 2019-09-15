@@ -43,39 +43,6 @@ except LookupError:
 STOPWORDS = set(STOPWORDS_DICT)
 
 
-def load_spacy_model(lang=None):
-    """ Load the specified language model or the small English model, if none specified
-
-    >>> load_spacy_model()  # doctest: +ELLIPSIS
-    <spacy.lang.en.English object at ...
-    """
-    model = None
-    log.warning("Loading SpaCy model...")
-    if lang:
-        try:
-            model = spacy.load(lang)
-        except OSError:
-            log.warning(f"Downloading {lang} SpaCy model...")
-            spacy.cli.download(lang)
-            model = spacy.load(lang)
-    else:
-        for lang in ('en_core_web_lg', 'en_core_web_md', 'en_core_web_sm'):
-            if model is None:
-                try:
-                    model = spacy.load(lang)
-                    log.info(f"Successfully loaded SpaCy model named {lang}")
-                except OSError:
-                    pass
-    if model is None:
-        lang = 'en'
-        spacy.cli.download(lang)
-        model = spacy.load(lang)
-    log.warning(f"Finished loading SpaCy model named {lang}: {model}.")
-    return model
-
-
-nlp = load_spacy_model('en_core_web_md')
-
 TFHUB_USE_MODULE_URL = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
 SENTENCE_SPEC_PATH = os.path.join(os.path.dirname(__file__), 'data', 'medical_sentences.json')
 SENTENCE_SPEC = json.load(open(SENTENCE_SPEC_PATH, 'r'))

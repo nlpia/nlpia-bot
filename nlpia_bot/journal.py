@@ -1,3 +1,10 @@
+""" Reads files and indexes them for semantic search
+
+- spacy doc vectors for each file
+- spacy doc vectors for each sentence in each file
+
+"""
+
 import os
 import logging
 
@@ -5,6 +12,7 @@ from tqdm import tqdm
 import numpy as np
 import pandas as pd
 import spacy
+from annoy import AnnoyIndex
 
 from constants import nlp
 from nlpia.futil import find_files
@@ -81,9 +89,59 @@ def get_sentences(df, size_limit=50000, vector_dim=None):
     return df, df_sents
 
 
-if __name__ == '__main__':
+def index_csv(csv_path='/midata/private/journal/files.csv', num_dims=300):
+    df = pd.read_csv(csv_path, index_col=0)
+    vectors = df.iloc[:, -num_dims:].values
+    num_vecs, num_dims = vectors.shape
+    index = AnnoyIndex(f=num_dims)
+    for i, vec in tqdm(enumerate(vectors)):
+        # if not i % 10000:
+        #     print('{}: {}: {}'.format(i, df_notes['name'].iloc[i], vec))
+        index.add_item(i, vec)
+    num_trees = int(np.log(num_vecs).round(0)) + 1
+    index.build(num_trees)
+    index.save(os.path.join(os.path.dirname(csv_path), 'files_index.ann'))
+    return index
+
+
+def search_csv(csv_path='/midata/private/journal/files.csv',
+               query='Misima island port harbor derelict ship PNG Papua New Guinnea Australis harbor storm sailing cliffs anchor drag',
+               num_results=10, num_dims=300):
+    df = pd.read_csv(csv_path, index_col=0)
+    index_path = os.path.join(os.path.dirname(csv_path), 'files_index.ann')
+    index = AnnoyIndex(f=num_dims)
+    index.load(index_path)
+    vec = nlp(query).vector
+    paths = []
+    for i in index.get_nns_by_vector(vec, num_results):
+        path = df.iloc[i]['path']
+        paths.append(path)
+        print(path)
+        with open(path, 'rb') as fin:
+            bintext = b''.join(fin.readlines()[:10])
+        try:
+            text = bintext.decode()
+        except UnicodeDecodeError:
+            text = bintext.decode('latin')
+        print(text)
+        print('-' * 120)
+    return
+
+
+# import numpy as np
+# num_vectors=len(wv.vocab)
+# num_trees=int(np.log(num_vectors).round(0))
+# index.build(num_trees)  # <1>
+# index.save('Word2vec_index.ann')  # <2>
+
+
+def files_to_csvs():
     df = get_files('~/Dropbox/notes/journal')
     df['is_journal'] = is_journal(df)
     df, df_sents = get_sentences(df)
     df.to_csv('files.csv')
     df_sents.to_csv('sentences.csv')
+
+
+if __name__ == '__main__':
+    pass
