@@ -779,7 +779,7 @@ class Statement(models.Model):
     - Jacob Eisenstein's https://github.com/jacobeisenstein/gt-nlp-class/raw/master/notes/eisenstein-nlp-notes.pdf
     - nodes don't have statements: https://gamedev.stackexchange.com/a/40524/132464
     - video game dialog tree: https://gamedev.stackexchange.com/a/40522/132464
-     """
+    """
     state = models.ForeignKey(Context, on_delete=models.PROTECT)
     text = models.TextField(blank=True, null=True)
     reply = models.ForeignKey("self",
