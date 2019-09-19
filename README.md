@@ -11,6 +11,13 @@ This hybrid chatbot combines 4 techniques explained in [NLP in Action](https://w
 
 The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp)
 
+## Work in Progress
+
+- Nima (@hulkgeek) building a question answering bot based on his state of the art question classifier
+- Aliya (@beetpoet) working on a new *mystery* feature
+- Hobson (@hobson) working on infrastructure (CI and deployment of webapp)
+- You -- What big idea would you like to make real?
+
 ## Next Steps
 
 1. put movie dialog into database to hold the statement->response pairs1a. add any other dialog to the database that you like, such as the ubuntu dialog corpus, some famous quotes as responses to the statement "tell me something inspiring", or jokes for "tell me a joke", or whatever  
