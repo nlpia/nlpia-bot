@@ -13,18 +13,18 @@ The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22-
 
 ## Next Steps
 
-1. put movie dialog into database to hold the statement->response pairs1a. add any other dialog to the database that you like, such as the ubuntu dialog corpus, some famous quotes as responses to the statement "tell me something inspiring", or jokes for "tell me a joke", or whatever
-2. create an html django template so there's a web interface to the app rather than just the command line command "bot"
-3. use Django Rest Framework to create a basic API that returns json containing a reply to any request sent to the local host url, like `http://localhost:8000/api?statement='Hello world'` might return {'reply': 'Hello human!'}
-4. have the command line app use the REST API from #3 rather than the slow reloading of the csv file every time you talk to the bot
-5. use database full text search to find appropriate statements in the database that we have a response for
-6. use semantic search instead of text similarity (full text search or fuzzywyzzy text matches)
-    6.a add embedding vectors (300D document vectors from spacy) to each statement and response in the db
-    6.b create a semantic index of the document vectors using `annoy` so "approximate nearest neighbors" (semantic matches) can be found quickly
-    6.c load the annoy index of the document vectors every time the server is started and use it to find the best reply in the database
-    6.d use universal sentence encodings instead of docvecs from spacy
-7. create a UX for dialog graph creation/design:
-    7.a install [mxgraph](https://github.com/totalgood/mxgraph) in the django app
+1. put movie dialog into database to hold the statement->response pairs1a. add any other dialog to the database that you like, such as the ubuntu dialog corpus, some famous quotes as responses to the statement "tell me something inspiring", or jokes for "tell me a joke", or whatever  
+2. create an html django template so there's a web interface to the app rather than just the command line command "bot"  
+3. use Django Rest Framework to create a basic API that returns json containing a reply to any request sent to the local host url, like `http://localhost:8000/api?statement='Hello world'` might return {'reply': 'Hello human!'}  
+4. have the command line app use the REST API from #3 rather than the slow reloading of the csv file every time you talk to the bot  
+5. use database full text search to find appropriate statements in the database that we have a response for  
+6. use semantic search instead of text similarity (full text search or fuzzywyzzy text matches)  
+    6.a add embedding vectors (300D document vectors from spacy) to each statement and response in the db  
+    6.b create a semantic index of the document vectors using `annoy` so "approximate nearest neighbors" (semantic matches) can be found quickly  
+    6.c load the annoy index of the document vectors every time the server is started and use it to find the best reply in the database.  
+    6.d use universal sentence encodings instead of docvecs from spacy.  
+7. create a UX for dialog graph creation/design:  
+    7.a install [mxgraph](https://github.com/totalgood/mxgraph) in the django app  
     7.b create a basic page based on this mxgraph example so the user can build and save dialog to the db as a graph: [tutorial](https://jgraph.github.io/mxgraph/docs/tutorial.html#1), [example app](https://jgraph.github.io/mxgraph/javascript/examples/grapheditor/www/index.html)
     7.c convert the dialog graph into a set of records/rows in the nlpia-bot db so it acts
 8. tag different dialog graphs in the db so the user can turn them on/off for their bot
