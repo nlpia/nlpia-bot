@@ -26,15 +26,15 @@ The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22-
 7. create a UX for dialog graph creation/design:  
     7.a install [mxgraph](https://github.com/totalgood/mxgraph) in the django app  
     7.b create a basic page based on this mxgraph example so the user can build and save dialog to the db as a graph: [tutorial](https://jgraph.github.io/mxgraph/docs/tutorial.html#1), [example app](https://jgraph.github.io/mxgraph/javascript/examples/grapheditor/www/index.html)
-    7.c convert the dialog graph into a set of records/rows in the nlpia-bot db so it acts
-8. tag different dialog graphs in the db so the user can turn them on/off for their bot
-    8.a allow the user to prioritize some dialogs/models over others
-    8.b allow the user to create their own weighting function to prioritize individual statements produced by the api
+    7.c convert the dialog graph into a set of records/rows in the nlpia-bot db so it acts  
+8. tag different dialog graphs in the db so the user can turn them on/off for their bot  
+    8.a allow the user to prioritize some dialogs/models over others  
+    8.b allow the user to create their own weighting function to prioritize individual statements produced by the api  
 9. train a character-based generative model
-    9.a decoder half of autoencoder to generate text based on docvecs from spacy
-    9.b decoder part of autoencoder to generate text based on universal sentence encodings
-    9.c train model to generate reply embeddings (doc vecs and/or use vecs) using statement embeddings (dialog engine encoder-decoder using docvecs or use vecs for the encoder half
+    9.a decoder half of autoencoder to generate text based on docvecs from spacy  
+    9.b decoder part of autoencoder to generate text based on universal sentence encodings  
+    9.c train model to generate reply embeddings (doc vecs and/or use vecs) using statement embeddings (dialog engine encoder-decoder using docvecs or use vecs for the encoder half  
 10. add a therapy/mindfulness-coach feature to respond with mindfulness ideas to some queries/statements
-11. add the "translate 'this text' to spanish" feature
-    11.a train character-based LSTM models on english-spanish, english-french, english-german, english<->whatever
-    11.b add module for this to the django app/api
+11. add the "translate 'this text' to spanish" feature  
+    11.a train character-based LSTM models on english-spanish, english-french, english-german, english<->whatever  
+    11.b add module for this to the django app/api  
