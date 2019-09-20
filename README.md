@@ -16,12 +16,20 @@ The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22-
 - Nima (@hulkgeek) building a question answering bot based on his state of the art question classifier
 - Aliya (@beetpoet) working on a new *mystery* feature
 - Hobson (@hobson) working on infrastructure (CI and deployment of webapp)
-- You -- What big idea would you like to make real?
+- You -- What big chatbot idea would you like to make a reality?
 
 ## Next Steps
 
-1. put movie dialog into database to hold the statement->response pairs1a. add any other dialog to the database that you like, such as the ubuntu dialog corpus, some famous quotes as responses to the statement "tell me something inspiring", or jokes for "tell me a joke", or whatever  
-2. create an html django template so there's a web interface to the app rather than just the command line command "bot"  
+1. movie dialog in dajngo database to hold the statement->response pairs  
+    1a. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow charts
+    1b. ubuntu dialog corpus in db
+    1c. mindfulness faq corpus in db
+    1b. famous quotes as responses to the statement "tell me something inspiring"  
+    1c. jokes for "tell me a joke"
+    1d. data science faq
+    1e. nlpia faq
+    1f. psychology/self-help faq
+2. html django template so there's a web interface to the app rather than just the command line command "bot"  
 3. use Django Rest Framework to create a basic API that returns json containing a reply to any request sent to the local host url, like `http://localhost:8000/api?statement='Hello world'` might return {'reply': 'Hello human!'}  
 4. have the command line app use the REST API from #3 rather than the slow reloading of the csv file every time you talk to the bot  
 5. use database full text search to find appropriate statements in the database that we have a response for  
@@ -45,3 +53,4 @@ The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22-
 11. add the "translate 'this text' to spanish" feature  
     11.a train character-based LSTM models on english-spanish, english-french, english-german, english<->whatever  
     11.b add module for this to the django app/api  
+12. AIML engine fallback
