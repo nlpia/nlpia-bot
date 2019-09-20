@@ -21,14 +21,16 @@ The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22-
 ## Next Steps
 
 1. movie dialog in dajngo database to hold the statement->response pairs  
-    1a. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow charts
-    1b. ubuntu dialog corpus in db
-    1c. mindfulness faq corpus in db
-    1b. famous quotes as responses to the statement "tell me something inspiring"  
-    1c. jokes for "tell me a joke"
-    1d. data science faq
-    1e. nlpia faq
-    1f. psychology/self-help faq
+
+  1.a. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow charts
+  1.b. ubuntu dialog corpus in db
+  1.c. mindfulness faq corpus in db
+  1.d. famous quotes as responses to the statement "tell me something inspiring"  
+  1.e. jokes for "tell me a joke"
+  1.f. data science faq
+  1.g. nlpia faq
+  1.h. psychology/self-help faq
+
 2. html django template so there's a web interface to the app rather than just the command line command "bot"  
 3. use Django Rest Framework to create a basic API that returns json containing a reply to any request sent to the local host url, like `http://localhost:8000/api?statement='Hello world'` might return {'reply': 'Hello human!'}  
 4. have the command line app use the REST API from #3 rather than the slow reloading of the csv file every time you talk to the bot  
