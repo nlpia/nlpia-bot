@@ -22,14 +22,14 @@ The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22-
 
 1. movie dialog in dajngo database to hold the statement->response pairs  
 
-  1.a. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow charts
-  1.b. ubuntu dialog corpus in db
-  1.c. mindfulness faq corpus in db
-  1.d. famous quotes as responses to the statement "tell me something inspiring"  
-  1.e. jokes for "tell me a joke"
-  1.f. data science faq
-  1.g. nlpia faq
-  1.h. psychology/self-help faq
+    1. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow charts
+    1. ubuntu dialog corpus in db
+    1. mindfulness faq corpus in db
+    1. famous quotes as responses to the statement "tell me something inspiring"  
+    1. jokes for "tell me a joke"
+    1. data science faq
+    1. nlpia faq
+    1. psychology/self-help faq
 
 2. html django template so there's a web interface to the app rather than just the command line command "bot"  
 3. use Django Rest Framework to create a basic API that returns json containing a reply to any request sent to the local host url, like `http://localhost:8000/api?statement='Hello world'` might return {'reply': 'Hello human!'}  
