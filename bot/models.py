@@ -10,6 +10,28 @@ log = logging.getLogger(__name__)
 from bot.models_notes import NoteFile, Sentence  # noqa
 
 
+class Agent(models.Model):
+    name = models.TextField()
+
+
+class State(models.Model):
+    """ Context (state of mind, state of the world) of all agents (bots and humans) """
+    context_name = models.TextField()
+    agent = models.TextField(help_text="Human or bot agent expected to take the next turn or action")
+
+
+class Action(models.Model):
+    """ Probability for a state transition and the action name and parameters associate with that action """
+    source = models.ForeignKey(State, related_name='source', on_delete=models.PROTECT)
+    dest = models.ForeignKey(State, related_name='dest', on_delete=models.PROTECT)
+    probability = models.FloatField(null=True, blank=True, default=1)
+    action_name = models.TextField(default='text')
+    agent = models.ForeignKey(Agent, on_delete=models.PROTECT,
+                              help_text="The human or autonomous agent that can perform this action")
+    payload = models.TextField(default='', blank=True, null=True,
+                               help_text="parameters of the action, in the case of the aciton 'text' or 'say', just the string to be uttered")
+
+
 class URL(models.Model):
     url = models.URLField()
 
