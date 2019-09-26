@@ -7,6 +7,9 @@ from django.db import models
 log = logging.getLogger(__name__)
 
 
+from bot.models_notes import NoteFile, Sentence  # noqa
+
+
 class URL(models.Model):
     url = models.URLField()
 
