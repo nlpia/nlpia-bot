@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 
 def load_csv_sql(csv_path='/midata/private/journal/files.csv',
                  sqlite_path=os.path.join(BASE_DIR, 'db.sqlite3'),
-                 table_name='note'):
+                 table_name='notefile'):
     df_notes = pd.read_csv(csv_path, index_col=0)
     df_notes['id'] = df_notes.index.values.astype(int)
     conn = sqlite3.connect(sqlite_path)
