@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Note',
+            name='NoteFile',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('accessed', models.TextField(blank=True, null=True)),
