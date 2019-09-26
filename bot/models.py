@@ -76,13 +76,13 @@ class Statement(models.Model):
     reply = models.ForeignKey("self",
                               on_delete=models.PROTECT,
                               verbose_name="statements this is an acceptable reply to",
-                              related_name='statements', blank=True)
-    contexts = models.ManyToManyField(Context, blank=True)
+                              blank=True)
+    # contexts = models.ManyToManyField(Context, blank=True)
 
 
 class Reply(models.Model):
     """ Directed graph edge pointing from the prompting statement to the reply statement """
-    statement = models.ForeignKey(Statement, on_delete=models.PROTECT)
+    # statement = models.ForeignKey(Statement, on_delete=models.PROTECT)
     context = models.ForeignKey(Context, on_delete=models.PROTECT)
     likelihood = models.FloatField(blank=True, default=1.0, null=False)
     speaker = models.ForeignKey(Speaker, null=True, on_delete=models.PROTECT)
