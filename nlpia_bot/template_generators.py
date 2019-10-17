@@ -3,7 +3,8 @@ import re
 
 import numpy as np
 
-from .constants import SENTENCE_SPEC, nlp
+from .constants import SENTENCE_SPEC
+from .spacy_language_model import nlp
 
 
 def generate_sentence(spec=SENTENCE_SPEC, sentence_id=None):
