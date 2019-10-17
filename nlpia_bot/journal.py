@@ -14,7 +14,7 @@ import pandas as pd
 import spacy
 from annoy import AnnoyIndex
 
-from constants import nlp
+from nlpia_bot.spacy_language_model import nlp
 from nlpia.futil import find_files
 
 log = logging.getLogger(__name__)

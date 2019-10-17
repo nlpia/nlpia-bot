@@ -1,6 +1,6 @@
 import logging
 
-from constants import LANG
+from .constants import LANG
 
 import spacy
 
