@@ -95,17 +95,6 @@ class CLIBot:
                 except Exception as e:
                     log.error(str(e))
             replies.extend(bot_replies)
-        # replies = [(1, hello), (.5, hi)]
-        # cumscore = 0
-        # for (i, (s, r)) in enumerate(replies):
-        #     cumscore += s
-        #     replies[i] = (cumscore, r)
-        # dice_roll = np.random.rand() * cumscore
-        # last_reply = replies[0]
-        # for (cs, r) in replies:
-        #     if dice_roll <= cs:
-        #         last_reply
-        #     last_reply = r
         if len(replies):
             cumsum = 0
             cdf = list()
