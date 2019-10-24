@@ -95,6 +95,17 @@ class CLIBot:
                 except Exception as e:
                     log.error(str(e))
             replies.extend(bot_replies)
+        # replies = [(1, hello), (.5, hi)]
+        # cumscore = 0
+        # for (i, (s, r)) in enumerate(replies):
+        #     cumscore += s
+        #     replies[i] = (cumscore, r)
+        # dice_roll = np.random.rand() * cumscore
+        # last_reply = replies[0]
+        # for (cs, r) in replies:
+        #     if dice_roll <= cs:
+        #         last_reply
+        #     last_reply = r
         if len(replies):
             cumsum = 0
             cdf = list()
@@ -142,9 +153,9 @@ def parse_args(args):
     parser.add_argument(
         '-b',
         '--bots',
-        default="pattern",  # None so config.ini can populate defaults
+        default="pattern,parul,search_fuzzy",  # None so config.ini can populate defaults
         dest="bots",
-        help="comma-separated bot personalities to load into bot: search_movie,pattern_greet,search_ds,generate_spanish",
+        help="comma-separated list of bot personalities to load into bot: pattern,parul,search_fuzzy",
         type=str,
         metavar="STR")
     parser.add_argument(
@@ -208,7 +219,7 @@ def parse_argv(argv=sys.argv):
 
     global BOT
     setup_logging(args.loglevel)
-    args.bots = args.bots or 'search_fuzzy,pattern'
+    args.bots = args.bots or 'search_fuzzy,pattern,parul'
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
     if BOT is None:
