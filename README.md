@@ -44,10 +44,10 @@ pip install --editable .
 4. have the command line app use the REST API from #3 rather than the slow reloading of the csv file every time you talk to the bot
 5. use database full text search to find appropriate statements in the database that we have a response for
 6. use semantic search instead of text similarity (full text search or fuzzywyzzy text matches)
-  1. add embedding vectors (300D document vectors from spacy) to each statement and response in the db
-  2. create a semantic index of the document vectors using `annoy` so "approximate nearest neighbors" (semantic matches) can be found quickly
-  3. load the annoy index of the document vectors every time the server is started and use it to find the best reply in the database.
-  4. use universal sentence encodings instead of docvecs from spacy.
+    1. add embedding vectors (300D document vectors from spacy) to each statement and response in the db
+    2. create a semantic index of the document vectors using `annoy` so "approximate nearest neighbors" (semantic matches) can be found quickly
+    3. load the annoy index of the document vectors every time the server is started and use it to find the best reply in the database.
+    4. use universal sentence encodings instead of docvecs from spacy.
 7. create a UX for dialog graph creation/design:
     1. install [mxgraph](https://github.com/totalgood/mxgraph) in the django app
     2. create a basic page based on this mxgraph example so the user can build and save dialog to the db as a graph: [tutorial](https://jgraph.github.io/mxgraph/docs/tutorial.html#1), [example app](https://jgraph.github.io/mxgraph/javascript/examples/grapheditor/www/index.html)
