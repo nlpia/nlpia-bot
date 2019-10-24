@@ -71,7 +71,7 @@ def bots_from_personalities(personalities):
 
 
 class CLIBot:
-    def __init__(self, bots=('pattern_bots', 'search_fuzzy_bots')):
+    def __init__(self, bots=('pattern_bots', 'search_fuzzy_bots', 'parul_bots')):
         module_names = [m if m.endswith('_bots') else f'{m}_bots' for m in bots]
         modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
         self.bots = [m.Bot() for m in modules]
@@ -94,6 +94,17 @@ class CLIBot:
                 except Exception as e:
                     log.error(str(e))
             replies.extend(bot_replies)
+        # replies = [(1, hello), (.5, hi)]
+        # cumscore = 0
+        # for (i, (s, r)) in enumerate(replies):
+        #     cumscore += s
+        #     replies[i] = (cumscore, r)
+        # dice_roll = np.random.rand() * cumscore
+        # last_reply = replies[0]
+        # for (cs, r) in replies:
+        #     if dice_roll <= cs:
+        #         last_reply
+        #     last_reply = r
         if len(replies):
             return sorted(replies, reverse=True)[0][1]
         # TODO: np.choice from list of more friendly random unknown error replies...
@@ -132,9 +143,9 @@ def parse_args(args):
     parser.add_argument(
         '-b',
         '--bots',
-        default="pattern",  # None so config.ini can populate defaults
+        default="pattern,parul,search_fuzzy",  # None so config.ini can populate defaults
         dest="bots",
-        help="comma-separated bot personalities to load into bot: search_movie,pattern_greet,search_ds,generate_spanish",
+        help="comma-separated list of bot personalities to load into bot: pattern,parul,search_fuzzy",
         type=str,
         metavar="STR")
     parser.add_argument(
@@ -198,7 +209,7 @@ def parse_argv(argv=sys.argv):
 
     global BOT
     setup_logging(args.loglevel)
-    args.bots = args.bots or 'search_fuzzy,pattern'
+    args.bots = args.bots or 'search_fuzzy,pattern,parul'
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
     if BOT is None:

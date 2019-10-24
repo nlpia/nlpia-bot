@@ -52,10 +52,10 @@ class SpacyLM:
 
     def __call__(self, *args, **kwargs):
         self.lang = kwargs.pop('lang', self.lang)
-        if nlp is None:
+        if self.nlp is None:
             self.nlp = load(self.lang)
-            self.on_load()
-        return nlp(*args)
+            # self.nlp.on_load()
+        return self.nlp(*args)
 
 
 nlp = SpacyLM(LANG)
