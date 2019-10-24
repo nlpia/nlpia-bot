@@ -21,6 +21,7 @@ import logging
 import sys
 import importlib
 
+import numpy as np
 import pandas as pd
 
 # from nlpia_bot.use_demo import reply as use_reply
@@ -71,7 +72,7 @@ def bots_from_personalities(personalities):
 
 
 class CLIBot:
-    def __init__(self, bots=('pattern_bots', 'search_fuzzy_bots')):
+    def __init__(self, bots=('pattern_bots', 'search_fuzzy_bots', 'parul_bots')):
         module_names = [m if m.endswith('_bots') else f'{m}_bots' for m in bots]
         modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
         self.bots = [m.Bot() for m in modules]
@@ -95,7 +96,16 @@ class CLIBot:
                     log.error(str(e))
             replies.extend(bot_replies)
         if len(replies):
-            return sorted(replies, reverse=True)[0][1]
+            cumsum = 0
+            cdf = list()
+            for reply in replies:
+                cumsum += reply[0]
+                cdf.append(cumsum)
+            roll = np.random.rand() * cumsum
+            for i, threshold in enumerate(cdf):
+                if roll < threshold:
+                    return replies[i][1]
+
         # TODO: np.choice from list of more friendly random unknown error replies...
         return "Sorry, something went wrong. Not sure what to say..."
 
