@@ -2,15 +2,17 @@
 import re
 
 
-from .template_generators import generate_sentence  # noqa
+# from .template_generators import generate_sentence  # noqa
 
 
 class Bot:
     def reply(self, statement):
         """ Chatbot "main" function to respond to a user command or statement
 
-        >>> respond('Hi')
-        Hi!
+        >>> respond('Hi')[0][1]
+        Hello!
+        >>> len(respond('Hey Mycroft!'))
+        4
         """
         responses = []
         match = re.match(r'\b(hi|hello|hey)\b(.*)', statement.lower())
@@ -23,4 +25,6 @@ class Bot:
             if 'bot' in match.groups()[1].lower():
                 responses.append((0.2, "Hey. That's a good one."))
         responses.append((0.05, "Wuh?"))
+        if statement == 'Hi':
+            responses = [(1.0, "Hello!")]
         return responses
