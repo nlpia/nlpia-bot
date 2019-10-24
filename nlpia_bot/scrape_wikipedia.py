@@ -57,14 +57,36 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
             if not len(title.strip()):
                 continue
             titles_scraped.add(title)
-
-            retval = parse_sentences(
-                title=title, sentences=sentences, title_depths=title_depths, see_also=see_also,
-                exclude_headings=exclude_headings, d=d, depth=depth, max_depth=max_depth)
-            if retval is None:
+            try:
+                page = wikipedia.WikipediaPage(title)
+            except (wikipedia.PageError, KeyError) as e:
+                log.error(f"Unable to retrieve {title}")
+                log.error(e)
+                time.sleep(3)
                 continue
-            else:
-                sentences, title_depths = retval
+            for heading in page.sections:
+                if heading in exclude_headings:
+                    continue
+                text = page.section(heading)
+                # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
+                text = text.replace('’', "'")  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
+                # FIXME: need to rejoin short names before colons, like 'ELIZA:' 'Tell me...', and 'Human:' 'What...'
+                # FIXME: need to split on question marks without white space but where next word is capitalized: ...to be unhappy?Though designed strictly...
+                sentences.extend([
+                    (d, title, heading, s.text) for s in nlp(text).sents if (
+                        len(s.text.strip().strip('"').strip("'").strip()) > 1)
+                    ])
+            if see_also and depth < max_depth:
+                title_depths.extend((t, d + 1) for t in (page.section('See also') or '').split('\n'))
+                # log.warn(f'title_depths: {title_depths}')
+
+            # retval = parse_sentences(
+            #     title=title, sentences=sentences, title_depths=title_depths, see_also=see_also,
+            #     exclude_headings=exclude_headings, d=d, depth=depth, max_depth=max_depth)
+            # if retval is None:
+            #     continue
+            # else:
+            #     sentences, title_depths = retval
             log.info(str([depth, d, i, title]))
             if d > depth:
                 log.info(f"{d} > {depth}")
@@ -74,26 +96,5 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
 
 
 def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
-    try:
-        page = wikipedia.WikipediaPage(title)
-    except (wikipedia.PageError, KeyError) as e:
-        log.error(f"Unable to retrieve {title}")
-        log.error(e)
-        time.sleep(3)
-        return None
-    for heading in page.sections:
-        if heading in exclude_headings:
-            return None
-        text = page.section(heading)
-        # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
-        text = text.replace('’', "'")  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
-        # FIXME: need to rejoin short names before colons, like 'ELIZA:' 'Tell me...', and 'Human:' 'What...'
-        # FIXME: need to split on question marks without white space but where next word is capitalized: ...to be unhappy?Though designed strictly...
-        sentences.extend([
-            (d, title, heading, s.text) for s in nlp(text).sents if (
-                len(s.text.strip().strip('"').strip("'").strip()) > 1)
-            ])
-    if see_also and depth < max_depth:
-        title_depths.extend((t, d + 1) for t in (page.section('See also') or '').split('\n'))
-        # log.warn(f'title_depths: {title_depths}')
+
     return sentences, title_depths
