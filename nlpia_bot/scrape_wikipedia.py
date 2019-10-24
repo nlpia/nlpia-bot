@@ -64,21 +64,21 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 log.error(e)
                 time.sleep(3)
                 continue
+            if see_also and d + 1 < max_depth:
+                title_depths.extend((t, d + 1) for t in (page.section('See also') or '').split('\n'))
+                # log.warn(f'title_depths: {title_depths}')
             for heading in page.sections:
                 if heading in exclude_headings:
                     continue
                 text = page.section(heading)
                 # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
-                text = text.replace('’', "'")  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
+                text = (text or '').replace('’', "'")  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
                 # FIXME: need to rejoin short names before colons, like 'ELIZA:' 'Tell me...', and 'Human:' 'What...'
                 # FIXME: need to split on question marks without white space but where next word is capitalized: ...to be unhappy?Though designed strictly...
                 sentences.extend([
                     (d, title, heading, s.text) for s in nlp(text).sents if (
                         len(s.text.strip().strip('"').strip("'").strip()) > 1)
                     ])
-            if see_also and depth < max_depth:
-                title_depths.extend((t, d + 1) for t in (page.section('See also') or '').split('\n'))
-                # log.warn(f'title_depths: {title_depths}')
 
             # retval = parse_sentences(
             #     title=title, sentences=sentences, title_depths=title_depths, see_also=see_also,
