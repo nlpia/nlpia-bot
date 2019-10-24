@@ -15,10 +15,12 @@ also be used as template for Python modules.
 
 Note: This skeleton file can be safely removed if not needed!
 """
-
 import argparse
 import logging
 import sys
+import importlib
+
+import pandas as pd
 
 # from nlpia_bot.use_demo import reply as use_reply
 
@@ -34,8 +36,6 @@ import sys
 
 from nlpia_bot import __version__
 
-from nlpia_bot import pattern_bots, search_fuzzy_bots  # noqa
-
 
 __author__ = "hobs"
 __copyright__ = "hobs"
@@ -44,8 +44,10 @@ __license__ = "mit"
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
-BOT_PACKAGES = dict(pattern=pattern_bots, search_fuzzy=search_fuzzy_bots)
+BOT_PACKAGES = dict(pattern='pattern_bots', search_fuzzy='search_fuzzy_bots')
 BOT = None
+MAX_TURNS = 10000
+EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
 
 def normalize_replies(replies):
@@ -68,8 +70,11 @@ def bots_from_personalities(personalities):
 
 
 class CLIBot:
-    def __init__(self, bots=[pattern_bots.Bot(), search_fuzzy_bots.Bot()]):
-        self.repliers = [bot.reply for bot in bots]
+    def __init__(self, bots=('pattern_bots', 'search_fuzzy_bots')):
+        module_names = [m if m.endswith('_bots') else f'{m}_bots' for m in bots]
+        modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
+        self.bots = [m.Bot() for m in modules]
+        self.repliers = [bot.reply for bot in self.bots]
 
     def reply(self, statement=''):
         log.info(f'statement={statement}')
@@ -117,10 +122,18 @@ def parse_args(args):
         type=str,
         metavar="STR")
     parser.add_argument(
-        '--personality',
-        default="",
-        dest="personality",
-        help="comma-separated personalities to load into bot: search_movie,pattern_greet,search_ds,generate_spanish",
+        '-p',
+        '--persist',
+        help="Don't exit. Retain language model in memory and maintain dialog until user says 'exit' or 'quit'",
+        dest="persist",
+        default=False,
+        action='store_true')
+    parser.add_argument(
+        '-b',
+        '--bots',
+        default="pattern",
+        dest="bots",
+        help="comma-separated bot personalities to load into bot: search_movie,pattern_greet,search_ds,generate_spanish",
         type=str,
         metavar="STR")
     parser.add_argument(
@@ -140,7 +153,7 @@ def parse_args(args):
     parser.add_argument(
         'words',
         type=str,
-        nargs='+',
+        nargs='*',
         help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
     return parser.parse_args(args)
 
@@ -156,7 +169,13 @@ def setup_logging(loglevel):
                         format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
 
 
-def run(argv=sys.argv):
+def main():
+    args = parse_argv(argv=sys.argv)
+    statements = cli(args)
+    return statements
+
+
+def parse_argv(argv=sys.argv):
     """Entry point for console_scripts"""
     new_argv = []
     if len(argv) > 1:
@@ -166,14 +185,45 @@ def run(argv=sys.argv):
 
     global BOT
     setup_logging(args.loglevel)
-    if BOT is None or args.personality:
-        args.personality = args.personality or 'search_fuzzy,pattern'
-        log.info("Building a BOT...")
-        BOT = CLIBot()
-        log.info(f"Started a CLIBot: {BOT}")
-    log.warn(f"Computing a reply to {args.words}...")
-    print(BOT.reply(' '.join(args.words)))
+    args.bots = args.bots or 'search_fuzzy,pattern'
+    args.bots = [m.strip() for m in args.bots.split(',')]
+    log.info(f"Building a BOT with: {args.bots}")
+    if BOT is None:
+        BOT = CLIBot(bots=args.bots)
+
+    if args.persist:
+        log.warn('Type "quit" or "exit" to end the conversation...')
+
+    return args
+
+
+def cli(args):
+    user_statement = ' '.join(args.words)
+    args.persist = args.persist or not len(user_statement)
+    user_statements = []
+    bot_statements = []
+    for i in range(int(not args.persist) or MAX_TURNS):
+        user_statements.append(user_statement)
+        if user_statement:
+            log.info(f"Computing a reply to {user_statement}...")
+            # state = BOT.reply(statement, **state)
+            bot_statement = BOT.reply(user_statement)
+            bot_statements.append(bot_statement)
+            print(f"BOT: {bot_statement}")
+        if user_statement.lower().strip() in EXIT_COMMANDS:
+            break
+        if args.persist or not user_statement:
+            user_statement = input("YOU: ")
+        else:
+            break
+    statements = dict(user=user_statements, bot=bot_statements)
+    ulen = len(statements['user'])
+    blen = len(statements['bot'])
+    maxlen = max(ulen, blen)
+    statements['bot'] += [None] * max(maxlen - len(statements['bot']), 0)
+    statements['user'] += [None] * max(maxlen - len(statements['user']), 0)
+    return pd.DataFrame(statements)
 
 
 if __name__ == "__main__":
-    run()
+    main()
