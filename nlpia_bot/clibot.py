@@ -16,6 +16,7 @@ also be used as template for Python modules.
 Note: This skeleton file can be safely removed if not needed!
 """
 import argparse
+import configparser
 import logging
 import sys
 import importlib
@@ -116,7 +117,7 @@ def parse_args(args):
         version='nlpia_bot {ver}'.format(ver=__version__))
     parser.add_argument(
         '--name',
-        default="bot",
+        default="bot",  # None so config.ini can populate defaults
         dest="nickname",
         help="IRC nick or CLI command name for the bot",
         type=str,
@@ -126,12 +127,12 @@ def parse_args(args):
         '--persist',
         help="Don't exit. Retain language model in memory and maintain dialog until user says 'exit' or 'quit'",
         dest="persist",
-        default=False,
+        default=False,  # None so config.ini can populate defaults
         action='store_true')
     parser.add_argument(
         '-b',
         '--bots',
-        default="pattern",
+        default="pattern",  # None so config.ini can populate defaults
         dest="bots",
         help="comma-separated bot personalities to load into bot: search_movie,pattern_greet,search_ds,generate_spanish",
         type=str,
@@ -172,7 +173,19 @@ def setup_logging(loglevel):
 def main():
     args = parse_argv(argv=sys.argv)
     statements = cli(args)
-    return statements
+    if len(statements) > 1 and args.loglevel in 'DEBUG INFO'.split():
+        return statements
+
+
+def config_update(config, args):
+    """ based on https://stackoverflow.com/a/48539074/623735 """
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    defaults = dict(config['default'])
+
+    argsdict = vars(args)
+    defaults.update({k: v for k, v in argsdict.items() if v is not None})
+    return defaults
 
 
 def parse_argv(argv=sys.argv):
@@ -198,30 +211,25 @@ def parse_argv(argv=sys.argv):
 
 
 def cli(args):
+    state = {}
+    statements = []
     user_statement = ' '.join(args.words)
+    statements.append(dict(user=user_statement, bot=None, **state))
     args.persist = args.persist or not len(user_statement)
-    user_statements = []
-    bot_statements = []
     for i in range(int(not args.persist) or MAX_TURNS):
-        user_statements.append(user_statement)
+        if user_statement.lower().strip() in EXIT_COMMANDS:
+            break
         if user_statement:
             log.info(f"Computing a reply to {user_statement}...")
             # state = BOT.reply(statement, **state)
             bot_statement = BOT.reply(user_statement)
-            bot_statements.append(bot_statement)
+            statements[-1]['bot'] = bot_statement
             print(f"BOT: {bot_statement}")
-        if user_statement.lower().strip() in EXIT_COMMANDS:
-            break
         if args.persist or not user_statement:
             user_statement = input("YOU: ")
+            statements.append(dict(user=user_statement, bot=None, **state))
         else:
             break
-    statements = dict(user=user_statements, bot=bot_statements)
-    ulen = len(statements['user'])
-    blen = len(statements['bot'])
-    maxlen = max(ulen, blen)
-    statements['bot'] += [None] * max(maxlen - len(statements['bot']), 0)
-    statements['user'] += [None] * max(maxlen - len(statements['user']), 0)
     return pd.DataFrame(statements)
 
 
