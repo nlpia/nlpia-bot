@@ -11,6 +11,11 @@ This hybrid chatbot combines 4 techniques explained in [NLP in Action](https://w
 
 The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp)
 
+## Install
+
+- `git clone git@github.com:nlpia/nlpia-bot`
+- pip install --editable nlpia-bot
+
 ## Work in Progress
 
 - Nima (@hulkgeek) building a question answering bot based on his state of the art question classifier

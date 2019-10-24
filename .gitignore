@@ -49,7 +49,6 @@ MANIFEST
 .venv*/
 
 # secrets
-*.csv
 .bash_env
 **/*secret*
 **/*private*
