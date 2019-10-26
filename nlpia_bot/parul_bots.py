@@ -1,11 +1,13 @@
 """ Meet Robo: your friend by Parul Pandey """
-
+import os
 import random
 import string  # to process standard python strings
 import warnings
 # import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+from nlpia_bot.constants import DATA_DIR
 
 import nltk
 from nltk.stem import WordNetLemmatizer
@@ -19,7 +21,7 @@ nltk.download('popular', quiet=True)  # for downloading packages
 
 
 # Reading in the corpus
-with open('chatbot.txt', 'r', encoding='utf8', errors='ignore') as fin:
+with open(os.path.join(DATA_DIR, 'chatbot-depth3.txt'), 'r', encoding='utf8', errors='ignore') as fin:
     raw = fin.read().lower()
 
 # TOkenisation
