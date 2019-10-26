@@ -22,12 +22,12 @@ pip install --editable .
 
 ## Work in Progress
 
-- Nima (@hulkgeek) building a question answering bot based on his state of the art question classifier
-- Aliya (@beetpoet) working on a new *mystery* feature
-- Hobson (@hobson) working on infrastructure (CI and deployment of webapp)
-- Travis (@travis-harper) markhov chain reply selection and other data science enhancements
-- Xavier (@blackshields) employment counselor bot for workforce.org and the city of San Diego
-- You -- What big chatbot idea would you like to make a reality?
+- Aliya (@beetpoet) working on a *mystery* feature
+- Travis (@travis-harper): markhov chain reply selection and other data science enhancements
+- Nima (@hulkgeek): question answering bot based on his state of the art question classifier
+- Xavier (@spirovanni): employment counselor for workforce.org and the city of San Diego
+- Hobson (@hobson): infrastructure (CI, webapp) and framework features (nltk->spacy, USE vectors)
+- You: What big chatbot idea would you like to make a reality?
 
 ## Next Steps
 
