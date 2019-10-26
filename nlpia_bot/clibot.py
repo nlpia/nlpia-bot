@@ -21,6 +21,7 @@ import logging
 import sys
 import importlib
 
+import numpy as np
 import pandas as pd
 
 # from nlpia_bot.use_demo import reply as use_reply
@@ -95,19 +96,17 @@ class CLIBot:
                 except Exception as e:
                     log.error(str(e))
             replies.extend(bot_replies)
-        # replies = [(1, hello), (.5, hi)]
-        # cumscore = 0
-        # for (i, (s, r)) in enumerate(replies):
-        #     cumscore += s
-        #     replies[i] = (cumscore, r)
-        # dice_roll = np.random.rand() * cumscore
-        # last_reply = replies[0]
-        # for (cs, r) in replies:
-        #     if dice_roll <= cs:
-        #         last_reply
-        #     last_reply = r
         if len(replies):
-            return sorted(replies, reverse=True)[0][1]
+            cumsum = 0
+            cdf = list()
+            for reply in replies:
+                cumsum += reply[0]
+                cdf.append(cumsum)
+            roll = np.random.rand() * cumsum
+            for i, threshold in enumerate(cdf):
+                if roll < threshold:
+                    return replies[i][1]
+
         # TODO: np.choice from list of more friendly random unknown error replies...
         return "Sorry, something went wrong. Not sure what to say..."
 
