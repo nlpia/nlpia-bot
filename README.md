@@ -26,6 +26,7 @@ pip install --editable .
 - Aliya (@beetpoet) working on a new *mystery* feature
 - Hobson (@hobson) working on infrastructure (CI and deployment of webapp)
 - Travis (@travis-harper) markhov chain reply selection and other data science enhancements
+- Xavier (@blackshields) employment counselor bot for workforce.org and the city of San Diego
 - You -- What big chatbot idea would you like to make a reality?
 
 ## Next Steps

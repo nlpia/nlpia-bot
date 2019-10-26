@@ -38,9 +38,10 @@ import pandas as pd
 from nlpia_bot import __version__
 
 
-__author__ = "hobs"
-__copyright__ = "hobs"
-__license__ = "mit"
+__author__ = "see AUTHORS.md and README.md: Travis, Aliya, Xavier, Nima, Hobson, ..."
+__copyright__ = "Hobson Lane"
+__license__ = "The Hippocratic License (MIT + Do No Harm, see LICENSE.txt)"
+
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
