@@ -29,4 +29,5 @@ pyasn1<0.5.0,>=0.4.6
 python_chatbot>=0.0.8
 tensorboard
 tensorflow
--e git+https://github.com/lucasdnd/Wikipedia.git@master#egg=wikipedia
+wikipedia-api
+# -e git+https://github.com/lucasdnd/Wikipedia.git@master#egg=wikipedia
