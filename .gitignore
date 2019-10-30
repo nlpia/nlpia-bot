@@ -45,5 +45,16 @@ docs/_build/*
 cover/*
 MANIFEST
 
+# Mac
+__MACOSX
+
+# Data
+db.sqlite3
+
 # Per-project virtualenvs
 .venv*/
+
+# secrets
+.bash_env
+**/*secret*
+**/*private*
