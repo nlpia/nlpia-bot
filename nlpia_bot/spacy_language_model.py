@@ -48,7 +48,6 @@ class SpacyLM:
         self.lang = lang
         if eager:
             self.nlp = load(self.lang)
-            self.on_load()
 
     def __call__(self, *args, **kwargs):
         self.lang = kwargs.pop('lang', self.lang)
