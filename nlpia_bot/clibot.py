@@ -61,7 +61,7 @@ def normalize_replies(replies):
     return sorted([
         ((1e-10, r) if isinstance(r, str) else tuple(r))
         for r in replies
-        ], reverse=True)
+    ], reverse=True)
 
 
 def bots_from_personalities(personalities):
@@ -145,7 +145,7 @@ def parse_args(args):
         '--bots',
         default="pattern,parul,search_fuzzy",  # None so config.ini can populate defaults
         dest="bots",
-        help="comma-separated list of bot personalities to load into bot: pattern,parul,search_fuzzy",
+        help="comma-separated list of bot personalities to load into bot: pattern,parul,search_fuzzy,time",
         type=str,
         metavar="STR")
     parser.add_argument(
@@ -209,7 +209,7 @@ def parse_argv(argv=sys.argv):
 
     global BOT
     setup_logging(args.loglevel)
-    args.bots = args.bots or 'search_fuzzy,pattern,parul'
+    # args.bots = args.bots or 'search_fuzzy,pattern,parul,time'
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
     if BOT is None:
