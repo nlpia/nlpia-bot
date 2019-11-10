@@ -57,9 +57,10 @@ def greeting(sentence):
 
 
 # Generating response
-def response(user_response):
+def response(user_text):
+    user_text = [user_text] if isinstance(user_text, str) else user_text
     robo_response = ''
-    user_tfidf = tfidf_vectorizer.transform(user_response)
+    user_tfidf = tfidf_vectorizer.transform(user_text)
 
     vals = cosine_similarity(user_tfidf, WIKI_TFIDF)
     idx = vals.argsort()[0][-1]
@@ -78,19 +79,19 @@ def main():
     flag = True
     print("ROBO: My name is Robo. I will answer your queries about Chatbots. If you want to exit, type Bye!")
     while flag:
-        user_response = input()
-        user_response = user_response.lower()
-        if(user_response != 'bye'):
-            if(user_response == 'thanks' or user_response == 'thank you'):
+        user_text = input()
+        user_text = user_text.lower()
+        if(user_text != 'bye'):
+            if(user_text == 'thanks' or user_text == 'thank you'):
                 flag = False
                 print("ROBO: You are welcome..")
             else:
-                if(greeting(user_response) is not None):
-                    print("ROBO: " + greeting(user_response))
+                if(greeting(user_text) is not None):
+                    print("ROBO: " + greeting(user_text))
                 else:
                     print("ROBO: ", end="")
-                    print(response(user_response))
-                    # sent_tokens.remove(user_response)
+                    print(response(user_text))
+                    # sent_tokens.remove(user_text)
         else:
             flag = False
             print("ROBO: Bye! take care..")
