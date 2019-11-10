@@ -9,43 +9,44 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from nlpia_bot.constants import DATA_DIR
 
-import nltk
+import nltk  # FIXME: from nlpia_bot.spacy_language_model import nlp
 from nltk.stem import WordNetLemmatizer
+
+GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
+GREETING_RESPONSES = ["hi", "hey", "*nods*", "hi there", "hello", "I am glad! You are talking to me"]
+WIKI_TEXT_PATH = os.path.join(DATA_DIR, 'chatbot-depth3.txt')
+REMOVE_PUNCT_TRANS_DICT = dict((ord(punct), None) for punct in string.punctuation)
 
 warnings.filterwarnings('ignore')
 nltk.download('popular', quiet=True)  # for downloading packages
+nltk.lemmer = WordNetLemmatizer()
 
-# uncomment the following only the first time
+
+def lemmatize_normalize(text):
+    tokens = nltk.word_tokenize(text.lower().translate(REMOVE_PUNCT_TRANS_DICT))
+    return [nltk.lemmer.lemmatize(token) for token in tokens]
+
+
+# Unless your installer has already done this you'll need to download the punkt and wordnet corpora from nltk
 # nltk.download('punkt') # first-time use only
 # nltk.download('wordnet') # first-time use only
+tfidf_vectorizer = TfidfVectorizer(tokenizer=lemmatize_normalize, stop_words='english')
 
 
-# Reading in the corpus
-with open(os.path.join(DATA_DIR, 'chatbot-depth3.txt'), 'r', encoding='utf8', errors='ignore') as fin:
-    raw = fin.read().lower()
+def load_wikipedia_text(path=WIKI_TEXT_PATH):
+    # Reading in the corpus
+    with open(path, 'r', encoding='utf8', errors='ignore') as fin:
+        raw = fin.read()
 
-# TOkenisation
-sent_tokens = nltk.sent_tokenize(raw)  # converts to list of sentences
-word_tokens = nltk.word_tokenize(raw)  # converts to list of words
-
-# Preprocessing
-lemmer = WordNetLemmatizer()
-
-
-def LemTokens(tokens):
-    return [lemmer.lemmatize(token) for token in tokens]
+    # TOkenisation
+    lowered = raw.lower()
+    sent_tokens = nltk.sent_tokenize(lowered)  # converts to list of sentences
+    word_tokens = nltk.word_tokenize(lowered)  # converts to list of words
+    return sent_tokens, word_tokens
 
 
-remove_punct_dict = dict((ord(punct), None) for punct in string.punctuation)
-
-
-def LemNormalize(text):
-    return LemTokens(nltk.word_tokenize(text.lower().translate(remove_punct_dict)))
-
-
-# Keyword Matching
-GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
-GREETING_RESPONSES = ["hi", "hey", "*nods*", "hi there", "hello", "I am glad! You are talking to me"]
+WIKI_SENTENCES, WIKI_WORDS = load_wikipedia_text()
+WIKI_TFIDF = tfidf_vectorizer.fit_transform(WIKI_SENTENCES)
 
 
 def greeting(sentence):
@@ -56,21 +57,21 @@ def greeting(sentence):
 
 
 # Generating response
-def response(user_response):
+def response(user_text):
+    user_text = [user_text] if isinstance(user_text, str) else user_text
     robo_response = ''
-    sent_tokens.append(user_response)
-    TfidfVec = TfidfVectorizer(tokenizer=LemNormalize, stop_words='english')
-    tfidf = TfidfVec.fit_transform(sent_tokens)
-    vals = cosine_similarity(tfidf[-1], tfidf)
-    idx = vals.argsort()[0][-2]
+    user_tfidf = tfidf_vectorizer.transform(user_text)
+
+    vals = cosine_similarity(user_tfidf, WIKI_TFIDF)
+    idx = vals.argsort()[0][-1]
     flat = vals.flatten()
     flat.sort()
-    req_tfidf = flat[-2]
+    req_tfidf = flat[-1]
     if(req_tfidf == 0):
         robo_response = robo_response + "I am sorry! I don't understand you"
         return robo_response
     else:
-        robo_response = robo_response + sent_tokens[idx]
+        robo_response = robo_response + WIKI_SENTENCES[idx]
         return robo_response
 
 
@@ -78,19 +79,19 @@ def main():
     flag = True
     print("ROBO: My name is Robo. I will answer your queries about Chatbots. If you want to exit, type Bye!")
     while flag:
-        user_response = input()
-        user_response = user_response.lower()
-        if(user_response != 'bye'):
-            if(user_response == 'thanks' or user_response == 'thank you'):
+        user_text = input()
+        user_text = user_text.lower()
+        if(user_text != 'bye'):
+            if(user_text == 'thanks' or user_text == 'thank you'):
                 flag = False
                 print("ROBO: You are welcome..")
             else:
-                if(greeting(user_response) is not None):
-                    print("ROBO: " + greeting(user_response))
+                if(greeting(user_text) is not None):
+                    print("ROBO: " + greeting(user_text))
                 else:
                     print("ROBO: ", end="")
-                    print(response(user_response))
-                    # sent_tokens.remove(user_response)
+                    print(response(user_text))
+                    # sent_tokens.remove(user_text)
         else:
             flag = False
             print("ROBO: Bye! take care..")
