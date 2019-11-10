@@ -53,10 +53,10 @@ MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
 
-def normalize_replies(replies):
+def normalize_replies(replies=''):
     if isinstance(replies, str):
         replies = [(1e-10, replies)]
-    if isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
+    elif isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
         replies = [(replies[0], str(replies[1]))]
     return sorted([
         ((1e-10, r) if isinstance(r, str) else tuple(r))
@@ -77,7 +77,7 @@ class CLIBot:
         module_names = [m if m.endswith('_bots') else f'{m}_bots' for m in bots]
         modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
         self.bots = [m.Bot() for m in modules]
-        self.repliers = [bot.reply for bot in self.bots]
+        self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
 
     def reply(self, statement=''):
         log.info(f'statement={statement}')
@@ -85,8 +85,9 @@ class CLIBot:
         for replier in self.repliers:
             bot_replies = []
             try:
-                bot_replies = normalize_replies(replier(statement))
+                bot_replies = replier(statement)
             except Exception as e:
+                log.error(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
                 log.error(str(e))
                 try:
                     log.debug(repr(replier))
@@ -95,8 +96,10 @@ class CLIBot:
                     log.warn(str(e))
                 except Exception as e:
                     log.error(str(e))
+            bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
         if len(replies):
+            log.info(f'Found {len(replies)} suitable replies...')
             cumsum = 0
             cdf = list()
             for reply in replies:
