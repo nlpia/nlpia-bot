@@ -1,7 +1,7 @@
 # make sure you `pip install --upgrade git+https://github.com/lucasdnd/Wikipedia.git`
 import time
 import pandas as pd
-import wikipedia
+from wikipediaapi import Wikipedia
 
 from nlpia_bot.spacy_language_model import nlp
 
@@ -27,6 +27,7 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     """
 
     titles = list([titles] if isinstance(titles, str) else titles)
+    exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
     depths = list([0] * len(titles))
     title_depths = list(zip(titles, depths))
     sentences = []
@@ -34,6 +35,7 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     # FIXME: record title tree (see also) so that .2*title1+.3*title2+.5*title3 can be semantically appended to sentences
     titles_scraped = set([''])
     title, d = '', 0
+    wiki = Wikipedia()
     for depth in range(max_depth):
         for i in range(max_articles):
             try:
@@ -57,28 +59,32 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
             if not len(title.strip()):
                 continue
             titles_scraped.add(title)
-            try:
-                page = wikipedia.WikipediaPage(title)
-            except (wikipedia.PageError, KeyError) as e:
+            page = wiki.article(title)
+            if not (len(page.text) + len(page.summary)):
                 log.error(f"Unable to retrieve {title}")
-                log.error(e)
-                time.sleep(3)
+                time.sleep(2.17)
                 continue
             if see_also and d + 1 < max_depth:
-                title_depths.extend((t, d + 1) for t in (page.section('See also') or '').split('\n'))
-                # log.warn(f'title_depths: {title_depths}')
-            for heading in page.sections:
-                if heading in exclude_headings:
+                # .full_text() includes the section heading ("See also"). .text does not
+                section = page.section_by_title('See also')
+                if not section:
                     continue
-                text = page.section(heading)
+                for t in section.text.split('\n')[1:]:
+                    if t in page.links:
+                        title_depths.append((t, d + 1))
+                log.debug(f'extended title_depths at depth {d}: {title_depths}')
+            for section in page.sections:
+                if section.title.lower().strip() in exclude_headings:
+                    continue
                 # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
-                text = (text or '').replace('’', "'")  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
+                text = section.text.replace('’', "'")  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
                 # FIXME: need to rejoin short names before colons, like 'ELIZA:' 'Tell me...', and 'Human:' 'What...'
                 # FIXME: need to split on question marks without white space but where next word is capitalized: ...to be unhappy?Though designed strictly...
                 sentences.extend([
-                    (d, title, heading, s.text) for s in nlp(text).sents if (
+                    (d, title, section.title, s.text) for s in nlp(text).sents if (
                         len(s.text.strip().strip('"').strip("'").strip()) > 1)
-                    ])
+                ])
+            log.debug(f'Parsed {len(sentences)} sentences.')
 
             # retval = parse_sentences(
             #     title=title, sentences=sentences, title_depths=title_depths, see_also=see_also,
@@ -95,6 +101,6 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     return pd.DataFrame(sentences, columns='depth title section sentence'.split())
 
 
-def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
+# def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
 
-    return sentences, title_depths
+#     return sentences, title_depths
