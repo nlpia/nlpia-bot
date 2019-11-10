@@ -1,0 +1,25 @@
+name: nlpiaenv
+
+channels:
+  - anaconda
+  - conda-forge
+  - defaults
+
+dependencies:
+  - boto3
+  - django
+  - jupyter
+  - keras
+  - nltk
+  - pandoc
+  - pip>=19.0
+  - pyscaffold
+  - pytest-cov
+  - python-levenshtein
+  - redis-py
+  - regex
+  - spacy
+  - tensorflow
+
+  - pip:
+    - -r requirements.txt
