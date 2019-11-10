@@ -19,11 +19,12 @@
 # botocore==1.12.163
 django
 django_extensions
+gitpython
 jupyter
 keras
 # nlpia>=0.1.89
 pandas
-psycopg2
+# psycopg2
 pyasn1<0.5.0,>=0.4.6
 # tensorflow_hub
 python_chatbot>=0.0.8
