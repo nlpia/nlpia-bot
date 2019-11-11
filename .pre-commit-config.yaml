@@ -1,4 +1,5 @@
 exclude: '^docs/conf.py'
+exclude: '^nlpia_bot/data/'
 
 repos:
 - repo: git://github.com/pre-commit/pre-commit-hooks
