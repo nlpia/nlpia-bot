@@ -18,6 +18,7 @@ Note: This skeleton file can be safely removed if not needed!
 import argparse
 import configparser
 import logging
+import spacy
 import sys
 import importlib
 
@@ -37,6 +38,8 @@ import pandas as pd
 # )
 
 from nlpia_bot import __version__
+from spacy_hunspell import spaCyHunSpell
+from sys import platform
 
 
 __author__ = "see AUTHORS.md and README.md: Travis, Aliya, Xavier, Nima, Hobson, ..."
@@ -78,6 +81,24 @@ class CLIBot:
         modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
         self.bots = [m.Bot() for m in modules]
         self.repliers = [bot.reply for bot in self.bots]
+        self.nlp = spacy.load('en_core_web_sm')
+        if platform == 'linux' or platform == 'linux2':
+            hunspell = spaCyHunSpell(self.nlp, 'linux')
+        elif platform == 'darwin':
+            hunspell = spaCyHunSpell(self.nlp, 'mac')
+        elif platform == 'win32':
+            # TODO determine paths for en_US.dic and en_US.aff on windows
+            hunspell = spaCyHunSpell(self.nlp, ('en_US.dic', 'en_US.aff'))
+        self.nlp.add_pipe(hunspell)
+
+    def spellcheck_replies(self, replies):
+        docs = self.nlp.pipe([tup[1] for tup in replies])
+        updated_replies = list()
+        for i, doc in enumerate(docs):
+            correct_count = sum([1 if token._.hunspell_spell and not token.is_punct else 0 for token in doc])
+            correct_ratio = correct_count / sum([1 if not token.is_punct else 0 for token in doc])
+            updated_replies.append((replies[i][0] * correct_ratio, doc.text))
+        return updated_replies
 
     def reply(self, statement=''):
         log.info(f'statement={statement}')
@@ -97,6 +118,7 @@ class CLIBot:
                     log.error(str(e))
             replies.extend(bot_replies)
         if len(replies):
+            replies = self.spellcheck_replies(replies)
             cumsum = 0
             cdf = list()
             for reply in replies:
