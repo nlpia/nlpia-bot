@@ -46,7 +46,7 @@ def walk_repos(base_dir=BASE_DIR):
 def walk_commits(base_dir=BASE_DIR, author_regex=None, email_regex=None):
     """ yield one commit at a time for repo in base_dir and any contained directories
 
-    >>> recent_commit = next(walk_timeline(BASE_DIR))
+    >>> recent_commits = next(walk_commits(BASE_DIR))
     >>> sorted(recent_commit.items()))
     [('commit', '...'),
      ('datetime', '20...'),
@@ -70,9 +70,10 @@ def walk_commits(base_dir=BASE_DIR, author_regex=None, email_regex=None):
             for c in commit_generator:
                 if not author_regex or regex.match(author_regex, c.author.name) and (
                         not email_regex or regex.match(email_regex, c.author.email)):
+                    # return c
                     yield dict(zip('datetime commit email name stats'.split(),
                                    (c.authored_datetime.isoformat(),
-                                    c.working_dir,
+                                    repo.working_dir,
                                     c.hexsha,
                                     c.author.email,
                                     c.author.name,
@@ -169,7 +170,7 @@ class Bot:
         """ Generate an invoice or timecard for a project """
         log.warn('Timcard reply in progress...')
         responses = []
-        match = regex.match(r'\b(timecard|punchcard|invoice)\b[ ]*([a-zA-Z0-9_-]*)\b', statement.lower())
+        match = regex.match(r'\b(timecard|punchcard|invoice)\b[\s]*([a-zA-Z0-9_-]*)\b', statement.lower())
         if match:
             responses.append((1.0, f"Here's your timecard for project {match}"))
         return responses
