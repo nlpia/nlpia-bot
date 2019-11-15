@@ -51,3 +51,13 @@ SENTENCE_SPEC = json.load(open(SENTENCE_SPEC_PATH, 'r'))
 
 # Universal Sentence Encoder's TF Hub module for creating USE Embeddings from
 USE = None
+
+
+class passthroughSpaCyPipe:
+    """ Callable pass-through SpaCy Pipeline Component class (callable) for fallback if spacy_hunspell.spaCyHunSpell fails"""
+    def __init__(*args, **kwargs):
+        pass
+
+    def __call__(self, doc):
+        log.info(f"This passthroughSpaCyPipe component only logs the token count: {len(doc)}")
+        return doc
