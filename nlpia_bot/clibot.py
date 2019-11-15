@@ -38,8 +38,13 @@ import pandas as pd
 # )
 
 from nlpia_bot import __version__
-from spacy_hunspell import spaCyHunSpell
-from sys import platform
+try:
+    from spacy_hunspell import spaCyHunSpell
+except ImportError:
+    class spaCyHunSpell:
+        def __call__(doc):
+            log.info(f"This mock spaCyHunSpell for Windows only counts and logs the number of tokens: {len(doc)}")
+            return doc
 
 
 __author__ = "see AUTHORS.md and README.md: Travis, Aliya, Xavier, Nima, Hobson, ..."
@@ -64,7 +69,7 @@ def normalize_replies(replies):
     return sorted([
         ((1e-10, r) if isinstance(r, str) else tuple(r))
         for r in replies
-        ], reverse=True)
+    ], reverse=True)
 
 
 def bots_from_personalities(personalities):
@@ -82,21 +87,22 @@ class CLIBot:
         self.bots = [m.Bot() for m in modules]
         self.repliers = [bot.reply for bot in self.bots]
         self.nlp = spacy.load('en_core_web_sm')
-        if platform == 'linux' or platform == 'linux2':
+        if sys.platform == 'linux' or sys.platform == 'linux2':
             hunspell = spaCyHunSpell(self.nlp, 'linux')
-        elif platform == 'darwin':
+        elif sys.platform == 'darwin':
             hunspell = spaCyHunSpell(self.nlp, 'mac')
-        elif platform == 'win32':
+        elif sys.platform == 'win32':
             # TODO determine paths for en_US.dic and en_US.aff on windows
-            hunspell = spaCyHunSpell(self.nlp, ('en_US.dic', 'en_US.aff'))
+            hunspell = spaCyHunSpell()  # self.nlp, ('en_US.dic', 'en_US.aff'))
         self.nlp.add_pipe(hunspell)
 
     def spellcheck_replies(self, replies):
         docs = self.nlp.pipe([tup[1] for tup in replies])
         updated_replies = list()
         for i, doc in enumerate(docs):
-            correct_count = sum([1 if token._.hunspell_spell and not token.is_punct else 0 for token in doc])
-            correct_ratio = correct_count / sum([1 if not token.is_punct else 0 for token in doc])
+            correct_count = sum([(getattr(getattr(token, '_', token), 'hunspell_spell', 0) and not token.is_punct)
+                                 for token in doc])
+            correct_ratio = (correct_count + 1) / (sum([1 if not token.is_punct else 0 for token in doc]) + 1)
             updated_replies.append((replies[i][0] * correct_ratio, doc.text))
         return updated_replies
 
