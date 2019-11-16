@@ -38,14 +38,12 @@ import pandas as pd
 # )
 
 from nlpia_bot import __version__
+from nlpia_bot.constants import passthroughSpaCyPipe
+
 try:
     from spacy_hunspell import spaCyHunSpell
 except ImportError:
-    class spaCyHunSpell:
-        def __call__(doc):
-            log.info(f"This mock spaCyHunSpell for Windows only counts and logs the number of tokens: {len(doc)}")
-            return doc
-
+    spaCyHunSpell = passthroughSpaCyPipe
 
 __author__ = "see AUTHORS.md and README.md: Travis, Aliya, Xavier, Nima, Hobson, ..."
 __copyright__ = "Hobson Lane"
@@ -91,9 +89,12 @@ class CLIBot:
             hunspell = spaCyHunSpell(self.nlp, 'linux')
         elif sys.platform == 'darwin':
             hunspell = spaCyHunSpell(self.nlp, 'mac')
-        elif sys.platform == 'win32':
-            # TODO determine paths for en_US.dic and en_US.aff on windows
-            hunspell = spaCyHunSpell()  # self.nlp, ('en_US.dic', 'en_US.aff'))
+        else:  # sys.platform == 'win32':
+            try:
+                # TODO determine paths for en_US.dic and en_US.aff on windows
+                hunspell = spaCyHunSpell(self.nlp, ('en_US.dic', 'en_US.aff'))
+            except Exception:
+                hunspell = passthroughSpaCyPipe()
         self.nlp.add_pipe(hunspell)
 
     def spellcheck_replies(self, replies):
