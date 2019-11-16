@@ -18,6 +18,7 @@ Note: This skeleton file can be safely removed if not needed!
 import argparse
 import configparser
 import logging
+import nltk
 import sys
 import importlib
 
@@ -37,6 +38,7 @@ import pandas as pd
 # )
 
 from nlpia_bot import __version__
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 
 __author__ = "see AUTHORS.md and README.md: Travis, Aliya, Xavier, Nima, Hobson, ..."
@@ -78,6 +80,18 @@ class CLIBot:
         modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
         self.bots = [m.Bot() for m in modules]
         self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
+        try:
+            self.sentiment_analyzer = SentimentIntensityAnalyzer()
+        except LookupError:
+            nltk.download('vader_lexicon')
+            self.sentiment_analyzer = SentimentIntensityAnalyzer()
+
+    def sentiment_check(self, replies):
+        updated_replies = list()
+        for tup in replies:
+            updated_score = tup[0] if self.sentiment_analyzer.polarity_scores(tup[1])['compound'] > -0.5 else 0.0
+            updated_replies.append((updated_score, tup[1]))
+        return updated_replies
 
     def reply(self, statement=''):
         log.info(f'statement={statement}')
@@ -100,6 +114,7 @@ class CLIBot:
             replies.extend(bot_replies)
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies...')
+            replies = self.sentiment_check(replies)
             cumsum = 0
             cdf = list()
             for reply in replies:
