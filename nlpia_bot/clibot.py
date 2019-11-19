@@ -18,6 +18,7 @@ Note: This skeleton file can be safely removed if not needed!
 import argparse
 import configparser
 import logging
+import nltk
 import spacy
 import sys
 import importlib
@@ -39,6 +40,7 @@ import pandas as pd
 
 from nlpia_bot import __version__
 from nlpia_bot.constants import passthroughSpaCyPipe
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 try:
     from spacy_hunspell import spaCyHunSpell
@@ -96,6 +98,11 @@ class CLIBot:
             except Exception:
                 hunspell = passthroughSpaCyPipe()
         self.nlp.add_pipe(hunspell)
+        try:
+            self.sentiment_analyzer = SentimentIntensityAnalyzer()
+        except LookupError:
+            nltk.download('vader_lexicon')
+            self.sentiment_analyzer = SentimentIntensityAnalyzer()
 
     def spellcheck_replies(self, replies):
         docs = self.nlp.pipe([tup[1] for tup in replies])
@@ -105,6 +112,13 @@ class CLIBot:
                                  for token in doc])
             correct_ratio = (correct_count + 1) / (sum([1 if not token.is_punct else 0 for token in doc]) + 1)
             updated_replies.append((replies[i][0] * correct_ratio, doc.text))
+        return updated_replies
+
+    def sentiment_check(self, replies):
+        updated_replies = list()
+        for tup in replies:
+            updated_score = tup[0] if self.sentiment_analyzer.polarity_scores(tup[1])['compound'] > -0.5 else 0.0
+            updated_replies.append((updated_score, tup[1]))
         return updated_replies
 
     def reply(self, statement=''):
@@ -129,6 +143,7 @@ class CLIBot:
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies...')
             replies = self.spellcheck_replies(replies)
+            replies = self.sentiment_check(replies)
             cumsum = 0
             cdf = list()
             for reply in replies:
