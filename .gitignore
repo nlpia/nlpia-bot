@@ -58,3 +58,6 @@ db.sqlite3
 .bash_env
 **/*secret*
 **/*private*
+
+# KDE
+.directory
