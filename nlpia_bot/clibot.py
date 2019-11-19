@@ -18,6 +18,7 @@ Note: This skeleton file can be safely removed if not needed!
 import argparse
 import configparser
 import logging
+import spacy
 import sys
 import importlib
 
@@ -78,6 +79,16 @@ class CLIBot:
         modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
         self.bots = [m.Bot() for m in modules]
         self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
+        self.nlp = spacy.load("en_core_web_md")
+
+    def semantic_check(self, statement, replies):
+        updated_replies = list()
+        stmt_doc = self.nlp(statement)
+        reply_docs = self.nlp.pipe([tup[1] for tup in replies])
+        for i, reply_doc in enumerate(reply_docs):
+            updated_score = replies[i][0] * stmt_doc.similarity(reply_doc)
+            updated_replies.append((updated_score, reply_doc.text))
+        return updated_replies
 
     def reply(self, statement=''):
         log.info(f'statement={statement}')
@@ -100,6 +111,7 @@ class CLIBot:
             replies.extend(bot_replies)
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies...')
+            replies = self.semantic_check(statement, replies)
             cumsum = 0
             cdf = list()
             for reply in replies:
