@@ -22,7 +22,6 @@ pip install --editable .
 
 ## Work in Progress
 
-- Aliya (@beetpoet) working on a *mystery* feature
 - Travis (@travis-harper): markhov chain reply selection and other data science enhancements
 - Nima (@hulkgeek): question answering bot based on his state of the art question classifier
 - Xavier (@spirovanni): employment counselor for workforce.org and the city of San Diego
@@ -31,7 +30,7 @@ pip install --editable .
 
 ## Next Steps
 
-1. movie dialog in dajngo database to hold the statement->response pairs
+1. movie dialog in django database to hold the statement->response pairs
     1. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow   charts.
     2. ubuntu dialog corpus in db
     3. mindfulness faq corpus in db
@@ -40,7 +39,7 @@ pip install --editable .
     6. data science faq
     7. nlpia faq
     8. psychology/self-help faq
-2. html django template so there's a web interface to the app rather than just the command line command "bot"
+2. html django template so there is a web interface to the app rather than just the command line command `bot`
 3. use Django Rest Framework to create a basic API that returns json containing a reply to any request sent to the local host url, like `http://localhost:8000/api?statement='Hello world'` might return {'reply': 'Hello human!'}
 4. have the command line app use the REST API from #3 rather than the slow reloading of the csv file every time you talk to the bot
 5. use database full text search to find appropriate statements in the database that we have a response for
@@ -85,6 +84,7 @@ A lot of the patterns and ideas were gleaned from other awesome prosocial chatbo
 - [Replika](replika.ai) from US is paywalled
     - personality profile test
     - pay to unlock "skills" training
+- [Youper](youper.ai) (thank you Maria and [tangibleai.com](tangibleai.com))
 
 
 ### Open Source Frameworks
