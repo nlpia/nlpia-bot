@@ -1328,3 +1328,9 @@
 -
   Q: "When I did a `.value_counts()` and then a `df.plot()` but it tells me that the dataframe is empty because it doesn't contain any numeric data. What gives?"
   A: "Examine the dataframe in your variable df to see if it contains any numerical data for the columns you've selected. You may have done your `.value_counts()` and not saved the Series that `.value_counts()` returns into a variable. So you're just calling `.plot()` on the original data with uncounted categorical data (strings) which can't be plotted."
+-
+  Q: "What is the difference between a null value in pandas (`df.isnull()`) and a nan value (`df.isna()`)?"
+  A: Null values include both `np.nan` and empty strings like ''.
+-
+  Q: "What is the difference between a numpy `array` and a pandas `Series`?"
+  A: "A Pandas series is indexed according to a label, similar to how a dictionary is indexed by keys. A numpy array is only indexed by the consecutive integers of the positions of the objects within the array. When you perform mathematical operations, array elements are operated on in the order they appear within the array. When you performan mathematical operations on Series only matching indices in a binary operation are operated on together. "
