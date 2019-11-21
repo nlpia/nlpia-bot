@@ -25,17 +25,44 @@ pip install --editable .
 
 ## Usage
 
+```bash
+$ bot --help
+usage: bot [-h] [--version] [--name STR] [-p] [-b STR] [-v] [-vv]
+           [words [words ...]]
+
+Command line bot application, e.g. bot how do you work?
+
+positional arguments:
+  words                Words to pass to bot as an utterance or conversational
+                       statement requiring a bot reply or action.
+
+optional arguments:
+  -h, --help           show this help message and exit
+  --version            show program's version number and exit
+  --name STR           IRC nick or CLI command name for the bot
+  -p, --persist        Don't exit. Retain language model in memory and
+                       maintain dialog until user says 'exit', 'quit' or 'bye'
+                       (this is the default behavior if you do not provide a statement)
+  -b STR, --bots STR   comma-separated list of bot personalities to load
+                       like pattern,parul,search_fuzzy,time
+  -v, --verbose        set loglevel to INFO
+  -vv, --very-verbose  set loglevel to DEBUG
+```
+
+## Examples
+
 You can run bot just like any other command line app, giving it your statement/query as an argument.
 
 ```bash
 $ bot hello
-2019-11-21 12:42:13,620 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
-100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 540679.58it/s]
+# 2019-11-21 12:42:13,620 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
+# 100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 540679.58it/s]
 BOT: Hello
 ```
 
-And if you want quicker turnaround on your bot you can just run it in peristent mode (without any positional arguments).
-Travis's probabilistic reply selector is working nicely to chose a reply from multiple sources
+And if you want quicker turnaround on your bot you can just run it in peristent mode (without any positional arguments for your statement or words).
+
+Travis's probabilistic reply selector is working nicely to chose a reply from multiple sources (default settings):
 
 - `pattern_bots.py`: regex patterns and greeting templates
 - `fuzzy_search_bots.py`: movie dialog fuzzy matching
@@ -46,8 +73,8 @@ Travis's probabilistic reply selector is working nicely to chose a reply from mu
 ```bash
 $ bot
 (nlpia) hobs@Hobsons-MacBook-Air:~/code/chatbot/nlpia-bot$ bot
-2019-11-21 12:59:05,854 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
-100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 495935.48it/s]
+# 2019-11-21 12:59:05,854 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
+# 100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 495935.48it/s]
 YOU: Hi
 BOT: hey there. tired of breathing?
 YOU: Hello
@@ -80,7 +107,7 @@ $
 
 ## Ideas
 
-Please submit your feature ideas [github issues](https://github.com/nlpia/nlpia-bot/issues/)
+Please submit your feature ideas [github issues](https://github.com/nlpia/nlpia-bot/issues/). Here are a few ideas to get you started.
 
 1. movie dialog in django database to hold the statement->response pairs
     1. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow   charts.
