@@ -12,8 +12,6 @@ dependencies:
   - django-environ
   - django_extensions
   - gitpython
-  - hunspell
-  - hunspell-en
   - jupyter
   - keras
   - mysqlclient
@@ -35,8 +33,9 @@ dependencies:
   - spacy
   - sqlparse
   - tensorflow
-  # - twisted  # jupyter
+  - twisted  # jupyter
 
   - pip:
-    - wikipedia-api
+    - hunspell
     - nlpia
+    - wikipedia-api
