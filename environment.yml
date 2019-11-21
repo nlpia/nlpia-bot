@@ -10,7 +10,7 @@ dependencies:
   - botocore
   - django
   - django-environ
-  - django_extensions
+  - django-extensions
   - gitpython
   - hunspell
   - hunspell-en
@@ -30,7 +30,7 @@ dependencies:
   - python-levenshtein
   - python=3.7
   - redis-py
-  - regex
+  - regex==2018-01-10
   - scipy
   - spacy
   - sqlparse
@@ -40,3 +40,4 @@ dependencies:
   - pip:
     - wikipedia-api
     - nlpia
+    - msgpack<0.6.0,>=0.5.6
