@@ -13,13 +13,9 @@ LANG = 'en_core_web_sm'  # 'en_core_web_md' or 'en_core_web_lg' or maybe 'en'
 
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(SRC_DIR)
-DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
-if not os.path.isdir(DATA_DIR):
-    os.mkdir(DATA_DIR)
+DATA_DIR = os.path.join(SRC_DIR, 'data')
 LOG_DIR = os.path.join(DATA_DIR, 'log')
-if not os.path.isdir(LOG_DIR):
-    os.mkdir(LOG_DIR)
-
+os.makedirs(LOG_DIR, exist_ok=True)
 
 LOG_LEVELS = [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.FATAL]
 LOG_LEVEL_NAMES = 'DEBUG INFO WARNING ERROR FATAL'.split()
