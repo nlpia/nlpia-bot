@@ -8,20 +8,28 @@ channels:
 dependencies:
   - boto3
   - django
+  - django-environ
+  - django_extensions
   - gitpython
   - jupyter
   - keras
+  - mysqlclient
   - nltk
+  - pandas
   - pandoc
   - pip>=19.0
+  - plotly
+  - pre-commit
   - psycopg2
   - pyscaffold
   - pytest-cov
   - python-levenshtein
+  - python=3.7
   - redis-py
   - regex
+  - scipy
   - spacy
   - tensorflow
 
   - pip:
-    - -r requirements.txt
+    - wikipedia-api
