@@ -44,7 +44,7 @@ optional arguments:
                        maintain dialog until user says 'exit', 'quit' or 'bye'
                        (this is the default behavior if you do not provide a statement)
   -b STR, --bots STR   comma-separated list of bot personalities to load
-                       like pattern,parul,search_fuzzy,time
+                       default: pattern,parul,search_fuzzy,time,eliza
   -v, --verbose        set loglevel to INFO
   -vv, --very-verbose  set loglevel to DEBUG
 ```
@@ -66,8 +66,9 @@ Travis's probabilistic reply selector is working nicely to chose a reply from mu
 
 - `pattern_bots.py`: regex patterns and greeting templates
 - `fuzzy_search_bots.py`: movie dialog fuzzy matching
-- `parul_bots.py` Wikipedia searches using conventional TFIDF like a search engine
-- `eliza_bots.py` A python port of the ELIZA therapist bot
+- `parul_bots.py`: Wikipedia searches using conventional TFIDF like a search engine
+- `eliza_bots.py`: A python port of the ELIZA therapist bot
+- `time_bots.py`: A time and productivity tracker that parses your git logs and bash history
 
 
 ```bash

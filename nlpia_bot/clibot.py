@@ -159,7 +159,7 @@ def parse_args(args):
         '--bots',
         default="pattern,parul,search_fuzzy,eliza",  # None so config.ini can populate defaults
         dest="bots",
-        help="comma-separated list of bot personalities to load into bot: pattern,parul,search_fuzzy,time",
+        help="Comma-separated list of bot personalities to load. Defaults: pattern,parul,search_fuzzy,time,eliza",
         type=str,
         metavar="STR")
     parser.add_argument(
