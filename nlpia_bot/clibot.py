@@ -20,6 +20,7 @@ import configparser
 import logging
 import sys
 import importlib
+import collections.abc
 
 import numpy as np
 import pandas as pd
@@ -36,18 +37,20 @@ import pandas as pd
 #     WikipediaFeature
 # )
 
+from nlpia_bot import constants
+
 from nlpia_bot import __version__
 
 
-__author__ = "see AUTHORS.md and README.md: Travis, Aliya, Xavier, Nima, Hobson, ..."
+__author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Hobson, ..."
 __copyright__ = "Hobson Lane"
-__license__ = "The Hippocratic License (MIT + Do No Harm, see LICENSE.txt)"
+__license__ = "The Hippocratic License (MIT + *Do No Harm*, see LICENSE.txt)"
 
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
-BOT_PACKAGES = dict(pattern='pattern_bots', search_fuzzy='search_fuzzy_bots')
+
 BOT = None
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
@@ -64,20 +67,28 @@ def normalize_replies(replies=''):
     ], reverse=True)
 
 
-def bots_from_personalities(personalities):
-    if isinstance(personalities, str):
-        personalities = ','.join(personalities.split()).split(',')
-    bot_dict = BOT_PACKAGES
-    globals_dict = globals()
-    return [bot_dict.get(p, globals_dict.get(p)).Bot() for p in personalities]
-
-
 class CLIBot:
-    def __init__(self, bots=('pattern_bots', 'search_fuzzy_bots', 'parul_bots')):
-        module_names = [m if m.endswith('_bots') else f'{m}_bots' for m in bots]
-        modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
-        self.bots = [m.Bot() for m in modules]
+    bot_names = []
+    bot_modules = []
+    bots = []
+
+    def __init__(
+            self,
+            bots=constants.DEFAULT_BOTS):
+        if not isinstance(bots, collections.Mapping):
+            bots = dict(zip(bots, [None] * len(bots)))
+        for bot_name, bot_kwargs in bots.items():
+            bot_kwargs = {} if bot_kwargs is None else dict(bot_kwargs)
+            self.add_bot(bot_name, **bot_kwargs)
         self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
+
+    def add_bot(self, bot_name, **bot_kwargs):
+        bot_name = bot_name if bot_name.endswith('_bots') else f'{bot_name}_bots'
+        self.bot_names.append(bot_name)
+        bot_module = importlib.import_module(f'nlpia_bot.{bot_name}')
+        self.bot_modules.append(bot_module)
+        self.bots.append(bot_module.Bot(**bot_kwargs))
+        return self.bots[-1]
 
     def reply(self, statement=''):
         log.info(f'statement={statement}')

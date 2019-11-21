@@ -13,19 +13,69 @@ The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22-
 
 ## Install
 
+You'll want to install and use the conda package manager within Anaconda3, especially if your development environment is not a open standard operating system like Linux.
+
 ```bash
-git clone git@github.com:nlpia/nlpia-bot`
+git clone git@github.com:nlpia/nlpia-bot
 cd nlpia-bot
-pip install -r requirements.txt
+conda env create -n nlpia -f environment.yml  # or environment-windoze.yml
+conda activate nlpia
 pip install --editable .
 ```
 
+## Usage
+
+You can run bot just like any other command line app, giving it your statement/query as an argument.
+
+```bash
+$ bot hello
+2019-11-21 12:42:13,620 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
+100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 540679.58it/s]
+BOT: Hello
+```
+
+And if you want quicker turnaround on your bot you can just run it in peristent mode (without any positional arguments).
+Travis's probabilistic reply selector is working nicely to chose a reply from multiple sources
+
+- `pattern_bots.py`: regex patterns and greeting templates
+- `fuzzy_search_bots.py`: movie dialog fuzzy matching
+- `parul_bots.py` Wikipedia searches using conventional TFIDF like a search engine
+- `eliza_bots.py` A python port of the ELIZA therapist bot
+
+
+```bash
+$ bot
+(nlpia) hobs@Hobsons-MacBook-Air:~/code/chatbot/nlpia-bot$ bot
+2019-11-21 12:59:05,854 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
+100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 495935.48it/s]
+YOU: Hi
+BOT: hey there. tired of breathing?
+YOU: Hello
+BOT: How do you do. Please state your problem.
+YOU: What is an ELIZA chatbot?
+BOT: joey never told you we went out, did he?
+YOU: ^[[A
+BOT: I am sorry! I dont understand you
+YOU: What is an ELIZA chatbot?
+BOT: Does that question interest you ?
+YOU: What is a chatbot?
+BOT: hello barbie is an internet-connected version of the doll that uses a chatbot provided by the company toytalk, which previously used the chatbot for a range of smartphone-based characters for children.
+YOU: Hello
+BOT: hello.
+YOU: Hello
+BOT: How do you do. Please state your problem.
+YOU: bye
+$
+```
+
 ## Work in Progress
+
 
 - Travis (@travis-harper): markhov chain reply selection and other data science enhancements
 - Nima (@hulkgeek): question answering bot based on his state of the art question classifier
 - Xavier (@spirovanni): employment counselor for workforce.org and the city of San Diego
 - Hobson (@hobson): infrastructure (CI, webapp) and framework features (nltk->spacy, USE vectors)
+- Erturgrul: Turkish wikipedia QA bot (parul bot)
 - You: What big chatbot idea would you like to make a reality?
 
 ## Next Steps
