@@ -1334,3 +1334,14 @@
 -
   Q: "What is the difference between a numpy `array` and a pandas `Series`?"
   A: "A Pandas series is indexed according to a label, similar to how a dictionary is indexed by keys. A numpy array is only indexed by the consecutive integers of the positions of the objects within the array. When you perform mathematical operations, array elements are operated on in the order they appear within the array. When you performan mathematical operations on Series only matching indices in a binary operation are operated on together. "
+-
+  Q:  "What data science packages do you use regularly in addition to pandas, numpy, scikit-learn, jupyter, matplotlib?"
+  A: "Django or sqlalchemy for database ORMs. Spacy for NLP. OpenCV and Keras for computer vision (images). Plotly for interactive visualizations and dashboards."
+-
+  Q: "How can I plot red dots for one crime type and blue dots for another crime type on the same plot?"
+  A: |
+    You can specify a different color for two different plots on the same `axis` if you pass your new axis into the next plot method call.
+    ```python
+    ax = df[df['crime_type']=='crime_type1']].plot(kind='scatter', x='lon', y='lat', color='r')
+    ax = df[df['crime_type']=='crime_type2']].plot(ax=ax, kind='scatter', x='lon', y='lat', color='b', alpha=.1)
+    ```
