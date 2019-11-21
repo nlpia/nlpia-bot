@@ -9,7 +9,7 @@ This hybrid chatbot combines 4 techniques explained in [NLP in Action](https://w
     3. generative deep learning: [robot-bernie](https://github.com/nlpia/robot-bernie), [movie-bot](https://github.com/totalgood/nlpia/blob/master/src/nlpia/book/examples/ch10_movie_dialog_chatbot.py)
     4. grounding: [snips](https://github.com/snipsco/snips-nlu)
 
-The presentation from San Diego Python User Group is in [docs/](docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp)
+The presentations for San Diego Python User Group are in [docs/](/docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp)
 
 ## Install
 
@@ -78,7 +78,9 @@ $
 - Erturgrul: Turkish wikipedia QA bot (parul bot)
 - You: What big chatbot idea would you like to make a reality?
 
-## Next Steps
+## Ideas
+
+Please submit your feature ideas [github issues](https://github.com/nlpia/nlpia-bot/issues/)
 
 1. movie dialog in django database to hold the statement->response pairs
     1. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow   charts.
