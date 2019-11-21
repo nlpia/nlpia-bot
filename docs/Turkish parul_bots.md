@@ -30,7 +30,6 @@ Here's how to use the NLTK turkish language model (tokenizer):
 >>> import nltk
 >>> nltk.download('popular')
 >>> nltk.corpus.stopwords.words('turkish')
->>> nltk.corpus.stopwords.words('turkish')
 ['acaba',
  'ama',
  'aslında',
