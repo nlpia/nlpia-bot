@@ -16,6 +16,7 @@ dependencies:
   - hunspell-en
   - jupyter
   - keras
+  # - msgpack<0.6.0,>=0.5.6
   - mysqlclient
   - nltk
   - pandas
@@ -30,14 +31,14 @@ dependencies:
   - python-levenshtein
   - python=3.7
   - redis-py
-  - regex==2018-01-10
+  - regex==2018.1.10
   - scipy
-  - spacy
+  - spacy==2.0.12
   - sqlparse
-  - tensorflow
+  - tensorflow==1.13.1
   # - twisted  # jupyter
 
   - pip:
     - wikipedia-api
     - nlpia
-    - msgpack<0.6.0,>=0.5.6
+    # - msgpack<0.6.0,>=0.5.6

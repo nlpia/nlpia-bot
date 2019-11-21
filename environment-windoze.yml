@@ -28,14 +28,14 @@ dependencies:
   - python-levenshtein
   - python=3.7
   - redis-py
-  - regex
+  - regex==2018-01-10
   - scipy
-  - spacy
+  - spacy==2.0.12
   - sqlparse
   - tensorflow
-  - twisted  # jupyter
+  # - twisted  # jupyter
 
   - pip:
-    - hunspell
-    - nlpia
     - wikipedia-api
+    - nlpia
+    - msgpack<0.6.0,>=0.5.6
