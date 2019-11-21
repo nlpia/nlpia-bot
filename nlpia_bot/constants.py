@@ -25,14 +25,16 @@ LOG_LEVELS = [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, loggi
 LOG_LEVEL_NAMES = 'DEBUG INFO WARNING ERROR FATAL'.split()
 LOG_LEVEL_ABBREVIATIONS = [s[:4].lower() for s in LOG_LEVEL_NAMES]
 
+logging.basicConfig(
+    format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+    datefmt='%Y-%m-%d:%H:%M:%S',
+    level=logging.WARNING)
 root_logger = logging.getLogger()
-root_logger.setLevel(logging.WARN)
 
 log = logging.getLogger(__name__)
 # handler = logging.handlers.TimedRotatingFileHandler(os.path.join(LOG_DIR, 'nlpia_bot.constants.log'), when='midnight')
 # handler.setLevel(logging.INFO)
 # log.addHandler(handler)
-log.setLevel(logging.INFO)
 
 try:
     STOPWORDS_DICT = Counter(nltk.corpus.stopwords.words('english'))
