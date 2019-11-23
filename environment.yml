@@ -6,17 +6,18 @@ channels:
   - defaults
 
 dependencies:
+  - beautifulsoup4
   - boto3
   - botocore
   - django
   - django-environ
   - django-extensions
   - gitpython
+  - html5lib
   - hunspell
   - hunspell-en
   - jupyter
   - keras
-  # - msgpack<0.6.0,>=0.5.6
   - mysqlclient
   - nltk
   - pandas
@@ -25,7 +26,6 @@ dependencies:
   - plotly
   - pre-commit
   - psycopg2
-  # - pyasn1  # jupyter
   - pyscaffold
   - pytest-cov
   - python-levenshtein
@@ -36,7 +36,6 @@ dependencies:
   - spacy==2.2.2
   - sqlparse
   - tensorflow==1.13.1
-  # - twisted  # jupyter
 
   - pip:
     - wikipedia-api
