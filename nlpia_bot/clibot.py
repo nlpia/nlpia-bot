@@ -17,11 +17,9 @@ Note: This skeleton file can be safely removed if not needed!
 """
 import argparse
 import configparser
-import logging
-import nltk
-import spacy
-import sys
 import importlib
+import logging
+import sys
 
 import numpy as np
 import pandas as pd
@@ -39,13 +37,8 @@ import pandas as pd
 # )
 
 from nlpia_bot import __version__
-from nlpia_bot.constants import passthroughSpaCyPipe
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from scores.quality_score import QualityScore
 
-try:
-    from spacy_hunspell import spaCyHunSpell
-except ImportError:
-    spaCyHunSpell = passthroughSpaCyPipe
 
 __author__ = "see AUTHORS.md and README.md: Travis, Aliya, Xavier, Nima, Hobson, ..."
 __copyright__ = "Hobson Lane"
@@ -86,50 +79,8 @@ class CLIBot:
         modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
         self.bots = [m.Bot() for m in modules]
         self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
-        self.nlp = spacy.load("en_core_web_md")
-        if sys.platform == 'linux' or sys.platform == 'linux2':
-            hunspell = spaCyHunSpell(self.nlp, 'linux')
-        elif sys.platform == 'darwin':
-            hunspell = spaCyHunSpell(self.nlp, 'mac')
-        else:  # sys.platform == 'win32':
-            try:
-                # TODO determine paths for en_US.dic and en_US.aff on windows
-                hunspell = spaCyHunSpell(self.nlp, ('en_US.dic', 'en_US.aff'))
-            except Exception:
-                hunspell = passthroughSpaCyPipe()
-        self.nlp.add_pipe(hunspell)
-        try:
-            self.sentiment_analyzer = SentimentIntensityAnalyzer()
-        except LookupError:
-            nltk.download('vader_lexicon')
-            self.sentiment_analyzer = SentimentIntensityAnalyzer()
-
-    def spellcheck_replies(self, replies):
-        docs = self.nlp.pipe([tup[1] for tup in replies])
-        updated_replies = list()
-        for i, doc in enumerate(docs):
-            correct_count = sum([(getattr(getattr(token, '_', token), 'hunspell_spell', 0) and not token.is_punct)
-                                 for token in doc])
-            correct_ratio = (correct_count + 1) / (sum([1 if not token.is_punct else 0 for token in doc]) + 1)
-            updated_replies.append((replies[i][0] * correct_ratio, doc.text))
-        return updated_replies
-
-    def sentiment_check(self, replies):
-        updated_replies = list()
-        for tup in replies:
-            updated_score = tup[0] if self.sentiment_analyzer.polarity_scores(tup[1])['compound'] > -0.5 else 0.0
-            updated_replies.append((updated_score, tup[1]))
-        return updated_replies
-
-    def semantic_check(self, statement, replies):
-        updated_replies = list()
-        stmt_doc = self.nlp(statement)
-        reply_docs = self.nlp.pipe([tup[1] for tup in replies])
-        for i, reply_doc in enumerate(reply_docs):
-            updated_score = replies[i][0] * stmt_doc.similarity(reply_doc)
-            updated_replies.append((updated_score, reply_doc.text))
-        return updated_replies
-
+        self.quality_score = QualityScore()
+        
     def reply(self, statement=''):
         log.info(f'statement={statement}')
         replies = []
@@ -151,9 +102,7 @@ class CLIBot:
             replies.extend(bot_replies)
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies...')
-            replies = self.spellcheck_replies(replies)
-            replies = self.sentiment_check(replies)
-            replies = self.semantic_check(statement, replies)
+            replies = self.quality_score.update_replies(replies, statement)
             cumsum = 0
             cdf = list()
             for reply in replies:
