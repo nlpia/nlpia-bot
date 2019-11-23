@@ -6,12 +6,14 @@ channels:
   - defaults
 
 dependencies:
+  - beautifulsoup4
   - boto3
   - botocore
   - django
   - django-environ
   - django_extensions
   - gitpython
+  - html5lib
   - jupyter
   - keras
   - mysqlclient
