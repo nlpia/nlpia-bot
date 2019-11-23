@@ -9,9 +9,9 @@ language: python
 
 matrix:
   include:
-    - python: 3.6
-      env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
-      env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
+    - python: 3.7
+      env: DISTRIB="conda" PYTHON_VERSION="3.7" COVERAGE="false"
+      # env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
       # $ source ~/virtualenv/python3.6_with_system_site_packages/bin/activate
       # /home/travis/.travis/functions: line 104: /home/travis/virtualenv/python3.6_with_system_site_packages/bin/activate: No such file or directory
 
