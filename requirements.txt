@@ -1,0 +1,21 @@
+boto3
+django
+django-environ
+django-extensions
+gitpython
+# hunspell
+# hunspell-en
+jupyter
+keras
+nlpia
+pandas
+pre-commit
+psycopg2
+regex
+scikit-learn
+scipy
+spacy
+sqlparse
+tensorboard
+tensorflow
+wikipedia-api
