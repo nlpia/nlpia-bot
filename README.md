@@ -1,8 +1,8 @@
 [![Build Status](https://api.travis-ci.com/nlpia/nlpia-bot.svg?branch=master)](https://travis-ci.com/nlpia/nlpia-bot)
 [![Coverage](https://codecov.io/gh/nlpia/nlpia-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/nlpia/nlpia-bot)
-[![GitHub release](https://img.shields.io/github/release/totalgood/nlpia.svg)](https://github.com/totalgood/nlpia/releases/latest)
-[![PyPI version](https://img.shields.io/pypi/pyversions/nlpia.svg)](https://pypi.org/project/nlpia/)
-[![License](https://img.shields.io/pypi/l/nlpia.svg)](https://pypi.python.org/pypi/nlpia/)
+[![GitHub release](https://img.shields.io/github/release/nlpia/nlpia-bot.svg)](https://github.com/nlpia/nlpia-bot/releases/latest)
+[![PyPI version](https://img.shields.io/pypi/pyversions/nlpia.svg)](https://pypi.org/project/nlpia-bot/)
+[![License](https://img.shields.io/pypi/l/nlpia.svg)](https://pypi.python.org/pypi/nlpia-bot/)
 
 # nlpia_bot
 
