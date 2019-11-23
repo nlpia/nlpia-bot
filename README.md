@@ -1,3 +1,9 @@
+[![Build Status](https://api.travis-ci.com/nlpia/nlpia-bot.svg?branch=master)](https://travis-ci.com/nlpia/nlpia-bot)
+[![Coverage](https://codecov.io/gh/nlpia/nlpia-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/nlpia/nlpia-bot)
+[![GitHub release](https://img.shields.io/github/release/totalgood/nlpia.svg)](https://github.com/totalgood/nlpia/releases/latest)
+[![PyPI version](https://img.shields.io/pypi/pyversions/nlpia.svg)](https://pypi.org/project/nlpia/)
+[![License](https://img.shields.io/pypi/l/nlpia.svg)](https://pypi.python.org/pypi/nlpia/)
+
 # nlpia_bot
 
 Use [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action) to build a virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your abilities and prosocial instincts.
