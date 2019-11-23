@@ -90,7 +90,7 @@ class Bot:
             self.db = self.load_dialog()
         movie_statement, percent_match, movie_reply = process.extractOne(
             normalize(statement), choices=self.db)
-        log.warn(f'movie_statement = {movie_statement}')
+        log.info(f'Closest movie_statement = {movie_statement}')
         return [((percent_match / 100.), movie_reply)]
 
 
