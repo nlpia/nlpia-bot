@@ -3,14 +3,10 @@ import nltk
 import sys
 import importlib
 
-
-from .semantics_score import semantics  # noqa
-from .sentiment_score import sentiment  # noqa
-from .spell_score import spell  # noqa
-
-from nlpia_bot.constants import passthroughSpaCyPipe
-from nlpia_bot import spacy_language_model
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+from ..constants import passthroughSpaCyPipe
+from .. import spacy_language_model
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
