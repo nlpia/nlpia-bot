@@ -1288,7 +1288,7 @@
   Q: "How can you do dimension reduction on a high dimensional vector like a TFIDF vector or an image?"
   A: "PCA is the most straightforward technique. It is a linear transformation that maximizes the distance between points that were far apart in the high dimesnsional space. TSNE is a nonlinear transformation that mainains the closeness of points that are close together."
 -
-  Q: How can I create a document vector using spacy?
+  Q: "How can I create a document vector using spacy?"
   A: |
     You can do it yourself by summing up all the word vectors:
     ```python
@@ -1316,3 +1316,32 @@
     Also, notice that mispelled words that don't exist in the spacy dictionary, like "Goobye" don't crash the loop. Spacy just returns an all-zero vector for those words.
 
     See the [spaCy documentation](https://spacy.io/usage/vectors-similarity) for more details.
+-
+  Q: "What are the different kinds of data science or machine learning features or predictor variables?"
+  A: "There are really on two kinds of features that can flow directly into a machine learning or data science model Continuous and Binary. In fact even binary features are treated as continuous features. All other data science features need to be converted into these types before it is ready for modeling with statistical or machine learning models. For example, categorical variables must be converted to an appropriate number of binary variables. Ordinal variables can be treated as categorical or continuous, but it's generally best to use them directly as continuous values once they are converted to numerical values with the appropriate order. Natural Language and Images are often converted to highdimensional binary or continuous vectors. Date, Time, and DateTime objects are usually converted to continuous values by subtracting two dates or times. They can also be converted to categorical or binary variables like Sunday, January, Summer, Rush Hour, Business Hours, Night. etc. Similarly latitiude and longitude and other location information can be converted to continuous values like distance from a landmark or categorical variables such as neighborhoods or addresses or states/counties/zips."
+-
+  Q: "Should you use a dictionary or a list to store a mapping between integer user IDs and usernames?"
+  A: "If the integers are consecutive and start at zero and you want to persist them perpetually (not ever delete an ID->user mapping), then a list is most efficient. If there are gaps or the integers do not start at 0 or 1 then you should use a dictionary."
+-
+  Q: "What does \"naive\" mean in a \"Naive Bayes\" model?"
+  A: "It means that all your features are assumed to be conditionally independent form each other. It's typically used for natural language word frequencies as your features. Each record is a bag of words vector. So you're assuming that the occurrence of one word in one document does not affect the probability of another particular word occurring in that document.  This is not a very accurate assumption. But it worked well enough to save us from the onslaught of spam in the early 00's."
+-
+  Q: "When I did a `.value_counts()` and then a `df.plot()` but it tells me that the dataframe is empty because it doesn't contain any numeric data. What gives?"
+  A: "Examine the dataframe in your variable df to see if it contains any numerical data for the columns you've selected. You may have done your `.value_counts()` and not saved the Series that `.value_counts()` returns into a variable. So you're just calling `.plot()` on the original data with uncounted categorical data (strings) which can't be plotted."
+-
+  Q: "What is the difference between a null value in pandas (`df.isnull()`) and a nan value (`df.isna()`)?"
+  A: Null values include both `np.nan` and empty strings like ''.
+-
+  Q: "What is the difference between a numpy `array` and a pandas `Series`?"
+  A: "A Pandas series is indexed according to a label, similar to how a dictionary is indexed by keys. A numpy array is only indexed by the consecutive integers of the positions of the objects within the array. When you perform mathematical operations, array elements are operated on in the order they appear within the array. When you performan mathematical operations on Series only matching indices in a binary operation are operated on together. "
+-
+  Q:  "What data science packages do you use regularly in addition to pandas, numpy, scikit-learn, jupyter, matplotlib?"
+  A: "Django or sqlalchemy for database ORMs. Spacy for NLP. OpenCV and Keras for computer vision (images). Plotly for interactive visualizations and dashboards."
+-
+  Q: "How can I plot red dots for one crime type and blue dots for another crime type on the same plot?"
+  A: |
+    You can specify a different color for two different plots on the same `axis` if you pass your new axis into the next plot method call.
+    ```python
+    ax = df[df['crime_type']=='crime_type1']].plot(kind='scatter', x='lon', y='lat', color='r')
+    ax = df[df['crime_type']=='crime_type2']].plot(ax=ax, kind='scatter', x='lon', y='lat', color='b', alpha=.1)
+    ```

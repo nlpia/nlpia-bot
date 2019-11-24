@@ -17,9 +17,10 @@ Note: This skeleton file can be safely removed if not needed!
 """
 import argparse
 import configparser
+import importlib
 import logging
 import sys
-import importlib
+import collections.abc
 
 import numpy as np
 import pandas as pd
@@ -36,48 +37,61 @@ import pandas as pd
 #     WikipediaFeature
 # )
 
+from nlpia_bot import constants
+
 from nlpia_bot import __version__
+from .scores.quality_score import QualityScore
 
 
-__author__ = "see AUTHORS.md and README.md: Travis, Aliya, Xavier, Nima, Hobson, ..."
+__author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Hobson, ..."
 __copyright__ = "Hobson Lane"
-__license__ = "The Hippocratic License (MIT + Do No Harm, see LICENSE.txt)"
+__license__ = "The Hippocratic License (MIT + *Do No Harm*, see LICENSE.txt)"
 
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
-BOT_PACKAGES = dict(pattern='pattern_bots', search_fuzzy='search_fuzzy_bots')
+
 BOT = None
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
 
-def normalize_replies(replies):
+def normalize_replies(replies=''):
     if isinstance(replies, str):
         replies = [(1e-10, replies)]
-    if isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
+    elif isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
         replies = [(replies[0], str(replies[1]))]
     return sorted([
         ((1e-10, r) if isinstance(r, str) else tuple(r))
         for r in replies
-        ], reverse=True)
-
-
-def bots_from_personalities(personalities):
-    if isinstance(personalities, str):
-        personalities = ','.join(personalities.split()).split(',')
-    bot_dict = BOT_PACKAGES
-    globals_dict = globals()
-    return [bot_dict.get(p, globals_dict.get(p)).Bot() for p in personalities]
+    ], reverse=True)
 
 
 class CLIBot:
-    def __init__(self, bots=('pattern_bots', 'search_fuzzy_bots', 'parul_bots')):
-        module_names = [m if m.endswith('_bots') else f'{m}_bots' for m in bots]
-        modules = [importlib.import_module(f'nlpia_bot.{m}') for m in module_names]
-        self.bots = [m.Bot() for m in modules]
-        self.repliers = [bot.reply for bot in self.bots]
+    bot_names = []
+    bot_modules = []
+    bots = []
+
+    def __init__(
+            self,
+            bots=constants.DEFAULT_BOTS,
+            **quality_kwargs):
+        if not isinstance(bots, collections.Mapping):
+            bots = dict(zip(bots, [None] * len(bots)))
+        for bot_name, bot_kwargs in bots.items():
+            bot_kwargs = {} if bot_kwargs is None else dict(bot_kwargs)
+            self.add_bot(bot_name, **bot_kwargs)
+        self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
+        self.quality_score = QualityScore(**quality_kwargs)
+
+    def add_bot(self, bot_name, **bot_kwargs):
+        bot_name = bot_name if bot_name.endswith('_bots') else f'{bot_name}_bots'
+        self.bot_names.append(bot_name)
+        bot_module = importlib.import_module(f'nlpia_bot.{bot_name}')
+        self.bot_modules.append(bot_module)
+        self.bots.append(bot_module.Bot(**bot_kwargs))
+        return self.bots[-1]
 
     def reply(self, statement=''):
         log.info(f'statement={statement}')
@@ -85,8 +99,9 @@ class CLIBot:
         for replier in self.repliers:
             bot_replies = []
             try:
-                bot_replies = normalize_replies(replier(statement))
+                bot_replies = replier(statement)
             except Exception as e:
+                log.error(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
                 log.error(str(e))
                 try:
                     log.debug(repr(replier))
@@ -95,8 +110,11 @@ class CLIBot:
                     log.warn(str(e))
                 except Exception as e:
                     log.error(str(e))
+            bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
         if len(replies):
+            log.info(f'Found {len(replies)} suitable replies...')
+            replies = self.quality_score.update_replies(replies, statement)
             cumsum = 0
             cdf = list()
             for reply in replies:
@@ -143,9 +161,9 @@ def parse_args(args):
     parser.add_argument(
         '-b',
         '--bots',
-        default="pattern,parul,search_fuzzy",  # None so config.ini can populate defaults
+        default="pattern,parul,search_fuzzy,eliza",  # None so config.ini can populate defaults
         dest="bots",
-        help="comma-separated list of bot personalities to load into bot: pattern,parul,search_fuzzy",
+        help="Comma-separated list of bot personalities to load. Defaults: pattern,parul,search_fuzzy,time,eliza",
         type=str,
         metavar="STR")
     parser.add_argument(
@@ -209,7 +227,7 @@ def parse_argv(argv=sys.argv):
 
     global BOT
     setup_logging(args.loglevel)
-    args.bots = args.bots or 'search_fuzzy,pattern,parul'
+    # args.bots = args.bots or 'search_fuzzy,pattern,parul,time'
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
     if BOT is None:
