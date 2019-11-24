@@ -1,6 +1,8 @@
 import logging
 import nltk
 import sys
+import importlib
+
 
 from .semantics_score import semantics  # noqa
 from .sentiment_score import sentiment  # noqa
@@ -23,7 +25,7 @@ except ImportError:
 class QualityScore:
     def __init__(self, metrics=['spell', 'sentiment', 'semantics'], weights=None):
         self.metrics = metrics
-        self.modules = {metric: __import__(metric + '_score') for metric in metrics}
+        self.modules = {metric: importlib.import_module(f'nlpia_bot.scores.{metric}_score') for metric in metrics}
         self.weights = weights if weights is not None else [1.0] * len(metrics)
         self.nlp = spacy_language_model.nlp
         if sys.platform == 'linux' or sys.platform == 'linux2':
