@@ -11,4 +11,5 @@ __license__ = "The Hippocratic License"
 
 def test_clibot():
     clibot = CLIBot()
-    assert callable(clibot)
+    assert callable(clibot.reply)
+    assert isinstance(clibot.reply('Hi'), str)
