@@ -1,0 +1,43 @@
+name: nlpiaenv
+
+channels:
+  - anaconda
+  - conda-forge
+  - defaults
+
+dependencies:
+  - beautifulsoup4
+  - boto3
+  - botocore
+  - django
+  - django-environ
+  - django_extensions
+  - gitpython
+  - html5lib
+  - jupyter
+  - keras
+  - mysqlclient
+  - nltk
+  - pandas
+  - pandoc
+  - pip>=19.0
+  - plotly
+  - pre-commit
+  - psycopg2
+  # - pyasn1  # jupyter
+  - pyscaffold
+  - pytest-cov
+  - python-levenshtein
+  - python=3.7
+  - redis-py
+  - regex==2018-01-10
+  - scipy
+  - spacy==2.0.12
+  - sqlparse
+  - tensorflow
+  # - twisted  # jupyter
+
+  - pip:
+    - wikipedia-api
+    - nlpia
+    - msgpack<0.6.0,>=0.5.6
