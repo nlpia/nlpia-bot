@@ -1,3 +1,4 @@
+exclude: '^nlpia_bot/data/'
 exclude: '^docs/conf.py'
 
 repos:
