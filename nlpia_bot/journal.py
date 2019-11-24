@@ -11,16 +11,12 @@ import logging
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
-import spacy
 from annoy import AnnoyIndex
 
 from nlpia_bot.spacy_language_model import nlp
 from nlpia.futil import find_files
 
 log = logging.getLogger(__name__)
-
-# from spacy.matcher import Matcher
-nlp = spacy.load('en_core_web_md') if nlp is None else nlp
 
 
 def get_files(path, size_limit=100000, excludes=['.DS_Store']):
