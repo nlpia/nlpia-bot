@@ -1,15 +1,13 @@
-import itertools
 import logging
 import nltk
-import spacy
-import os, sys
-sys.path.append(os.path.dirname(__file__))
+import sys
 
-from semantics_score import semantics
-from sentiment_score import sentiment
-from spell_score import spell
+from .semantics_score import semantics  # noqa
+from .sentiment_score import sentiment  # noqa
+from .spell_score import spell  # noqa
 
 from nlpia_bot.constants import passthroughSpaCyPipe
+from nlpia_bot import spacy_language_model
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 log = logging.getLogger(__name__)
@@ -27,7 +25,7 @@ class QualityScore:
         self.metrics = metrics
         self.modules = {metric: __import__(metric + '_score') for metric in metrics}
         self.weights = weights if weights is not None else [1.0] * len(metrics)
-        self.nlp = spacy.load('en_core_web_md')
+        self.nlp = spacy_language_model.nlp
         if sys.platform == 'linux' or sys.platform == 'linux2':
             hunspell = spaCyHunSpell(self.nlp, 'linux')
         elif sys.platform == 'darwin':
@@ -53,8 +51,9 @@ class QualityScore:
         for i in range(len(self.metrics)):
             metric = self.metrics[i]
             metrics_scores.append([getattr(self.modules[metric], metric)(reply[1], stmt, self.kwargs) for reply in replies])
-            metrics_scores[-1] = [float(score + 1) / (max(metrics_scores[-1]) + 1) * self.weights[i] for score in metrics_scores[-1]]
-        
+            metrics_scores[-1] = [float(score + 1) / (max(metrics_scores[-1]) + 1) * self.weights[i]
+                                  for score in metrics_scores[-1]]
+
         updated_replies = list()
         replies_scores = list(map(list, zip(*metrics_scores)))
         for i, reply in enumerate(replies):

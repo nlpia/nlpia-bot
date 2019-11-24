@@ -9,7 +9,8 @@ import nltk
 import nltk.corpus
 # import spacy  # noqa
 
-LANG = 'en_core_web_sm'  # 'en_core_web_md' or 'en_core_web_lg' or maybe 'en'
+LANGS = ('en_core_web_sm', 'en_core_web_md', 'en_core_web_lg')
+LANG = LANGS[0]
 
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(SRC_DIR)

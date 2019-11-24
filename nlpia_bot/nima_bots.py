@@ -13,7 +13,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import spacy
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
@@ -52,10 +51,6 @@ print(df.head())
 # ### 2.1 NLP: Word2Vec
 # #### Output: A DataFrame of document vectors
 
-# In[8]:
-
-
-nlp = spacy.load('en_core_web_lg')
 
 vectors = []
 
@@ -669,12 +664,6 @@ with tf.Session() as session:
 # |USE| 0.902 | 0.739 | 0.770 - 0.957 | 0.718 | 0.918|
 
 # ## 6. Data Story
-
-# In[20]:
-
-
-# load spacy dictionary
-nlp = spacy.load('en_core_web_lg')
 
 
 # In[178]:
