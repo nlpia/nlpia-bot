@@ -4,7 +4,6 @@ import sys
 import os
 
 import yaml
-import pandas as pd
 from fuzzywuzzy import process
 from nlpia.loaders import get_data
 
@@ -48,17 +47,14 @@ def load_faq(faq_path=os.path.join(DATA_DIR, 'dsfaq_plus_faq_data_science_and_ma
         #     log.warning(f'qa #{i} had no Answer: {list(qa)} {qa[list(qa)[0]]}')
         #     qa['a'] = qa.pop('a_teacher', qa.pop('a_teacher2', qa.pop('a_student')))
         #     continue
-    faq = pd.DataFrame(faq)
-    faq = faq.dropna()
     return faq
 
 
-class Bot:
+class MovieBot:
     db = None
 
     def __init__(self, name='movie_dialog'):
         self.limit = LIMIT
-        self.name = name
         # TODO: make this lazy, do it inside reply()
         self.db = self.load_dialog(name=name)
 
@@ -67,9 +63,9 @@ class Bot:
             db = load_faq()
         else:
             db = get_data(name)
-        log.info(f'Loaded {len(db)} {self.name} statement-reply pairs.')
+        log.info(f'Loaded {len(db)} movie dialog statement-reply pairs.')
         if self.limit <= len(db):
-            log.info(f'Limiting {self.name} database to {self.limit} statement-reply pairs.')
+            log.info(f'Limiting movie dialog database to {self.limit} statement-reply pairs.')
             db = db.iloc[:self.limit]
         db = dict(zip(db[db.columns[0]], db[db.columns[1]]))
         return db
@@ -88,24 +84,14 @@ class Bot:
             self.db = db
         if self.db is None:
             self.db = self.load_dialog()
-        movie_statement, percent_match, movie_reply = process.extractOne(
+        movie_reply, percent_match, movie_statement = process.extractOne(
             normalize(statement), choices=self.db)
-        log.info(f'Closest movie_statement = {movie_statement}')
         return [((percent_match / 100.), movie_reply)]
 
 
-class FAQBot(Bot):
-    def __init__(self, name='dsfaq'):
-        self.limit = LIMIT
-        # TODO: make this lazy, do it inside reply()
-        self.db = self.load_dialog(name=name)
-
-
-BOTS = (Bot, FAQBot)
-
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        bot = Bot()
+        bot = MovieBot()
         statement = "Hi!"
         statement = ' '.join(sys.argv[1:])
         print(bot.reply(statement))
