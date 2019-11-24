@@ -17,9 +17,9 @@ Note: This skeleton file can be safely removed if not needed!
 """
 import argparse
 import configparser
+import importlib
 import logging
 import sys
-import importlib
 import collections.abc
 
 import numpy as np
@@ -40,6 +40,7 @@ import pandas as pd
 from nlpia_bot import constants
 
 from nlpia_bot import __version__
+from .scores.quality_score import QualityScore
 
 
 __author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Hobson, ..."
@@ -74,13 +75,15 @@ class CLIBot:
 
     def __init__(
             self,
-            bots=constants.DEFAULT_BOTS):
+            bots=constants.DEFAULT_BOTS,
+            **quality_kwargs):
         if not isinstance(bots, collections.Mapping):
             bots = dict(zip(bots, [None] * len(bots)))
         for bot_name, bot_kwargs in bots.items():
             bot_kwargs = {} if bot_kwargs is None else dict(bot_kwargs)
             self.add_bot(bot_name, **bot_kwargs)
         self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
+        self.quality_score = QualityScore(**quality_kwargs)
 
     def add_bot(self, bot_name, **bot_kwargs):
         bot_name = bot_name if bot_name.endswith('_bots') else f'{bot_name}_bots'
@@ -111,6 +114,7 @@ class CLIBot:
             replies.extend(bot_replies)
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies...')
+            replies = self.quality_score.update_replies(replies, statement)
             cumsum = 0
             cdf = list()
             for reply in replies:

@@ -19,6 +19,7 @@ __pycache__/*
 .pydevproject
 .settings
 .idea
+.vscode
 tags
 
 # Package files
@@ -47,6 +48,9 @@ MANIFEST
 
 # Mac
 __MACOSX
+
+# KDE
+.directory
 
 # Data
 db.sqlite3
