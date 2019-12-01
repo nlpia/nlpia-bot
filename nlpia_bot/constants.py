@@ -1,18 +1,17 @@
 # constants.py
 import os
 import logging
-import logging.handlers
 from collections import Counter
 # import json
 
 import nltk
 import nltk.corpus
-# import spacy  # noqa
+import spacy  # noqa
 
 LANGS = ('en_core_web_sm', 'en_core_web_md', 'en_core_web_lg')
 LANG = LANGS[0]
 
-SRC_DIR = os.path.dirname(os.path.abspath(__file__))
+SRC_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_DIR = os.path.dirname(SRC_DIR)
 DATA_DIR = os.path.join(SRC_DIR, 'data')
 LOG_DIR = os.path.join(DATA_DIR, 'log')
