@@ -38,25 +38,17 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     wiki = Wikipedia()
     for depth in range(max_depth):
         for i in range(max_articles):
-            try:
-                title, d = title_depths.pop()
-            except IndexError:
-                log.warn(f'Out of titles: {title_depths}')
-                break
-            if title.strip():
-                while title in titles_scraped:
-                    log.warn(f"Skipping {title} (already scraped)")
-                    try:
-                        title, d = title_depths.pop()
-                    except IndexError:
-                        log.warn(f'Out of titles: {title_depths}')
-                        break
-            else:
-                continue
-            if d > max_depth:
-                log.info(f"{d} > {max_depth}")
-                break
-            if not len(title.strip()):
+            title = None
+            while not title or title in titles_scraped:
+                # log.warn(f"Skipping {title} (already scraped)")
+                try:
+                    title, d = title_depths.pop()
+                except IndexError:
+                    log.warn(f'Out of titles: {title_depths}')
+                    break
+                title = title.strip()
+            if d > max_depth or not title:
+                log.info(f"{d} > {max_depth} or title ('{title}') is empty")
                 continue
             titles_scraped.add(title)
             page = wiki.article(title)
