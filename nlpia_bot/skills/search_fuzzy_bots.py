@@ -63,6 +63,7 @@ class Bot:
         self.db = self.load_dialog(name=name)
 
     def load_dialog(self, name='movie_dialog'):
+        log.warn('Loading movie dialog...')
         if name == 'dsfaq':
             db = load_faq()
         else:
@@ -94,14 +95,12 @@ class Bot:
         return [((percent_match / 100.), movie_reply)]
 
 
-class FAQBot(Bot):
-    def __init__(self, name='dsfaq'):
-        self.limit = LIMIT
-        # TODO: make this lazy, do it inside reply()
-        self.db = self.load_dialog(name=name)
-
-
-BOTS = (Bot, FAQBot)
+# class FAQBot(Bot):
+#     def __init__(self, name='dsfaq'):
+#         self.limit = LIMIT
+#         # TODO: make this lazy, do it inside reply()
+#         self.db = self.load_dialog(name=name)
+# BOTS = (Bot, FAQBot)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
