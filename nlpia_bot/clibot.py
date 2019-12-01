@@ -89,9 +89,16 @@ class CLIBot:
         bot_name = bot_name if bot_name.endswith('_bots') else f'{bot_name}_bots'
         self.bot_names.append(bot_name)
         bot_module = importlib.import_module(f'nlpia_bot.skills.{bot_name}')
-        self.bot_modules.append(bot_module)
-        self.bots.append(bot_module.Bot(**bot_kwargs))
-        return self.bots[-1]
+        new_modules, new_bots = [], []
+        if bot_module.__class__.__name__ == 'module':
+            for bot_class in (c for n, c in vars(bot_module).items() if n.endswith('Bot') and callable(getattr(c, 'reply', None))):
+                new_bots.append(bot_module.Bot(**bot_kwargs))
+                new_modules.append(bot_module)
+        else:
+            log.warn(f'FIXME: add feature to allow import of specific bot classes like "nlpia_bot.skills.{bot_name}"')
+        self.bots.extend(new_bots)
+        self.bot_modules.extend(new_modules)
+        return new_bots
 
     def reply(self, statement=''):
         log.info(f'statement={statement}')
