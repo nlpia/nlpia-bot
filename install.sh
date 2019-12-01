@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-conda env create -n nlpia-bot -f environment.yml
-conda install hunspell
+conda env create -n nlpia -f environment.yml
 pip install -e .
