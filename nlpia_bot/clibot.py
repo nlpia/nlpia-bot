@@ -88,7 +88,7 @@ class CLIBot:
     def add_bot(self, bot_name, **bot_kwargs):
         bot_name = bot_name if bot_name.endswith('_bots') else f'{bot_name}_bots'
         self.bot_names.append(bot_name)
-        bot_module = importlib.import_module(f'nlpia_bot.{bot_name}')
+        bot_module = importlib.import_module(f'nlpia_bot.skills.{bot_name}')
         self.bot_modules.append(bot_module)
         self.bots.append(bot_module.Bot(**bot_kwargs))
         return self.bots[-1]
