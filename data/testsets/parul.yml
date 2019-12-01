@@ -1,0 +1,14 @@
+# parul.yml
+# ideal responses for parul_bots.py
+- "What is a chatbot?":
+  - "According to Wikipedia: a chatbot is a piece of software that conducts a conversation via auditory or textual methods."
+  - A chatbot is a bot that can carry on a conversation with a human in human language.
+  - A chatbot is a bot, or autonomous AI agent, that can carry on a conversation with a human in human language.
+  - A chatbot is a computer program capable of maintaining a dialog with humans.
+  - In Natural Language Processing research, a chatbot is sometimes called a _dialog engine_ or _conversational agent_ because it is a system for maintaining a dialog.
+  - In business a chatbot is often referred to as just _AI_ because it is a system that attempts to mimic human intelligence by maintaining a conversation in natural language.
+  - A chatbot is the dialog system behind virtual assistants like Mycroft, Siri, Wysa, Rasa, Cortana, and Google Assistant, or the natural language processing pipeline that interacts with you as a bot on Reddit, Twitter, Slack, Facebook, Telegram, or other chat networks that allow bots to have text conversations with humans.
+- "What is AI?":
+  - AI is a computer program or system that can make intelligent decisions and perform intelligent actions in the world.
+  - "According to Wikipedia: In computer science, artificial intelligence, sometimes called machine intelligence, is intelligence demonstrated by machines, in contrast to the natural intelligence displayed by humans."
+  - "According to ZDNet: AI systems will typically demonstrate at least some of the following behaviors associated with human intelligence: planning, learning, reasoning, problem solving, knowledge representation, perception, motion, and manipulation and, to a lesser extent, social intelligence and creativity."
