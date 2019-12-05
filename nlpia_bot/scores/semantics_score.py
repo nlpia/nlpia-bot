@@ -1,9 +1,12 @@
-def semantics(reply, stmt=None, kwargs=None):
-    if kwargs is None or kwargs['nlp'] is None or stmt is None:
+from nlpia_bot.spacy_language_model import nlp  # noqa
+
+
+def semantics(reply, stmt=None, **kwargs):
+    global nlp
+    nlp = kwargs.get('nlp', nlp)
+    if kwargs is None or kwargs['nlp'] is None or not stmt:
         return 0.0
-    
-    reply_doc = kwargs['nlp'](reply)
-    stmt_doc = kwargs['nlp'](stmt)
-    cos_sim = reply_doc.similarity(stmt_doc)
+
+    cos_sim = nlp(reply).similarity(nlp(stmt))
 
     return cos_sim
