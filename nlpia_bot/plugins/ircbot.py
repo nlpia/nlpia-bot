@@ -32,9 +32,9 @@ from chatbot.contrib import (
 
 from nlpia_bot import __version__
 
-__author__ = "hobs"
-__copyright__ = "hobs"
-__license__ = "mit"
+__author__ = "See AUTHORS.md"
+__copyright__ = "Hobson Lane"
+__license__ = "The Hippocratic License (MIT + *Do No Harm*, see LICENSE.txt)"
 
 _logger = logging.getLogger(__name__)
 
