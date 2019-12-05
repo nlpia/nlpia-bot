@@ -7,7 +7,7 @@ import sqlite3
 
 from nlpia_bot.constants import BASE_DIR
 
-from git import Repo, InvalidGitRepositoryError
+from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 
 import logging
 log = logging.getLogger(__name__)
@@ -33,7 +33,7 @@ def walk_repos(base_dir=BASE_DIR):
         yield
     try:
         yield Repo(base_dir)
-    except InvalidGitRepositoryError:
+    except (InvalidGitRepositoryError, NoSuchPathError):
         pass
     if os.path.basename(base_dir) == '.git' or not os.path.isdir(base_dir):
         yield
@@ -68,10 +68,10 @@ def walk_commits(base_dir=BASE_DIR, author_regex=None, email_regex=None):
             except ValueError:
                 continue  # base_dir is a '.../.git/' directory
             for c in commit_generator:
-                if not author_regex or regex.match(author_regex, c.author.name) and (
+                if (not author_regex or regex.match(author_regex, c.author.name)) and (
                         not email_regex or regex.match(email_regex, c.author.email)):
                     # return c
-                    yield dict(zip('datetime commit email name stats'.split(),
+                    yield dict(zip('datetime path refspec email name stats'.split(),
                                    (c.authored_datetime.isoformat(),
                                     repo.working_dir,
                                     c.hexsha,
@@ -80,13 +80,13 @@ def walk_commits(base_dir=BASE_DIR, author_regex=None, email_regex=None):
                                     c.stats.files)))
 
 
-def get_timeline(base_dir=BASE_DIR, author_regex=None, email_regex=None, file_regex='.*[.]py'):
+def get_timeline(base_dir=BASE_DIR, author_regex='.*hobs.*', email_regex=None, file_regex='.*[.]py'):
     timeline = []
     for commit in walk_commits(base_dir=base_dir, author_regex=author_regex, email_regex=email_regex):
         file_matches = [f for f in commit['stats'] if not file_regex or regex.match(file_regex, f)]
         timeline.append((
             commit['datetime'],
-            commit['working_dir'],
+            commit['path'],
             commit['email'],
             len(commit['stats']),
             ':'.join(file_matches),
@@ -94,13 +94,27 @@ def get_timeline(base_dir=BASE_DIR, author_regex=None, email_regex=None, file_re
             sum(commit['stats'][f]['insertions'] for f in file_matches),
             sum(commit['stats'][f]['deletions'] for f in file_matches),
         ))
-    df = pd.DataFrame(timeline, columns='datetime email num_files files lines insertions deletions'.split())
+    df = pd.DataFrame(timeline, columns='datetime path email num_files files lines insertions deletions'.split())
+    df = df.sort_values('datetime')
     df['datetime'] = df['datetime'].apply(lambda dt: pd.to_datetime(dt).tz_convert('US/Pacific'))
-    df = df.set_index('datetime')
+    df['date'] = df['datetime'].dt.date
+    df['repo'] = df.path.str.split(os.path.sep).apply(lambda x: x[-1])
+    # df = df.set_index('datetime')
     return df
 
 
+def render_report(base_dir=BASE_DIR, author_regex='.*hobs.*', email_regex=None, file_regex='.*[.]py',
+                  columns='repo lines'.split(), repos='estuary mcweb anticipate'.split()):
+    df = get_timeline(base_dir=base_dir, author_regex=author_regex, email_regex=email_regex)
+    df = pd.concat([df[df['repo'] == repo] for repo in repos], axis=0)
+    df = df.set_index('date')
+    df = pd.concat([df[df['repo'] == repo] for repo in repos], axis=0)['repo lines'.split()]
+    html = df[columns].to_html()
+    return html
+
 # execute a query on sqlite cursor
+
+
 def execute_query(cursor, query):
     """ Try to execute a query and if it fails log the error and the sql query that failed """
     try:
