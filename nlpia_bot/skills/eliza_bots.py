@@ -236,17 +236,24 @@ class Eliza:
 
 
 class Bot:
+    """ An instance of a bot that can reply to user statements and manage state or context between statements
+
+    >>> b = Bot()
+    >>> b.reply('Hello!')
+    [(0.5, "I'm not sure I understand you fully.")]
+    >>> b.reply('What should we talk about?')
+    [(0.5, 'Why do you ask ?')]
+    >>> b.reply("I'm super manic right now.")
+    [(0.5, 'Is it because you are super manic right now that you came to me ?')]
+    """
+
     def __init__(self):
         self.eliza = Eliza()
         self.eliza.load(DOCTOR_PATH)
 
     def reply(self, statement):
-        """ Chatbot "main" function to respond to a user command or statement
+        """ Chatbot entry point to generate conversational responses to a user question or statement
 
-        >>> respond('Hi')[0][1]
-        Hello!
-        >>> len(respond('Hey Mycroft!'))
-        4
         """
         responses = []
         bot_statement = self.eliza.respond(statement)
