@@ -8,7 +8,7 @@
 ... Saturday, 12-10pm
 ... Sunday, 12-6pmThursday, 3-9pm
 ... '''
->>> extract_hours(txt)
+>>> extract_opening_hours(txt)
 We-Th 15:00-21:00; Fr 15:00-22:00; Sa 12:00-22:00; Su 15:00-21:00
 """
 from datetime import time

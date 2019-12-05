@@ -6,7 +6,7 @@ from nlpia_bot.clibot import CLIBot
 
 __author__ = "SEE AUTHORS.md"
 __copyright__ = "Hobson Lane"
-__license__ = "The Hippocratic License"
+__license__ = "The Hippocratic License, see LICENSE.txt (MIT + Do no Harm)"
 
 
 def test_clibot():
