@@ -16,7 +16,8 @@ dependencies:
   - html5lib
   - hunspell
   - hunspell-en
-  - jupyter==4.6.1
+  - jupyter
+  - jupyter_core<4.6.0
   - keras
   - mysqlclient
   - nltk
