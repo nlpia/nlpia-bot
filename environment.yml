@@ -13,12 +13,16 @@ dependencies:
   - django-environ
   - django-extensions
   - gitpython
+  - gcc
   - html5lib
-  - hunspell
-  - hunspell-en
+  # - hunspell
+  # - hunspell-en
+  - ipython
   - jupyter
   - jupyter_core<4.6.0
   - keras
+  - libgcc
+  - matplotlib
   - mysqlclient
   - nltk
   - pandas
@@ -26,6 +30,7 @@ dependencies:
   - pip>=19.0
   - plotly
   - pre-commit
+  - prompt_toolkit
   - psycopg2
   - pyscaffold
   - pytest-cov
@@ -41,3 +46,5 @@ dependencies:
   - pip:
     - wikipedia-api
     - nlpia
+    - hunspell
+    - hunspell-en
