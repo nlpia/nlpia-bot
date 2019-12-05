@@ -1,0 +1,510 @@
+,depth,title,section,sentence
+0,0,Chatbot,Background,"In 1950, Alan Turing's famous article ""Computing Machinery and Intelligence"" was published, which proposed what is now called the Turing test as a criterion of intelligence."
+1,0,Chatbot,Background,"This criterion depends on the ability of a computer program to impersonate a human in a real-time written conversation with a human judge, sufficiently well that the judge is unable to distinguish reliably—on the basis of the conversational content alone—between the program and a real human."
+2,0,Chatbot,Background,"The notoriety of Turing's proposed test stimulated great interest in Joseph Weizenbaum's program ELIZA, published in 1966, which seemed to be able to fool users into believing that they were conversing with a real human."
+3,0,Chatbot,Background,"However Weizenbaum himself did not claim that ELIZA was genuinely intelligent, and the introduction to his paper presented it more as a debunking exercise:
+
+"
+4,0,Chatbot,Background,"[In] artificial intelligence ... machines are made to behave in wondrous ways, often sufficient to dazzle even the most experienced observer."
+5,0,Chatbot,Background,"But once a particular program is unmasked, once its inner workings are explained ... its magic crumbles away; it stands revealed as a mere collection of procedures ..."
+6,0,Chatbot,Background,"The observer says to himself ""I could have written that""."
+7,0,Chatbot,Background,"With that thought he moves the program in question from the shelf marked ""intelligent"", to that reserved for curios ..."
+8,0,Chatbot,Background,"The object of this paper is to cause just such a re-evaluation of the program about to be ""explained""."
+9,0,Chatbot,Background,"Few programs ever needed it more.
+"
+10,0,Chatbot,Background,"ELIZA's key method of operation (copied by chatbot designers ever since) involves the recognition of clue words or phrases in the input, and the output of corresponding pre-prepared or pre-programmed responses that can move the conversation forward in an apparently meaningful way (e.g. by responding to any input that contains the word 'MOTHER' with 'TELL ME MORE ABOUT YOUR FAMILY')."
+11,0,Chatbot,Background,"Thus an illusion of understanding is generated, even though the processing involved has been merely superficial."
+12,0,Chatbot,Background,"ELIZA showed that such an illusion is surprisingly easy to generate, because human judges are so ready to give the benefit of the doubt when conversational responses are capable of being interpreted as ""intelligent"".
+"
+13,0,Chatbot,Background,Interface designers have come to appreciate that humans' readiness to interpret computer output as genuinely conversational—even when it is actually based on rather simple pattern-matching—can be exploited for useful purposes.
+14,0,Chatbot,Background,"Most people prefer to engage with programs that are human-like, and this gives chatbot-style techniques a potentially useful role in interactive systems that need to elicit information from users, as long as that information is relatively straightforward and falls into predictable categories."
+15,0,Chatbot,Background,"Thus, for example, online help systems can usefully employ chatbot techniques to identify the area of help that users require, potentially providing a ""friendlier"" interface than a more formal search or menu system."
+16,0,Chatbot,Background,"This sort of usage holds the prospect of moving chatbot technology from Weizenbaum's ""shelf ... reserved for curios"" to that marked ""genuinely useful computational methods""."
+17,0,Chatbot,Development,The classic historic early chatbots are ELIZA (1966) and PARRY (1972).
+18,0,Chatbot,Development,"More recent notable programs include A.L.I.C.E., Jabberwacky and D.U.D.E"
+19,0,Chatbot,Development,(Agence Nationale de la Recherche and CNRS 2006).
+20,0,Chatbot,Development,"While ELIZA and PARRY were used exclusively to simulate typed conversation, many chatbots now include functional features such as games and web searching abilities."
+21,0,Chatbot,Development,"In 1984, a book called The Policeman's Beard is Half Constructed was published, allegedly written by the chatbot Racter (though the program as released would not have been capable of doing so).One pertinent field of AI research is natural language processing."
+22,0,Chatbot,Development,"Usually, weak AI fields employ specialized software or programming languages created specifically for the narrow function required."
+23,0,Chatbot,Development,"For example, A.L.I.C.E. uses a markup language called AIML, which is specific to its function as a conversational agent, and has since been adopted by various other developers of, so called, Alicebots."
+24,0,Chatbot,Development,"Nevertheless, A.L.I.C.E. is still purely based on pattern matching techniques without any reasoning capabilities, the same technique ELIZA was using back in 1966."
+25,0,Chatbot,Development,"This is not strong AI, which would require sapience and logical reasoning abilities.
+"
+26,0,Chatbot,Development,"Jabberwacky learns new responses and context based on real-time user interactions, rather than being driven from a static database."
+27,0,Chatbot,Development,Some more recent chatbots also combine real-time learning with evolutionary algorithms that optimise their ability to communicate based on each conversation held.
+28,0,Chatbot,Development,"Still, there is currently no general purpose conversational artificial intelligence, and some software developers focus on the practical aspect, information retrieval.
+"
+29,0,Chatbot,Development,Chatbot competitions focus on the Turing test or more specific goals.
+30,0,Chatbot,Development,"Two such annual contests are the Loebner Prize and The Chatterbox Challenge (the latter has been offline since 2015, however materials can still be found from web archives).DBpedia created a chatbot during the GSoC of 2017. and can communicate through Facebook Messenger."
+31,0,Chatbot,Development,"DBpedia started in 2007 and allows to extract structured content from the Wikipedia dataset, along with many other datasets."
+32,0,Chatbot,Development,DBpedia is currently one of the biggest representatives of Linked Open Data (LOD).
+33,0,Chatbot,Messaging apps,Many companies' chatbots run on messaging apps or simply via SMS.
+34,0,Chatbot,Messaging apps,"They are used for B2C customer service, sales and marketing."
+35,0,Chatbot,Messaging apps,"In 2016, Facebook Messenger allowed developers to place chatbots on their platform."
+36,0,Chatbot,Messaging apps,"There were 30,000 bots created for Messenger in the first six months, rising to 100,000 by September 2017.
+"
+37,0,Chatbot,Messaging apps,"Since September 2017, this has also been as part of a pilot program on WhatsApp."
+38,0,Chatbot,Messaging apps,"Airlines KLM and Aeroméxico both announced their participation in the testing; both airlines had previously launched customer services on the Facebook Messenger platform.
+"
+39,0,Chatbot,Messaging apps,"The bots usually appear as one of the user's contacts, but can sometimes act as participants in a group chat.
+"
+40,0,Chatbot,Messaging apps,"Many banks, insurers, media companies, e-commerce companies, airlines, hotel chains, retailers, health care providers, government entities and restaurant chains have used chatbots to answer simple questions, increase customer engagement, for promotion, and to offer additional ways to order from them."
+41,0,Chatbot,Messaging apps,A 2017 study showed 4% of companies used chatbots.
+42,0,Chatbot,Messaging apps,"According to a 2016 study, 80% of businesses said they intended to have one by 2020."
+43,0,Chatbot,Company internal platforms,"Other companies explore ways they can use chatbots internally, for example for Customer Support, Human Resources, or even in Internet-of-Things (IoT) projects."
+44,0,Chatbot,Company internal platforms,"Overstock.com, for one, has reportedly launched a chatbot named Mila to automate certain simple yet time-consuming processes when requesting for a sick leave."
+45,0,Chatbot,Company internal platforms,"Other large companies such as Lloyds Banking Group, Royal Bank of Scotland, Renault and Citroën are now using automated online assistants instead of call centres with humans to provide a first point of contact."
+46,0,Chatbot,Company internal platforms,"A SaaS chatbot business ecosystem has been steadily growing since the F8 Conference when Facebook's Mark Zuckerberg unveiled that Messenger would allow chatbots into the app.
+"
+47,0,Chatbot,Company internal platforms,"In large companies, like in hospitals and aviation organizations, IT architects are designing reference architectures for Intelligent Chatbots that are used to unlock and share knowledge and experience in the organization more efficiently, and reduce the errors in answers from expert service desks significantly."
+48,0,Chatbot,Company internal platforms,"These Intelligent Chatbots make use of all kinds of artificial intelligence like image moderation and natural language understanding (NLU), natural language generation (NLG), machine learning and deep learning."
+49,0,Chatbot,Banking,Nowadays a high majority of high-tech banking organizations are looking for integration of automated AI-based solutions such as chatbots in their customer service in order to provide faster and cheaper assistance to their clients becoming increasingly technodexterous.
+50,0,Chatbot,Banking,"In particularly, chatbots can efficiently conduct a dialogue, usually substituting other communication tools such as email, phone, or SMS."
+51,0,Chatbot,Banking,"In banking area their major application is related to quick customer service answering common requests, and transactional support.
+"
+52,0,Chatbot,Banking,"Several studies accomplished by analytics agencies such as Juniper or Gartner  report significant reduction of cost of customer services, leading to billions of dollars of economy in the next 10 years."
+53,0,Chatbot,Banking,Gartner predicts an integration by 2020 of chatbots in at least 85% of all client's applications to customer service.
+54,0,Chatbot,Banking,"Juniper's study announces an impressive amount of $8 billion retained annually by 2022 due to the use of chatbots.
+"
+55,0,Chatbot,Banking,"Since 2016 when Facebook allows businesses to deliver automated customer support, e-commerce guidance, content and interactive experiences through chatbots, a large variety of chatbots for Facebook Messenger platform were developed.
+"
+56,0,Chatbot,Banking,"In 2016, Russia-based Tochka Bank launched the world's first Facebook bot for a range of financial services, in particularly including a possibility of making payments.
+
+"
+57,0,Chatbot,Banking,"In July 2016, Barclays Africa also launched a Facebook chatbot, making it the first bank to do so in Africa.
+"
+58,0,Chatbot,Banking,The France's third largest bank by total assets
+59,0,Chatbot,Banking,Société Générale launched their chatbot called SoBot in March 2018.
+60,0,Chatbot,Banking,"While the 80% of users of the SoBot express their satisfaction after having tested it, il will never replace the expertise provided by a human advisor according to SG deputy director Bertrand Cozzarolo.
+"
+61,0,Chatbot,Banking,"There are several potential advantages of using chatbots in interaction with customer in banking:
+Cost reduction."
+62,0,Chatbot,Banking,"Chatbots eliminate the obligation of any human presence during online interaction and are so long seen as a huge advantage by companies operating with multiple repetitive queries at once as long as they don't require any decision-making procedure.
+"
+63,0,Chatbot,Banking,Human touch.
+64,0,Chatbot,Banking,"Chatbots, providing an interface similar to human-to-human interaction, are more intuitive and so less difficult to use than a standard banking mobile application."
+65,0,Chatbot,Banking,They do not require any additional software installation and are more adaptive as able to be personalized during the exploitation by the means of machine learning.
+66,0,Chatbot,Banking,"Chatbots are instant and so much faster that phone calls, shown to be considered as tedious in some studies."
+67,0,Chatbot,Banking,"Then they satisfy both speed and personalization requirement while interacting with a bank.
+"
+68,0,Chatbot,Banking,Financial advice.
+69,0,Chatbot,Banking,"State-of-the-art banking assistants can, by accessing personal customer's data such as consumer behavior or history of purchases, provide useful information on client's account and use it to develop AI-Based recommendations for better adapted money management.
+"
+70,0,Chatbot,Banking,Attracting new clients.
+71,0,Chatbot,Banking,"A chatbot greeting a bank's website guest can provide some useful and relevant information, helping to exploit the offered products and services in a personalized manner helps to attract the potential client and the he is more likely to end by creation of a new account.
+"
+72,0,Chatbot,Banking,24/7 digital support.
+73,0,Chatbot,Banking,An instant and always accessible assistant is assumed by the more and more digital consumer of the new era.
+74,0,Chatbot,Banking,"Unlike humans, chatbots once developed and installed don't have a limited workdays, holidays or weekends and are ready to attend queries at any hour of the day."
+75,0,Chatbot,Banking,It helps to the customer to avoid waiting of a company's agent to be available.
+76,0,Chatbot,Banking,"Thus, the customer doesn't have to wait for the company executive to help them."
+77,0,Chatbot,Banking,This also lets companies keep an eye on the traffic during the non-working hours and reach out to them later.
+78,0,Chatbot,Healthcare,Chatbots are also appearing in the healthcare industry.
+79,0,Chatbot,Healthcare,"A study suggested that physicians in the United States believed that chatbots would be most beneficial for scheduling doctor appointments, locating health clinics, or providing medication information."
+80,0,Chatbot,Healthcare,Certain patient groups are still reluctant to use chatbots.
+81,0,Chatbot,Healthcare,"A mixed-methods study showed that people are still hesitant to use chatbots for their healthcare due to poor understanding of the technological complexity, the lack of empathy and concerns about cyber-security.  "
+82,0,Chatbot,Healthcare,"The analysis showed that while 6% had heard of a health chatbot and 3% had experience of using it, 67% perceived themselves as likely to use one within 12 months."
+83,0,Chatbot,Healthcare,"The majority of participants would use a health chatbot for seeking general health information (78%), booking a medical appointment (78%) and looking for local health services (80%)."
+84,0,Chatbot,Healthcare,"However, a health chatbot was perceived as less suitable for seeking results of medical tests and seeking specialist advice such as sexual health."
+85,0,Chatbot,Healthcare,The analysis of attitudinal variables showed that most participants reported their preference for discussing their health with doctors (73%) and having access to reliable and accurate health information (93%).
+86,0,Chatbot,Healthcare,"While 80% were curious about new technologies that could improve their health, 66% reported only seeking a doctor when experiencing a health problem and 65% thought that a chatbot was a good idea."
+87,0,Chatbot,Healthcare,"Interestingly, 30% reported dislike about talking to computers, 41% felt it would be strange to discuss health matters with a chatbot and about half were unsure if they could trust the advice given by a chatbot."
+88,0,Chatbot,Healthcare,"Therefore, perceived trustworthiness, individual attitudes towards bots and dislike for talking to computers are the main barriers to health chatbots."
+89,0,Chatbot,Politics,"In New Zealand, the chatbot SAM -short for Semantic Analysis Machine-"
+90,0,Chatbot,Politics,(made by Nick Gerritsen of Touchtech) has been developed.
+91,0,Chatbot,Politics,"It is designed to share its political thoughts, for example on topics such as climate change, healthcare and education, etc."
+92,0,Chatbot,Politics,It talks to people through Facebook Messenger.
+93,0,Chatbot,Toys,Chatbots have also been incorporated into devices not primarily meant for computing such as toys.
+94,0,Chatbot,Toys,"Hello Barbie is an Internet-connected version of the doll that uses a chatbot provided by the company ToyTalk, which previously used the chatbot for a range of smartphone-based characters for children."
+95,0,Chatbot,Toys,These characters' behaviors are constrained by a set of rules that in effect emulate a particular character and produce a storyline.
+96,0,Chatbot,Toys,IBM's Watson computer has been used as the basis for chatbot-based educational toys for companies such as CogniToys intended to interact with children for educational purposes.
+97,0,Chatbot,Chatbot development platforms,"The process of building, testing and deploying chatbots can be done on cloud-based chatbot development platforms offered by cloud Platform as a Service (PaaS) providers such as Oracle Cloud Platform  SnatchBot and IBM Watson."
+98,0,Chatbot,Chatbot development platforms,"These cloud platforms provide Natural Language Processing, Artificial Intelligence and Mobile Backend as a Service for chatbot development.
+"
+99,0,Chatbot,Chatbot development platforms,"API
+"
+100,0,Chatbot,Chatbot development platforms,Some Companies like Microsoft Azure and AARC are currently providing their Bot Engines through which chatbot Platforms or Software can be developed.
+101,0,Chatbot,Malicious use,"Malicious chatbots are frequently used to fill chat rooms with spam and advertisements, by mimicking human behavior and conversations or to entice people into revealing personal information, such as bank account numbers."
+102,0,Chatbot,Malicious use,They are commonly found on Yahoo!
+103,0,Chatbot,Malicious use,"Messenger, Windows Live Messenger, AOL Instant Messenger and other instant messaging protocols."
+104,0,Chatbot,Malicious use,There has also been a published report of a chatbot used in a fake personal ad on a dating service's website.
+105,0,Chatbot,Malicious use,"Tay, an AI chatbot that learns from previous interaction, caused major controversy due to it being targeted by internet trolls on Twitter."
+106,0,Chatbot,Malicious use,"The bot was exploited, and after 16 hours began to send extremely offensive Tweets to users."
+107,0,Chatbot,Malicious use,"This suggests that although the bot learnt effectively from experience, adequate protection was not put in place to prevent misuse."
+108,0,Chatbot,Malicious use,"If a text-sending algorithm can pass itself off as a human instead of a chatbot, its message would be more credible."
+109,0,Chatbot,Malicious use,"Therefore, human-seeming chatbots with well-crafted online identities could start scattering fake news that seem plausible, for instance making false claims during a presidential election."
+110,0,Chatbot,Malicious use,"With enough chatbots, it might be even possible to achieve artificial social proof."
+111,0,Chatbot,Limitations of Chatbots,"The creation and implementation of chatbots is still a developing area, heavily related to artificial intelligence and machine learning, so the provided solutions, while possessing obvious advantages, have some important limitations in terms of functionalities and use cases."
+112,0,Chatbot,Limitations of Chatbots,"However this is changing over time.
+"
+113,0,Chatbot,Limitations of Chatbots,"The most common ones are listed below:
+As the database, used for output generation, is fixed and limited, chatbots can fail while dealing with an unsaved query.
+"
+114,0,Chatbot,Limitations of Chatbots,"A chatbot's efficiency highly depends on language processing and is limited because of irregularities, such as accents and mistakes that can create an important barrier for international and multi-cultural organisations
+Chatbots are unable to deal with multiple questions at the same time and so conversation opportunities are limited.
+"
+115,0,Chatbot,Limitations of Chatbots,"As it happens usually with technology-led changes in existing services, some consumers, more often than not from the old generation, are uncomfortable with chatbots due to their limited understanding, making it obvious that their requests are being dealt machines."
+116,0,Chatbot,Chatbots and jobs,Chatbots are increasingly present in businesses and often are used to automate tasks that do not require skill-based talents.
+117,0,Chatbot,Chatbots and jobs,"With customer service taking place via messaging apps as well as phone calls, there are growing numbers of use-cases where chatbot deployment gives organisations a clear return on investment."
+118,0,Chatbot,Chatbots and jobs,Call centre workers may be particularly at risk from AI-driven chatbots.
+119,0,Chatbot,Chatbots and jobs,A study by Forrester (June 2017) predicts that 25% of today's jobs will most likely be impacted by AI technologies by 2019.
+120,0,Chatbot,Further reading,"Computer History Museum (2006), ""Internet History—1970's"", Exhibits, Computer History Museum, archived from the original on 2008-02-21, retrieved 2008-03-05
+Güzeldere, Güven; Franchi, Stefano (1995-07-24), ""Constructions of the Mind"", Stanford Humanities Review, SEHR, Stanford University, 4 (2), retrieved 2008-03-05
+Mauldin, Michael (1994), ""ChatterBots, TinyMuds, and the Turing Test: Entering the Loebner Prize Competition"", Proceedings of the Eleventh National Conference on Artificial Intelligence, AAAI Press, retrieved 2008-03-05 (abstract)
+"
+121,0,Chatbot,Further reading,"Network Working Group (1973), ""RFC 439, PARRY Encounters the DOCTOR"", Internet Engineering Task Force, Internet Society, retrieved 2008-03-05
+Sondheim, Alan J (1997), <nettime> Important Documents from the Early Internet (1972), nettime.org, archived from the original on 2008-06-13, retrieved 2008-03-05
+Searle, John (1980), ""Minds, Brains and Programs"", Behavioral and Brain Sciences, 3 (3): 417–457, doi:10.1017/S0140525X00005756
+Shevat, Amir (2017)."
+122,0,Chatbot,Further reading,Designing bots: Creating conversational experiences (First ed.).
+123,0,Chatbot,Further reading,"Sebastopol, CA:"
+124,0,Chatbot,Further reading,O'Reilly Media.
+125,0,Chatbot,Further reading,ISBN 9781491974827.
+126,0,Chatbot,Further reading,"OCLC 962125282.
+"
+127,0,Chatbot,Further reading,"Turing, Alan (1950), ""Computing Machinery and Intelligence"", Mind, 59 (236):"
+128,0,Chatbot,Further reading,"433–60, doi:10.1093/mind/lix.236.433
+Weizenbaum, Joseph (January 1966), ""ELIZA—A Computer Program For the Study of Natural Language Communication Between Man And Machine"", Communications of the ACM, 9 (1): 36–45, doi:10.1145/365153.365168"
+129,1,List of chatterbots,Classic chatbots,"Dr. Sbaitso
+ELIZA
+PARRY
+Racter (or Claude Chatterbot)
+"
+130,1,List of chatterbots,Classic chatbots,Mark V Shaney
+131,1,List of chatterbots,General chatbots,"Albert One - 1998 and 1999 Loebner winner, by Robby Garner.
+A.L.I.C.E. - 2001, 2002, and 2004 Loebner Prize winner developed by Richard Wallace.
+"
+132,1,List of chatterbots,General chatbots,"Charlix
+Cleverbot (winner of the 2010 Mechanical Intelligence Competition)
+Elbot - 2008 Loebner Prize winner, by Fred Roberts.
+"
+133,1,List of chatterbots,General chatbots,"Eugene Goostman - 2012 Turing 100 winner, by Vladimir Veselov.
+"
+134,1,List of chatterbots,General chatbots,"Fred - an early chatterbot by Robby Garner.
+"
+135,1,List of chatterbots,General chatbots,"Jabberwacky
+Jeeney AI
+MegaHAL
+"
+136,1,List of chatterbots,General chatbots,SimSimi
+137,1,List of chatterbots,General chatbots,"- A popular artificial intelligence conversation program that was created in 2002 by ISMaker.
+"
+138,1,List of chatterbots,General chatbots,"Spookitalk - A chatterbot used for NPCs in Douglas Adams' Starship Titanic video game.
+"
+139,1,List of chatterbots,General chatbots,"Ultra Hal - 2007 Loebner Prize winner, by Robert Medeksza.
+"
+140,1,List of chatterbots,General chatbots,Verbot
+141,1,List of chatterbots,IM chatbots,"GooglyMinotaur, specializing in Radiohead, the first bot released by ActiveBuddy (June 2001-March 2002)
+SmarterChild, developed by ActiveBuddy and released in June 2001
+Infobot, an assistant on IRC channels such as #perl, primarily to help out with answering Frequently Asked Questions (June 1995-today)
+Lara.ng, is a personal directions assistant developed by Road Preppers Technologies, for navigating public transportation in Africa."
+142,1,List of chatterbots,IM chatbots,(released in March 2017)
+143,1,Twitterbot,Features,It is sometimes desirable to identify when a Twitter account is controlled by a bot.
+144,1,Twitterbot,Features,"In a 2012 paper, Chu et al. propose the following criteria that indicate that an account may be a bot (they were designing an automated system):
+
+""Periodic and regular timing"" of tweets;
+Whether the tweet content contains known spam; and
+The ratio of tweets from mobile versus desktop, as compared to an average human Twitter user."
+145,1,Twitterbot,Features,Research shows that humans can view Twitter bots as a credible source of information.
+146,1,Twitterbot,Examples,There are many different types of Twitter bots and their purposes vary from one to another.
+147,1,Twitterbot,Examples,Some bots may tweet helpful material such as @EarthquakesSF (description below).
+148,1,Twitterbot,Examples,"In 2009, Twitter bots were estimated to create approximately 24% of tweets that on Twitter."
+149,1,Twitterbot,Examples,"Here are examples of some of the Twitter bots and how they interact with users on Twitter.
+
+"
+150,1,Twitterbot,Examples,"@Betelgeuse_3 sends at-replies in response to tweets that include the phrase, ""Beetlejuice, beetlejuice, beetlejuice""."
+151,1,Twitterbot,Examples,"The tweets are sent in the voice of the lead character from the Beetlejuice film.
+"
+152,1,Twitterbot,Examples,"@CongressEdits and @parliamentedits posts whenever someone makes edits to Wikipedia from the US Congress and UK Parliament IP addresses, respectively.
+"
+153,1,Twitterbot,Examples,"@DBZNappa replied with ""WHAT!?"
+154,1,Twitterbot,Examples,NINE THOUSAND?
+155,1,Twitterbot,Examples,""" to anyone on Twitter that used the internet meme phrase ""over 9000""."
+156,1,Twitterbot,Examples,"The account began in 2011, and was eventually suspended in 2015, most likely a victim of its own success.
+"
+157,1,Twitterbot,Examples,"@DearAssistant sends auto-reply tweets responding to complex queries in simple English by utilizing Wolfram Alpha.
+"
+158,1,Twitterbot,Examples,"@DeepDrumpf is a recurrent neural network, created at MIT, that releases tweets imitating Donald Trump's speech patterns."
+159,1,Twitterbot,Examples,"It received its namesake from the term 'Donald Drumpf', popularized in the segment 'Donald Trump' from the show Last Week Tonight with John Oliver.
+"
+160,1,Twitterbot,Examples,"@DroptheIBot tweets the message, ""People aren't illegal."
+161,1,Twitterbot,Examples,"Try saying 'undocumented immigrant' or 'unauthorized immigrant' instead"" to Twitter users who have sent a tweet containing the phrase ""illegal immigrant""."
+162,1,Twitterbot,Examples,"It was created by American Fusion.net journalists Jorge Rivas and Patrick Hogan.
+"
+163,1,Twitterbot,Examples,@everyword has tweeted every word of the English language.
+164,1,Twitterbot,Examples,"It started in 2007 and tweeted every thirty minutes until 2014.
+"
+165,1,Twitterbot,Examples,"@factbot1 was created by Eric Drass to illustrate what he believed to be a prevalent problem: that of people on the internet believing unsupported facts which accompany pictures.
+"
+166,1,Twitterbot,Examples,"@fuckeveryword
+"
+167,1,Twitterbot,Examples,@Horse_ebooks was a bot that gained a following among people who found its tweets poetic.
+168,1,Twitterbot,Examples,It has inspired various _ebooks-suffixed Twitter bots which use Markov text generators (or similar techniques) to create new tweets by mashing up the tweets of their owner.
+169,1,Twitterbot,Examples,"It went inactive following a brief promotion for Bear Stearns Bravo.
+"
+170,1,Twitterbot,Examples,@infinite_scream tweets and auto-replies a 2-39 character scream.
+171,1,Twitterbot,Examples,"At least partially inspired by Edvard Munch's The Scream, it attracted attention from those distressed by the Presidency of Donald Trump and bad news.
+"
+172,1,Twitterbot,Examples,@MetaphorMagnet is an AI bot that generates metaphorical insights using its knowledge-base of stereotypical properties and norms.
+173,1,Twitterbot,Examples,A companion bot @MetaphorMirror pairs these metaphors to news tweets.
+174,1,Twitterbot,Examples,"Another companion bot @BestOfBotWorlds uses metaphor to generate faux-religious insights.
+"
+175,1,Twitterbot,Examples,"@Pentametron finds tweets incidentally written in iambic pentameter using the CMU Pronouncing Dictionary, pairs them into couplets using a rhyming dictionary, and retweets them as couplets into followers' feeds.
+"
+176,1,Twitterbot,Examples,"@RedScareBot tweets in the persona of Joseph McCarthy in response to Twitter posts mentioning ""socialist"", ""communist"", or ""communism"".
+"
+177,1,Twitterbot,Examples,"@tinycarebot promotes simple self care actions to its followers, such as remembering to look up from your screens, taking a break to go outside, and drink more water."
+178,1,Twitterbot,Examples,It will also send a self care suggestion if you tweet directly at it.
+179,1,Twitterbot,Examples,There are also families of related Twitter bots.
+180,1,Twitterbot,Examples,"For example, @LessicoFeed, @SpracheFeed, @SwedishFeed, @TraductionFeed, @VocabularioFeed, @WelshFeed each tweet an English word along with a translation every hour into Italian, German, Swedish, French, Spanish, and Welsh, respectively.  "
+181,1,Twitterbot,Examples,The translations are crowdsourced by volunteers and subscribers.
+182,1,Twitterbot,Impact,Detecting non-human Twitter users has been of interest to academics.
+183,1,Twitterbot,Impact,"Indiana University has developed a free service called Botometer (formerly BotOrNot), which scores Twitter handles based on their likelihood of being a Twitterbot."
+184,1,Twitterbot,Impact,One significant academic study estimated that up to 15% of Twitter users were automated bot accounts.
+185,1,Twitterbot,Impact,The prevalence of Twitter bots coupled with the ability of some bots to give seemingly human responses has enabled these non-human accounts to garner widespread influence.
+186,1,Twitterbot,Political,A subset of Twitter bots programmed to complete social tasks played an important role in the United States 2016 Presidential Election.
+187,1,Twitterbot,Political,Researchers estimated that pro-Trump bots generated four tweets for every pro-Clinton automated account and out-tweeted pro-Clinton bots 7:1 on relevant hashtags during the final debate.
+188,1,Twitterbot,Political,Deceiving Twitter bots fooled candidates and campaign staffers into retweeting misappropriated quotes and accounts affiliated with incendiary ideals.
+189,1,Twitterbot,Political,"Concerns about political Twitter bots include the promulgation of malicious content, increased polarization, and the spreading of fake news."
+190,1,Twitterbot,Positive influence,Many non-malicious bots are popular for their entertainment value.
+191,1,Twitterbot,Positive influence,"However, as technology and the creativity of bot-makers improves, so does the potential for Twitter bots that fill social needs."
+192,1,Twitterbot,Positive influence,"@tinycarebot is a Twitterbot that encourages followers to practice self care, and brands are increasingly using automated Twitter bots to engage with customers in interactive ways."
+193,1,Twitterbot,Positive influence,"One anti-bullying organization has created @TheNiceBot, which attempts to combat the prevalence of mean tweets by automatically tweeting kind messages."
+194,1,Twitterbot,Public figures,"The majority of Twitter accounts following public figures and brands are often fake or inactive, making the number of Twitter followers a celebrity a difficult metric for gauging popularity."
+195,1,Twitterbot,Public figures,"While this cannot always be helped, some public figures who have gained or lost huge quantities of followers in short periods of time have been accused of discreetly paying for Twitter followers."
+196,1,Twitterbot,Public figures,"For example, the Twitter accounts of Sean Combs, Rep Jared Polis (D-Colo), PepsiCo, Mercedes-Benz, and 50 Cent have come under scrutiny for possibly engaging in the buying and selling of Twitter followers, which is estimated to be between a $40 million and $360 million business annually."
+197,1,Twitterbot,Public figures,Account sellers may charge a premium for more realistic accounts that have Twitter profile pictures and bios and retweet the accounts they follow.
+198,1,Twitterbot,Public figures,"In addition to an ego boost, public figures may gain  more lucrative endorsement contracts from inflated Twitter metrics.  "
+199,1,Twitterbot,Public figures,"For brands, however, the translation of online buzz and social media followers into sales has recently come under question after The Coca-Cola Company disclosed that a corporate study revealed that social media buzz does not create a spike in short term sales."
+200,1,Social bot,Uses,"Lutz Finger identifies 5 immediate uses for social bots:
+foster fame: having an arbitrary number of (unrevealed) bots as (fake) followers can help simulate real success
+spamming: having advertising bots in online chats is similar to email spam, but a lot more direct
+mischief:"
+201,1,Social bot,Uses,"e.g. signing up an opponent with a lot of fake identities and spam the account or help others discover it to discreditize the opponent
+bias public opinion: influence trends by countless messages of similar content with different phrasings
+limit free speech: important messages can be pushed out of sight by a deluge of automated bot messagesThe effects of all points can be likened to and support methods of traditional psychological warfare."
+202,1,Social bot,Detection,The first generation of bots could sometimes be distinguished from real users by their often superhuman capacities to post messages around the clock (and at massive rates).
+203,1,Social bot,Detection,"Later developments have succeeded in imprinting more ""human"" activity and behavioral patterns in the agent."
+204,1,Social bot,Detection,"To unambiguously detect social bots as what they are, a variety of criteria must be applied together using pattern detection techniques, some of which are:
+cartoon figures as user pictures
+sometimes also random real user pictures are captured (identity fraud)
+reposting rate
+temporal patterns
+sentiment expression
+followers-to-friends ratio
+length of user names
+variability in (re)posted messagesBotometer (formerly BotOrNot) is a public Web service that checks the activity of a Twitter account and gives it a score based on how likely the account is to be a bot."
+205,1,Social bot,Detection,"The system leverages over a thousand features.
+"
+206,1,Social bot,Detection,An active method that worked well in detecting early spam bots was to set up honeypot accounts where obvious nonsensical content was posted and then dumbly reposted (retweeted) by bots.
+207,1,Social bot,Detection,"However, recent studies show that bots evolve quickly and detection methods have to be updated constantly, because otherwise they may get useless after few years."
+208,1,Internet bot,IM and IRC,"Some bots communicate with other users of Internet-based services, via instant messaging (IM), Internet Relay Chat (IRC), or another web interface such as Facebook Bots and Twitterbots."
+209,1,Internet bot,IM and IRC,These chatterbots may allow people to ask questions in plain English and then formulate a proper response.
+210,1,Internet bot,IM and IRC,"These bots can often handle many tasks, including reporting weather, zip-code information, sports scores, converting currency or other units, etc."
+211,1,Internet bot,IM and IRC,"Others are used for entertainment, such as SmarterChild on AOL Instant Messenger and MSN Messenger.
+"
+212,1,Internet bot,IM and IRC,"An additional role of IRC bots may be to lurk in the background of a conversation channel, commenting on certain phrases uttered by the participants (based on pattern matching)."
+213,1,Internet bot,IM and IRC,"This is sometimes used as a help service for new users, or for censorship of profanity."
+214,1,Internet bot,Social bots,Social networking bots are sets of algorithms that take on the duties of repetitive sets of instructions in order to establish a service or connection among social networking users.
+215,1,Internet bot,Social bots,"Various designs of networking bots vary from chat bots, algorithms designed to converse with a human user, to social bots, algorithms designed to mimic human behaviors to converse with behavioral patterns similar to that of a human user."
+216,1,Internet bot,Social bots,The history of social botting can be traced back to Alan Turing in the 1950s and his vision of designing sets of instructional code that passes the Turing test.
+217,1,Internet bot,Social bots,"From 1964 to 1966, ELIZA, a natural language processing computer program created by Joseph Weizenbaum, is an early indicator of artificial intelligence algorithms that inspired computer programmers to design tasked programs that can match behavior patterns to their sets of instruction."
+218,1,Internet bot,Social bots,"As a result, natural language processing has become an influencing factor to the development of artificial intelligence and social bots as innovative technological advancements are made alongside the progression of the mass spreading of information and thought on social media websites.
+"
+219,1,Internet bot,Social bots,"Reports of political interferences in recent elections, including the 2016 US and 2017 UK general elections, have set the notion of botting being more prevalent because of the ethics that is challenged between the bot's design and the bot's designer."
+220,1,Internet bot,Social bots,"According to Emilio Ferrara, a computer scientist from the University of Southern California reporting on Communications of the ACM, the lack of resources available to implement fact-checking and information verification results in the large volumes of false reports and claims made on these bots in social media platforms."
+221,1,Internet bot,Social bots,"In the case of Twitter, most of these bots are programmed with searching filter capabilities that target key words and phrases that reflect in favor and against political agendas and retweet them."
+222,1,Internet bot,Social bots,"While the attention of bots is programmed to spread unverified information throughout the social media platform, it is a challenge that programmers face in the wake of a hostile political climate."
+223,1,Internet bot,Social bots,Binary functions are designated to the programs and using an Application Program interface embedded in the social media website executes the functions tasked.
+224,1,Internet bot,Social bots,The Bot Effect is what Ferrera reports as when the socialization of bots and human users creates a vulnerability to the leaking of personal information and polarizing influences outside the ethics of the bot's code.
+225,1,Internet bot,Social bots,"According to Guillory Kramer in his study, he observes the behavior of emotionally volatile users and the impact the bots have on the users, altering the perception of reality."
+226,1,Internet bot,Commercial bots,There has been a great deal of controversy about the use of bots in an automated trading function.
+227,1,Internet bot,Commercial bots,Auction website eBay has been to court in an attempt to suppress a third-party company from using bots to traverse their site looking for bargains; this approach backfired on eBay and attracted the attention of further bots.
+228,1,Internet bot,Commercial bots,"The United Kingdom-based bet exchange Betfair saw such a large amount of traffic coming from bots that it launched a WebService API aimed at bot programmers, through which it can actively manage bot interactions.
+"
+229,1,Internet bot,Commercial bots,"Bot farms are known to be used in online app stores, like the Apple App Store and Google Play, to manipulate positions or to increase positive ratings/reviews."
+230,1,Internet bot,Commercial bots,"A rapidly growing, benign, form of internet bot is the chatbot."
+231,1,Internet bot,Commercial bots,"From 2016, when Facebook Messenger allowed developers to place chatbots on their platform, there has been an exponential growth of their use on that forum alone."
+232,1,Internet bot,Commercial bots,"30,000 bots were created for Messenger in the first six months, rising to 100,000 by September 2017."
+233,1,Internet bot,Commercial bots,"Avi Ben Ezra, CTO of SnatchBot, told Forbes that evidence from the use of their chatbot building platform pointed to a near future saving of millions of hours of human labour as 'live chat' on websites was replaced with bots."
+234,1,Internet bot,Commercial bots,Companies use internet bots to increase online engagement and streamline communication.
+235,1,Internet bot,Commercial bots,"Companies often use bots to cut down on cost, instead of employing people to communicate with consumers, companies have developed new ways to be efficient."
+236,1,Internet bot,Commercial bots,These chatbots are used to answer customers' questions.
+237,1,Internet bot,Commercial bots,"For example, Domino's has developed a chatbot that can take orders via Facebook Messenger."
+238,1,Internet bot,Commercial bots,Chatbots allow companies to allocate their employees' time to more important things.
+239,1,Internet bot,Malicious bots,"A malicious use of bots is the coordination and operation of an automated attack on networked computers, such as a denial-of-service attack by a botnet."
+240,1,Internet bot,Malicious bots,Internet bots can also be used to commit click fraud and more recently have seen usage around MMORPG games as computer game bots.
+241,1,Internet bot,Malicious bots,"A spambot is an internet bot that attempts to spam large amounts of content on the Internet, usually adding advertising links."
+242,1,Internet bot,Malicious bots,"More than 94.2% of websites have experienced a bot attack.
+"
+243,1,Internet bot,Malicious bots,There are malicious bots (and botnets) of the following types:
+244,1,Internet bot,Malicious bots,"Spambots that harvest email addresses from contact or guestbook pages
+Downloader programs that suck bandwidth by downloading entire websites
+Website scrapers that grab the content of websites and re-use it without permission on automatically generated doorway pages
+Registration bots which sign up a specific email address to a large number of services in order to have the confirmation messages flood the email inbox and distract from important messages indicating a security breach.
+"
+245,1,Internet bot,Malicious bots,"Viruses and worms
+DDoS attacks
+Botnets, zombie computers, etc.
+"
+246,1,Internet bot,Malicious bots,"Spambots that try to redirect people onto a malicious website, sometimes found in comment sections or forums of various websites."
+247,1,Internet bot,Malicious bots,"Bots are also used to buy up good seats for concerts, particularly by ticket brokers who resell the tickets."
+248,1,Internet bot,Malicious bots,Bots are employed against entertainment event-ticketing sites.
+249,1,Internet bot,Malicious bots,The bots are used by ticket brokers to unfairly obtain the best seats for themselves while depriving the general public of also having a chance to obtain the good seats.
+250,1,Internet bot,Malicious bots,"The bot runs through the purchase process and obtains better seats by pulling as many seats back as it can.
+"
+251,1,Internet bot,Malicious bots,"Bots are often used in Massively Multiplayer Online Roleplaying Games to farm for resources that would otherwise take significant time or effort to obtain; this is a concern for most online in-game economies.
+"
+252,1,Internet bot,Malicious bots,"Bots are also used to increase views for YouTube videos.
+"
+253,1,Internet bot,Malicious bots,Bots are used to increase traffic counts on analytics reporting to extract money from advertisers.
+254,1,Internet bot,Malicious bots,"A study by comScore found that 54 percent of display ads shown in thousands of campaigns between May 2012 and February 2013 never appeared in front of a human being.
+in 2012, reporter Percy von Lipinski reported that he discovered millions of bot or botted or pinged views at CNN iReport."
+255,1,Internet bot,Malicious bots,CNN iReport quietly removed millions of views from the account of so-called superstar iReporter Chris Morrow.
+256,1,Internet bot,Malicious bots,"It is not known if the ad revenue received by CNN from the fake views was ever returned to the advertisers.
+"
+257,1,Internet bot,Malicious bots,Bots may be used on internet forums to automatically post inflammatory or nonsensical posts to disrupt the forum and anger users.
+258,1,Internet bot,Malicious bots,"The most widely used anti-bot technique is the use of CAPTCHA, which is a form of Turing test used to distinguish between a human user and a less-sophisticated AI-powered bot, by the use of graphically-encoded human-readable text."
+259,1,Internet bot,Malicious bots,"Examples of providers include Recaptcha, and commercial companies such as Minteye, Solve Media, and NuCaptcha."
+260,1,Internet bot,Malicious bots,"Captchas, however, are not foolproof in preventing bots as they can often be circumvented by computer character recognition, security holes, and even by outsourcing captcha solving to cheap laborers."
+261,1,Internet bot,Helpful bots,Companies and customers can benefit from internet bots.
+262,1,Internet bot,Helpful bots,Internet bots are allowing customers to communicate with companies without having to communicate with a person.
+263,1,Internet bot,Helpful bots,"KLM Royal Dutch Airlines has produced a chatbot that allows customers to receive boarding passes, check in reminders, and other information that is needed for a flight."
+264,1,Internet bot,Helpful bots,Companies have made chatbots that can benefit customers.
+265,1,Internet bot,Helpful bots,"Customer engagement has grown since these chatbots have been developed.
+"
+266,1,Internet bot,Helpful bots,Chat bots are used on a daily basis.
+267,1,Internet bot,Helpful bots,Google Assistant and Siri are considered forms of chat bots.
+268,1,Internet bot,Helpful bots,Google Assistant and Siri allow people to ask questions and get a response using an AI system.
+269,1,Internet bot,Helpful bots,These technological advances are positively benefiting people's daily lives.
+270,2,Web brigades,Background,"State sponsored online sockpuppetry and manipulation of online views is practiced by several countries, in particular by Russia, China, United States, United Kingdom, Israel, Turkey, Iran, Vietnam, India and Ukraine."
+271,2,Web brigades,Background,"The earliest documented allegations of the existence of ""web brigades"" appear to be in the April 2003 Vestnik Online article ""The Virtual Eye of Big Brother"" by French journalist Anna Polyanskaya (a former assistant to assassinated Russian politician Galina Starovoitova) and two other authors, Andrey Krivov and Ivan Lomako."
+272,2,Web brigades,Background,"The authors claim that up to 1998, contributions to forums on Russian Internet sites (Runet) predominantly reflected liberal and democratic values, but after 2000, the vast majority of contributions reflected totalitarian values."
+273,2,Web brigades,Background,This sudden change was attributed to the appearance of teams of pro-Russian commenters who appeared to be organized by the Russian state security service.
+274,2,Web brigades,Background,"According to the authors, about 70% of Russian Internet posters were of generally liberal views prior to 1998–1999, while a surge of ""antidemocratic"" posts (about 60–80%) suddenly occurred at many Russian forums in 2000."
+275,2,Web brigades,Background,"This could also be a reflection to the fact that access to Internet among the general Russian population soared during this time, which was until then accessible only to some sections of the society.
+"
+276,2,Web brigades,Background,"In January 2012, a hacktivist group calling itself the Russian arm of Anonymous published a massive collection of email allegedly belonging to former and present leaders of the pro-Kremlin youth organization Nashi (including a number of government officials)."
+277,2,Web brigades,Background,Journalists who investigated the leaked information found that the pro-Kremlin movement had engaged in a range of activities including paying commentators to post content and hijacking blog ratings in the fall of 2011.
+278,2,Web brigades,Background,"The e-mails indicated that members of the ""brigades"" were paid 85 rubles (about US$3) or more per comment, depending on whether the comment received replies."
+279,2,Web brigades,Background,"Some were paid as much as 600,000 roubles (about US$21,000) for leaving hundreds of comments on negative press articles on the internet, and were presented with iPads."
+280,2,Web brigades,Background,A number of high-profile bloggers were also mentioned as being paid for promoting Nashi and government activities.
+281,2,Web brigades,Background,"The Federal Youth Agency, whose head (and the former leader of Nashi)"
+282,2,Web brigades,Background,"Vasily Yakemenko was the highest-ranking individual targeted by the leaks, refused to comment on the authenticity of the e-mails."
+283,2,Web brigades,Background,"In 2013, a Freedom House report stated that 22 of 60 countries examined have been using paid pro-government commentators to manipulate online discussions, and that Russia has been at the forefront of this practice for several years, along with China and Bahrain.  "
+284,2,Web brigades,Background,"In the same year, Russian reporters investigated the St. Petersburg Internet Research Agency, which employs at least 400 people."
+285,2,Web brigades,Background,"They found that the agency covertly hired young people as ""Internet operators"" paid to write pro-Kremlin postings and comments, smearing opposition leader Alexei Navalny and U.S. politics and culture.
+
+"
+286,2,Web brigades,Background,Some Russian opposition journalists state that such practices create a chilling effect on the few independent media outlets remaining in the country.
+287,2,Web brigades,Background,"Further investigations were performed by Russian opposition newspaper Novaya Gazeta and Institute of Modern Russia in 2014–15, inspired by the peak of activity of the pro-Russian brigades during the Ukrainian conflict and assassination of Boris Nemtsov."
+288,2,Web brigades,Background,"The effort of using ""troll armies"" to promote Putin's policies is reported to be a multimillion-dollar operation."
+289,2,Web brigades,Background,"According to an investigation by the British Guardian newspaper, the flood of pro-Russian comments is part of a coordinated ""informational-psychological war operation""."
+290,2,Web brigades,Background,"One Twitter bot network was documented to use more than 20,500 fake Twitter accounts to spam negative comments after the death of Boris Nemtsov and events related to the Ukrainian conflict."
+291,2,Web brigades,Background,"An article based on the original Polyanskaya article, authored by the Independent Customers' Association, was published in May 2008 at Expertiza."
+292,2,Web brigades,Background,Ru.
+293,2,Web brigades,Background,"In this article the term web brigades is replaced by the term Team ""G"".During his presidency, Donald Trump retweeted a tweet from an account operated by the Russians."
+294,2,Web brigades,Methods,Web brigades commentators sometimes leave hundreds of postings a day that criticize the country's opposition and promote Kremlin-backed policymakers.
+295,2,Web brigades,Methods,"Commentators simultaneously react to discussions of ""taboo"" topics, including the historical role of Soviet leader Joseph Stalin, political opposition, dissidents such as Mikhail Khodorkovsky, murdered journalists, and cases of international conflict or rivalry (with countries such as Estonia, Georgia, and Ukraine, but also with the foreign policies of the United States and the European Union)."
+296,2,Web brigades,Methods,"Prominent journalist and Russia expert Peter Pomerantsev believes Russia's efforts are aimed at confusing the audience, rather than convincing it."
+297,2,Web brigades,Methods,"He states that they cannot censor information but can ""trash it with conspiracy theories and rumours"".To avert suspicions, the users sandwich political remarks between neutral articles on travelling, cooking and pets."
+298,2,Web brigades,Methods,"They overwhelm comment sections of media to render meaningful dialogue impossible.
+"
+299,2,Web brigades,Methods,"A collection of leaked documents, published by Moy Rayon, suggests that work at the ""troll den"" is strictly regulated by a set of guidelines."
+300,2,Web brigades,Methods,"Any blog post written by an agency employee, according to the leaked files, must contain ""no fewer than 700 characters"" during day shifts and ""no fewer than 1,000 characters"" on night shifts."
+301,2,Web brigades,Methods,Use of graphics and keywords in the post's body and headline is also mandatory.
+302,2,Web brigades,Methods,"In addition to general guidelines, bloggers are also provided with ""technical tasks"" – keywords and talking points on specific issues, such as Ukraine, Russia's internal opposition and relations with the West."
+303,2,Web brigades,Methods,"On an average working day, the workers are to post on news articles 50 times."
+304,2,Web brigades,Methods,Each blogger is to maintain six Facebook accounts publishing at least three posts a day and discussing the news in groups at least twice a day.
+305,2,Web brigades,Methods,"By the end of the first month, they are expected to have won 500 subscribers and get at least five posts on each item a day."
+306,2,Web brigades,Methods,"On Twitter, the bloggers are expected to manage 10 accounts with up to 2,000 followers and tweet 50 times a day."
+307,2,Web brigades,Methods,"In 2015, Lawrence Alexander disclosed a network of propaganda websites sharing the same Google Analytics identifier and domain registration details, allegedly run by Nikita Podgorny from Internet Research Agency."
+308,2,Web brigades,Methods,"The websites were mostly meme repositories focused on attacking Ukraine, Euromaidan, Russian opposition and Western policies."
+309,2,Web brigades,Methods,"Other websites from this cluster promoted president Putin and Russian nationalism, and spread alleged news from Syria presenting anti-Western and pro-Bashar al-Assad viewpoints."
+310,2,Web brigades,Methods,"In August 2015, Russian researchers correlated Google search statistics of specific phrases with their geographic origin, observing increases in specific politically loaded phrases (such as ""Poroshenko"", ""Maidan"", ""sanctions"") starting from 2013 and originating from very small, peripheral locations in Russia, such as Olgino, which also happens to be the headquarters of the Internet Research Agency company."
+311,2,Web brigades,Methods,The  Internet Research Agency also appears to be the primary sponsor of an anti-Western exhibition Material Evidence.
+312,2,Web brigades,Methods,"Since 2015, Finnish reporter Jessikka Aro has inquired into web brigades and Russian trolls."
+313,2,Web brigades,Methods,"In addition, Western journalists have referred to the phenomenon and have supported traditional media."
+314,2,Web brigades,Methods,"In May 2019, it was reported that a study from the George Washington University found that Russian Twitter bots had tried to inflame the United States' anti-vaccination debate by posting opinions on both sides in 2018.In June 2019 a group of 12 editors introducing coordinated pro-government and anti-opposition bias was blocked on the Russian-language Wikipedia."
+315,2,Web brigades,Methods,In July 2019 two operatives of the Internet Research Agency were detained in Libya and charged with attempting to  influence local elections.
+316,2,Web brigades,Methods,"They were reportedly employees of Alexander Malkevich, manager of USA Really, a propaganda website."
+317,2,Web brigades,#WalkAway,"The WalkAway campaign is a hashtag introduced by American political activist Brandon Straka in a viral video promoting the idea that members of the Democratic Party should ""walk away"" from the Party due to its political stances."
+318,2,Web brigades,#WalkAway,This online campaign was swiftly supported by Russian bots.
+319,2,Web brigades,Literature,"Jolanta Darczewska: The Anatomy of Russian Information Warfare: The Crimean Operation, a Case Study."
+320,2,Web brigades,Literature,"Centre for Eastern Studies, Warsaw 2014, ISBN 978-83-62936-45-8 (PDF)
+Peter Pomerantsev & Michael Weiss:"
+321,2,Web brigades,Literature,"The Menace of Unreality: How the Kremlin Weaponizes Information, Culture and Money."
+322,2,Web brigades,Literature,"The Institute of Modern Russia, New York 2014 (PDF)"
+323,2,Votebots,Techniques used,The WWW is built on HTTP protocol to transfer information.
+324,2,Votebots,Techniques used,"To imitate legitimate user behavior, such as voting in an online poll, the attacker sends a HTTP request to particular server hosting the poll."
+325,2,Votebots,Target analysis,"Analyzing the target, or the voting project, should be done before actually building the votebot."
+326,2,Votebots,Target analysis,"When handling a voting website for example, one needs to do some webpage analysis on the target, extracting the request URL of the voting action as well as some HTTP header settings to cheat the website.
+"
+327,2,Votebots,Target analysis,"There are lots of tools which help people to analyze the web, such as Firebug and httpanalyzer."
+328,2,Votebots,Target analysis,"One can trace the voting process of HTTP packages by these tools and find the right voting target and some simple protecting tricks used by websites, such as referrer verification."
+329,2,Votebots,Preparation,"Before sending requests, the attacker must carefully analyze the target and identify potential attack vectors."
+330,2,Votebots,Preparation,"During analysis, the attacker must determine if HTTP sessions (maintained via cookies) are necessary to consider or not."
+331,2,Votebots,Preparation,"For example, an online poll could require a session so that only authorized users can vote."
+332,2,Votebots,HTTP request,"Crafting an HTTP request defines how an actual user would behave based on parameters defined in the request.
+"
+333,2,Votebots,HTTP request,"Two HTTP request methods are useful in voting, POST and PUT."
+334,2,Votebots,HTTP request,"Request methods are simply different ways to send data to a certain endpoint (i.e., a poll about ""How Many Users Like The Votebots Article?"").  "
+335,2,Votebots,HTTP request,"The below is a simple Python example using httplib2 to send messages (cited from httplib2 wiki):
+
+>>"
+336,2,Votebots,HTTP request,> from httplib2 import
+337,2,Votebots,HTTP request,"Http
+>"
+338,2,Votebots,HTTP request,">> from urllib import urlencode
+"
+339,2,Votebots,HTTP request,"h = Http()
+>"
+340,2,Votebots,HTTP request,>> data =
+341,2,Votebots,HTTP request,"dict(name=""Joe"", comment=""A test comment"")
+"
+342,2,Votebots,HTTP request,">> resp, content = h.request(""http://bitworking.org/news/223/Meet-Ares"", ""POST"", urlencode(data))
+"
+343,2,Votebots,HTTP request,">> resp
+"
+344,2,Votebots,HTTP request,"{'status': '200', 'transfer-encoding'"
+345,2,Votebots,HTTP request,": 'chunked', 'vary': 'Accept-Encoding,User-Agent',
+ 'server': 'Apache', 'connection': 'close', 'date': 'Tue, 31 Jul 2007 15:29:52 GMT',
+ 'content-type': 'text/html'}"
+346,2,Votebots,Human action simulation,"In many voting projects, developers try to distinguish the bots from legal users."
+347,2,Votebots,Human action simulation,"They may use the strategy talked about below, and the votebots try to bypass their barriers or detecting methods to successfully vote at the website.
+"
+348,2,Votebots,Human action simulation,"For example, some websites restrict the number of votes one IP address can make in a time period."
+349,2,Votebots,Human action simulation,"Votebots can bypass this rule by proxy its IP address frequently to cheat the website.
+"
+350,2,Votebots,Human action simulation,"Another frequently used strategy is to analyze the account created by a votebot to tell any difference from the normal accounts created by human beings, or to analyze the action history of accounts in the system to find out potential votebots creating ones."
+351,2,Votebots,Human action simulation,"Votebots, on the other hand, try to simulate human action such as logging in and out as well as sharing some articles in some social network service before voting."
+352,2,Votebots,Usual target,YouTube is reported to be a big victim of votebots.
+353,2,Votebots,Usual target,"Many small, temporary voting projects are also usual target of votebots."
+354,2,Votebots,Usual target,"Many people try to program or buy malicious scripts to vote for themselves in some processes, and it is hard to count the number of attacks that happen every day."
+355,2,Votebots,Anti-VoteBot,"As talked above, web developers want to distinguish votebot from legal voting users in voting projects."
+356,2,Votebots,Anti-VoteBot,"Normal ways includes IP checking, account-handling, Turing test (e.g. CAPTCHA) and account action analysis."
+357,3,Spambot,E-mail spambots,E-mail spambots harvest
+358,3,Spambot,E-mail spambots,"e-mail addresses from material found on the Internet in order to build mailing lists for sending unsolicited e-mail, also known as spam."
+359,3,Spambot,E-mail spambots,"Such spambots are web crawlers that can gather e-mail addresses from websites, newsgroups, special-interest group (SIG) postings, and chat-room conversations."
+360,3,Spambot,E-mail spambots,"Because e-mail addresses have a distinctive format, such spambots are easy to code.
+"
+361,3,Spambot,E-mail spambots,A number of programs and approaches have been devised to foil spambots.
+362,3,Spambot,E-mail spambots,"One such technique is address munging, in which an e-mail address is deliberately modified so that a human reader (and/or human-controlled web browser) can interpret it"
+363,3,Spambot,E-mail spambots,but spambots cannot.
+364,3,Spambot,E-mail spambots,"This has led to the evolution of more sophisticated spambots that are able to recover e-mail addresses from character strings that appear to be munged, or instead can render the text into a web browser and then scrape it for e-mail addresses."
+365,3,Spambot,E-mail spambots,"Alternative transparent techniques include displaying all or part of the e-mail address on a web page as an image, a text logo shrunken to normal size using inline CSS, or as text with the order of characters jumbled, placed into readable order at display time using CSS."
+366,3,Spambot,Forum spambots,"Forum spambots browse the internet, looking for guestbooks, wikis, blogs, forums, and other types of web forms that they can then use to submit bogus content."
+367,3,Spambot,Forum spambots,These often use OCR technology to bypass CAPTCHAs.
+368,3,Spambot,Forum spambots,"Some spam messages are targeted towards readers and can involve techniques of target marketing or even phishing, making it hard to tell real posts from the bot generated ones."
+369,3,Spambot,Forum spambots,"Other spam messages are not meant to be read by humans, but are instead posted to increase the number of links to a particular website, to boost its search engine ranking.
+"
+370,3,Spambot,Forum spambots,One way to prevent spambots from creating automated posts is to require the poster to confirm their intention to post via e-mail.
+371,3,Spambot,Forum spambots,"Since most spambot scripts use a fake e-mail address when posting, any email confirmation request is unlikely to be successfully routed to them."
+372,3,Spambot,Forum spambots,"Some spambots will pass this step by providing a valid email address and use it for validation, mostly via webmail services."
+373,3,Spambot,Forum spambots,"Using methods such as security questions are also proven to be effective in curbing posts generated by spambots, as they are usually unable to answer it upon registering."
+374,3,Spambot,Twitter spambots,"A Twitterbot is a program used to produce automated posts on the Twitter microblogging service, or to automatically follow Twitter users."
+375,3,Spambot,Twitter spambots,Twitterbots come in various forms.
+376,3,Spambot,Twitter spambots,"For example, many serve as spam, enticing clicks on promotional links."
+377,3,Spambot,Twitter spambots,"Others post @replies or automatically ""retweet"" in response to tweets that include a certain word or phrase."
+378,3,Spambot,Twitter spambots,These automatic tweets are often seen as fun or silly.
+379,3,Spambot,Twitter spambots,Some Twitter users even program Twitterbots to assist themselves with scheduling or reminders.
