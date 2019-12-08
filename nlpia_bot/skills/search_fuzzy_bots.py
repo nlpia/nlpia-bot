@@ -6,14 +6,21 @@ import os
 import yaml
 import pandas as pd
 from fuzzywuzzy import process
-from nlpia.loaders import get_data
-
 from nlpia_bot.constants import DATA_DIR
 
 log = logging.getLogger(__name__)
 
 
 LIMIT = 1000000
+
+
+def get_data(name):
+    """ replacement for nlpia.loaders.get_data to avoid dependencies that result in version conflicts
+
+    >>> get_data('movie_dialog').shape
+    (64350, 2)
+    """
+    return pd.read_csv(os.path.join(DATA_DIR, name + '.csv'))
 
 
 def normalize(text):
