@@ -1,9 +1,9 @@
 name: nlpiaenv
 
 channels:
+  - conda-forge  # conda-forge is higher priority than defaults in nlpia package
+  - defaults  # top priority: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-channels.html#managing-channels
   # - anaconda  # bad idea: https://github.com/conda/conda/issues/9462
-  - defaults
-  - conda-forge
 
 dependencies:
   - beautifulsoup4
@@ -13,23 +13,23 @@ dependencies:
   - django-environ
   - django-extensions
   - gitpython
-  - gcc
+  # - gcc
   - html5lib
   - hunspell
   - hunspell-en
-  - ipython
+  # - ipython
   - jupyter
-  - jupyter_core
-  - jupyter_console
+  # - jupyter_core
+  # - jupyter_console
   - keras
-  - libgcc
+  # - libgcc
   - matplotlib
   - mysqlclient
   - nbconvert
   - nltk
   - pandas
   - pandoc
-  - pip  # å>=19.0
+  - pip
   - plotly
   - pre-commit
   - prompt_toolkit
@@ -41,10 +41,10 @@ dependencies:
   - redis-py
   - regex  # ==2018.1.10
   - scipy
-  - spacy  # ==2.2.2
+  - spacy>=2.2.2
   - sqlparse
   - tensorflow  # ==1.13.1
 
   - pip:
     - wikipedia-api
-    - nlpia
+    # - nlpia
