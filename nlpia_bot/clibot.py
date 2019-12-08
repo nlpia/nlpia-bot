@@ -40,7 +40,7 @@ import pandas as pd
 from nlpia_bot import constants
 
 from nlpia_bot import __version__
-from .scores.quality_score import QualityScore
+from nlpia_bot.scores.quality_score import QualityScore
 
 
 __author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Hobson, ..."

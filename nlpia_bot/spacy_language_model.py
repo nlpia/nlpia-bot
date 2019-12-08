@@ -1,6 +1,6 @@
 import logging
 
-from .constants import LANG, LANGS
+from nlpia_bot.constants import LANG, LANGS
 
 import spacy
 

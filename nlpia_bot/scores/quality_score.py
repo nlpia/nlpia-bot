@@ -5,8 +5,8 @@ import importlib
 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-from ..constants import passthroughSpaCyPipe
-from .. import spacy_language_model
+from nlpia_bot.constants import passthroughSpaCyPipe
+from nlpia_bot import spacy_language_model
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
