@@ -1,9 +1,9 @@
 name: nlpiaenv
 
 channels:
-  - anaconda
-  - conda-forge
+  # - anaconda  # bad idea: https://github.com/conda/conda/issues/9462
   - defaults
+  - conda-forge
 
 dependencies:
   - beautifulsoup4
