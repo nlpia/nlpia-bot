@@ -3,7 +3,7 @@ import re
 
 import numpy as np
 
-from .constants import SENTENCE_SPEC, NLP
+from nlpia_bot.constants import SENTENCE_SPEC, NLP
 
 
 def generate_sentence(spec=SENTENCE_SPEC, sentence_id=None):
