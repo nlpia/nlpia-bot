@@ -48,7 +48,8 @@ class QualityScore:
         metrics_scores = [[reply[0] for reply in replies]]
         for i in range(len(self.metrics)):
             metric = self.metrics[i]
-            metrics_scores.append([getattr(self.modules[metric], metric)(reply[1], stmt, self.kwargs) for reply in replies])
+            metrics_scores.append([getattr(self.modules[metric], metric)(
+                reply[1], stmt=stmt, **self.kwargs) for reply in replies])
             metrics_scores[-1] = [float(score + 1) / (max(metrics_scores[-1]) + 1) * self.weights[i]
                                   for score in metrics_scores[-1]]
 
