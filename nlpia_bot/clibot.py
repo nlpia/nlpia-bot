@@ -208,6 +208,7 @@ def parse_args(args):
         type=str,
         metavar="STR")
     parser.add_argument(
+        '-n',
         '--num_top_replies',
         default=DEFAULT_CONFIG['num_top_replies'],
         dest="num_top_replies",
