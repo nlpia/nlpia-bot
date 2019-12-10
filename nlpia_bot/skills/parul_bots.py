@@ -56,7 +56,7 @@ def greeting(sentence):
             return random.choice(GREETING_RESPONSES)
 
 
-# Generating response
+# Generating scored responses
 def response(user_text):
     user_text = [user_text] if isinstance(user_text, str) else user_text
     robo_response = ''
@@ -68,11 +68,11 @@ def response(user_text):
     flat.sort()
     req_tfidf = flat[-1]
     if(req_tfidf == 0):
-        robo_response = robo_response + "I am sorry! I don't understand you"
+        robo_response = "I am sorry! I don't understand you"
         return robo_response
     else:
-        robo_response = robo_response + WIKI_SENTENCES[idx]
-        return robo_response
+        robo_response = WIKI_SENTENCES[idx]
+        return [(flat[-1], robo_response)]
 
 
 def main():
@@ -90,7 +90,7 @@ def main():
                     print("ROBO: " + greeting(user_text))
                 else:
                     print("ROBO: ", end="")
-                    print(response(user_text))
+                    print(sorted(response(user_text))[-1][1])
                     # sent_tokens.remove(user_text)
         else:
             flag = False
@@ -106,11 +106,7 @@ class Bot:
         >>> len(respond('Hey Mycroft!'))
         4
         """
-        responses = []
-        bot_statement = response(statement.lower())
-        responses.append((1.0, bot_statement))
-
-        return responses
+        return response(statement.lower())
 
 
 if __name__ == '__main__':
