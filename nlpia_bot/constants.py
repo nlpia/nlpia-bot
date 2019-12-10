@@ -20,6 +20,7 @@ os.makedirs(LOG_DIR, exist_ok=True)
 LOG_LEVELS = [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.FATAL]
 LOG_LEVEL_NAMES = 'DEBUG INFO WARNING ERROR FATAL'.split()
 LOG_LEVEL_ABBREVIATIONS = [s[:4].lower() for s in LOG_LEVEL_NAMES]
+LOG_LEVEL_ABBR_DICT = dict(zip(LOG_LEVEL_ABBREVIATIONS, LOG_LEVELS))
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
