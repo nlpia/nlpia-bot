@@ -205,9 +205,9 @@ def parse_args(args):
         type=str,
         metavar="STR")
     parser.add_argument(
-        '--name',
-        default=DEFAULT_CONFIG['name'],
-        dest="nickname",
+        '--num_top_replies',
+        default=DEFAULT_CONFIG['num_top_replies'],
+        dest="num_top_replies",
         help="Limit on the number of top (high score) replies that are randomly selected from.",
         type=int,
         metavar="INT")
