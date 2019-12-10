@@ -19,10 +19,10 @@ except ImportError:
 
 
 class QualityScore:
-    def __init__(self, metrics=['spell', 'sentiment', 'semantics'], weights=None):
-        self.metrics = metrics
-        self.modules = {metric: importlib.import_module(f'nlpia_bot.scores.{metric}_score') for metric in metrics}
-        self.weights = weights if weights is not None else [1.0] * len(metrics)
+    def __init__(self, **kwargs):
+        self.metrics = list(kwargs.keys())
+        self.weights = list(kwargs.values())
+        self.modules = {metric: importlib.import_module(f'nlpia_bot.scores.{metric}_score') for metric in self.metrics}
         self.nlp = spacy_language_model.nlp
         if sys.platform == 'linux' or sys.platform == 'linux2':
             hunspell = spaCyHunSpell(self.nlp, 'linux')
