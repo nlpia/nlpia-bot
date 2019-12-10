@@ -15,15 +15,16 @@ also be used as template for Python modules.
 
 Note: This skeleton file can be safely removed if not needed!
 """
-import argparse
-import configparser
+import collections.abc
 import importlib
 import logging
+import os
 import sys
-import collections.abc
 
 import numpy as np
 import pandas as pd
+
+from configargparse import ArgParser
 
 # from nlpia_bot.use_demo import reply as use_reply
 
@@ -56,6 +57,16 @@ BOT = None
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
+DEFAULT_CONFIG = {
+    'name': 'bot',
+    'persist': 'True',  # Yes, yes, 1, Y, y, T, t
+    'bots': 'pattern,parul,search_fuzzy,eliza',
+    'loglevel': 'WARNING',
+    'num_top_replies': 10,
+    'self_score': '.5',
+    'semantic_score': '.5',
+}
+
 
 def normalize_replies(replies=''):
     if isinstance(replies, str):
@@ -69,6 +80,10 @@ def normalize_replies(replies=''):
 
 
 class CLIBot:
+    """ Conversation manager intended to interact with the user on the command line, but can be used by other plugins/
+
+    >>> CLIBot(bots='parul,pattern', num_top_replies=1).reply('Hello world')
+    """
     bot_names = []
     bot_modules = []
     bots = []
@@ -76,12 +91,15 @@ class CLIBot:
     def __init__(
             self,
             bots=constants.DEFAULT_BOTS,
+            num_top_replies=None,
             **quality_kwargs):
         if not isinstance(bots, collections.Mapping):
             bots = dict(zip(bots, [None] * len(bots)))
         for bot_name, bot_kwargs in bots.items():
             bot_kwargs = {} if bot_kwargs is None else dict(bot_kwargs)
             self.add_bot(bot_name, **bot_kwargs)
+        self.num_top_replies = DEFAULT_CONFIG['num_top_replies'] if num_top_replies is None else min(
+            max(int(num_top_replies), 1), 10000)
         self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
         self.quality_score = QualityScore(**quality_kwargs)
 
@@ -139,6 +157,21 @@ class CLIBot:
         return "Sorry, something went wrong. Not sure what to say..."
 
 
+# def parse_config(filepath='nlpia-bot.ini'):
+
+#     config = ConfigParser()
+#     config['DEFAULT'] = config_defaults
+#     config['bitbucket.org'] = {}
+#     config['bitbucket.org']['User'] = 'hg'
+#     config['topsecret.server.com'] = {}
+#     topsecret = config['topsecret.server.com']
+#     topsecret['Port'] = '50022'     # mutates the parser
+#     topsecret['ForwardX11'] = 'no'  # same here
+#     config['DEFAULT']['ForwardX11'] = 'yes'
+#     with open('example.ini', 'w') as configfile:
+#         config.write(configfile)
+
+
 def parse_args(args):
     """Parse command line parameters
 
@@ -148,30 +181,47 @@ def parse_args(args):
     Returns:
       :obj:`argparse.Namespace`: command line parameters namespace
     """
-    parser = argparse.ArgumentParser(
+    parser = ArgParser(
+        default_config_files=[
+            '~/nlpia-bot.ini',
+            '~/nlpia_bot.ini',
+            '~/nlpiabot.ini',
+            '~/nlpia.ini',
+            os.path.join(os.path.dirname(constants.BASE_DIR), '*.ini'),
+            os.path.join(os.path.dirname(constants.SRC_DIR), '*.ini'),
+        ],
         description="Command line bot application, e.g. bot how do you work?")
+    parser.add('-c', '--config', required=False, is_config_file=True,
+               help="Config file path (default: ~/nlpia-bot.ini)")
     parser.add_argument(
         '--version',
         action='version',
         version='nlpia_bot {ver}'.format(ver=__version__))
     parser.add_argument(
         '--name',
-        default="bot",  # None so config.ini can populate defaults
+        default=DEFAULT_CONFIG['name'],
         dest="nickname",
         help="IRC nick or CLI command name for the bot",
         type=str,
         metavar="STR")
     parser.add_argument(
+        '--name',
+        default=DEFAULT_CONFIG['name'],
+        dest="nickname",
+        help="Limit on the number of top (high score) replies that are randomly selected from.",
+        type=int,
+        metavar="INT")
+    parser.add_argument(
         '-p',
         '--persist',
         help="Don't exit. Retain language model in memory and maintain dialog until user says 'exit' or 'quit'",
-        dest="persist",
-        default=False,  # None so config.ini can populate defaults
+        dest='persist',
+        default=str(DEFAULT_CONFIG['persist'])[0].lower() in 'ty1p',
         action='store_true')
     parser.add_argument(
         '-b',
         '--bots',
-        default="pattern,parul,search_fuzzy,eliza",  # None so config.ini can populate defaults
+        default=DEFAULT_CONFIG['bots'],  # None so config.ini can populate defaults
         dest="bots",
         help="Comma-separated list of bot personalities to load. Defaults: pattern,parul,search_fuzzy,time,eliza",
         type=str,
@@ -216,32 +266,22 @@ def main():
         return statements
 
 
-def config_update(config, args):
-    """ based on https://stackoverflow.com/a/48539074/623735 """
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    defaults = dict(config['default'])
-
-    argsdict = vars(args)
-    defaults.update({k: v for k, v in argsdict.items() if v is not None})
-    return defaults
-
-
 def parse_argv(argv=sys.argv):
     """Entry point for console_scripts"""
+    global BOT
+
     new_argv = []
     if len(argv) > 1:
         new_argv.extend(list(argv[1:]))
     args = parse_args(new_argv)
     log.setLevel(args.loglevel or logging.WARNING)
 
-    global BOT
     setup_logging(args.loglevel)
     # args.bots = args.bots or 'search_fuzzy,pattern,parul,time'
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
     if BOT is None:
-        BOT = CLIBot(bots=args.bots)
+        BOT = CLIBot(bots=args.bots, num_top_replies=args.num_top_replies)
 
     if args.persist:
         log.warn('Type "quit" or "exit" to end the conversation...')
@@ -263,7 +303,7 @@ def cli(args):
             # state = BOT.reply(statement, **state)
             bot_statement = BOT.reply(user_statement)
             statements[-1]['bot'] = bot_statement
-            print(f"BOT: {bot_statement}")
+            print(f"{args.nickname}: {bot_statement}")
         if args.persist or not user_statement:
             user_statement = input("YOU: ")
             statements.append(dict(user=user_statement, bot=None, **state))

@@ -9,6 +9,7 @@ dependencies:
   - beautifulsoup4
   - boto3
   - botocore
+  - ConfigArgParse
   - django
   - django-environ
   - django-extensions
