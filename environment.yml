@@ -13,6 +13,7 @@ dependencies:
   - django
   - django-environ
   - django-extensions
+  - fuzzywuzzy
   - gitpython
   # - gcc
   - html5lib
@@ -48,5 +49,4 @@ dependencies:
 
   - pip:
     - wikipedia-api
-    - fuzzywuzzy
     # - nlpia
