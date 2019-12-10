@@ -24,7 +24,7 @@ class QualityScore:
         self.kwargs = {'nlp': self.nlp, 'sentiment_analyzer': self.sentiment_analyzer}
 
     def update_replies(self, replies, stmt=None):
-        print(locals())
+        log.debug(replies)
         metrics_scores = [[reply[0] for reply in replies]]
         for i in range(len(self.metrics)):
             metric = self.metrics[i]
