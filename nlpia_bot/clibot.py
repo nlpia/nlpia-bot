@@ -73,6 +73,7 @@ def normalize_replies(replies=''):
         replies = [(1e-10, replies)]
     elif isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
         replies = [(replies[0], str(replies[1]))]
+    # TODO: this sorting is likely unnecessary, redundant with sort happening within CLIBot.reply()
     return sorted([
         ((1e-10, r) if isinstance(r, str) else tuple(r))
         for r in replies
@@ -141,8 +142,10 @@ class CLIBot:
             bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
         if len(replies):
-            log.info(f'Found {len(replies)} suitable replies...')
+            log.info(f'Found {len(replies)} suitable replies, limiting to {self.num_top_replies}...')
             replies = self.quality_score.update_replies(replies, statement)
+            # re-sorts the replies based on their updated scores
+            replies = sorted(replies, reverse=True)[:self.num_top_replies]
             cumsum = 0
             cdf = list()
             for reply in replies:
