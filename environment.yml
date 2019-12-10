@@ -48,4 +48,5 @@ dependencies:
 
   - pip:
     - wikipedia-api
+    - fuzzywuzzy
     # - nlpia
