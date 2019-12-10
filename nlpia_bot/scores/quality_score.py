@@ -1,21 +1,13 @@
 import logging
 import nltk
-import sys
 import importlib
 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-from nlpia_bot.constants import passthroughSpaCyPipe
 from nlpia_bot import spacy_language_model
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
-
-try:
-    from spacy_hunspell import spaCyHunSpell
-except ImportError:
-    log.warn('Failed to import spaCyHunSpell. Substituting with fake . . .')
-    spaCyHunSpell = passthroughSpaCyPipe
 
 
 class QualityScore:
@@ -24,18 +16,6 @@ class QualityScore:
         self.modules = {metric: importlib.import_module(f'nlpia_bot.scores.{metric}_score') for metric in metrics}
         self.weights = weights if weights is not None else [1.0] * len(metrics)
         self.nlp = spacy_language_model.nlp
-        if sys.platform == 'linux' or sys.platform == 'linux2':
-            hunspell = spaCyHunSpell(self.nlp, 'linux')
-        elif sys.platform == 'darwin':
-            hunspell = spaCyHunSpell(self.nlp, 'mac')
-        else:  # sys.platform == 'win32':
-            try:
-                # TODO determine paths for en_US.dic and en_US.aff on windows
-                hunspell = spaCyHunSpell(self.nlp, ('en_US.dic', 'en_US.aff'))
-            except Exception:
-                log.warn('Failed to locate en_US.dic and en_US.aff files. Substituting with fake . . .')
-                hunspell = passthroughSpaCyPipe()
-        self.nlp.add_pipe(hunspell)
         try:
             self.sentiment_analyzer = SentimentIntensityAnalyzer()
         except LookupError:
