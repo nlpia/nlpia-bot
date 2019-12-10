@@ -83,7 +83,7 @@ def normalize_replies(replies=''):
 class CLIBot:
     """ Conversation manager intended to interact with the user on the command line, but can be used by other plugins/
 
-    >>> CLIBot(bots='parul,pattern', num_top_replies=1).reply('Hello world')
+    >>> CLIBot(bots='parul,pattern'.split(','), num_top_replies=1).reply('Hi')
     """
     bot_names = []
     bot_modules = []
