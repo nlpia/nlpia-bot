@@ -306,6 +306,27 @@ def parse_args(args):
         type=str,
         nargs='*',
         help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
+    parser.add_argument(
+        '--semantics',
+        type=float,
+        default=1.0,
+        dest='semantics',
+        metavar='FLOAT',
+        help='set weight of the semantic quality score')
+    parser.add_argument(
+        '--sentiment',
+        type=float,
+        default=0.5,
+        dest='sentiment',
+        metavar='FLOAT',
+        help='set weight of the sentiment quality score')
+    parser.add_argument(
+        '--spell',
+        type=float,
+        default=0.2,
+        dest='spell',
+        metavar='FLOAT',
+        help='set weight of the spell quality score')
     return parser.parse_args(args)
 
 
@@ -344,7 +365,12 @@ def parse_argv(argv=sys.argv):
     log.info(f"Weights: {args.quality_weights}")
     # log.info(f"Parsed Weights: {type(json.loads(args.quality_weights))}")
     if BOT is None:
-        BOT = CLIBot(bots=args.bots, num_top_replies=args.num_top_replies)
+        BOT = CLIBot(
+            bots=args.bots,
+            num_top_replies=args.num_top_replies,
+            semantics=args.semantics,
+            sentiment=args.sentiment,
+            spell=args.spell)
 
     if args.persist:
         log.warn('Type "quit" or "exit" to end the conversation...')
