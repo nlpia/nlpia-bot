@@ -65,14 +65,14 @@ bot: the internet) retrieving information about goods and services.
 """
 import collections.abc
 import importlib
+import json
 import logging
 import os
 import sys
 
+from configargparse import ArgParser
 import numpy as np
 import pandas as pd
-
-from configargparse import ArgParser
 
 # from nlpia_bot.use_demo import reply as use_reply
 
@@ -87,7 +87,6 @@ from configargparse import ArgParser
 # )
 
 from nlpia_bot import constants
-
 from nlpia_bot import __version__
 from nlpia_bot.scores.quality_score import QualityScore
 
@@ -113,6 +112,7 @@ DEFAULT_CONFIG = {
     'num_top_replies': 10,
     'self_score': '.5',
     'semantic_score': '.5',
+    'quality_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}'
 }
 
 
@@ -294,6 +294,14 @@ def parse_args(args):
         action='store_const',
         const=logging.DEBUG)
     parser.add_argument(
+        '-q',
+        '--quality_weights',
+        default=DEFAULT_CONFIG['quality_weights'],
+        dest="quality_weights",
+        help='Dictionary of weights: {"spell": .5, "sentiment": .5, "semantics": .5}',
+        type=str,
+        metavar="DICT_STR")
+    parser.add_argument(
         'words',
         type=str,
         nargs='*',
@@ -333,6 +341,8 @@ def parse_argv(argv=sys.argv):
     # args.bots = args.bots or 'search_fuzzy,pattern,parul,time'
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
+    log.info(f"Weights: {args.quality_weights}")
+    log.info(f"Parsed Weights: {type(json.loads(args.quality_weights))}")
     if BOT is None:
         BOT = CLIBot(bots=args.bots, num_top_replies=args.num_top_replies)
 
