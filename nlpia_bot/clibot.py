@@ -14,14 +14,63 @@ Besides console scripts, the header (i.e. until _logger...) of this file can
 also be used as template for Python modules.
 
 Note: This skeleton file can be safely removed if not needed!
-"""
-import argparse
-import configparser
-import importlib
-import logging
-import sys
-import collections.abc
 
+```bash
+$ bot -b 'pattern,parul' -vv -p --num_top_replies=1
+2019-12-09:20:21:46.404 WARNING  [spacy_language_model.py:14] Failed to import spaCyHunSpell. Substituting with fake . . .
+2019-12-09:20:21:46.404 WARNING  [spacy_language_model.py:42] Loading SpaCy model...
+2019-12-09:20:21:47.142 INFO     [clibot.py:285] Building a BOT with: ['pattern', 'parul']
+2019-12-09:20:21:47.142 INFO     [clibot.py:109] Adding bot named pattern_bots
+2019-12-09:20:21:47.143 INFO     [clibot.py:116] Adding a Bot class <class 'nlpia_bot.skills.pattern_bots.Bot'>
+from module <module 'nlpia_bot.skills.pattern_bots' from '/Users/hobs/code/chatbot/nlpia-bot/nlpia_bot/skills/pattern_bots.py'>...
+2019-12-09:20:21:47.143 INFO     [clibot.py:109] Adding bot named parul_bots
+2019-12-09:20:21:50.911 INFO     [clibot.py:116] Adding a Bot class <class 'nlpia_bot.skills.parul_bots.Bot'>
+from module <module 'nlpia_bot.skills.parul_bots' from '/Users/hobs/code/chatbot/nlpia-bot/nlpia_bot/skills/parul_bots.py'>...
+2019-12-09:20:21:50.923 WARNING  [clibot.py:290] Type "quit" or "exit" to end the conversation...
+YOU: Hello someone not a chatbot.
+2019-12-09:20:22:55.741 INFO     [clibot.py:305] Computing a reply to Hello someone not a chatbot....
+2019-12-09:20:22:55.741 INFO     [clibot.py:126] statement=Hello someone not a chatbot.
+2019-12-09:20:22:55.748 INFO     [clibot.py:145] Found 4 suitable replies, limiting to 1...
+{'replies': [(0.2, "Hey. That's a good one."), (0.1, 'Hello'), (0.05, 'Wuh?'),
+(0.4588375897316045, 'hello barbie is an internet-connected version of the doll that uses a chatbot provided by the company toytalk,
+which previously used the chatbot for a range of smartphone-based characters for children.')],
+'self': <nlpia_bot.scores.quality_score.QualityScore object at 0x117c6b290>, 'stmt': 'Hello someone not a chatbot.'}
+bot: hello barbie is an internet-connected version of the doll that uses a chatbot provided by the company toytalk, which previously
+ used the chatbot for a range of smartphone-based characters for children.
+YOU: Hello another chatbot.
+2019-12-09:20:23:14.798 INFO     [clibot.py:305] Computing a reply to Hello another chatbot....
+2019-12-09:20:23:14.799 INFO     [clibot.py:126] statement=Hello another chatbot.
+2019-12-09:20:23:14.804 INFO     [clibot.py:145] Found 4 suitable replies, limiting to 1...
+{'replies': [(0.2, "Hey. That's a good one."), (0.1, 'Hello'), (0.05, 'Wuh?'),
+(0.4588375897316045, 'hello barbie is an internet-connected version of the doll that uses a chatbot provided by the company toytalk,
+which previously used the chatbot for a range of smartphone-based characters for children.')],
+'self': <nlpia_bot.scores.quality_score.QualityScore object at 0x117c6b290>, 'stmt': 'Hello another chatbot.'}
+bot: hello barbie is an internet-connected version of the doll that uses a chatbot provided by the company toytalk,
+which previously used the chatbot for a range of smartphone-based characters for children.
+YOU: Hi
+2019-12-09:20:23:21.182 INFO     [clibot.py:305] Computing a reply to Hi...
+2019-12-09:20:23:21.182 INFO     [clibot.py:126] statement=Hi
+2019-12-09:20:23:21.187 INFO     [clibot.py:145] Found 2 suitable replies, limiting to 1...
+{'replies': [(1.0, 'Hello!'), (1e-10, "I am sorry! I don't understand you")],
+'self': <nlpia_bot.scores.quality_score.QualityScore object at 0x117c6b290>, 'stmt': 'Hi'}
+bot: Hello!
+YOU: Looking good!
+2019-12-09:20:23:33.617 INFO     [clibot.py:305] Computing a reply to Looking good!...
+2019-12-09:20:23:33.617 INFO     [clibot.py:126] statement=Looking good!
+2019-12-09:20:23:33.622 INFO     [clibot.py:145] Found 2 suitable replies, limiting to 1...
+{'replies': [(0.05, 'Wuh?'), (0.31232662648349846, 'the internet) retrieving information about goods and services.')],
+'self': <nlpia_bot.scores.quality_score.QualityScore object at 0x117c6b290>, 'stmt': 'Looking good!'}
+bot: the internet) retrieving information about goods and services.
+```
+"""
+import collections.abc
+import importlib
+# import json
+import logging
+import os
+import sys
+
+from configargparse import ArgParser
 import numpy as np
 import pandas as pd
 
@@ -38,7 +87,6 @@ import pandas as pd
 # )
 
 from nlpia_bot import constants
-
 from nlpia_bot import __version__
 from nlpia_bot.scores.quality_score import QualityScore
 
@@ -56,12 +104,24 @@ BOT = None
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
+DEFAULT_CONFIG = {
+    'name': 'bot',
+    'persist': 'True',  # Yes, yes, 1, Y, y, T, t
+    'bots': 'pattern,parul,search_fuzzy,eliza',
+    'loglevel': 'WARNING',
+    'num_top_replies': 10,
+    'self_score': '.5',
+    'semantic_score': '.5',
+    'quality_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}'
+}
+
 
 def normalize_replies(replies=''):
     if isinstance(replies, str):
         replies = [(1e-10, replies)]
     elif isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
         replies = [(replies[0], str(replies[1]))]
+    # TODO: this sorting is likely unnecessary, redundant with sort happening within CLIBot.reply()
     return sorted([
         ((1e-10, r) if isinstance(r, str) else tuple(r))
         for r in replies
@@ -69,6 +129,11 @@ def normalize_replies(replies=''):
 
 
 class CLIBot:
+    """ Conversation manager intended to interact with the user on the command line, but can be used by other plugins/
+
+    >>> CLIBot(bots='parul,pattern'.split(','), num_top_replies=1).reply('Hi')
+    'Hello!'
+    """
     bot_names = []
     bot_modules = []
     bots = []
@@ -76,12 +141,15 @@ class CLIBot:
     def __init__(
             self,
             bots=constants.DEFAULT_BOTS,
+            num_top_replies=None,
             **quality_kwargs):
         if not isinstance(bots, collections.Mapping):
             bots = dict(zip(bots, [None] * len(bots)))
         for bot_name, bot_kwargs in bots.items():
             bot_kwargs = {} if bot_kwargs is None else dict(bot_kwargs)
             self.add_bot(bot_name, **bot_kwargs)
+        self.num_top_replies = DEFAULT_CONFIG['num_top_replies'] if num_top_replies is None else min(
+            max(int(num_top_replies), 1), 10000)
         self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
         self.quality_score = QualityScore(**quality_kwargs)
 
@@ -123,8 +191,10 @@ class CLIBot:
             bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
         if len(replies):
-            log.info(f'Found {len(replies)} suitable replies...')
+            log.info(f'Found {len(replies)} suitable replies, limiting to {self.num_top_replies}...')
             replies = self.quality_score.update_replies(replies, statement)
+            # re-sorts the replies based on their updated scores
+            replies = sorted(replies, reverse=True)[:self.num_top_replies]
             cumsum = 0
             cdf = list()
             for reply in replies:
@@ -139,6 +209,21 @@ class CLIBot:
         return "Sorry, something went wrong. Not sure what to say..."
 
 
+# def parse_config(filepath='nlpia-bot.ini'):
+
+#     config = ConfigParser()
+#     config['DEFAULT'] = config_defaults
+#     config['bitbucket.org'] = {}
+#     config['bitbucket.org']['User'] = 'hg'
+#     config['topsecret.server.com'] = {}
+#     topsecret = config['topsecret.server.com']
+#     topsecret['Port'] = '50022'     # mutates the parser
+#     topsecret['ForwardX11'] = 'no'  # same here
+#     config['DEFAULT']['ForwardX11'] = 'yes'
+#     with open('example.ini', 'w') as configfile:
+#         config.write(configfile)
+
+
 def parse_args(args):
     """Parse command line parameters
 
@@ -148,30 +233,48 @@ def parse_args(args):
     Returns:
       :obj:`argparse.Namespace`: command line parameters namespace
     """
-    parser = argparse.ArgumentParser(
+    parser = ArgParser(
+        default_config_files=[
+            '~/nlpia-bot.ini',
+            '~/nlpia_bot.ini',
+            '~/nlpiabot.ini',
+            '~/nlpia.ini',
+            os.path.join(os.path.dirname(constants.BASE_DIR), '*.ini'),
+            os.path.join(os.path.dirname(constants.SRC_DIR), '*.ini'),
+        ],
         description="Command line bot application, e.g. bot how do you work?")
+    parser.add('-c', '--config', required=False, is_config_file=True,
+               help="Config file path (default: ~/nlpia-bot.ini)")
     parser.add_argument(
         '--version',
         action='version',
         version='nlpia_bot {ver}'.format(ver=__version__))
     parser.add_argument(
         '--name',
-        default="bot",  # None so config.ini can populate defaults
+        default=DEFAULT_CONFIG['name'],
         dest="nickname",
         help="IRC nick or CLI command name for the bot",
         type=str,
         metavar="STR")
     parser.add_argument(
+        '-n',
+        '--num_top_replies',
+        default=DEFAULT_CONFIG['num_top_replies'],
+        dest="num_top_replies",
+        help="Limit on the number of top (high score) replies that are randomly selected from.",
+        type=int,
+        metavar="INT")
+    parser.add_argument(
         '-p',
         '--persist',
         help="Don't exit. Retain language model in memory and maintain dialog until user says 'exit' or 'quit'",
-        dest="persist",
-        default=False,  # None so config.ini can populate defaults
+        dest='persist',
+        default=str(DEFAULT_CONFIG['persist'])[0].lower() in 'ty1p',
         action='store_true')
     parser.add_argument(
         '-b',
         '--bots',
-        default="pattern,parul,search_fuzzy,eliza",  # None so config.ini can populate defaults
+        default=DEFAULT_CONFIG['bots'],  # None so config.ini can populate defaults
         dest="bots",
         help="Comma-separated list of bot personalities to load. Defaults: pattern,parul,search_fuzzy,time,eliza",
         type=str,
@@ -190,6 +293,14 @@ def parse_args(args):
         help="set loglevel to DEBUG",
         action='store_const',
         const=logging.DEBUG)
+    parser.add_argument(
+        '-q',
+        '--quality_weights',
+        default=DEFAULT_CONFIG['quality_weights'],
+        dest="quality_weights",
+        help='Dictionary of weights: {"spell": .5, "sentiment": .5, "semantics": .5}',
+        type=str,
+        metavar="DICT_STR")
     parser.add_argument(
         'words',
         type=str,
@@ -237,33 +348,26 @@ def main():
         return statements
 
 
-def config_update(config, args):
-    """ based on https://stackoverflow.com/a/48539074/623735 """
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    defaults = dict(config['default'])
-
-    argsdict = vars(args)
-    defaults.update({k: v for k, v in argsdict.items() if v is not None})
-    return defaults
-
-
 def parse_argv(argv=sys.argv):
     """Entry point for console_scripts"""
+    global BOT
+
     new_argv = []
     if len(argv) > 1:
         new_argv.extend(list(argv[1:]))
     args = parse_args(new_argv)
     log.setLevel(args.loglevel or logging.WARNING)
 
-    global BOT
     setup_logging(args.loglevel)
     # args.bots = args.bots or 'search_fuzzy,pattern,parul,time'
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
+    log.info(f"Weights: {args.quality_weights}")
+    # log.info(f"Parsed Weights: {type(json.loads(args.quality_weights))}")
     if BOT is None:
         BOT = CLIBot(
             bots=args.bots,
+            num_top_replies=args.num_top_replies,
             semantics=args.semantics,
             sentiment=args.sentiment,
             spell=args.spell)
@@ -288,7 +392,7 @@ def cli(args):
             # state = BOT.reply(statement, **state)
             bot_statement = BOT.reply(user_statement)
             statements[-1]['bot'] = bot_statement
-            print(f"BOT: {bot_statement}")
+            print(f"{args.nickname}: {bot_statement}")
         if args.persist or not user_statement:
             user_statement = input("YOU: ")
             statements.append(dict(user=user_statement, bot=None, **state))

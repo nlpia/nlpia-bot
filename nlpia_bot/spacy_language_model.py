@@ -1,11 +1,34 @@
+import sys
 import logging
-
-from nlpia_bot.constants import LANG, LANGS
 
 import spacy
 
+from nlpia_bot.constants import LANG, LANGS, passthroughSpaCyPipe
+
 log = logging.getLogger(__name__)
 nlp = None
+
+try:
+    from spacy_hunspell import spaCyHunSpell
+except ImportError:
+    log.warn('Failed to import spaCyHunSpell. Substituting with fake . . .')
+    spaCyHunSpell = passthroughSpaCyPipe
+
+
+def add_hunspell_pipe(model):
+    if sys.platform == 'linux' or sys.platform == 'linux2':
+        hunspell = spaCyHunSpell(model, 'linux')
+    elif sys.platform == 'darwin':
+        hunspell = spaCyHunSpell(model, 'mac')
+    else:  # sys.platform == 'win32':
+        try:
+            # TODO determine paths for en_US.dic and en_US.aff on windows
+            hunspell = spaCyHunSpell(model, ('en_US.dic', 'en_US.aff'))
+        except Exception:
+            log.warn('Failed to locate en_US.dic and en_US.aff files. Substituting with fake . . .')
+            hunspell = passthroughSpaCyPipe()
+    model.add_pipe(hunspell)
+    return model
 
 
 def load(lang=None):
@@ -39,12 +62,14 @@ def load(lang=None):
         f"    with {model._meta['accuracy']['token_acc']:.2f}% token accuracy\n"
         f"     and {model._meta['accuracy']['ents_f']:.2f}% named entity recognition F1 score.\n"
     )
+    model = add_hunspell_pipe(model)
     if nlp is None:
         nlp = model
+    # load the highest accuracy model into the global singleton nlp variable (user can still override)
     if nlp.lang == 'en':
         if nlp._meta['accuracy']['token_acc'] < model._meta['accuracy']['token_acc']:
             nlp = model
-    return model
+    return model  # return value may be lower accuracy, so `nlp=load('en_web_core_sm')` will have lower accuracy `nlp`
 
 
 # FIXME: doesn't inherit from spacy.nlp so needs to be deleted in favor of load() function above
