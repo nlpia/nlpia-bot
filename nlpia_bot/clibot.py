@@ -65,7 +65,7 @@ bot: the internet) retrieving information about goods and services.
 """
 import collections.abc
 import importlib
-import json
+# import json
 import logging
 import os
 import sys
@@ -342,7 +342,7 @@ def parse_argv(argv=sys.argv):
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
     log.info(f"Weights: {args.quality_weights}")
-    log.info(f"Parsed Weights: {type(json.loads(args.quality_weights))}")
+    # log.info(f"Parsed Weights: {type(json.loads(args.quality_weights))}")
     if BOT is None:
         BOT = CLIBot(bots=args.bots, num_top_replies=args.num_top_replies)
 
