@@ -131,7 +131,7 @@ def normalize_replies(replies=''):
 class CLIBot:
     """ Conversation manager intended to interact with the user on the command line, but can be used by other plugins/
 
-    >>> CLIBot(bots='parul,pattern'.split(','), num_top_replies=1).reply('Hi')
+    >>> CLIBot(bots='parul,pattern'.split(','), num_top_replies=1, semantics=1.0).reply('Hi')
     'Hello!'
     """
     bot_names = []
@@ -193,7 +193,6 @@ class CLIBot:
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies, limiting to {self.num_top_replies}...')
             replies = self.quality_score.update_replies(replies, statement)
-            # re-sorts the replies based on their updated scores
             replies = sorted(replies, reverse=True)[:self.num_top_replies]
             cumsum = 0
             cdf = list()
