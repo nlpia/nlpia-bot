@@ -4,3 +4,9 @@
 -
   Q: "In `sklearn.train_test_split` does a value of test_size=.25 mean that 25% of the data will be reserved for training or for testing?"
   A: "As long as the return arguments are in the order `x_train, y_train, x_test, y_test` then the test_size argument controls the size of the samples in the test_set (`x_test` and `y_test`). But as with all data transformations you should verify that your intended transformation has been accomplished. In this case this means verifying the `.shape` of the 4 returned variables after having run `train_test_split()`."
+-
+  Q: What is the simplest possible question-answering chatbot architecture?
+  A: If you have a dataset of questions and answers, like a FAQ page from a website you can build a search-based chatbot that finds the closest TFIDF.
+-
+  Q: How can I improve the accuracy search query has a misspelling or uses synonyms.
+  A: You can use a stemmer, lemmatizer, or spelling corrector to increase the recall of your search model. You can also use semantic vectors like docvectors or wordvectors or USE vectors that are somewhat more robust to misspellings.
