@@ -15,9 +15,7 @@ log = logging.getLogger(locals().get('__name__'))
 
 def find_hashtags(s, pattern=r'\s*#[\w\d_-]+'):
     s = s or ''
-    print(s)
     hashtags = re.findall(pattern, s) or []
-    print(hashtags)
     hashtags = tuple(sorted(set([t.strip() for t in hashtags])))
     cleaned = re.sub(pattern, '', s)
     return {'cleaned': cleaned, 'hashtags': hashtags}
