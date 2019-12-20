@@ -91,7 +91,7 @@ from nlpia_bot import __version__
 from nlpia_bot.scores.quality_score import QualityScore
 
 
-__author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Hobson, ..."
+__author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Maria, Hobson, ..."
 __copyright__ = "Hobson Lane"
 __license__ = "The Hippocratic License (MIT + *Do No Harm*, see LICENSE.txt)"
 
@@ -107,7 +107,7 @@ EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'True',  # Yes, yes, 1, Y, y, T, t
-    'bots': 'pattern,parul,search_fuzzy,eliza',
+    'bots': 'pattern,parul,eliza',
     'loglevel': 'WARNING',
     'num_top_replies': 10,
     'self_score': '.5',
