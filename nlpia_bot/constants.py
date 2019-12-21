@@ -1,15 +1,14 @@
 # constants.py
 import os
+# import re
 import logging
 from collections import Counter
 # import json
 
+# import pandas as pd
 import nltk
 import nltk.corpus
 import spacy  # noqa
-
-LANGS = ('en_core_web_sm', 'en_core_web_md', 'en_core_web_lg')
-LANG = LANGS[0]
 
 SRC_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_DIR = os.path.dirname(SRC_DIR)
@@ -32,6 +31,23 @@ log = logging.getLogger(__name__)
 # handler = logging.handlers.TimedRotatingFileHandler(os.path.join(LOG_DIR, 'nlpia_bot.constants.log'), when='midnight')
 # handler.setLevel(logging.INFO)
 # log.addHandler(handler)
+
+LANGS = ['en_core_web_sm', 'en_core_web_md', 'en_core_web_lg']
+LANGS_ABBREV = 'en enmd enlg'.split()
+LANGS += 'de_core_news_sm de_core_news_md de_trf_bertbasecased_lg'.split()
+LANGS_ABBREV += 'de demd delg'.split()
+
+# FOREIGN_LANGS_DF = pd.read_csv(os.path.join(DATA_DIR, 'spacy_languages.csv'))
+# for i, row in FOREIGN_LANGS_DF.iterrows():
+#     match = re.match(r'(\d)+\b', row['Models'])
+#     if match:
+#         num_models = int(match.groups()[0])
+#         LANGS.extend([row['Code']] * num_models)
+
+# tuple('de de de'.split())  # df=pd.read_html('https://spacy.io/usage/models')[0]
+LANGS_ABBREV = dict(zip(LANGS_ABBREV, LANGS))
+LANG = LANGS[0]
+
 
 try:
     STOPWORDS_DICT = Counter(nltk.corpus.stopwords.words('english'))
