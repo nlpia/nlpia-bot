@@ -4,6 +4,8 @@ import doctest
 
 import nlpia_bot.skills.eliza_bots
 import nlpia_bot.clibot
+import nlpia_bot.etl.test_glossaries
+
 
 __author__ = "SEE AUTHORS.md"
 __copyright__ = "Hobson Lane"
@@ -22,3 +24,10 @@ def test_clibot():
                               doctest.NORMALIZE_WHITESPACE, verbose=True)
     assert results.failed < 1
     assert results.attempted > 0
+
+
+def test_glossaries():
+    results = doctest.testmod(nlpia_bot.glossaries, optionflags=doctest.ELLIPSIS |
+                              doctest.NORMALIZE_WHITESPACE, verbose=True)
+    assert results.failed < 1
+    assert results.attempted > 5

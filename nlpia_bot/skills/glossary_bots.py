@@ -30,18 +30,16 @@ class Bot:
         global nlp
         self.nlp = nlp
         self.glossary = glossaries.load(domains=domains)
-        self.glossary.fillna('', inplace=True)
-        self.glossary.index = self.glossary['term'].str.lower().str.strip()
         self.vector = dict()
-        self.vector['term'] = pd.DataFrame({s: nlp(s or '').vector for s in self.glossary['term']})
-        self.vector['definition'] = pd.DataFrame({s: nlp(s or '').vector for s in self.glossary['definition']})
+        self.vector['term'] = pd.DataFrame({term: nlp(term or '').vector for term in self.glossary})
+        self.vector['definition'] = pd.DataFrame({d['term']: nlp(d['definition']).vector for term, d in self.glossary.items()})
 
         self.synonyms = {}
         # create reverse index of synonyms to canonical terms
-        for term, row in self.glossary.iterrows():
+        for term, d in self.glossary.items():
             self.synonyms.update(dict(zip(capitalizations(term), [term] * 4)))
-            if type(row['acronym']) == str and row['acronym'].strip():
-                acro = row['acronym'].strip()
+            acro = d['acronym']
+            if acro:
                 self.synonyms.update(dict(zip(capitalizations(acro), [term] * 4)))
 
     def reply(self, statement):
@@ -60,8 +58,8 @@ class Bot:
             log.info(str(match.groups()))
             for i, term in enumerate(capitalizations(match.groups()[-2])):
                 normalized_term = self.synonyms.get(term, None)
-                if normalized_term:
-                    responses.append((1 - .02 * i, self.glossary['definition'][normalized_term]))
+                if normalized_term in self.glossary:
+                    responses.append((1 - .02 * i, self.glossary[normalized_term]['definition']))
         else:
             responses = [(0.05, "I don't understand. That doesn't sound like a question I can answer using my glossary.")]
         if not len(responses):

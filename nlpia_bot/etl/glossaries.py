@@ -62,8 +62,10 @@ def glossary_entry(glossary, term, start_entry_num=2):
 def load(domains=('dsdh',)):
     """ Load yaml file, use hashtags to create context tags as multihot columns
 
+    Parses acronyms in parentheses and adds them as additional `{acronym: term}` glossary entries.
+
     >>> g = load(domains='dsdh'.split(','))
-    >>> len(g['raw']) == len(g['cleaned']) > 30
+    >>> len(g['raw']) <= len(g['cleaned']) > 30
     True
     >>> sorted(g['cleaned']['Allele'])
     ['acronym', 'definition', 'hashtags', 'parenthetical']
