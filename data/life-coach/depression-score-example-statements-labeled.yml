@@ -38,9 +38,9 @@
     1: I feel may be punished.
     2: I expect to be punished.
     3: I feel I am being punished.
-    - I am always being punished.
+    4: I am always being punished.
 -
-    0: I don't fed disappointed in myself.
+    0: I don't feel disappointed in myself.
     1: I am disappointed in myself.
     2: I am disgusted with myself.
     3: I hate myself.
@@ -106,8 +106,8 @@
     3: I have lost more than fifteen pounds.
 -
     0: I am no more worried about my health than usual.
-    1: I am worried about physical problems such as aches and pains, or upset stomach, or constipation.
-    2: I am very worried about physical problems and it's hard to think of much else.
+    1: I am worried about physical problems such as aches and pains, upset stomach, or constipation.
+    2: I am very worried about physical problems, and it's hard to think of much else.
     3: I am so worried about my physical problems that I cannot think about anything else
 -
     0: I have not noticed any recent change in my interest in sex.
