@@ -21,7 +21,7 @@ class Bot:
     >>> bot = Bot()
     >>> bot.reply('allele')
     [(1.0, "I don't understand")]
-    >>> bot.reply('What is a nucleotide?')
+    >>> bot.reply('What is an Allele?')
     [(1,
      'The basic building blocks of DNA and RNA...
     """
@@ -29,18 +29,20 @@ class Bot:
     def __init__(self, domains=('dsdh',)):
         global nlp
         self.nlp = nlp
-        self.glossary = glossaries.load(domains=domains)
+        self.glossary = glossaries.load(domains=domains)['cleaned']
         self.vector = dict()
-        self.vector['term'] = pd.DataFrame({term: nlp(term or '').vector for term in self.glossary})
-        self.vector['definition'] = pd.DataFrame({d['term']: nlp(d['definition']).vector for term, d in self.glossary.items()})
+        self.vector['term'] = pd.DataFrame(
+            {term: nlp(term).vector for term in self.glossary})
+        self.vector['definition'] = pd.DataFrame(
+            {term: nlp(d['definition']).vector for term, d in self.glossary.items()})
 
-        self.synonyms = {}
+        self.synonyms = {term: term for term in self.glossary}
         # create reverse index of synonyms to canonical terms
-        for term, d in self.glossary.items():
-            self.synonyms.update(dict(zip(capitalizations(term), [term] * 4)))
-            acro = d['acronym']
-            if acro:
-                self.synonyms.update(dict(zip(capitalizations(acro), [term] * 4)))
+        # for term, d in self.glossary.items():
+        #     self.synonyms.update(dict(zip(capitalizations(term), [term] * 4)))
+        #     acro = d['acronym']
+        #     if acro:
+        #         self.synonyms.update(dict(zip(capitalizations(acro), [term] * 4)))
 
     def reply(self, statement):
         """ Suggest responses to a user statement string with [(score, reply_string)..]
