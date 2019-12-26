@@ -24,7 +24,7 @@ LOG_LEVEL_ABBR_DICT = dict(zip(LOG_LEVEL_ABBREVIATIONS, LOG_LEVELS))
 logging.basicConfig(
     format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
     datefmt='%Y-%m-%d:%H:%M:%S',
-    level=logging.WARNING)
+    level=logging.WARNING)  # FIXME: read from config file like in clibot.py
 root_logger = logging.getLogger()
 
 log = logging.getLogger(__name__)

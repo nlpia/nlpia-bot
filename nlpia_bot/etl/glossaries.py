@@ -102,8 +102,10 @@ def load(domains=('dsdh',)):
             acro_entry = glossary_entry(glossary, acro)
             glossary[acro_entry] = {
                 'definition': term_entry,
-                'hashtags': hashtag_dict['hashtags']}
-            glossary[term_entry]['acronym'] = ''
+                'hashtags': hashtag_dict['hashtags'],
+                'acronym': acro_entry
+            }
+            # glossary[term_entry]['acronym'] = ''
         glossary[term_entry]['parenthetical'] = paren
 
     return {'raw': glossary_raw, 'cleaned': glossary}
