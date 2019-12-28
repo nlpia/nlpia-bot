@@ -1,0 +1,8 @@
+# time.yml
+# ideal responses for time_bots.py
+- "How much time have I spent on mindcurrent this week?":
+  - You've spent [DECIMAL_NUMBER] hours on mindcurrent this week.
+- "How much time have I spent on chatbot this week?":
+  - You've spent [DECIMAL_NUMBER] hours on chatbot this week.
+- "timecard mindcurrent":
+  - "I've written your timecard for the past 2 weeks to [~/midata/public/mindcurrent/timecard_report.md](~/midata/public/mindcurrent/timecard_report.md)"

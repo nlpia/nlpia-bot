@@ -32,27 +32,11 @@ from chatbot.contrib import (
 
 from nlpia_bot import __version__
 
-__author__ = "hobs"
-__copyright__ = "hobs"
-__license__ = "mit"
+__author__ = "See AUTHORS.md"
+__copyright__ = "Hobson Lane"
+__license__ = "The Hippocratic License (MIT + *Do No Harm*, see LICENSE.txt)"
 
 _logger = logging.getLogger(__name__)
-
-
-def fib(n):
-    """Fibonacci example function
-
-    Args:
-      n (int): integer
-
-    Returns:
-      int: n-th Fibonacci number
-    """
-    assert n > 0
-    a, b = 1, 1
-    for i in range(n-1):
-        a, b = b, a+b
-    return a
 
 
 def parse_args(args):
@@ -117,7 +101,7 @@ def ircbot(args=None,
     server_password = getattr(args, 'server_password', server_password)
     channels = eval(str(getattr(args, 'channels', channels)))
     features = features or (PyPIFeature(), WikipediaFeature(), DictionaryFeature(),
-        DiceFeature(), ChoiceFeature(), SlapbackFeature())
+                            DiceFeature(), ChoiceFeature(), SlapbackFeature())
     bot = Bot(
         nickname=nickname,
         hostname=irc_server,

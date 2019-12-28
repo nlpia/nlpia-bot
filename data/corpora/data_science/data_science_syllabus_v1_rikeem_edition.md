@@ -1,0 +1,239 @@
+## Rikeem Syllabus
+
+You want to progress down several skill paths in parallel, so you can use what you learn from one to help you with the others.
+Though you should rotate between each of these, you should try to make more progress sooner on the more general foundational stuff, like wellbeing and development best practices, before the more practical specialized stuff like deep learning and computer vision. So these are listed in order of priority.
+
+- Wellbeing
+    - nosurf life hacks
+    - develop a community
+        - attend meetups
+        - follow experts on Twitter and Reddit
+        - star and fork repos on github that you use/like: scikit-learn, pandas
+        - follow and like up-and-coming DS and CS presenters on github and twitter and reddit
+        - join ML and CS and python and DS and startups channels on slack and Reddit
+    - help others
+        - python study groups (python user groups, university meetup groups, code camp study groups)
+        - teach
+        - talks and presentations for newbie pythonistas (django-girls, pyladies, python user group)
+        - stack overflow
+            - vote on questions AND answers
+            - ask questions
+            - suggest edits to fix grammar
+            - suggest substantive edits to improve an answer
+            - help rewrite bad zero-vote or negative-vote questions
+            - comment on questions/answers
+            - answer questions that haven't been well-answered
+    - superhero for coworker
+        - offer to help with business process
+        - offer to introduce to people or remind people of names/role, etc
+        - offer to be a technical resource
+        - offer to answer any "stupid question"
+    - todo lists
+        - todo triage
+        - idea dumps
+        - periodically start fresh even if you haven't done everything
+        - idea notepad, tablet, or mobile phone text editor on the bedside table
+    - keep track of all the ideas you've had in a searchable set of files
+        - you may never search or use them
+        - the benefit is in the writing down, not in the review
+    - try to end on a good note
+        - try to think of something you've accomplished, however small, before going to bed
+        - `git log --stat` at the end of the day to review what you've accomplished and pat yourself on the back.
+        - if you've had a frustrating day, find some easy/fun todo thing and knock it off before you knock off
+    - if you feel anxious or don't know where to start
+        - wash dishes
+        - fold clothes
+        - mow the lawn
+        - sweep the porch
+        - go for a run
+        - go to the gym
+    - mental health:
+        - daily/ or weekly: record your Beck Depression Invintory (BDI) score: [Feeling Good p. 29](https://totalgood.org/midata/books/Feeling%20Good.pdf#page=36)
+            - answer 21 multiple choices questions on paper
+            - interact with nlpia-bot at nlpia.org or on your laptopß
+        - label and think about negative emotions & thoughts
+            - loss
+            - rejection
+            - shame
+            - sadness
+            - stress
+            - anxiety
+            - anger
+            - frustration
+        - look for cognitive distortions in your inner dialog [(Feeling Good p. 40)](https://totalgood.org/midata/books/Feeling%20Good.pdf#page=56):
+
+
+- software development best practices
+    - develop and refine a consistent directory structure across all projects
+        - `~/src/` dir on your user account on any machines where you interact with source code
+        - example: `~/src/projects/chatbot/nlpia-bot/.git`
+        - `~/src/projects/project-name/repo-name/.git` for any active projects where you have edited the code
+        - `~/src/project-archive/project-name/repo-name/.git` for your projects you haven't touched in several months
+        - `~/src/reference/project-name/repo-name/.git` for others' code you just want to have the source code for
+        - `~/src/other-peoples/project-name/repo-name/.git` external libraries that you don't import within your code
+    - use git
+        - act like you're on a team, even though it's only for yourself
+        - `git init .` on any folder that contains code or documentation or notes about code
+        - create a repo on github or gitlab for each and every `.git/` on your local machine
+        - edit the `README.md` first to put down your plans and ideas for the project
+        - `git status` right before your commit to see what files you've changed or added
+        - `git commit -am 'message'` every hour or so if you've changed any files
+        - `git status` at the end of each day before exiting the terminal or IDE to make sure everything is committed
+        - `git log --stat` at the end of the day to review what you've accomplished and pat yourself on the back.
+        - keep `~/.gitignore` up to date
+        - `git add .` whenever you add a new file, before you write a single line in that file
+        - `git push` once a week if you're on your own, once a week if you think anybody else is watching
+        - `git log --stat` as soon as you start on a project to review what you did previously
+    - research and start implmenting a good git workflow
+        - []
+        - [approachable rebase workflow tutorial](https://www.atlassian.com/git/tutorials/comparing-workflows)
+        - [advanced rebase workflow](https://raygun.com/blog/git-workflow/)
+        - create GitHub account
+        - create gitlab account
+        - gitlab ci tutorial
+    - continuos integration
+        - Travis account
+    - project setup patterns
+        - putup `pyscaffolding`
+        - `cookiecutter`
+    - IDE
+        - good options
+            - spyder (default for Anaconda)
+            - pycharm
+            - vscode
+            - sublime
+        - features
+            - ctrl-F find
+            - regex find
+        - regex '[a-z]*[.]txt'
+    - tab completion
+    - jupyter notebook
+    - collab
+    - ipython skills
+        - multiline, hist, ctrl-r
+    - productivity tools
+        - clipboard history
+        - calendar app
+        - slack
+    - keyboard shortcuts everywhere (OS key bindings)
+        - copy/paste: know the keystroke in your OS
+            - cmd-v
+            - cmd-x
+            - cmd-c
+            - browser, ide, terminal (should be same everywhere)
+            - clipboard history shortcuts to find/cycle through history
+        - ctrl-r
+        - ctrl-a
+        - ctrl-e
+        - ctrl-z
+    - IDE keyboard shortcuts (application key bindings)
+
+    - research good study habits and tools like Ankidroid and "spaced repetition"
+    - research latest tools (editors, online qa resources like SO)
+    - get in the habit of reproducing others' results before changing things to suit your interest/curiosity
+    - read the Zen of python and grok it's implications, revist it once a month and think of one way you can be more Zen
+    - follow a blog by an accomplished, productive, prolific developer
+    - commit often, reflect on what you've done and what remains, test often, tdd, ddd, dtdd
+    - Dev environment
+        - bash, or mingw
+        - server's, terminal
+        - ssh
+        - sudo
+        - brew or apt, conda, pip
+        - urls, up addresses, hostnames
+        - executable python files
+        - shabang
+        - chmod
+        - chown
+        - passwordless
+        - .ssh/config
+        - taking notes in docs comments code in a directory you can search and reuse patterns
+        - online exercises pulled into your own codebase
+        - work code at home or on GitHub or gitlab
+- python
+    - [Learn Python, Basics](https://www.learnpython.org/en/Hello%2C_World%21)
+        - Hello, World!
+        - Variables and Types
+        - Lists
+        - Basic Operators
+        - String Formatting
+        - Basic String Operations
+        - Conditions
+        - Loops
+        - Functions
+        - Classes and Objects
+        - Dictionaries
+        - Modules and Packages
+    - [Learn Python for Data Science](https://www.learnpython.org/en/Numpy_Arrays)
+        - Numpy Arrays
+        - Pandas DataFrames
+    - [Learn Python, Advanced](https://www.learnpython.org/en/Generators)
+        - Generators
+        - List Comprehensions
+        - Multiple Function Arguments
+        - Regular Expressions
+        - Exception Handling
+        - Sets
+        - Serialization
+        - Partial functions
+        - Code Introspection
+        - Closures
+        - Decorators
+        - Map, Filter, Reduce
+    - [DataCamp intro to python for data science](https://campus.datacamp.com/courses/intro-to-python-for-data-science/)
+
+
+
+
+- advanced python: classes, objects, Counter, dir, vars, help, str, unicode, encode, large files, generators, args, kwargs, command line argv, logging, globals, singular? Classes, best practices, patterns, regexes, linked list, graph
+-data
+    - Pandas tutorial
+    - django
+    - django  orm, db flatfiles
+    - codecademy
+    - Django tutorial
+    - index
+- algorithms: big O, recursion, sorting, dfs, bfs, astar, formulating problems as search
+    - do leetcode exercise
+    - answer stack overflow question
+    - answer reddit newb question
+    - divide and conquer (btree or binary search)
+    - merge sort, quicksort
+    -
+- feedback, optimization
+- ds problem statements and hypotheses
+- ml: problem statements, features, classifier vs regressor, continuous bars, class vars, binary bars, ordinal bars (linear gaps vs nonlinear, small med large T, coke, super size)
+
+- projects
+   - help alwaysai detect trash and not trash for [Clear Blue Sea](https://www.clearbluesea.org/contact-page/), contact and ask to contribute code/rpi demo, collaborate with Abduwahab Ariel on his Halloween starter project?
+   - contribute to sk-mapper project (Nathaniel)
+   - contribute to sklearn
+   - learn patterns from examples (regex or grammar patterns): symbolic language simplifier?
+
+
+## resources/lessons
+
+To maintain your library of knowledge and to solidify understanding in your mind, you can "keep notes" in your text editor (IDE).
+That way you can do a global find ([Super]-[Shift]-[F]) and retrieve your notes or code snippets if you want to use a technique on your own project.
+
+- [grokking Data Science on Educative.io](https://www.educative.io/courses/grokking-data-science?utm_source=activecampaign&utm_medium=email&utm_campaign=grokking-data-science)
+    - assignments:
+        - sign up for educative.io account
+        - do first free lesson
+    - syllabus:
+        - why python (free)
+            - install/run anaconda
+            - install/run jupyter notebook
+        - python libraries
+            - Numpy
+            - Pandas
+            - Scikit Learn
+            - Matplotlib
+            - Seaborn
+        - numpy
+            - numpy arrays
+            - numpy arrays vs python lists
+            - slicing
+            - reshaping arrays
+            - concatenating arrays
+        ...
