@@ -46,7 +46,7 @@ class WikiIndex():
         vec_batch = []
         with gzip.open(os.path.join(constants.DATA_DIR, filename), 'ta') as fout:
             csv_writer = csv.writer(fout)
-            csv_writer.writerow(f'x{i}' for i in range(300))
+            csv_writer.writerow(['page_title'] + [f'x{i}' for i in range(300)])
             for i, s in tqdm(enumerate(self.df_titles.index.values[start:]), total=total):
                 vec = nlp(s).vector
                 vec /= pd.np.linalg.norm(vec) or 1.
