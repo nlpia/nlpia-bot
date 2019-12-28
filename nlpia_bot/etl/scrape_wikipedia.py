@@ -41,21 +41,24 @@ class WikiIndex():
         except (IOError, FileNotFoundError, pd.errors.EmptyDataError):
             df = pd.DataFrame([], columns=list(range(300)))
         start = len(df)
-        total = len(self.df_titles)
+        total = len(self.df_titles) - start
         del df
         vec_batch = []
         with gzip.open(os.path.join(constants.DATA_DIR, filename), 'ta') as fout:
             csv_writer = csv.writer(fout)
+            csv_writer.writerow(f'x{i}' for i in range(300))
             for i, s in tqdm(enumerate(self.df_titles.index.values[start:]), total=total):
                 vec = nlp(s).vector
                 vec /= pd.np.linalg.norm(vec) or 1.
                 vec = vec.round(7)
                 mask_zeros = pd.np.abs(vec) > 0
                 if mask_zeros.sum() < len(mask_zeros):
-                    log.error(f'BAD VEC: {s}. nonzeros: {vec.round(2)[mask_zeros]}')
-                if i % 1000 or i == total - 1:
-                    vec_batch.append(vec)
+                    log.error(f'BAD VEC: {s} [0]*{mask_zeros.sum()}')
+                vec = [s] + list(vec)
+                vec_batch.append(vec)
+                if not (i % 1000) or i == total - 1:
                     csv_writer.writerows(vec_batch)
+                    print(f"wrote {len(vec_batch)} rows")
                     vec_batch = []
         time.sleep(1)
         self.df_vectors = pd.read_csv(os.path.join(constants.DATA_DIR, filename))
