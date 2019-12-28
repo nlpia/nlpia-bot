@@ -56,6 +56,7 @@ class WikiIndex():
                 if not (i % 1000) or (i == total - 1):
                     vec_batch.append(vec)
                     csv_writer.writerows(vec_batch)
+                    print(f'wrote {len(vec_batch), len(vec_batch[0])} values')
                     vec_batch = []
         time.sleep(1)
         self.df_vectors = pd.read_csv(os.path.join(constants.DATA_DIR, filename))
