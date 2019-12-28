@@ -52,8 +52,8 @@ class WikiIndex():
                 vec = vec.round(7)
                 mask_zeros = pd.np.abs(vec) > 0
                 if mask_zeros.sum() < len(mask_zeros):
-                    log.error(f'BAD VEC: {s}. nonzeros: {vec.round(2)[mask_zeros]}')
-                if not (i % 1000) or i == total - 1:
+                    log.error(f'BAD VEC: {s} {mask_zeros.sum()}')
+                if not (i % 1000) or (i == total - 1):
                     vec_batch.append(vec)
                     csv_writer.writerows(vec_batch)
                     vec_batch = []
