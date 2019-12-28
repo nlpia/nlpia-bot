@@ -65,7 +65,7 @@ bot: the internet) retrieving information about goods and services.
 """
 import collections.abc
 import importlib
-# import json
+import json
 import logging
 import os
 import sys
@@ -91,7 +91,7 @@ from nlpia_bot import __version__
 from nlpia_bot.scores.quality_score import QualityScore
 
 
-__author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Hobson, ..."
+__author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Maria, Hobson, ..."
 __copyright__ = "Hobson Lane"
 __license__ = "The Hippocratic License (MIT + *Do No Harm*, see LICENSE.txt)"
 
@@ -107,7 +107,7 @@ EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'True',  # Yes, yes, 1, Y, y, T, t
-    'bots': 'pattern,parul,search_fuzzy,eliza',
+    'bots': 'pattern,parul,eliza',
     'loglevel': 'WARNING',
     'num_top_replies': 10,
     'self_score': '.5',
@@ -171,6 +171,27 @@ class CLIBot:
         self.bot_modules.extend(new_modules)
         return new_bots
 
+    def log_reply(self, statement, reply):
+        try:
+            history = list()
+            with open('data/history.json', 'r') as f:
+                history = json.load(f)
+        except IOError as e:
+            log.error(str(e))
+            with open('data/history.json', 'w') as f:
+                f.write('[]')
+        except json.JSONDecodeError as e:
+            log.error(str(e))
+            log.info('Saving history.json contents to history.json.swp before overwriting')
+            with open('data/history.json', 'r') as f:
+                data = f.read()
+            with open('data/history.json.swp', 'w') as f:
+                f.write(data)
+        history.append(['user', statement])
+        history.append(['bot', reply])
+        with open('data/history.json', 'w') as f:
+            json.dump(history, f)
+
     def reply(self, statement=''):
         log.info(f'statement={statement}')
         replies = []
@@ -202,10 +223,14 @@ class CLIBot:
             roll = np.random.rand() * cumsum
             for i, threshold in enumerate(cdf):
                 if roll < threshold:
-                    return replies[i][1]
+                    reply = replies[i][1]
+                    self.log_reply(statement, reply)
+                    return reply
 
         # TODO: np.choice from list of more friendly random unknown error replies...
-        return "Sorry, something went wrong. Not sure what to say..."
+        reply = "Sorry, something went wrong. Not sure what to say..."
+        self.log_reply(statement, reply)
+        return reply
 
 
 # def parse_config(filepath='nlpia-bot.ini'):
