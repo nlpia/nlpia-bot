@@ -19,6 +19,7 @@ __pycache__/*
 .pydevproject
 .settings
 .idea
+.vscode
 tags
 
 # Package files
@@ -45,5 +46,19 @@ docs/_build/*
 cover/*
 MANIFEST
 
+# Mac
+__MACOSX
+
+# KDE
+.directory
+
+# Data
+db.sqlite3
+
 # Per-project virtualenvs
 .venv*/
+
+# secrets
+.bash_env
+**/*secret*
+**/*private*
