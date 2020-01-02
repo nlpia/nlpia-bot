@@ -8,6 +8,7 @@
 # Smart people can think analogously across domains, sharing words and concepts and brain neurons between domains.
 
 
+Autism Spectrum Disorder (ASD): #medicine #neuroscience #clinical #healthcare #psychology
 Adeno-Associated Virus (AAV): An genetic therapy delivery vector that preferntially integrate into coding regions of the host gene and can care up to 8 kb genes (e.g. beta-globin genes). Safety was demonstrated in late 1990s for hemophilia B gene therapy.
 American College of Physicians (ACP): Publish guidelines such as bi-annual mammograms after the age of 60. #healthcare #L1
 Acute Kidney Injury (AKI): DeepMind can predict kidney injury (damage to the kidney from mediations or diabetes or kidney disease) 2 days in advance with 56% accuracy according to [this article](https://www.technologyreview.com/f/614046/deepminds-algorithm-can-predict-serious-kidney-injury-48-hours-before-it-happens/). #healthcare #L1
@@ -28,12 +29,14 @@ GIS (Geographic Information System): Mapping software and and geographic locatio
 Gaussian Mixture Model (GMM): Statistical model that the target is a linear combination of gaussian-distributed variables (see GMM). #data-science #deep-learning #computer-vision #NLP #L2 #L9
 Gradient-weighted Class Activation Mapping (Grad-CAM): "A measure of pixel importance based on the gradient of the activation for the class label of the image/region. See [this page](http://gradcam.cloudcv.org/) for more info. #data-science #deep-learning #computer-vision" #deep-learning #data-science #L5 #L9
 Health and Human Services (HHS): Publishes guidelines and standards regulating the electronic exchange of health information including _Standards for Privacy of Individually Identifiable Health Information_ #healthcare #L3
-The Health Insurance Portability and Accountability Act (HIPPA): In 2003 US Congress passed HIPPA which regulates insurance companies. #healthcare #L3
+The Health Insurance Portability and Accountability Act (HIPPA): In 2003 US Congress passed HIPPA which regulates insurance companies. #healthcare #privacy #statistics #ethics
+Multi-Omics: #clinical #healthcare #medicine #data #dna #genomics
 Missense SNPs: Modifications to a genetic code that causes it to produce functionally different or malfunctioning amino acids and proteins. #genomics #healthcare #data-science #L10
 MLE (Maximum Liklihood Estimator): Statistical model that assumes the target is a linear combination of randomly-distributed variables (see GMM) and computes predictions from the mean of the conditional probability distribution for the target variable. #data-science #L2 #L3 #deep-learning
 Nonsynonymous SNPs: Missense or nonsense SNPs that cause malfunctioning or misfunctioning of the amino acids and proteins produced with this gene. #genomics #healthcare
 Nonsense SNPs: Modifications to a gene that causes it to produce nonfunctional amino acids and proteins. #genomics #healthcare
 Nucleotide: The basic building blocks of DNA and RNA, molecules consisting of both a nucleoside and a phosphate group. The most common nucleodtides in DNA are Guanine (G), Cytosine (C), Adenine (A), and Thymine (T). #genomics #healthcare
+Omics: #clinical #healthcare #medicine
 Office of the National Coordinator for Health IT (OOC): Federal office that certifies EHR systems that comply with international standards on the ontology (medical terminolgy and data schemas). #healthcare #L6
 Personally Identifiable Information (PII): Information like birtdates, names, and social security numbers which can be used alone or in combination with other pieces of information to identify an individual. An age over 80 in hospital records is considered PII all by itself. #healthcare #L1 #L2
 Software as a Medical Device (SaMD):  The FDA has proposed to regulate AI and ML technology used in medicine as a medical device. #data-science #healthcare
