@@ -44,7 +44,7 @@ class WikiIndex():
             csv_writer = csv.writer(fout)
             csv_writer.writerow(['page_title'] + [f'x{i}' for i in range(300)])
             for i, s in tqdm(enumerate(self.df_titles.index.values[start:]), total=total):
-                vec = nlp(s).vector
+                vec = nlp(str(s)).vector  # s can sometimes (rarely) be a float because of pd.read_csv (df_titles)
                 vec /= pd.np.linalg.norm(vec) or 1.
                 vec = vec.round(7)
                 mask_zeros = pd.np.abs(vec) > 0
@@ -76,12 +76,12 @@ class WikiIndex():
         df = None
         if not refresh:
             try:
-                df = pd.read_csv(filepath)
+                df = pd.read_csv(filepath, dtype=str)
             except (IOError, FileNotFoundError):
                 log.info(f'No local copy of Wikipedia titles file was found at {filepath}')
         if not len(df):
             log.warn(f'Starting download of entire list of Wikipedia titles at {url}...')
-            df = pd.read_table(url)  # , sep=None, delimiter=None, quoting=3, engine='python')
+            df = pd.read_table(url, dtype=str)  # , sep=None, delimiter=None, quoting=3, engine='python')
             log.info(f'Finished downloading {len(df)} Wikipedia titles from {url}.')
 
         df.columns = ['page_title']
