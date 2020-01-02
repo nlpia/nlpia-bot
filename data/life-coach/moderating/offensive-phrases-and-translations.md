@@ -1,0 +1,36 @@
+- offensive words to avoid #ucsd-training
+    - Borat|borat
+    - towel head
+    - beaner
+    - psycho|psyco
+    - crazy|crazee
+    - schizo|schizophrenic
+    - bipolar
+    - add
+    - depressed|depression
+    - diabetic|diabetes
+    - the disabled
+    - ld|learning disabled
+    - short bus
+    - anxious|anxiety disorder
+    - issues|have issues|has issues
+    - gay
+    - trans|tranny
+    - insomniac
+    - cfs|chronic fatigue syndrome
+    - zombie
+    - clutz|clumsy
+    - dislexic
+    - confined to a wheelchair
+    - bedridden
+    - the [man|woman] wearing [blue|red|yellow|orange|khaki]
+        - the [person] wearing [blue|red|yellow|orange|khaki]
+- people first translations #ucsd-training
+    - [He is|She is|They are] is disabled.
+        - [He is|She is|They are]  a person with a disability
+    - [He is|She is|They are] is dislexic
+        - [He is|She is|They are] a person with dislexia
+    - [He is|She is|They are] confined to a wheelchair
+        - [He is|She is|They are] a person who uses a wheelchair
+    - The [man|woman] wearing [blue|red|yellow|orange|khaki]
+        - The [person] wearing [blue|red|yellow|orange|khaki]
