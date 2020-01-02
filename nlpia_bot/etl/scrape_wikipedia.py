@@ -36,15 +36,11 @@ class WikiIndex():
 
     def compute_vectors(self, filename='wikipedia-title-vectors.csv.gz'):
         log.warn(f'Computing title vectors for {len(self.df_titles)} titles. This will take a while.')
-        try:
-            df = pd.read_csv(os.path.join(constants.DATA_DIR, filename))
-        except (IOError, FileNotFoundError, pd.errors.EmptyDataError):
-            df = pd.DataFrame([], columns=list(range(300)))
-        start = len(df)
+        filepath = os.path.join(constants.DATA_DIR, filename)
+        start = sum((1 for line in gzip.open(filepath, 'rb')))
         total = len(self.df_titles) - start
-        del df
         vec_batch = []
-        with gzip.open(os.path.join(constants.DATA_DIR, filename), 'ta') as fout:
+        with gzip.open(filepath, 'ta') as fout:
             csv_writer = csv.writer(fout)
             csv_writer.writerow(['page_title'] + [f'x{i}' for i in range(300)])
             for i, s in tqdm(enumerate(self.df_titles.index.values[start:]), total=total):
@@ -65,7 +61,9 @@ class WikiIndex():
                         pass
                     vec_batch = []
         time.sleep(1)
-        self.df_vectors = pd.read_csv(os.path.join(constants.DATA_DIR, filename))
+        dtypes = {f'x{i}': pd.np.float16 for i in range(300)}
+        dtypes.update(page_title=str)
+        self.df_vectors = pd.read_csv(filepath, dtype=dtypes)
         return self.df_vectors
 
     def load(
