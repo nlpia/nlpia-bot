@@ -27,6 +27,7 @@ class Bot:
     """
 
     def __init__(self, domains=('dsdh',)):
+        """ Load glossary from yaml file indicated by list of domain names """
         global nlp
         self.nlp = nlp
         self.glossary = glossaries.load(domains=domains)['cleaned']
