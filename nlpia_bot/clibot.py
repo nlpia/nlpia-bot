@@ -108,7 +108,7 @@ DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'True',  # Yes, yes, 1, Y, y, T, t
     'bots': 'pattern,parul,eliza',
-    'loglevel': 'WARNING',
+    'loglevel': logging.WARNING,
     'num_top_replies': 10,
     'self_score': '.5',
     'semantic_score': '.5',
