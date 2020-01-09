@@ -58,6 +58,10 @@ except LookupError:
     STOPWORDS_DICT = Counter(nltk.corpus.stopwords.words('english'))
 STOPWORDS = set(STOPWORDS_DICT)
 
+ASCII_LOWER = 'abcdefghijklmnopqrstuvwxyz'
+ASCII_UPPER = ASCII_LOWER.upper()
+
+
 DEFAULT_BOTS = {
     'pattern_bots': None,
     'search_fuzzy_bots': None,
