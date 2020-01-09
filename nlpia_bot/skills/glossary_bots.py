@@ -1,13 +1,18 @@
 """ Pattern and template based chatbot dialog engines """
-import re
+import logging
 
 import pandas as pd
 
 from nlpia_bot.etl import glossaries
 from nlpia_bot import spacy_language_model
+from nlpia_bot.etl import knowledge_extraction as extract
 
-
+log = logging.getLogger(__name__)
 nlp = spacy_language_model.load('en_core_web_md')
+
+
+def capitalizations(s):
+    return (s, s.lower(), s.upper(), s.title())
 
 
 class Bot:
@@ -15,39 +20,43 @@ class Bot:
 
     >>> bot = Bot()
     >>> bot.reply('allele')
-    [(1.0, "I don't understand")]
+    [(0.05, "I don't understand...")]
+    >>> bot.reply('What is an Allele?')
+    [(0.94, 'A variant form of a given gene...')]
     >>> bot.reply('What is a nucleotide?')
-    [(1,
-     'The basic building blocks of DNA and RNA...
+    [(0.94, 'The basic building blocks of DNA and RNA...')]
     """
 
     def __init__(self, domains=('dsdh',)):
+        """ Load glossary from yaml file indicated by list of domain names """
         global nlp
         self.nlp = nlp
-        self.glossary = glossaries.load(domains=domains)
-        self.glossary.fillna('', inplace=True)
-        self.glossary.index = self.glossary['term'].str.lower().str.strip()
+        self.glossary = glossaries.load(domains=domains)['cleaned']
         self.vector = dict()
-        self.vector['term'] = pd.DataFrame({s: nlp(s or '').vector for s in self.glossary['term']})
-        self.vector['definition'] = pd.DataFrame({s: nlp(s or '').vector for s in self.glossary['definition']})
+        self.vector['term'] = pd.DataFrame(
+            {term: nlp(term).vector for term in self.glossary})
+        self.vector['definition'] = pd.DataFrame(
+            {term: nlp(d['definition']).vector for term, d in self.glossary.items()})
+
+        self.synonyms = {term: term for term in self.glossary}
+        # create reverse index of synonyms to canonical terms
+        # for term, d in self.glossary.items():
+        #     self.synonyms.update(dict(zip(capitalizations(term), [term] * 4)))
+        #     acro = d['acronym']
+        #     if acro:
+        #         self.synonyms.update(dict(zip(capitalizations(acro), [term] * 4)))
 
     def reply(self, statement):
-        """ Suggest responses to a user statement string with [(score, reply_string)..]
-
-        >>> bot = Bot()
-        >>> bot.reply('allele')
-        [(1.0, "I don't understand")]
-        >>> bot.reply('What is a nucleotide?')
-        [(1,
-         'The basic building blocks of DNA and RNA...
-        """
+        """ Suggest responses to a user statement string with [(score, reply_string)..]"""
         responses = []
-        match = re.match(r"\b(what\s+(is|are)\s*(not|n't)?\s+(a|an|the))\b([^\?]*)(\?*)", statement.lower())
-        if match:
-            try:
-                responses.append((1, self.glossary['definition'][match.groups()[-2].strip().lower()]))
-            except KeyError:
-                responses.append((1, str(match.groups())))
+        extracted_term = extract.whatis(statement) or ''
+        if extracted_term:
+            for i, term in enumerate(capitalizations(extracted_term)):
+                normalized_term = self.synonyms.get(term, term)
+                if normalized_term in self.glossary:
+                    responses.append((1 - .02 * i, self.glossary[normalized_term]['definition']))
         else:
-            responses = [(1.0, "I don't understand")]
+            responses = [(0.05, "I don't understand. That doesn't sound like a question I can answer using my glossary.")]
+        if not len(responses):
+            responses.append((0.25, f"My glossaries and dictionaries don't seem to contain that term ('{extracted_term}')."))
         return responses
