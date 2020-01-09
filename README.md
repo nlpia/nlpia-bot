@@ -15,7 +15,7 @@ This hybrid chatbot combines 4 techniques explained in [NLP in Action](https://w
     3. generative deep learning: [robot-bernie](https://github.com/nlpia/robot-bernie), [movie-bot](https://github.com/totalgood/nlpia/blob/master/src/nlpia/book/examples/ch10_movie_dialog_chatbot.py)
     4. grounding: [snips](https://github.com/snipsco/snips-nlu)
 
-The presentations for San Diego Python User Group are in [docs/](/docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp)
+The presentations for San Diego Python User Group are in [docs/](docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp)
 
 ## Install
 
