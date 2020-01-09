@@ -108,7 +108,7 @@ DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'True',  # Yes, yes, 1, Y, y, T, t
     'bots': 'pattern,parul,eliza',
-    'loglevel': 'WARNING',
+    'loglevel': logging.WARNING,
     'num_top_replies': 10,
     'self_score': '.5',
     'semantic_score': '.5',
@@ -380,9 +380,15 @@ def parse_argv(argv=sys.argv):
     if len(argv) > 1:
         new_argv.extend(list(argv[1:]))
     args = parse_args(new_argv)
-    log.setLevel(args.loglevel or logging.WARNING)
+    args.loglevel = args.loglevel or logging.WARNING
+    log.setLevel(args.loglevel)
 
     setup_logging(args.loglevel)
+    # set the root logger to the same log level
+    logging.getLogger().setLevel(args.loglevel)
+
+    # strip quotes in case ini file incorrectly uses single quotes that become part of the str
+    args.nickname = str(args.nickname).strip().strip('"').strip("'")
     # args.bots = args.bots or 'search_fuzzy,pattern,parul,time'
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
