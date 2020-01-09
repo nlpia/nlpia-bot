@@ -20,10 +20,11 @@ class Bot:
 
     >>> bot = Bot()
     >>> bot.reply('allele')
-    [(1.0, "I don't understand")]
+    [(0.05, "I don't understand...")]
     >>> bot.reply('What is an Allele?')
-    [(1,
-     'The basic building blocks of DNA and RNA...
+    [(0.94, 'A variant form of a given gene...')]
+    >>> bot.reply('What is a nucleotide?')
+    [(0.94, 'The basic building blocks of DNA and RNA...')]
     """
 
     def __init__(self, domains=('dsdh',)):
@@ -46,15 +47,7 @@ class Bot:
         #         self.synonyms.update(dict(zip(capitalizations(acro), [term] * 4)))
 
     def reply(self, statement):
-        """ Suggest responses to a user statement string with [(score, reply_string)..]
-
-        >>> bot = Bot()
-        >>> bot.reply('allele')
-        [(1.0, "I don't understand")]
-        >>> bot.reply('What is a nucleotide?')
-        [(1,
-         'The basic building blocks of DNA and RNA...
-        """
+        """ Suggest responses to a user statement string with [(score, reply_string)..]"""
         responses = []
         extracted_term = extract.whatis(statement) or ''
         if extracted_term:
