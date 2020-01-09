@@ -39,7 +39,7 @@ def possible_acronyms(s, titlize=None):
     """
     if not titlize:
         tripples = re.findall(r'\W*((([A-Za-z0-9])[A-Za-z0-9\']*)[^a-zA-Z0-9]*)\W*', s)
-        log.info(tripples)
+        log.debug(tripples)
         # print(tripples)
         first_letters = ''.join([initial_char for raw_word, clean_word, initial_char in tripples])
         first_letters_nostop = ''.join([initial_char for raw_word, clean_word,
