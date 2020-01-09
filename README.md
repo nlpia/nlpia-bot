@@ -6,16 +6,18 @@
 
 # nlpia_bot
 
-Use [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action) to build a virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your abilities and prosocial instincts.
+The `nlpia_bot` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your intelligence.
 
-This hybrid chatbot combines 4 techniques explained in [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action):
+This hybrid chatbot combines 4 approaches to give you state-of-the-art capability to answer questions and carry on a conversation:
 
     1. search: [chatterbot](https://github.com/gunthercox/ChatterBot), [will](https://github.com/skoczen/will)
     2. pattern matching and response templates: Alexa, [AIML](https://github.com/keiffster/program-y)
     3. generative deep learning: [robot-bernie](https://github.com/nlpia/robot-bernie), [movie-bot](https://github.com/totalgood/nlpia/blob/master/src/nlpia/book/examples/ch10_movie_dialog_chatbot.py)
     4. grounding: [snips](https://github.com/snipsco/snips-nlu)
 
-The presentations for San Diego Python User Group are in [docs/](/docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp)
+It's all explained in detail at [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action).
+
+Presentations for San Diego Python User Group are in [docs/](/docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp) and on the web at [http://totalgood.org/midata/talks](http://totalgood.org/midata/talks/)
 
 ## Install
 
