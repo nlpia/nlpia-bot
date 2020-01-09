@@ -15,8 +15,7 @@ import logging
 log = logging.getLogger(locals().get('__name__', ''))
 
 nlp = load('en_core_web_md')
-TITLES = ['Chatbot', 'ELIZA', 'Turing_test', 'AIML', 'Loebniz_prize', 'Chatterbot',
-          'Loebner_prize', 'Chinese_room']
+TITLES = ['Chatbot', 'ELIZA', 'Turing_test', 'AIML', 'Chatterbot', 'Loebner_prize', 'Chinese_room']
 EXCLUDE_HEADINGS = ['See also', 'References', 'Bibliography', 'External links']
 
 
@@ -154,9 +153,11 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 if not section:
                     continue
                 for t in section.text.split('\n')[1:]:
+                    log.info(f'  Checking see also link: {t}')
                     if t in page.links:
+                        log.info(f'    yep, found it in page.links')
                         title_depths.append((t, d + 1))
-                log.debug(f'extended title_depths at depth {d}: {title_depths}')
+                log.info(f'  extended title_depths at depth {d}: {title_depths}')
             for section in page.sections:
                 if section.title.lower().strip() in exclude_headings:
                     continue
