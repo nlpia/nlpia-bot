@@ -1,11 +1,11 @@
 """ Pattern and template based chatbot dialog engines """
-import re
 import logging
 
 import pandas as pd
 
 from nlpia_bot.etl import glossaries
 from nlpia_bot import spacy_language_model
+from nlpia_bot.etl import knowledge_extraction as extract
 
 log = logging.getLogger(__name__)
 nlp = spacy_language_model.load('en_core_web_md')
@@ -55,15 +55,14 @@ class Bot:
          'The basic building blocks of DNA and RNA...
         """
         responses = []
-        match = re.match(r"\b(what\s+(is|are)\s*(not|n't)?\s+(a|an|the))\b([^\?]*)(\?*)", statement.lower())
-        if match:
-            log.info(str(match.groups()))
-            for i, term in enumerate(capitalizations(match.groups()[-2])):
-                normalized_term = self.synonyms.get(term, None)
+        extracted_term = extract.whatis(statement) or ''
+        if extracted_term:
+            for i, term in enumerate(capitalizations(extracted_term)):
+                normalized_term = self.synonyms.get(term, term)
                 if normalized_term in self.glossary:
                     responses.append((1 - .02 * i, self.glossary[normalized_term]['definition']))
         else:
             responses = [(0.05, "I don't understand. That doesn't sound like a question I can answer using my glossary.")]
         if not len(responses):
-            responses.append((0.25, "My glossaries and dictionaries don't seem to contain that term."))
+            responses.append((0.25, f"My glossaries and dictionaries don't seem to contain that term ('{extracted_term}')."))
         return responses
