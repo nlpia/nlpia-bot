@@ -358,6 +358,9 @@ def parse_argv(argv=sys.argv):
     log.setLevel(args.loglevel or logging.WARNING)
 
     setup_logging(args.loglevel)
+    # set the root logger to the same log level
+    logging.getLogger().setLevel(args.loglevel)
+
     # args.bots = args.bots or 'search_fuzzy,pattern,parul,time'
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
