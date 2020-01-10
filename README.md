@@ -4,20 +4,30 @@
 [![PyPI version](https://img.shields.io/pypi/pyversions/nlpia-bot.svg)](https://pypi.org/project/nlpia-bot/)
 [![License](https://img.shields.io/pypi/l/nlpia-bot.svg)](https://pypi.python.org/pypi/nlpia-bot/)
 
-# nlpia_bot
+# `nlpia_bot`
 
 The `nlpia_bot` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your intelligence.
 
-This hybrid chatbot combines 4 approaches to give you state-of-the-art capability to answer questions and carry on a conversation:
+## Skills
 
-    1. search: [chatterbot](https://github.com/gunthercox/ChatterBot), [will](https://github.com/skoczen/will)
-    2. pattern matching and response templates: Alexa, [AIML](https://github.com/keiffster/program-y)
-    3. generative deep learning: [robot-bernie](https://github.com/nlpia/robot-bernie), [movie-bot](https://github.com/totalgood/nlpia/blob/master/src/nlpia/book/examples/ch10_movie_dialog_chatbot.py)
-    4. grounding: [snips](https://github.com/snipsco/snips-nlu)
+The current version of `nlpia-bot` can answer basic questions about data science for healthcare and chatbots themselves.
+It can also imitate the classic therapist bot "Eliza" and carry on a relatively entertaining conversation based on lines it's read from movie scripts.
+You can select any or all of these skills with command line args and the configuration file `~/nlpia-bot.ini` in your user directory.
 
-It's all explained in detail at [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action).
+You can expand the questions that nlpia-bot can answer by adding Q/A pairs to yaml text files in  `data/faq`.
+And soon `nlpia_bot` will be able to detect your mood and carry on more meaningful conversations, to give you encouragement and emotional support.
+We'll have something like this online in a couple months:
 
-Presentations for San Diego Python User Group are in [docs/](/docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp) and on the web at [http://totalgood.org/midata/talks](http://totalgood.org/midata/talks/)
+```
+bot: How are you doing?
+YOU: not so great
+bot: I'm really sorry to hear that. What do you think about doing 10 pushups to get your blood flowing?
+YOU: not so much
+bot: Would you like to chat about it?
+YOU: sure
+bot: So what are you feeling right now? How does your body feel?
+...
+```
 
 ## Install
 
@@ -35,37 +45,14 @@ pip install --editable .
 
 ```bash
 $ bot --help
-usage: bot [-h] [--version] [--name STR] [-p] [-b STR] [-v] [-vv]
-           [words [words ...]]
-
-Command line bot application, e.g. bot how do you work?
-
-positional arguments:
-  words                Words to pass to bot as an utterance or conversational
-                       statement requiring a bot reply or action.
-
-optional arguments:
-  -h, --help           show this help message and exit
-  --version            show program's version number and exit
-  --name STR           IRC nick or CLI command name for the bot
-  -p, --persist        Don't exit. Retain language model in memory and
-                       maintain dialog until user says 'exit', 'quit' or 'bye'
-                       (this is the default behavior if you do not provide a statement)
-  -b STR, --bots STR   comma-separated list of bot personalities to load
-                       default: pattern,parul,search_fuzzy,time,eliza
-  -v, --verbose        set loglevel to INFO
-  -vv, --very-verbose  set loglevel to DEBUG
+usage: bot [-h] [--version] [--name STR] [-p] [-b STR] [-v] [-vv] [words [words ...]]
 ```
-
-## Examples
 
 You can run bot just like any other command line app, giving it your statement/query as an argument.
 
 ```bash
-$ bot hello
-# 2019-11-21 12:42:13,620 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
-# 100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 540679.58it/s]
-BOT: Hello
+$ bot what is an allele
+bot: A variant form of a given gene, a version of a known mutation at the same place as the original unmodified gene within a chromosome.
 ```
 
 And if you want quicker turnaround on your bot you can just run it in peristent mode (without any positional arguments for your statement or words).
@@ -104,17 +91,30 @@ YOU: bye
 $
 ```
 
-## Work in Progress
+## Approach
 
+This hybrid chatbot combines 4 approaches to give you state-of-the-art capability to answer questions and carry on a conversation:
+
+    1. search: [chatterbot](https://github.com/gunthercox/ChatterBot), [will](https://github.com/skoczen/will)
+    2. pattern matching and response templates: Alexa, [AIML](https://github.com/keiffster/program-y)
+    3. generative deep learning: [robot-bernie](https://github.com/nlpia/robot-bernie), [movie-bot](https://github.com/totalgood/nlpia/blob/master/src/nlpia/book/examples/ch10_movie_dialog_chatbot.py)
+    4. grounding: [snips](https://github.com/snipsco/snips-nlu)
+
+It's all explained in detail at [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action).
+
+Presentations for San Diego Python User Group are in [docs/](/docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp) and on the web at [http://totalgood.org/midata/talks](http://totalgood.org/midata/talks/)
+
+## Contributors
 
 - Travis (@travis-harper): markhov chain reply selection and other data science enhancements
+- Maria Dyshell (tangibleai.com): student and career coaching
 - Nima (@hulkgeek): question answering bot based on his state of the art question classifier
 - Xavier (@spirovanni): employment counselor for workforce.org and the city of San Diego
 - Hobson (@hobson): infrastructure (CI, webapp) and framework features (nltk->spacy, USE vectors)
 - Erturgrul: Turkish wikipedia QA bot (parul bot)
 - You: What big chatbot idea would you like to make a reality?
 
-## Ideas
+## Crazy Ideas
 
 Please submit your feature ideas [github issues](https://github.com/nlpia/nlpia-bot/issues/). Here are a few ideas to get you started.
 
