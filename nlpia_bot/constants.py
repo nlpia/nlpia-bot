@@ -10,13 +10,14 @@ import nltk
 import nltk.corpus
 import spacy  # noqa
 
-SRC_DIR = os.path.dirname(os.path.dirname(__file__))
+SRC_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(SRC_DIR)
-DATA_DIR = os.path.join(SRC_DIR, 'data')
+DATA_DIR = os.path.join(BASE_DIR, 'data')
 LOG_DIR = os.path.join(DATA_DIR, 'log')
 os.makedirs(LOG_DIR, exist_ok=True)
 
 LOG_LEVELS = [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.FATAL]
+# LOG_LEVELS = [         10,           20,              30,            40,            50]
 LOG_LEVEL_NAMES = 'DEBUG INFO WARNING ERROR FATAL'.split()
 LOG_LEVEL_ABBREVIATIONS = [s[:4].lower() for s in LOG_LEVEL_NAMES]
 LOG_LEVEL_ABBR_DICT = dict(zip(LOG_LEVEL_ABBREVIATIONS, LOG_LEVELS))
