@@ -8,6 +8,9 @@
 
 The `nlpia_bot` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your intelligence.
 
+The presentations for San Diego Python User Group are at [totalgood.org/midata/talks/](http://totalgood.org/midata/talks/) and in `docs/`.
+
+
 ## Skills
 
 The current version of `nlpia-bot` can answer basic questions about data science for healthcare and chatbots themselves.
@@ -28,6 +31,7 @@ YOU: sure
 bot: So what are you feeling right now? How does your body feel?
 ...
 ```
+
 
 ## Install
 
