@@ -69,7 +69,8 @@ DEFAULT_BOTS = {
     'parul_bots': None,
     'eliza_bots': None,
 }
-
+DEFAULT_FAQ_DOMAINS = ('general-python-data-science', 'python-data_science-for-healthcare')
+DEFAULT_GLOSSARY_DOMAINS = ('dsdh', )
 
 TFHUB_USE_MODULE_URL = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
 
