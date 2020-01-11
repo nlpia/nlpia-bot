@@ -7,26 +7,11 @@ from tqdm import tqdm
 import yaml
 
 # from nlpia_bot.spacy_language_model import nlp
-from nlpia_bot.constants import DATA_DIR, STOPWORDS
+from nlpia_bot.constants import DATA_DIR, STOPWORDS, DEFAULT_GLOSSARY_DOMAINS
+from .etl import find_hashtags
 
 import logging
 log = logging.getLogger(locals().get('__name__'))
-
-
-def find_hashtags(s, pattern=r'\s*#[\w\d_-]+'):
-    """ Find twitter-style tags embedded within a string.
-
-    >>> d = find_hashtags("Find #this hashtag #too #sarcasm-not.")
-    >>> d['cleaned']
-    'Find hashtag.'
-    >>> d['hashtags']
-    ['#sarcasm-not', '#this', '#too']
-    """
-    s = s or ''
-    hashtags = re.findall(pattern, s) or []
-    hashtags = sorted(set([t.strip() for t in hashtags]))
-    cleaned = re.sub(pattern, '', s)
-    return {'cleaned': cleaned, 'hashtags': hashtags}
 
 
 def possible_acronyms(s, titlize=None):
@@ -59,7 +44,7 @@ def glossary_entry(glossary, term, start_entry_num=2):
     return term
 
 
-def load(domains=('dsdh',)):
+def load(domains=DEFAULT_GLOSSARY_DOMAINS):
     """ Load yaml file, use hashtags to create context tags as multihot columns
 
     Parses acronyms in parentheses and adds them as additional `{acronym: term}` glossary entries.
