@@ -67,27 +67,11 @@ import collections.abc
 import importlib
 import json
 import logging
-import os
-import sys
 
-import configargparse
 import numpy as np
 import pandas as pd
 
-# from nlpia_bot.use_demo import reply as use_reply
-
-# from chatbot.bots import Bot
-# from chatbot.contrib import (
-#     ChoiceFeature,
-#     DiceFeature,
-#     DictionaryFeature,
-#     PyPIFeature,
-#     SlapbackFeature,
-#     WikipediaFeature
-# )
-
 from nlpia_bot import constants
-from nlpia_bot import __version__
 from nlpia_bot.scores.quality_score import QualityScore
 
 
@@ -101,19 +85,6 @@ log.setLevel(logging.INFO)
 
 
 BOT = None
-MAX_TURNS = 10000
-EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
-
-DEFAULT_CONFIG = {
-    'name': 'bot',
-    'persist': 'False',  # Yes, yes, 1, Y, y, T, t
-    'bots': 'glossary',  # ,parul,eliza,glossary,search_fuzzy',
-    'loglevel': logging.WARNING,
-    'num_top_replies': 10,
-    'self_score': '.5',
-    'semantic_score': '.5',
-    'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}'
-}
 
 
 def normalize_replies(replies=''):
@@ -148,7 +119,7 @@ class CLIBot:
         for bot_name, bot_kwargs in bots.items():
             bot_kwargs = {} if bot_kwargs is None else dict(bot_kwargs)
             self.add_bot(bot_name, **bot_kwargs)
-        self.num_top_replies = DEFAULT_CONFIG['num_top_replies'] if num_top_replies is None else min(
+        self.num_top_replies = constants.DEFAULT_CONFIG['num_top_replies'] if num_top_replies is None else min(
             max(int(num_top_replies), 1), 10000)
         self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
         self.quality_score = QualityScore(**quality_kwargs)
@@ -233,189 +204,22 @@ class CLIBot:
         return reply
 
 
-# def parse_config(filepath='nlpia-bot.ini'):
-
-#     config = ConfigParser()
-#     config['DEFAULT'] = config_defaults
-#     config['bitbucket.org'] = {}
-#     config['bitbucket.org']['User'] = 'hg'
-#     config['topsecret.server.com'] = {}
-#     topsecret = config['topsecret.server.com']
-#     topsecret['Port'] = '50022'     # mutates the parser
-#     topsecret['ForwardX11'] = 'no'  # same here
-#     config['DEFAULT']['ForwardX11'] = 'yes'
-#     with open('example.ini', 'w') as configfile:
-#         config.write(configfile)
-
-
-def parse_args(args):
-    """Parse command line parameters using nlpia-bot.ini for the default values
-
-    Args:
-      args ([str]): command line parameters as list of strings
-
-    Returns:
-      :obj:`argparse.Namespace`: command line parameters namespace
-    """
-    parser = configargparse.ArgParser(
-        default_config_files=[
-            '~/nlpia-bot.ini',
-            '~/nlpia_bot.ini',
-            '~/nlpiabot.ini',
-            '~/nlpia.ini',
-            os.path.join(constants.BASE_DIR, '*.ini'),
-            os.path.join(constants.DATA_DIR, '*.ini'),
-        ],
-        description="Command line bot application. Try `$ bot how do you work?`")
-    parser.add('-c', '--config', required=False, is_config_file=True,
-               help="Config file path (default: ~/nlpia-bot.ini)")
-    parser.add_argument(
-        '--version',
-        action='version',
-        version='nlpia_bot {ver}'.format(ver=__version__))
-    parser.add_argument(
-        '--name',
-        default=DEFAULT_CONFIG['name'],
-        dest="nickname",
-        help="IRC nick or CLI command name for the bot",
-        type=str,
-        metavar="STR")
-    parser.add_argument(
-        '-n',
-        '--num_top_replies',
-        default=DEFAULT_CONFIG['num_top_replies'],
-        dest="num_top_replies",
-        help="Limit on the number of top (high score) replies that are randomly selected from.",
-        type=int,
-        metavar="INT")
-    parser.add_argument(
-        '-p',
-        '--persist',
-        help="Don't exit. Retain language model in memory and maintain dialog until user says 'exit' or 'quit'",
-        dest='persist',
-        default=str(DEFAULT_CONFIG['persist'])[0].lower() in 'fty1p',
-        action='store_true')
-    parser.add_argument(
-        '-b',
-        '--bots',
-        default=DEFAULT_CONFIG['bots'],  # None so config.ini can populate defaults
-        dest="bots",
-        help="Comma-separated list of bot personalities to load. Defaults: pattern,parul,search_fuzzy,time,eliza",
-        type=str,
-        metavar="STR")
-    parser.add_argument(
-        '-q',
-        '--quiet',
-        dest="loglevel",
-        help="set loglevel to ERROR",
-        action='store_const',
-        const=logging.ERROR)
-    parser.add_argument(
-        '-v',
-        '--verbose',
-        dest="loglevel",
-        help="set loglevel to INFO",
-        action='store_const',
-        const=logging.INFO)
-    parser.add_argument(
-        '-vv',
-        '--very-verbose',
-        dest="loglevel",
-        help="set loglevel to DEBUG",
-        action='store_const',
-        const=logging.DEBUG)
-    parser.add_argument(
-        '-l',
-        '--loglevel',
-        dest="loglevel",
-        help="Raw integer loglevel (10=debug, 20=info, 30=warn, 40=error, 50=fatal)",
-        type=int,
-        default=DEFAULT_CONFIG['loglevel'])
-    parser.add_argument(
-        '-s',
-        '--score_weights',
-        default=DEFAULT_CONFIG['score_weights'],
-        dest="score_weights",
-        help='Dictionary of weights: {"spell": .5, "sentiment": .5, "semantics": .5}',
-        type=str,
-        metavar="DICT_STR")
-    parser.add_argument(
-        'words',
-        type=str,
-        nargs='*',
-        help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
-    parser.add_argument(
-        '--semantics',
-        type=float,
-        default=1.0,
-        dest='semantics',
-        metavar='FLOAT',
-        help='set weight of the semantic quality score')
-    parser.add_argument(
-        '--sentiment',
-        type=float,
-        default=0.5,
-        dest='sentiment',
-        metavar='FLOAT',
-        help='set weight of the sentiment quality score')
-    parser.add_argument(
-        '--spell',
-        type=float,
-        default=0.2,
-        dest='spell',
-        metavar='FLOAT',
-        help='set weight of the spell quality score')
-    parsed_args = parser.parse_args(args)
-    return parsed_args
-
-
-def setup_logging(loglevel):
-    """Setup basic logging
-
-    Args:
-      loglevel (int): minimum loglevel for emitting messages
-    """
-    logformat = "[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
-    logging.basicConfig(level=loglevel, stream=sys.stdout,
-                        format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
-
-
-def parse_argv(argv=sys.argv):
-    """Entry point for console_scripts"""
+def run_bot():
     global BOT
-
-    new_argv = []
-    if len(argv) > 1:
-        new_argv.extend(list(argv[1:]))
-    args = parse_args(new_argv)
-    args.loglevel = args.loglevel or logging.WARNING
-    log.setLevel(args.loglevel)
-
-    setup_logging(args.loglevel)
-    # set the root logger to the same log level
-    logging.getLogger().setLevel(args.loglevel)
-    log.debug(f'RAW ARGS (including config file): {vars(args)}')
-
-    # strip quotes in case ini file incorrectly uses single quotes that become part of the str
-    args.nickname = str(args.nickname).strip().strip('"').strip("'")
-    # args.bots = args.bots or 'search_fuzzy,pattern,parul,time'
-    args.bots = [m.strip() for m in args.bots.split(',')]
-    log.info(f"Building a BOT with: {args.bots}")
-    log.info(f"Weights: {args.score_weights}")
-    # log.info(f"Parsed Weights: {type(json.loads(args.score_weights))}")
     if BOT is None:
         BOT = CLIBot(
-            bots=args.bots,
-            num_top_replies=args.num_top_replies,
-            semantics=args.semantics,
-            sentiment=args.sentiment,
-            spell=args.spell)
-
-    if args.persist:
+            bots=constants.args.bots,
+            num_top_replies=constants.args.num_top_replies,
+            semantics=constants.args.semantics,
+            sentiment=constants.args.sentiment,
+            spell=constants.args.spell)
+    if constants.args.persist:
         print('Type "quit" or "exit" to end the conversation...')
 
-    log.debug(f'FINAL PROCESSED ARGS: {vars(args)}')
-    return args
+    log.debug(f'FINAL PROCESSED ARGS: {vars(constants.args)}')
+
+
+BOT = run_bot()
 
 
 def cli(args):
@@ -424,8 +228,8 @@ def cli(args):
     user_statement = ' '.join(args.words)
     statements.append(dict(user=user_statement, bot=None, **state))
     args.persist = args.persist or not len(user_statement)
-    for i in range(MAX_TURNS if args.persist else 0):
-        if user_statement.lower().strip() in EXIT_COMMANDS:
+    for i in range(constants.MAX_TURNS if args.persist else 0):
+        if user_statement.lower().strip() in constants.EXIT_COMMANDS:
             break
         if user_statement:
             log.info(f"Computing a reply to {user_statement}...")
@@ -442,9 +246,9 @@ def cli(args):
 
 
 def main():
-    args = parse_argv(argv=sys.argv)
-    statements = cli(args)
-    if args.loglevel >= 50:
+    # args = constants.parse_argv(argv=sys.argv)
+    statements = cli(constants.args)
+    if constants.args.loglevel >= 50:
         return
     return statements
 
