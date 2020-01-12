@@ -31,7 +31,7 @@ def test_glossaries():
     results = doctest.testmod(nlpia_bot.etl.glossaries, optionflags=doctest.ELLIPSIS |
                               doctest.NORMALIZE_WHITESPACE, verbose=True)
     assert results.failed < 1
-    assert results.attempted > 5
+    assert results.attempted > 4
 
 
 def test_glossary_bots():
