@@ -34,7 +34,7 @@ class WikiIndex():
         # self.df_vectors = self.compute_vectors()
 
     def compute_vectors(self, filename='wikipedia-title-vectors.csv.gz'):
-        log.warn(f'Computing title vectors for {len(self.df_titles)} titles. This will take a while.')
+        log.warning(f'Computing title vectors for {len(self.df_titles)} titles. This will take a while.')
         filepath = os.path.join(constants.DATA_DIR, filename)
         start = sum((1 for line in gzip.open(filepath, 'rb')))
         total = len(self.df_titles) - start
@@ -79,7 +79,7 @@ class WikiIndex():
             except (IOError, FileNotFoundError):
                 log.info(f'No local copy of Wikipedia titles file was found at {filepath}')
         if not len(df):
-            log.warn(f'Starting download of entire list of Wikipedia titles at {url}...')
+            log.warning(f'Starting download of entire list of Wikipedia titles at {url}...')
             df = pd.read_table(url, dtype=str)  # , sep=None, delimiter=None, quoting=3, engine='python')
             log.info(f'Finished downloading {len(df)} Wikipedia titles from {url}.')
 
@@ -131,11 +131,11 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
         for i in range(max_articles):
             title = None
             while not title or title in titles_scraped:
-                # log.warn(f"Skipping {title} (already scraped)")
+                # log.warning(f"Skipping {title} (already scraped)")
                 try:
                     title, d = title_depths.pop()
                 except IndexError:
-                    log.warn(f'Out of titles: {title_depths}')
+                    log.warning(f'Out of titles: {title_depths}')
                     break
                 title = title.strip()
             if d > max_depth or not title:
