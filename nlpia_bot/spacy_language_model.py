@@ -3,7 +3,8 @@ import logging
 
 import spacy
 
-from nlpia_bot.constants import LANG, LANGS, passthroughSpaCyPipe
+from nlpia_bot.constants import LANG, LANGS, passthroughSpaCyPipe, env
+
 
 log = logging.getLogger(__name__)
 nlp = None
@@ -31,7 +32,7 @@ def add_hunspell_pipe(model):
     return model
 
 
-def load(lang=None):
+def load(lang=env.spacy):
     """ Load the specified language model or the small English model, if none specified
 
     >>> load_spacy_model()  # doctest: +ELLIPSIS
