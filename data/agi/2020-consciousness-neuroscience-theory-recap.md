@@ -7,3 +7,8 @@
 -  "Why Red Doesn't Sound Like a Bell": https://art19.com/shows/talking-machines
 - Chalmers on TED: [http://bit.ly/consciousness-ted-chalmers](https://youtu.be/uhRhtFFhNzQ)
 - Chalmers on Serious Science: [http://bit.ly/consciousness-chalmers](https://youtu.be/C5DfnIjZPGw)
+
+# Altruism and Psychopathy
+
+- Ronson: [http://bit.ly/psychopathy-ronson](https://youtu.be/xYemnKEKx0c) Jon Ronson describes a sociopath who seems to have been falsley committed to Broadmore Facility for the Criminally Insane and was unable to get out until Ronson interviewed him asked asked his handlers about him.
+- Ronson: [http://bit.ly/psychopathy-twitter-ronson](https://youtu.be/wAIP6fI0NAI) Jon Ronson explains how Twitter has turned us all into trolls.
