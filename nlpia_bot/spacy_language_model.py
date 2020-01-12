@@ -3,7 +3,7 @@ import logging
 
 import spacy
 
-from nlpia_bot.constants import LANG, LANGS, passthroughSpaCyPipe, env
+from nlpia_bot.constants import LANG, LANGS, passthroughSpaCyPipe
 
 
 log = logging.getLogger(__name__)
@@ -12,7 +12,7 @@ nlp = None
 try:
     from spacy_hunspell import spaCyHunSpell
 except ImportError:
-    log.warn('Failed to import spaCyHunSpell. Substituting with fake . . .')
+    log.warning('Failed to import spaCyHunSpell. Substituting with fake . . .')
     spaCyHunSpell = passthroughSpaCyPipe
 
 
@@ -26,13 +26,13 @@ def add_hunspell_pipe(model):
             # TODO determine paths for en_US.dic and en_US.aff on windows
             hunspell = spaCyHunSpell(model, ('en_US.dic', 'en_US.aff'))
         except Exception:
-            log.warn('Failed to locate en_US.dic and en_US.aff files. Substituting with fake . . .')
+            log.warning('Failed to locate en_US.dic and en_US.aff files. Substituting with fake . . .')
             hunspell = passthroughSpaCyPipe()
     model.add_pipe(hunspell)
     return model
 
 
-def load(lang=env.spacy):
+def load(lang=LANG):
     """ Load the specified language model or the small English model, if none specified
 
     >>> load_spacy_model()  # doctest: +ELLIPSIS
@@ -40,7 +40,7 @@ def load(lang=env.spacy):
     """
     global nlp
     model = None
-    log.warn(f"Loading SpaCy model...")
+    log.warning(f"Loading SpaCy model...")
     if lang:
         try:
             model = spacy.load(lang)
