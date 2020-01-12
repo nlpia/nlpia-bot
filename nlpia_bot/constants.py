@@ -15,27 +15,13 @@ from environment import Environment
 
 from nlpia_bot import __version__
 
-env = Environment(spacy=str, loglevel=int, verbose=bool, quiet=bool)
+env = Environment(spacy_lang=str, loglevel=int, name=str)
 
 SRC_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(SRC_DIR)
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 LOG_DIR = os.path.join(DATA_DIR, 'log')
 os.makedirs(LOG_DIR, exist_ok=True)
-
-LOGLEVELS = [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.FATAL]
-# LOG_LEVELS = [         10,           20,              30,            40,            50]
-LOGLEVEL_NAMES = 'DEBUG INFO WARNING ERROR FATAL'.split()
-LOGLEVEL_ABBREVIATIONS = [s[:4].lower() for s in LOGLEVEL_NAMES]
-LOGLEVEL_ABBR_DICT = dict(zip(LOGLEVEL_ABBREVIATIONS, LOGLEVELS))
-LOGLEVEL = env.loglevel
-
-logging.basicConfig(
-    format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-    datefmt='%Y-%m-%d:%H:%M:%S',
-    level=LOGLEVEL)  # FIXME: read from config file like in clibot.py
-root_logger = logging.getLogger()
-log = logging.getLogger(__name__)
 
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
@@ -44,12 +30,31 @@ DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'False',  # Yes, yes, 1, Y, y, T, t
     'bots': 'glossary',  # ,parul,eliza,glossary,search_fuzzy',
+    'spacy_lang': 'en_core_web_sm',
     'loglevel': logging.WARNING,
     'num_top_replies': 10,
     'self_score': '.5',
     'semantic_score': '.5',
-    'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}'
+    'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}',
 }
+DEFAULT_CONFIG.update(env.parsed)
+
+
+LOGLEVELS = [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.FATAL]
+# LOG_LEVELS = [         10,           20,              30,            40,            50]
+LOGLEVEL_NAMES = 'DEBUG INFO WARNING ERROR FATAL'.split()
+LOGLEVEL_ABBREVIATIONS = [s[:4].lower() for s in LOGLEVEL_NAMES]
+LOGLEVEL_ABBR_DICT = dict(zip(LOGLEVEL_ABBREVIATIONS, LOGLEVELS))
+# this is the LOGLEVEL for the top of this file, once args and .ini file are read, it will change
+LOGLEVEL = getattr(env, 'loglevel', None) or DEFAULT_CONFIG.get('loglevel', logging.WARNING)
+
+logging.basicConfig(
+    format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+    datefmt='%Y-%m-%d:%H:%M:%S',
+    level=LOGLEVEL)  # FIXME: read from config file like in clibot.py
+root_logger = logging.getLogger()
+log = logging.getLogger(__name__)
+
 
 # def parse_config(filepath='nlpia-bot.ini'):
 #     config = ConfigParser()
@@ -149,6 +154,13 @@ def parse_args(args):
         type=int,
         default=DEFAULT_CONFIG['loglevel'])
     parser.add_argument(
+        '--spacy_lang',
+        default=DEFAULT_CONFIG['spacy_lang'],
+        dest="spacy_lang",
+        help="SpaCy language model: en_core_web_sm, en_core_web_md, or en_core_web_lg",
+        type=str,
+        metavar="STR")
+    parser.add_argument(
         '-s',
         '--score_weights',
         default=DEFAULT_CONFIG['score_weights'],
@@ -156,11 +168,6 @@ def parse_args(args):
         help='Dictionary of weights: {"spell": .5, "sentiment": .5, "semantics": .5}',
         type=str,
         metavar="DICT_STR")
-    parser.add_argument(
-        'words',
-        type=str,
-        nargs='*',
-        help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
     parser.add_argument(
         '--semantics',
         type=float,
@@ -182,6 +189,11 @@ def parse_args(args):
         dest='spell',
         metavar='FLOAT',
         help='set weight of the spell quality score')
+    parser.add_argument(
+        'words',
+        type=str,
+        nargs='*',
+        help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
     parsed_args = parser.parse_args(args)
     return parsed_args
 
@@ -225,6 +237,9 @@ def parse_argv(argv=sys.argv):
 
 args = parse_argv()
 
+LOGLEVEL = args.loglevel or LOGLEVEL
+
+
 # handler = logging.handlers.TimedRotatingFileHandler(os.path.join(LOG_DIR, 'nlpia_bot.constants.log'), when='midnight')
 # handler.setLevel(logging.INFO)
 # log.addHandler(handler)
@@ -244,8 +259,9 @@ LANGS_ABBREV += 'de demd delg'.split()
 
 # tuple('de de de'.split())  # df=pd.read_html('https://spacy.io/usage/models')[0]
 LANGS_ABBREV = dict(zip(LANGS_ABBREV, LANGS))
-LANG = env.lang or LANGS[0]
 
+LANG = env.parsed.get('spacy_lang') or getattr(args, 'spacy_lang', None) or DEFAULT_CONFIG.get('spacy_lang') or LANGS[0]
+log.info(f'LANG=spacy_lang={LANG}')
 
 try:
     STOPWORDS_DICT = Counter(nltk.corpus.stopwords.words('english'))
