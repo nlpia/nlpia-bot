@@ -60,8 +60,8 @@ def download_word_lists(
         try:
             resp = requests.get(source_url_file_path)
         except Exception as e:
-            log.warn(f'Unable to download {source_url_file_path}')
-            log.warn(str(e))
+            log.warning(f'Unable to download {source_url_file_path}')
+            log.warning(str(e))
             continue
         file_path = os.path.join(dest_path, f'{name}.txt')
         dest_file_paths.append(file_path)
