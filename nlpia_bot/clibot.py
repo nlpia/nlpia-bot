@@ -137,7 +137,7 @@ class CLIBot:
                 new_bots.append(bot_class(**bot_kwargs))
                 new_modules.append(bot_module)
         else:
-            log.warn(f'FIXME: add feature to allow import of specific bot classes like "nlpia_bot.skills.{bot_name}"')
+            log.warning(f'FIXME: add feature to allow import of specific bot classes like "nlpia_bot.skills.{bot_name}"')
         self.bots.extend(new_bots)
         self.bot_modules.extend(new_modules)
         return new_bots
@@ -177,7 +177,7 @@ class CLIBot:
                     log.debug(repr(replier))
                     bot_replies = normalize_replies(replier.reply(statement))
                 except AttributeError as e:
-                    log.warn(str(e))
+                    log.warning(str(e))
                 except Exception as e:
                     log.error(str(e))
             bot_replies = normalize_replies(bot_replies)
