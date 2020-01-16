@@ -88,6 +88,11 @@ BOT = None
 
 
 def normalize_replies(replies=''):
+    """ Make sure a list of replies includes score and text
+
+    >>> normalize_replies(['hello world'])
+    [(1e-10, 'hello world')]
+    """
     if isinstance(replies, str):
         replies = [(1e-10, replies)]
     elif isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
