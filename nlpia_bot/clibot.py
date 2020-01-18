@@ -92,6 +92,8 @@ def normalize_replies(replies=''):
 
     >>> normalize_replies(['hello world'])
     [(1e-10, 'hello world')]
+    >>> normalize_replies('goodbye ')
+    [(1e-10, 'hello world')]
     """
     if isinstance(replies, str):
         replies = [(1e-10, replies)]

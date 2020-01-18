@@ -2,10 +2,13 @@
 import pytest  # noqa
 import doctest
 
-import nlpia_bot.skills.eliza_bots
 import nlpia_bot.clibot
-import nlpia_bot.etl.glossaries
+
+import nlpia_bot.skills.eliza_bots
 import nlpia_bot.skills.glossary_bots
+
+import nlpia_bot.etl.glossaries
+import nlpia_bot.etl.yaml
 
 
 __author__ = "SEE AUTHORS.md"
@@ -36,6 +39,13 @@ def test_glossaries():
 
 def test_glossary_bots():
     results = doctest.testmod(nlpia_bot.skills.glossary_bots, optionflags=doctest.ELLIPSIS |
+                              doctest.NORMALIZE_WHITESPACE, verbose=True)
+    assert results.failed < 1
+    assert results.attempted > 2
+
+
+def test_yaml_bots():
+    results = doctest.testmod(nlpia_bot.etl.yaml, optionflags=doctest.ELLIPSIS |
                               doctest.NORMALIZE_WHITESPACE, verbose=True)
     assert results.failed < 1
     assert results.attempted > 2
