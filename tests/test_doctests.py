@@ -8,7 +8,7 @@ import nlpia_bot.skills.eliza_bots
 import nlpia_bot.skills.glossary_bots
 
 import nlpia_bot.etl.glossaries
-import nlpia_bot.etl.yaml
+import nlpia_bot.etl.yml
 
 
 __author__ = "SEE AUTHORS.md"
@@ -45,7 +45,7 @@ def test_glossary_bots():
 
 
 def test_yaml_bots():
-    results = doctest.testmod(nlpia_bot.etl.yaml, optionflags=doctest.ELLIPSIS |
+    results = doctest.testmod(nlpia_bot.etl.yml, optionflags=doctest.ELLIPSIS |
                               doctest.NORMALIZE_WHITESPACE, verbose=True)
     assert results.failed < 1
     assert results.attempted > 2
