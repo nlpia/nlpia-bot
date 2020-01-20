@@ -8,7 +8,7 @@ import yaml
 
 # from nlpia_bot.spacy_language_model import nlp
 from nlpia_bot.constants import DATA_DIR, STOPWORDS, DEFAULT_GLOSSARY_DOMAINS
-from nlpia_bot.etl.yml import find_hashtags
+# from nlpia_bot.etl.yml import find_hashtags
 
 import logging
 log = logging.getLogger(locals().get('__name__'))
@@ -74,7 +74,7 @@ def load(domains=DEFAULT_GLOSSARY_DOMAINS):
         elif len(paren) < len(term):
             if paren in term_acros or ((len(paren) > 1) and paren == paren.upper()):
                 term, acro, paren = term, paren, None
-        hashtag_dict = find_hashtags(definition_raw)
+        hashtag_dict = {}  # find_hashtags(definition_raw)
         if not term:
             continue
         term_entry = glossary_entry(glossary, term)
