@@ -303,7 +303,7 @@ def find(query='What is a chatbot?', max_articles=10):
     True
     >>> types = [type(txt) for txt in texts]
     >>> types[:7]
-    [str, str, str, str, str, str]
+    [<class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>]
     >>> texts[0][:6]
     'Searle'
     """
