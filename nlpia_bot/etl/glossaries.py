@@ -9,7 +9,7 @@ import yaml
 
 # from nlpia_bot.spacy_language_model import nlp
 from nlpia_bot.constants import DATA_DIR, STOPWORDS, DEFAULT_GLOSSARY_DOMAINS
-from spacy_language_model import nlp
+from nlpia_bot.spacy_language_model import nlp
 # from nlpia_bot.etl.yml import find_hashtags
 
 import logging
@@ -51,7 +51,7 @@ def term_vector_dict(terms, keys=None):
     keys = terms if keys is None else list(keys)
     vector_list = []
     log.info(f'Computing doc vectors for {len(terms)} terms...')
-    for k, term in keys, terms:
+    for k, term in zip(keys, terms):
         vec = nlp(term).vector  # s can sometimes (rarely) be a float because of pd.read_csv (df_titles)
         vec /= np.linalg.norm(vec) or 1.
         # vec = vec.round(7)
