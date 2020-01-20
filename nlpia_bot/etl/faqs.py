@@ -6,7 +6,7 @@ from tqdm import tqdm
 import yaml
 
 # from nlpia_bot.spacy_language_model import nlp
-# from nlpia_bot.etl.yaml
+# from nlpia_bot.etl.yml
 from nlpia_bot.constants import DEFAULT_FAQ_DOMAINS
 
 import logging
