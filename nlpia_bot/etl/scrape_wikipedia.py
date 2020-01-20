@@ -186,6 +186,82 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     return pd.DataFrame(sentences, columns='depth title section sentence'.split())
 
 
+def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
+                         see_also=True, max_articles=10000, max_depth=3):
+    """ Download text for an article and parse into sections and sentences
+
+    >>> nlp('hello')  # to eager-load spacy model
+    hello
+    >>> texts = scrape_article_texts(['ELIZA'], see_also=False)
+    >>> len(texts)
+    7
+    """
+
+    titles = list([titles] if isinstance(titles, str) else titles)
+    exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
+    depths = list([0] * len(titles))
+    title_depths = list(zip(titles, depths))
+    texts = []
+    # FIXME: breadth-first search so you can do a tqdm progress bar for each depth
+    # FIXME: record title tree (see also) so that .2*title1+.3*title2+.5*title3 can be semantically appended to sentences
+    titles_scraped = set([''])
+    title, d = '', 0
+    wiki = Wikipedia()
+    for depth in range(max_depth):
+        for i in range(max_articles):
+            title = None
+            while not title or title in titles_scraped:
+                # log.warning(f"Skipping {title} (already scraped)")
+                try:
+                    title, d = title_depths.pop()
+                except IndexError:
+                    log.warning(f'Out of titles: {title_depths}')
+                    break
+                title = title.strip()
+            if d > max_depth or not title:
+                log.info(f"{d} > {max_depth} or title ('{title}') is empty")
+                continue
+            titles_scraped.add(title)
+            page = wiki.article(title)
+            if not (len(page.text) + len(page.summary)):
+                log.error(f"Unable to retrieve {title}")
+                time.sleep(2.17)
+                continue
+            if see_also and d + 1 < max_depth:
+                # .full_text() includes the section heading ("See also"). .text does not
+                section = page.section_by_title('See also')
+                if not section:
+                    continue
+                for t in section.text.split('\n')[1:]:
+                    log.info(f'  Checking see also link: {t}')
+                    if t in page.links:
+                        log.info(f'    yep, found it in page.links')
+                        title_depths.append((t, d + 1))
+                log.info(f'  extended title_depths at depth {d}: {title_depths}')
+            text = ''
+            for section in page.sections:
+                if section.title.lower().strip() in exclude_headings:
+                    continue
+                # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
+                text += section.text.replace('’', "'") + '\n'  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
+            texts.append(text)
+            log.debug(f'Added article with {len(text)} characters .')
+
+            # retval = parse_sentences(
+            #     title=title, sentences=sentences, title_depths=title_depths, see_also=see_also,
+            #     exclude_headings=exclude_headings, d=d, depth=depth, max_depth=max_depth)
+            # if retval is None:
+            #     continue
+            # else:
+            #     sentences, title_depths = retval
+            log.info(str([depth, d, i, title]))
+            if d > depth:
+                log.info(f"{d} > {depth}")
+                break
+
+    return texts
+
+
 def count_nonzero_vector_dims(self, strings, nominal_dims=1):
     """ Count the number of nonzero values in a sequence of vectors
 
@@ -203,6 +279,15 @@ def count_nonzero_vector_dims(self, strings, nominal_dims=1):
     for s in strings:
         tot += (pd.DataFrame([t.vector for t in nlp(s)]).abs() > 0).T.sum().sum()
     return tot
+
+
+def find_titles(query='What is a chatbot?'):
+    return TITLES
+
+
+def find(query='What is a chatbot?'):
+    titles = find_titles(query)
+    return scrape_article_texts(titles)
 
 # def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
 
