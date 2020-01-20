@@ -32,7 +32,7 @@ def add_hunspell_pipe(model):
     return model
 
 
-def load(lang=LANG):
+def load(lang=None):
     """ Load the specified language model or the small English model, if none specified
 
     >>> load_spacy_model()  # doctest: +ELLIPSIS
@@ -41,23 +41,28 @@ def load(lang=LANG):
     global nlp
     model = None
     log.warning(f"Loading SpaCy model...")
-    if lang:
+    nlp_lang = getattr(nlp, 'lang', '')
+    if nlp_lang and (not lang or nlp_lang == lang[:2]):
+        model = nlp
+    if model is None and lang:
         try:
             model = spacy.load(lang)
         except OSError:
             spacy.cli.download(lang)
             model = spacy.load(lang)
-        return model
-    for lang in LANGS:
-        try:
-            model = spacy.load(lang)
-            break
-        except OSError:
-            pass
     if model is None:
-        lang = LANG
-        spacy.cli.download(lang)
-        model = spacy.load(lang)
+        if not lang:
+            for lang in LANGS:
+                try:
+                    model = spacy.load(lang)
+                    break
+                except OSError:
+                    pass
+        else:
+            if model is None:
+                lang = LANG
+                spacy.cli.download(lang)
+                model = spacy.load(lang)
     log.info(
         f"Finished loading SpaCy model: {model}\n"
         f"    with {model._meta['accuracy']['token_acc']:.2f}% token accuracy\n"
