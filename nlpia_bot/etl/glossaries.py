@@ -8,7 +8,7 @@ import yaml
 
 # from nlpia_bot.spacy_language_model import nlp
 from nlpia_bot.constants import DATA_DIR, STOPWORDS, DEFAULT_GLOSSARY_DOMAINS
-from nlpia_bot.etl.yaml import find_hashtags
+from nlpia_bot.etl.yml import find_hashtags
 
 import logging
 log = logging.getLogger(locals().get('__name__'))
