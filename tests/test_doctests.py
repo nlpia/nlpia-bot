@@ -8,6 +8,7 @@ import nlpia_bot.skills.eliza_bots
 import nlpia_bot.skills.glossary_bots
 
 import nlpia_bot.etl.glossaries
+import nlpia_bot.etl.scrape_wikipedia
 import nlpia_bot.etl.yml
 
 
@@ -37,15 +38,21 @@ def test_glossaries():
     assert results.attempted > 4
 
 
-def test_glossary_bots():
-    results = doctest.testmod(nlpia_bot.skills.glossary_bots, optionflags=doctest.ELLIPSIS |
+def test_scrape_wikipedia():
+    results = doctest.testmod(nlpia_bot.etl.scrape_wikipedia, optionflags=doctest.ELLIPSIS |
                               doctest.NORMALIZE_WHITESPACE, verbose=True)
     assert results.failed < 1
     assert results.attempted > 2
 
 
-def test_yaml_bots():
-    results = doctest.testmod(nlpia_bot.etl.yml, optionflags=doctest.ELLIPSIS |
-                              doctest.NORMALIZE_WHITESPACE, verbose=True)
-    assert results.failed < 1
-    assert results.attempted > 2
+# def test_yaml_bots():
+#     results = doctest.testmod(nlpia_bot.etl.yml, optionflags=doctest.ELLIPSIS |
+#                               doctest.NORMALIZE_WHITESPACE, verbose=True)
+#     assert results.failed < 1
+#     assert results.attempted > 2
+
+# def test_glossary_bots():
+#     results = doctest.testmod(nlpia_bot.skills.glossary_bots, optionflags=doctest.ELLIPSIS |
+#                               doctest.NORMALIZE_WHITESPACE, verbose=True)
+#     assert results.failed < 1
+#     assert results.attempted > 2
