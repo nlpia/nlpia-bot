@@ -36,11 +36,12 @@ def possible_acronyms(s, titlize=None):
 
 
 def glossary_entry(glossary, term, start_entry_num=2):
+    return None
     if term in glossary:
         k = start_entry_num
-        while f'term ({k})' in glossary:
+        while f'{term} ({k})' in glossary:
             k += 1
-        return f'term ({k})'
+        return f'{term} ({k})'
     return term
 
 
