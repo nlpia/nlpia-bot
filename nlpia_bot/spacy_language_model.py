@@ -28,7 +28,10 @@ def add_hunspell_pipe(model):
         except Exception:
             log.warning('Failed to locate en_US.dic and en_US.aff files. Substituting with fake . . .')
             hunspell = passthroughSpaCyPipe()
-    model.add_pipe(hunspell)
+    try:
+        model.add_pipe(hunspell)
+    except ValueError:
+        log.warning(f'SpaCy parser {model} already has a hunspell Pipe section...')
     return model
 
 
