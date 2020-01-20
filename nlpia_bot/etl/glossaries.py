@@ -74,7 +74,7 @@ def load(domains=DEFAULT_GLOSSARY_DOMAINS):
         elif len(paren) < len(term):
             if paren in term_acros or ((len(paren) > 1) and paren == paren.upper()):
                 term, acro, paren = term, paren, None
-        hashtag_dict = {'raw': [], 'cleaned': []}  # find_hashtags(definition_raw)
+        hashtag_dict = {'raw': definition_raw, 'cleaned': definition_raw, 'hashtags': []}  # find_hashtags(definition_raw)
         if not term:
             continue
         term_entry = glossary_entry(glossary, term)
