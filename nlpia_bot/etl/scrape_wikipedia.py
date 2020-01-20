@@ -284,11 +284,26 @@ def count_nonzero_vector_dims(self, strings, nominal_dims=1):
     return tot
 
 
-def find_titles(query='What is a chatbot?'):
-    return TITLES
+def find_titles(query='What is a chatbot?', max_titles=10):
+    """ Search db of wikipedia titles for articles relevant to a statement or questions
+
+    >>> set(find_titles('What is a chatbot?')) == set(TITLES)
+    True
+    """
+    return TITLES[:max_titles]
 
 
 def find(query='What is a chatbot?', max_articles=10):
+    """ Retrieve Wikipedia article texts relevant to the query text
+
+    >>> texts = find('What is a chatbot?')
+    >>> len(texts)
+    7
+    >>> [type(txt) for txt in texts]
+    [str, str, str, str, str, str]
+    >>> texts[0][:6]
+    'Chatbot'
+    """
     titles = find_titles(query)
     return scrape_article_texts(titles, max_articles=10)
 
