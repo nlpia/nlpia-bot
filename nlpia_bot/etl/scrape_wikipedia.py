@@ -195,6 +195,9 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     >>> texts = scrape_article_texts(['ELIZA'], see_also=False)
     >>> len(texts)
     7
+    >>> texts = scrape_article_texts(['ELIZA'], max_articles=10)
+    >>> len(texts)
+    10
     """
 
     titles = list([titles] if isinstance(titles, str) else titles)
@@ -285,9 +288,9 @@ def find_titles(query='What is a chatbot?'):
     return TITLES
 
 
-def find(query='What is a chatbot?'):
+def find(query='What is a chatbot?', max_articles=10):
     titles = find_titles(query)
-    return scrape_article_texts(titles)
+    return scrape_article_texts(titles, max_articles=10)
 
 # def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
 

@@ -9,7 +9,7 @@ from nlpia_bot import spacy_language_model
 from nlpia_bot.etl import knowledge_extraction as extract
 
 log = logging.getLogger(__name__)
-nlp = spacy_language_model.load('en_core_web_md')
+nlp = spacy_language_model.load()  # 'en_core_web_md'
 
 
 def capitalizations(s):
