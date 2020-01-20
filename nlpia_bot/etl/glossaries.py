@@ -2,12 +2,14 @@
 import os
 import re
 
+import numpy as np
 from tqdm import tqdm
 # import pandas as pd
 import yaml
 
 # from nlpia_bot.spacy_language_model import nlp
 from nlpia_bot.constants import DATA_DIR, STOPWORDS, DEFAULT_GLOSSARY_DOMAINS
+from spacy_language_model import nlp
 # from nlpia_bot.etl.yml import find_hashtags
 
 import logging
@@ -42,6 +44,27 @@ def glossary_entry(glossary, term, start_entry_num=2):
             k += 1
         return f'{term} ({k})'
     return term
+
+
+def term_vector_dict(terms, keys=None):
+    terms = [str(t) if t else '' for t in terms]
+    keys = terms if keys is None else list(keys)
+    vector_list = []
+    log.info(f'Computing doc vectors for {len(terms)} terms...')
+    for k, term in keys, terms:
+        vec = nlp(term).vector  # s can sometimes (rarely) be a float because of pd.read_csv (df_titles)
+        vec /= np.linalg.norm(vec) or 1.
+        # vec = vec.round(7)
+        mask_zeros = np.abs(vec) > 0
+        if mask_zeros.sum() < len(mask_zeros):
+            log.warning(f'BAD VEC: {term} [0]*{mask_zeros.sum()}')
+        vector_list.append((k, vec))
+    # columns = [f'x{i}' for i in range(300)''
+    # dtypes = {c: pd.np.float16 for c in columns}
+    # df_vectors
+    # dtypes.update(page_title=str)
+    # self.df_vectors = pd.read_csv(filepath, dtype=dtypes)
+    return dict(vector_list)
 
 
 def load(domains=DEFAULT_GLOSSARY_DOMAINS):
