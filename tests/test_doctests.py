@@ -51,8 +51,8 @@ def test_scrape_wikipedia():
 #     assert results.failed < 1
 #     assert results.attempted > 2
 
-# def test_glossary_bots():
-#     results = doctest.testmod(nlpia_bot.skills.glossary_bots, optionflags=doctest.ELLIPSIS |
-#                               doctest.NORMALIZE_WHITESPACE, verbose=True)
-#     assert results.failed < 1
-#     assert results.attempted > 2
+def test_glossary_bots():
+    results = doctest.testmod(nlpia_bot.skills.glossary_bots, optionflags=doctest.ELLIPSIS |
+                              doctest.NORMALIZE_WHITESPACE, verbose=True)
+    assert results.failed < 1
+    assert results.attempted > 2

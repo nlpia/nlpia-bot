@@ -1,7 +1,7 @@
 """ Pattern and template based chatbot dialog engines """
 import logging
 
-import pandas as pd
+# import pandas as pd
 
 from nlpia_bot.etl import glossaries
 from nlpia_bot import spacy_language_model
@@ -33,10 +33,8 @@ class Bot:
         self.nlp = nlp
         self.glossary = glossaries.load(domains=domains)['cleaned']
         self.vector = dict()
-        self.vector['term'] = pd.DataFrame(
-            {term: nlp(term).vector for term in self.glossary})
-        self.vector['definition'] = pd.DataFrame(
-            {term: nlp(d['definition']).vector for term, d in self.glossary.items()})
+        self.vector['term'] = glossaries.term_vector_dict(self.glossary.keys())
+        self.vector['definition'] = glossaries.term_vector_dict(self.glossary.values(), self.glossary.keys())
 
         self.synonyms = {term: term for term in self.glossary}
         # create reverse index of synonyms to canonical terms
