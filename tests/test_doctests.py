@@ -5,6 +5,7 @@ import doctest
 import nlpia_bot.skills.eliza_bots
 import nlpia_bot.clibot
 import nlpia_bot.etl.glossaries
+import nlpia_bot.etl.scrape_wikipedia
 # import nlpia_bot.skills.glossary_bots
 
 
@@ -29,6 +30,13 @@ def test_clibot():
 
 def test_glossaries():
     results = doctest.testmod(nlpia_bot.etl.glossaries, optionflags=doctest.ELLIPSIS |
+                              doctest.NORMALIZE_WHITESPACE, verbose=True)
+    assert results.failed < 1
+    assert results.attempted > 4
+
+
+def test_scrape_wikipedia():
+    results = doctest.testmod(nlpia_bot.etl.scrape_wikipedia, optionflags=doctest.ELLIPSIS |
                               doctest.NORMALIZE_WHITESPACE, verbose=True)
     assert results.failed < 1
     assert results.attempted > 4
