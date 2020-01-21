@@ -206,6 +206,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     titles = list([titles] if isinstance(titles, str) else titles)
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
     depths = list([0] * len(titles))
+    # depth is always zero here, but this would be useful further down
     title_depths = list(zip(titles, depths))
     texts = []
     # FIXME: breadth-first search so you can do a tqdm progress bar for each depth
@@ -233,7 +234,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
             titles_scraped.add(title)
             page = wiki.article(title)
             if not (len(page.text) + len(page.summary)):
-                log.error(f"Unable to retrieve {title}")
+                log.warn(f"Unable to retrieve {title}")
                 time.sleep(2.17)
                 continue
             # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
@@ -257,7 +258,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 text += f'\n{section.title}\n' if heading_text else '\n'
                 text += section.text.replace('’', "'") + '\n'  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
             texts.append(text)
-            log.warn(f'Added article with {len(text)} characters. Total chars = {sum((len(t) for t in texts))}')
+            log.warn(f'Added article "{page.title}" with {len(text)} characters. Total chars = {sum((len(t) for t in texts))}')
             log.warn(str([depth, d, num_articles, title]))
             if len(texts) >= max_articles:
                 log.warn(f"num_articles={num_articles} ==> len(texts)={len(texts)} > max_depth={max_depth}")
@@ -286,23 +287,43 @@ def count_nonzero_vector_dims(self, strings, nominal_dims=1):
     return tot
 
 
-def find_titles(query='What is a chatbot?', max_titles=10):
+def list_ngrams(token_list, n=3, sep=' '):
+    """ Return list of n-grams from a list of tokens (words)
+
+    >>> ','.join(list_ngrams('Hello big blue marble'.split(), n=3))
+    'Hello,Hello big,Hello big blue,big,big blue,big blue marble,blue,blue marble,marble'
+    >>> ','.join(list_ngrams('Hello big blue marble'.split(), n=3, sep='_'))
+    'Hello,Hello_big,Hello_big_blue,big,big_blue,big_blue_marble,blue,blue_marble,marble'
+    """
+    ngram_list = []
+
+    for i in range(len(token_list)):
+        for j in range(n):
+            if i + j < len(token_list):
+                ngram_list.append(sep.join(token_list[i:i + j + 1]))
+
+    return ngram_list
+
+
+def find_titles(query='What is a chatbot?', max_titles=30, ngrams=3):
     """ Search db of wikipedia titles for articles relevant to a statement or questions
 
     >>> set(find_titles('What is a chatbot?')) == set(TITLES)
     True
+    >>> find_titles('What is a ELIZA?')
+    ['eliza']
     """
     if not query or query.lower().strip().strip('?').strip().endswith('chatbot'):
         return TITLES[:max_titles]
     ignore_words = constants.QUESTION_STOPWORDS
     toks = [tok.text.lower() for tok in nlp(query)]
-    return [tok for tok in toks if tok not in ignore_words]
+    return list_ngrams([tok for tok in toks if tok not in ignore_words and len(tok) > 1], n=ngrams)
 
 
-def find(query='What is a chatbot?', max_articles=10, titles=[]):
+def find_article_texts(query='What is a chatbot?', titles=[], max_depth=2, max_articles=200, **scrape_kwargs):
     r""" Retrieve Wikipedia article texts relevant to the query text
 
-    >>> texts = find('')
+    >>> texts = find_article_texts('')
     >>> len(texts) >= 7
     True
     >>> types = [type(txt) for txt in texts]
@@ -313,8 +334,11 @@ def find(query='What is a chatbot?', max_articles=10, titles=[]):
     """
     if not len(titles):
         # sort by importance (TFIDF) rather than alphabet
-        titles = sorted(find_titles(query))
-    return scrape_article_texts(titles, max_articles=30)
+        titles = find_titles(query)
+        titles = sorted(((len(t), t) for t in titles), reverse=True)
+        titles = [t for (n, t) in titles]
+    return scrape_article_texts(titles, max_depth=max_depth, max_articles=200, **scrape_kwargs)
+
 
 # def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
 
