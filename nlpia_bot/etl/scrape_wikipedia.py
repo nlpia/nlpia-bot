@@ -312,8 +312,9 @@ def find(query='What is a chatbot?', max_articles=10, articles=[]):
     True
     """
     if not len(articles):
+        # sort by importance (TFIDF) rather than alphabet
         articles = sorted(find_titles(query))
-    return scrape_article_texts(articles, max_articles=10)
+    return scrape_article_texts(articles, max_articles=30)
 
 # def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
 
