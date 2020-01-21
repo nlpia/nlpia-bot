@@ -299,7 +299,7 @@ def find_titles(query='What is a chatbot?', max_titles=10):
     return [tok for tok in toks if tok not in ignore_words]
 
 
-def find(query='What is a chatbot?', max_articles=10, articles=[]):
+def find(query='What is a chatbot?', max_articles=10, titles=[]):
     r""" Retrieve Wikipedia article texts relevant to the query text
 
     >>> texts = find('')
@@ -311,10 +311,10 @@ def find(query='What is a chatbot?', max_articles=10, articles=[]):
     >>> texts[0].split('\n')[0] in 'Chinese room Turing test Chatbot ELIZA'
     True
     """
-    if not len(articles):
+    if not len(titles):
         # sort by importance (TFIDF) rather than alphabet
-        articles = sorted(find_titles(query))
-    return scrape_article_texts(articles, max_articles=30)
+        titles = sorted(find_titles(query))
+    return scrape_article_texts(titles, max_articles=30)
 
 # def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
 
