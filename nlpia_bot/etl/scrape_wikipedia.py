@@ -136,7 +136,7 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 try:
                     title, d = title_depths.pop()
                 except IndexError:
-                    log.warn(f'Out of titles: {title_depths}')
+                    log.warning(f'Out of titles: {title_depths}')
                     break
                 title = title.strip()
             if d > max_depth or not title:
@@ -183,7 +183,7 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
             #     sentences, title_depths = retval
             log.info(str([depth, d, num_articles, title]))
             if d > depth:
-                log.warn(f"{d} > {depth}")
+                log.warning(f"{d} > {depth}")
                 break
 
     return pd.DataFrame(sentences, columns='depth title section sentence'.split())
