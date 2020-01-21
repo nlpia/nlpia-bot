@@ -3,7 +3,8 @@ import re
 
 import numpy as np
 
-from nlpia_bot.constants import SENTENCE_SPEC, NLP
+from nlpia_bot.constants import SENTENCE_SPEC
+from nlpia_bot.spacy_language_model import nlp
 
 
 def generate_sentence(spec=SENTENCE_SPEC, sentence_id=None):
@@ -28,7 +29,7 @@ def generate_sentence(spec=SENTENCE_SPEC, sentence_id=None):
     answer = spec['answers'][sentence_id]
     i_unk = 0
     tokens = []
-    for i, tok in enumerate(NLP(sentence)):
+    for i, tok in enumerate(nlp(sentence)):
         if re.match(r'^(_+|unk|\[MASK\])$', tok.text):
             possible_tokens, p = list(zip(*answer[i_unk].items()))
             tokens.append(np.random.choice(a=possible_tokens, p=p))
