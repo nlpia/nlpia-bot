@@ -272,6 +272,9 @@ except LookupError:
     STOPWORDS_DICT = Counter(nltk.corpus.stopwords.words('english'))
 STOPWORDS = set(STOPWORDS_DICT)
 
+QUESTIONWORDS = set('who what when were why which how'.split() + ['how come', 'why does', 'can i', 'can you', 'which way'])
+QUESTION_STOPWORDS = QUESTIONWORDS | STOPWORDS
+
 ASCII_LOWER = 'abcdefghijklmnopqrstuvwxyz'
 ASCII_UPPER = ASCII_LOWER.upper()
 
