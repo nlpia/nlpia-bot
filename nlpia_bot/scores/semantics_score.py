@@ -5,14 +5,23 @@ log = logging.getLogger(__name__)
 
 
 def iou(a, b):
-    a, b = set(a), set(b)
+    """ Crude character vector overlap measure of string similarity
+
+    >>> iou('Hello', 'World')
+    0.285...
+    """
+    a, b = set(a.lower().strip()), set(b.lower().strip())
     return len(a & b) / len(a | b)
 
 
 def semantics(reply, stmt=None, **kwargs):
+    """ Compute word2vec docvec cosine similarity (fall back to character IOU)
+
+    >>> semantics('Hello world!', 'Goodbye big earth!')
+    """
     global nlp
     nlp = kwargs.get('nlp', nlp)
-    if kwargs is None or kwargs['nlp'] is None or not stmt:
+    if kwargs is None or nlp is None or not stmt or not reply:
         return 0.0
 
     reply_doc, stmt_doc = nlp(reply), nlp(stmt)
