@@ -18,6 +18,7 @@ def semantics(reply, stmt=None, **kwargs):
     """ Compute word2vec docvec cosine similarity (fall back to character IOU)
 
     >>> semantics('Hello world!', 'Goodbye big earth!')
+    0.6317...
     """
     global nlp
     nlp = kwargs.get('nlp', nlp)
