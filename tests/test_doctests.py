@@ -12,6 +12,7 @@ import nlpia_bot.etl.scrape_wikipedia
 import nlpia_bot.etl.yml
 
 import nlpia_bot.scores.semantics_score
+import nlpia_bot.template_generators
 
 
 __author__ = "SEE AUTHORS.md"
@@ -56,7 +57,13 @@ def test_scrape_wikipedia():
 def test_semantics_score():
     results = doctest.testmod(nlpia_bot.scores.semantics_score, **DOCTEST_KWARGS)
     assert results.failed < 1
-    assert results.attempted > 2
+    assert results.attempted >= 1
+
+
+# def test_template_generators():
+#     results = doctest.testmod(nlpia_bot.template_generators, **DOCTEST_KWARGS)
+#     assert results.failed < 1
+#     assert results.attempted >= 1
 
 
 def test_glossary_bots():
