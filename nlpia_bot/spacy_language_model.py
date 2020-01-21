@@ -17,6 +17,13 @@ except ImportError:
 
 
 def add_hunspell_pipe(model):
+    try:
+        spacy.tokens.Token.get_extension('hunspell_spell')
+        log.warning(f'SpaCy Token already has a hunspell Pipe section . . .')
+        return model
+    except ValueError:
+        pass
+
     if sys.platform == 'linux' or sys.platform == 'linux2':
         hunspell = spaCyHunSpell(model, 'linux')
     elif sys.platform == 'darwin':
