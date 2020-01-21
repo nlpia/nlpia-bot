@@ -23,7 +23,6 @@ def add_hunspell_pipe(model):
         return model
     except ValueError:
         pass
-
     if sys.platform == 'linux' or sys.platform == 'linux2':
         hunspell = spaCyHunSpell(model, 'linux')
     elif sys.platform == 'darwin':
