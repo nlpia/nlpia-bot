@@ -105,7 +105,7 @@ class WikiIndex():
 
 
 def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
-                    see_also=True, max_articles=10000, max_depth=3):
+                    see_also=True, max_articles=10000, max_depth=1):
     """ Download text for an article and parse into sections and sentences
 
     >>> nlp('hello')  # to eager-load spacy model
@@ -116,19 +116,19 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     >>> df.columns
     Index(['depth', 'title', 'section', 'sentence'], dtype='object')
     """
-
     titles = list([titles] if isinstance(titles, str) else titles)
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
     depths = list([0] * len(titles))
     title_depths = list(zip(titles, depths))
     sentences = []
+    num_articles = 0
     # FIXME: breadth-first search so you can do a tqdm progress bar for each depth
     # FIXME: record title tree (see also) so that .2*title1+.3*title2+.5*title3 can be semantically appended to sentences
     titles_scraped = set([''])
     title, d = '', 0
     wiki = Wikipedia()
     for depth in range(max_depth):
-        for i in range(max_articles):
+        while num_articles < max_articles and d <= depth and len(title_depths):
             title = None
             # skip None titles and titles already scraped
             while len(title_depths) and len(titles_scraped) and (not title or title in titles_scraped):
@@ -148,6 +148,8 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 log.error(f"Unable to retrieve {title}")
                 time.sleep(2.17)
                 continue
+            num_articles += 1
+            # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
             if see_also and d + 1 < max_depth:
                 # .full_text() includes the section heading ("See also"). .text does not
                 section = page.section_by_title('See also')
@@ -179,29 +181,28 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
             #     continue
             # else:
             #     sentences, title_depths = retval
-            log.info(str([depth, d, i, title]))
+            log.info(str([depth, d, num_articles, title]))
             if d > depth:
-                log.info(f"{d} > {depth}")
+                log.warn(f"{d} > {depth}")
                 break
 
     return pd.DataFrame(sentences, columns='depth title section sentence'.split())
 
 
 def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
-                         see_also=True, max_articles=10000, max_depth=3):
+                         see_also=True, max_articles=10000, max_depth=1,
+                         heading_text=True, title_text=True):
     """ Download text for an article and parse into sections and sentences
 
     >>> nlp('hello')  # to eager-load spacy model
     hello
     >>> texts = scrape_article_texts(['ELIZA'], see_also=False)
-    >>> len(texts) >= 1
+    >>> len(texts)
+    1
+    >>> texts = scrape_article_texts(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3)
+    >>> len(texts) == 10
     True
-
-    >> texts = scrape_article_texts(['ELIZA'], max_articles=10)
-    >> len(texts)
-    10
     """
-
     titles = list([titles] if isinstance(titles, str) else titles)
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
     depths = list([0] * len(titles))
@@ -210,10 +211,11 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     # FIXME: breadth-first search so you can do a tqdm progress bar for each depth
     # FIXME: record title tree (see also) so that .2*title1+.3*title2+.5*title3 can be semantically appended to sentences
     titles_scraped = set([''])
-    title, d = '', 0
+    title, d, num_articles = '', 0, 0
     wiki = Wikipedia()
+    # TODO: should be able to use depth rather than d:
     for depth in range(max_depth):
-        for i in range(max_articles):
+        while num_articles < max_articles and d <= depth and len(title_depths):
             title = None
 
             # skip titles already scraped
@@ -234,6 +236,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 log.error(f"Unable to retrieve {title}")
                 time.sleep(2.17)
                 continue
+            # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
             if see_also and d + 1 < max_depth:
                 # .full_text() includes the section heading ("See also"). .text does not
                 section = page.section_by_title('See also')
@@ -245,27 +248,23 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                         log.info(f'    yep, found it in page.links')
                         title_depths.append((t, d + 1))
                 log.info(f'  extended title_depths at depth {d}: {title_depths}')
-            text = ''
+            text = f'{page.title}\n\n' if title_text else ''
+            # page.text
             for section in page.sections:
                 if section.title.lower().strip() in exclude_headings:
                     continue
                 # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
+                text += f'\n{section.title}\n' if heading_text else '\n'
                 text += section.text.replace('’', "'") + '\n'  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
             texts.append(text)
-            log.debug(f'Added article with {len(text)} characters .')
-
-            # retval = parse_sentences(
-            #     title=title, sentences=sentences, title_depths=title_depths, see_also=see_also,
-            #     exclude_headings=exclude_headings, d=d, depth=depth, max_depth=max_depth)
-            # if retval is None:
-            #     continue
-            # else:
-            #     sentences, title_depths = retval
-            log.info(str([depth, d, i, title]))
-            if d > depth:
-                log.info(f"{d} > {depth}")
+            log.warn(f'Added article with {len(text)} characters. Total chars = {sum((len(t) for t in texts))}')
+            log.warn(str([depth, d, num_articles, title]))
+            if len(texts) >= max_articles:
+                log.warn(f"num_articles={num_articles} ==> len(texts)={len(texts)} > max_depth={max_depth}")
                 break
-
+            if d > depth:
+                log.warn(f"{d} > {depth}")
+                break
     return texts
 
 
@@ -293,23 +292,28 @@ def find_titles(query='What is a chatbot?', max_titles=10):
     >>> set(find_titles('What is a chatbot?')) == set(TITLES)
     True
     """
-    return TITLES[:max_titles]
+    if not query or query.lower().strip().strip('?').strip().endswith('chatbot'):
+        return TITLES[:max_titles]
+    ignore_words = constants.QUESTION_STOPWORDS
+    toks = [tok.text.lower() for tok in nlp(query)]
+    return [tok for tok in toks if tok not in ignore_words]
 
 
-def find(query='What is a chatbot?', max_articles=10):
-    """ Retrieve Wikipedia article texts relevant to the query text
+def find(query='What is a chatbot?', max_articles=10, articles=[]):
+    r""" Retrieve Wikipedia article texts relevant to the query text
 
-    >>> texts = find('What is a chatbot?')
+    >>> texts = find('')
     >>> len(texts) >= 7
     True
     >>> types = [type(txt) for txt in texts]
     >>> types[:7]
     [<class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>]
-    >>> texts[0][:6]
-    'Searle'
+    >>> texts[0].split('\n')[0] in 'Chinese room Turing test Chatbot ELIZA'
+    True
     """
-    titles = find_titles(query)
-    return scrape_article_texts(titles, max_articles=10)
+    if not len(articles):
+        articles = sorted(find_titles(query))
+    return scrape_article_texts(articles, max_articles=10)
 
 # def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
 
