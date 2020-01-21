@@ -290,8 +290,8 @@ DEFAULT_GLOSSARY_DOMAINS = ('dsdh', )
 
 TFHUB_USE_MODULE_URL = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
 
-# templates for medical sentences
-# SENTENCE_SPEC_PATH = os.path.join(os.path.dirname(__file__), 'data', 'medical_sentences.json')
+# # templates for medical sentences
+# SENTENCE_SPEC_PATH = os.path.join(DATA_DIR, 'medical_sentences.json')
 # SENTENCE_SPEC = json.load(open(SENTENCE_SPEC_PATH, 'r'))
 
 
