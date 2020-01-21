@@ -12,7 +12,7 @@ import nlpia_bot.etl.scrape_wikipedia
 import nlpia_bot.etl.yml
 
 import nlpia_bot.scores.semantics_score
-import nlpia_bot.template_generators
+# import nlpia_bot.template_generators
 
 
 __author__ = "SEE AUTHORS.md"
