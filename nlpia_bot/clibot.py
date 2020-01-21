@@ -126,7 +126,8 @@ class CLIBot:
             self.add_bot(bot_name, **bot_kwargs)
         self.num_top_replies = constants.DEFAULT_CONFIG['num_top_replies'] if num_top_replies is None else min(
             max(int(num_top_replies), 1), 10000)
-        self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots]
+        self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots if bot is not None]
+        log.warn(f'Loaded bots: {self.repliers}')
         self.quality_score = QualityScore(**quality_kwargs)
 
     def add_bot(self, bot_name, **bot_kwargs):
@@ -222,12 +223,12 @@ def run_bot():
         print('Type "quit" or "exit" to end the conversation...')
 
     log.debug(f'FINAL PROCESSED ARGS: {vars(constants.args)}')
-
-
-BOT = run_bot()
+    return BOT
 
 
 def cli(args):
+    global BOT
+    BOT = run_bot() if BOT is None else BOT
     state = {}
     statements = []
     user_statement = ' '.join(args.words)
@@ -239,6 +240,8 @@ def cli(args):
         if user_statement:
             log.info(f"Computing a reply to {user_statement}...")
             # state = BOT.reply(statement, **state)
+            print(BOT)
+            print(type(BOT))
             bot_statement = BOT.reply(user_statement)
             statements[-1]['bot'] = bot_statement
             print(f"{args.nickname}: {bot_statement}")
@@ -251,6 +254,8 @@ def cli(args):
 
 
 def main():
+    global BOT
+    BOT = run_bot() if BOT is None else BOT
     # args = constants.parse_argv(argv=sys.argv)
     statements = cli(constants.args)
     if constants.args.loglevel >= 50:
