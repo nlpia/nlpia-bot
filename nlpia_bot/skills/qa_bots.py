@@ -9,19 +9,7 @@ from nlpia_bot.etl import scrape_wikipedia
 from nlpia_bot.constants import DATA_DIR
 
 class Bot:
-    """
-    class suppress_stdout(object):
-        
-        def __init__(self):
-            self.old_stdout = sys.stdout
 
-        def __enter__(self):
-            self.old_stdout = sys.stdout
-            sys.stdout = io.StringIO()
-
-        def __exit__(self, exc_type, exc_value, traceback):
-            sys.stdout = self.old_stdout
-    """
     class NullWriter(object):
         def write(self, arg):
             pass
