@@ -1,5 +1,13 @@
 from nlpia_bot.spacy_language_model import nlp  # noqa
 
+import logging
+log = logging.getLogger(__name__)
+
+
+def iou(a, b):
+    a, b = set(a), set(b)
+    return len(a & b) / len(a | b)
+
 
 def semantics(reply, stmt=None, **kwargs):
     global nlp
@@ -7,6 +15,12 @@ def semantics(reply, stmt=None, **kwargs):
     if kwargs is None or kwargs['nlp'] is None or not stmt:
         return 0.0
 
-    cos_sim = nlp(reply).similarity(nlp(stmt))
+    reply_doc, stmt_doc = nlp(reply), nlp(stmt)
 
+    if not reply_doc or not stmt_doc or not reply_doc.has_vector or not stmt_doc.has_vector:
+        # FIXME: levenshtien would be better or fuzzywuzzy
+        return iou(reply, stmt)
+
+    cos_sim = nlp(reply).similarity(nlp(stmt))
+    log.debug(f'cos_sim={cos_sim}')
     return cos_sim
