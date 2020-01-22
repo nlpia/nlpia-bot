@@ -23,6 +23,7 @@ DATA_DIR = os.path.join(BASE_DIR, 'data')
 LOG_DIR = os.path.join(DATA_DIR, 'log')
 os.makedirs(LOG_DIR, exist_ok=True)
 
+USE_CUDA = False
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
@@ -47,7 +48,8 @@ LOGLEVEL_NAMES = 'DEBUG INFO WARNING ERROR FATAL'.split()
 LOGLEVEL_ABBREVIATIONS = [s[:4].lower() for s in LOGLEVEL_NAMES]
 LOGLEVEL_ABBR_DICT = dict(zip(LOGLEVEL_ABBREVIATIONS, LOGLEVELS))
 # this is the LOGLEVEL for the top of this file, once args and .ini file are read, it will change
-LOGLEVEL = getattr(env, 'loglevel', None) or DEFAULT_CONFIG.get('loglevel', logging.WARNING)
+LOGLEVEL = getattr(env, 'loglevel', DEFAULT_CONFIG.get('loglevel', logging.WARNING))
+USE_CUDA = getattr(env, 'use_cuda', DEFAULT_CONFIG.get('use_cuda', USE_CUDA))
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
