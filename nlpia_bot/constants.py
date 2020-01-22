@@ -112,7 +112,7 @@ def parse_args(args):
         type=int,
         metavar="INT")
     parser.add_argument(
-        '-c',
+        '-u',
         '--use_cuda',
         help="Use CUDA and GPU to speed up transformer inference.",
         dest='use_cuda',
