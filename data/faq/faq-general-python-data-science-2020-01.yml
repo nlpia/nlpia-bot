@@ -61,3 +61,6 @@
   ['INTJ', 'NOUN', 'ADP', 'PROPN', 'PROPN', 'ADP', 'PROPN', 'VERB', 'ADP', 'DET', 'PROPN', 'PUNCT']
   >>> [(tok.text, tok.pos_) for tok in doc]
   "
+-
+  Q: "When I bootstrapped a shuffled dataset and calculated the confidence 95% interval the mean of my actual data is well outside the 95% confidence interval. What does this mean?"
+  A: "This means that the two means are statistically different and are unlikely to have occurred by chance so you can reject your null hypothesis, just as if you'd gotten a p-value that was smaller than 5% (or 1 - .95)."
