@@ -29,8 +29,9 @@ EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'False',  # Yes, yes, 1, Y, y, T, t
-    'bots': 'glossary',  # ,parul,eliza,glossary,search_fuzzy',
+    'bots': 'glossary',  # glossary,qa,parul,eliza,search_fuzzy'
     'spacy_lang': 'en_core_web_sm',
+    'use_cuda': False,
     'loglevel': logging.WARNING,
     'num_top_replies': 10,
     'self_score': '.5',
@@ -110,6 +111,13 @@ def parse_args(args):
         help="Limit on the number of top (high score) replies that are randomly selected from.",
         type=int,
         metavar="INT")
+    parser.add_argument(
+        '-c',
+        '--use_cuda',
+        help="Use CUDA and GPU to speed up transformer inference.",
+        dest='use_cuda',
+        default=str(DEFAULT_CONFIG['use_cuda'])[0].lower() in 'fty1p',
+        action='store_true')
     parser.add_argument(
         '-p',
         '--persist',
