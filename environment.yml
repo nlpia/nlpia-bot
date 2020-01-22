@@ -22,10 +22,10 @@ dependencies:
   - jupyter
   # - jupyter_core
   # - jupyter_console
-  - keras
+  # - keras
   # - libgcc
   - lxml
-  - matplotlib
+  # - matplotlib
   - mysqlclient
   - nbconvert
   - nltk
@@ -39,13 +39,13 @@ dependencies:
   - pyscaffold
   - pytest-cov
   - python-levenshtein
-  - python=3.7
+  - python=3.8
   - redis-py
   - regex  # ==2018.1.10
   - scipy
   - spacy>=2.2.2
   - sqlparse
-  - tensorflow==2.0  # ==1.13.1
+  # - tensorflow==2.0  # ==1.13.1
 
   - pip:
     - wikipedia-api
