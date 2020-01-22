@@ -8,6 +8,7 @@ from simpletransformers.question_answering import QuestionAnsweringModel
 from nlpia_bot.etl import scrape_wikipedia
 from nlpia_bot.constants import DATA_DIR
 
+
 class Bot:
 
     class NullWriter(object):
