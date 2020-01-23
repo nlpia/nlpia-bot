@@ -70,7 +70,7 @@ class Bot:
         self.db = self.load_dialog(name=name)
 
     def load_dialog(self, name='movie_dialog'):
-        log.warn('Loading movie dialog...')
+        log.warning('Loading movie dialog...')
         if name == 'dsfaq':
             db = load_faq()
         else:
