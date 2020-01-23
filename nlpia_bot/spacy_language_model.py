@@ -5,13 +5,14 @@ import spacy
 
 from nlpia_bot.constants import LANG, LANGS, passthroughSpaCyPipe
 
+
 log = logging.getLogger(__name__)
 nlp = None
 
 try:
     from spacy_hunspell import spaCyHunSpell
 except ImportError:
-    log.warn('Failed to import spaCyHunSpell. Substituting with fake . . .')
+    log.warning('Failed to import spaCyHunSpell. Substituting with fake . . .')
     spaCyHunSpell = passthroughSpaCyPipe
 
 
@@ -25,9 +26,12 @@ def add_hunspell_pipe(model):
             # TODO determine paths for en_US.dic and en_US.aff on windows
             hunspell = spaCyHunSpell(model, ('en_US.dic', 'en_US.aff'))
         except Exception:
-            log.warn('Failed to locate en_US.dic and en_US.aff files. Substituting with fake . . .')
+            log.warning('Failed to locate en_US.dic and en_US.aff files. Substituting with fake . . .')
             hunspell = passthroughSpaCyPipe()
-    model.add_pipe(hunspell)
+    try:
+        model.add_pipe(hunspell)
+    except ValueError:
+        log.warning(f'SpaCy parser {model} already has a hunspell Pipe section...')
     return model
 
 
@@ -39,24 +43,29 @@ def load(lang=None):
     """
     global nlp
     model = None
-    log.warn(f"Loading SpaCy model...")
-    if lang:
+    log.warning(f"Loading SpaCy model...")
+    nlp_lang = getattr(nlp, 'lang', '')
+    if nlp_lang and (not lang or nlp_lang == lang[:2]):
+        model = nlp
+    if model is None and lang:
         try:
             model = spacy.load(lang)
         except OSError:
             spacy.cli.download(lang)
             model = spacy.load(lang)
-        return model
-    for lang in LANGS:
-        try:
-            model = spacy.load(lang)
-            break
-        except OSError:
-            pass
     if model is None:
-        lang = LANG
-        spacy.cli.download(lang)
-        model = spacy.load(lang)
+        if not lang:
+            for lang in LANGS:
+                try:
+                    model = spacy.load(lang)
+                    break
+                except OSError:
+                    pass
+        else:
+            if model is None:
+                lang = LANG
+                spacy.cli.download(lang)
+                model = spacy.load(lang)
     log.info(
         f"Finished loading SpaCy model: {model}\n"
         f"    with {model._meta['accuracy']['token_acc']:.2f}% token accuracy\n"
