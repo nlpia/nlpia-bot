@@ -21,6 +21,18 @@ class Bot:
         self.model = QuestionAnsweringModel('distilbert', path, use_cuda=USE_CUDA)
 
     def encode_input(self, statement, context):
+        """ Converts statement and context strings into json format compatible with BERT transformer
+
+        >>> bot = Bot()
+        >>> bot.encode_input("hello", "world")
+        [{
+            'qas': [{
+                'id': ...,
+                'question': 'hello'
+            }],
+            'context': 'world'
+        }]
+        """
         encoded = [{
             'qas': [{
                 'id': str(uuid.uuid1()),
