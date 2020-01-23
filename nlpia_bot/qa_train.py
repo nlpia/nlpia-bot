@@ -27,13 +27,13 @@ model = QuestionAnsweringModel('distilbert', 'distilbert-base-uncased-distilled-
                                args={'reprocess_input_data': True, 'overwrite_output_dir': True})
 
 # Train the model with JSON file
-model.train_model('data/train.json')
+model.train_model(ST_TRAINING_JSON)
 
 # The list can also be used directly
 # model.train_model(train_data)
 
 # Evaluate the model. (Being lazy and evaluating on the train data itself)
-result, text = model.eval_model('data/train.json')
+result, text = model.eval_model(ST_TRAINING_JSON)
 
 print(result)
 print(text)
