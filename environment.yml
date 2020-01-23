@@ -25,6 +25,7 @@ dependencies:
   # - jupyter_console
   - keras
   # - libgcc
+  - lxml
   - matplotlib
   - mysqlclient
   - nbconvert
@@ -34,7 +35,7 @@ dependencies:
   - pip
   - plotly
   - pre-commit
-  - prompt_toolkit
+  - prompt_toolkit<3.0
   - psycopg2
   - pyscaffold
   - pytest-cov
@@ -45,8 +46,13 @@ dependencies:
   - scipy
   - spacy>=2.2.2
   - sqlparse
-  - tensorflow  # ==1.13.1
+  - tensorflow==2.0  # ==1.13.1
 
   - pip:
     - wikipedia-api
+<<<<<<< HEAD
+=======
+    - environment
+    - fuzzywuzzy
+>>>>>>> master
     # - nlpia
