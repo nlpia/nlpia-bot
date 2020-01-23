@@ -73,8 +73,14 @@
   Q: "In the national auto accident severity database the `seaborn.count_plot(df['Severity'])` shows only 2 values for severity. The values `2` and `3` are present but there aren't any `1` and `4` values. Is this OK for doing a regression?"
   A: "Yes. A regression will work no matter how many or how few discrete ordinal values you have. But if you use the `.value_counts()` method on your `severity` column you will see an actual numerical count of the number of 1 and 4 values in this column. There aren't many, but there are a few. This makes sense, because minor fender benders do no usually result in a police report, and there are very few accidents that result in enough damage and death to rate 4 on this scale."
 -
-    Q: How do I compute the TFIDF matrix with limited RAM and millions of documents?
-    A: It's usually best to tune your pipeline on a sample of you entire dataset before attempting to run it on the entire dataset. Start with whatever amount of data you can fit in RAM. Only if that does not give you results that meet your requirements should you attempt to improve accuracy by adding more data. You can use `gensim` to work on large datasets that do not fit in RAM. Or you can use batch loading in pandas combined with a fixed vocabulary and CountVectorizer to vstack batches of Vectors.
+  Q: How do I compute the TFIDF matrix with limited RAM and millions of documents?
+  A: It's usually best to tune your pipeline on a sample of you entire dataset before attempting to run it on the entire dataset. Start with whatever amount of data you can fit in RAM. Only if that does not give you results that meet your requirements should you attempt to improve accuracy by adding more data. You can use `gensim` to work on large datasets that do not fit in RAM. Or you can use batch loading in pandas combined with a fixed vocabulary and CountVectorizer to vstack batches of Vectors.
 -
-    Q: What are the two fundamental kinds of variables in a data science model?
-    A: Continuous numerical and categorical variables. Categorical variables are converted to multiple binary dummy variables which are themselves treated as continuous by a data science model. So in reality, a data science model does math only on continuous numerical values. Ordinal variables (discrete variables with a natural order) must be treated as discrete categories (one-hot binary variable) or as continuous numerical values in their original form.
+  Q: What are the two fundamental kinds of variables in a data science model?
+  A: Continuous numerical and categorical variables. Categorical variables are converted to multiple binary dummy variables which are themselves treated as continuous by a data science model. So in reality, a data science model does math only on continuous numerical values. Ordinal variables (discrete variables with a natural order) must be treated as discrete categories (one-hot binary variable) or as continuous numerical values in their original form.
+-
+  Q: What is overfitting?
+  A: When your test set accuracy is significantly lower than your training set accuracy?
+-
+  Q: I have a TFIDF table that is wider than it is tall. I have more tokens in my vocabulary than I have example documents. Is that a problem.
+  A: Yes. That will usually cause overfitting. It's usually best to reduce your dimensions to create a data set that has at 10 or 100 examples (documents) for each dimension (token or term in your vocabulary).
