@@ -9,9 +9,9 @@ class Bot:
     def reply(self, statement):
         """ Chatbot "main" function to respond to a user command or statement
 
-        >>> respond('Hi')[0][1]
+        >>> reply('Hi')[0][1]
         Hello!
-        >>> len(respond('Hey Mycroft!'))
+        >>> len(reply('Hey Mycroft!'))
         4
         """
         responses = []
