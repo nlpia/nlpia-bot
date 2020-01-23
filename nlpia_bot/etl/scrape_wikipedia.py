@@ -203,7 +203,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     >>> len(texts) == 10
     True
     """
-    titles = list(list_ngrams(titles) if isinstance(titles, str) else titles)
+    titles = list_ngrams(titles) if isinstance(titles, str) else titles
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
     depths = list([0] * len(titles))
     # depth is always zero here, but this would be useful further down
@@ -295,6 +295,8 @@ def list_ngrams(token_list, n=3, sep=' '):
     >>> ','.join(list_ngrams('Hello big blue marble'.split(), n=3, sep='_'))
     'Hello,Hello_big,Hello_big_blue,big,big_blue,big_blue_marble,blue,blue_marble,marble'
     """
+    if isinstance(token_list, str):
+        token_list = nlp(token_list)
     ngram_list = []
 
     for i in range(len(token_list)):
