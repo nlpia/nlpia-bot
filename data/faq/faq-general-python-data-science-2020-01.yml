@@ -1,0 +1,66 @@
+-
+  Q: Can supercomputers simulate a human brain yet? #neuroscience #neural-networks #ann #ai
+  A: According to a [2017 Forbes' article](https://www.forbes.com/sites/quora/2017/08/24/supercomputers-can-now-simulate-basic-brain-functions-and-theres-more-on-the-horizon/#170a5c8a29df), a Japanese supercomputer would have theoretically been able to simulate most of the brain functions that we know about at about 1/4000th speed. Assuming Moore's law, that would put us at about 1/1000th speed today. And that is only a crude approximation of the higher level thinking in the human brain that ignores emotion, sensory and motor neurons, and the interaction between our biome and brain. And that's just the things we know about. And it's not yet possible to even measure the connection architecture in a single human brain. So it's likely to be possible for at least a decade before a human brain simulation is even remotely possible, and only for the large corporations that can afford it. Human brains will still be much cheaper and more versatile for at least two more decades.
+-
+  Q: Any advice for my first capstone project? #data-science #problem #hypothesis
+  A: Focus on the data first, rather than the problem statement. Your goal is to find a table of data that you can turn into meaningful numbers. Categorical variables like gender might become three binary columns, one for male, one for female, and one for other. Continuous numerical variables do not need any preprocessing or feature extraction. Once you have your table of numbers, just pick one of the columns that you think would be interesting to predict if you knew all the others.
+-
+  Q: Why is the test set accuracy for the min_max scaled data so much worse than for the unscaled data (51% vs 62%)? #data-science #overfitting #evaluation #training #hyperparameter-tuning
+  A: 1. Copy the code for the two runs into py files and run them to reproduce the two results. 2. If 1, still shows the discrepancy, compare the two .py files using PyCharm "Compare To..." feature or `Meld` or `diff`. 3. If the only changes were the scaler, then examine the datasets and make sure that they do indeed contain the same data, only scaled differently. In one case a student found that she had accidentally swapped the test set and training set CSVs in the model that was performing poorly, so it only had 5% of the data to train on as the better performing model.
+-
+  Q: "I want to do unsupervised learning (clustering) on move data like genre, cast, title, box office ticket sales, and duration (time). How do I deal with multi-class categorical variables? For example, some movies have more than one genre. One movie had three genres listed: ['Science Fiction', 'Action', 'Drama']." #clustering #unsupervised-learning #data-science #ml
+  A: " Use a TfidfVectorizer, but just make sure it doesn't try to tokenize your genre strings (since they are already a list type):\n
+    ```python
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    vectorizer = TfidfVectorizer(tokenizer=list, lowercase=False, min_df=3, max_df=.8)
+    vectorizer.fit(df['genre'])
+    df_tfidf_genre = pd.DataFrame(vectorizer.transform(df['genre']), columns=['genre_' + g for g in vectorizer.get_feature_names()])
+    df = pd.concat([df, df_tfidf_genre], axis=1)
+    ```
+    "
+-
+  Q: My jupyter notebooks aren't uploading to GitHub? #git #github #jupyter
+  A: You need to hit the green commit button at the bottom of the page on github after uploading.
+-
+  Q: My jupyter notebooks are empty, just a file:// url? #windows #file-system #os #bash #file #directory #url #jupyter
+  A: On windows you cannot drag from the File Explorer to the browser window where you have the Jupyter webapp running because that just creates a URL text file rather than copying the entire notebook. When creating, copying, moving, or deleting files or directories, I like to us a terminal and a linux shell like `bash`. You can use the command `tree` on most linux systems to provide an overview of the directory structure from the command line.
+-
+  Q: My jupyter notebooks aren't loading, they only contain a url. What should I do? #windows #file-system #os #bash #file #directory #url #jupyter
+  A: Under options in Windows File Explorer make sure the checkbox for "hide file extensions for known file types" is **not** checked.  Also makes sure "display hidden files" is selected. Then apply those settings to all folders, not just the particular directory you have open at the moment by hitting the Apply button at the bottom right. Because of all this poor UX in Windows, I do all file creating, copying, moving, or deleting in a terminal with a linux shell like `bash`. On windows you can use git-bash. You can use the command `tree` on most bash shells (including git-bash on windows) to provide an overview of the directory structure from the command line.
+-
+  Q: My dataset contains zipcodes (categorical variables) for the origin and destination of our shipments, so we must use RandomForestRegressor to predict the cost or price of the shipment, right? #feature-extraction #feature-engineering #model-type #regression #categorical
+  A: No, you can use any model, as long as your categorical feature are processed correctly to create a binary one-hot encoding of the data. For example you could process the first digit of the zip code to create 10 new binary variables, one for each digit 0 through 9 that might be present in the first position.
+-
+  Q: Should I combine all the news articles for a given year to create a labeled datset of TFIDF vectors, one for each year label? #feature-engineering #problem-statement #hypothesis #regression #date #datetime
+  A: No. Leave all the news articles separate so that it can generalize from the articles to identify the words that are present in a lot of different documents for each time period. In addition, you can have a target label for year and also a target label for month, or season (quarter) to create a more interesting and useful model.
+-
+  Q: When I run read_csv on the NYC crime dataset, the "PARKS_NM" column is flagged as "mixed data type". So I used the `dtype` argument to coerce these values to a str. I no longer get the "mixed datatype" warning, but there are still `np.nan` (float) values and `str` values (like "Central Park") in the column. Is this right?#pandas #data-science #csv #etl #data-cleaning
+  A: Yes. An `np.nan` value is retained despite the dtype specification. This will allow you to use `.fillna()` and `.dropna()` to replace or ignore those nan values, depending on what is best for your algorithm or model.
+-
+  Q: My `pd.DataFrame` merge (inner join) operation is creating only 7 rows out of the millions in my two tables. #pandas #data-cleaning #merge #join #sql #relational-database
+  A: You must have a mismatch in some of the values listed in the columns listed for the `on` argument to the `.merge()` method.
+-
+  Q: What sort of dataset should I look for so I don't get something too difficult or too hard? #dataset #data-science #data-cleaning #problem #hypothesis #datatypes
+  A: Look for a tabular dataset that has some continuous and categorical data types in it. Some "other" data types are fine, and would be nice to have so you can grow your skills to handle natural language, dates, times, and geographic information like zip codes and GPS coordinates.
+-
+  Q: What do you call the data columns that are used to train a machine learning model. #datatypes #data-science #tabular-data
+  A: The target or label is what your model is trying to predict or output. The input data columns that it's using to predict those outputs are called the input variables, attributes, features, or predictor variables.
+-
+  Q: What would an NBA dataset look like and how could I create a project out of it?
+  A: You could have a row for every game ever played and a column with the list of player names, the datetime and location of the game, the names of the teams and which was the home team. Even things like attendance numbers, the number of fouls and the score of the game could be columns. You could then use the player roster and the time/day team to predict scores, fouls, or the winner of the game.
+-
+  Q: I feel overwhelmed with this dataset. what should I do?
+  A: "Take it one column at a time. Identify your target variable. For example you could select the home price in a table of real estate prices for homes. `y = df['price']`. Then look at the dtype (data type) for each of the columns and work with just the first numeric column you see, for example the total square footage of the home. `X = df[['sqft']]`. Then you can train a linear regression to predict home price from square footage. `lr, lr = sklearn.linear_model.LinearRegression(), lr.fit(X, y)` and you can score it for accuracy with `lr.score(X, y)`. Then add one column at a time to your variable X (features) and see how your `fit` improves by checking the `score` each time."
+-
+  Q: "How can I filter out proper nouns from supreme court rulings so I can build a model to predict the judge's name and use that to suggest words for lawyers to use in their arguments?"
+  A: "Spacy has a built-in POS tagger: `[tok.text for tok in spacy.load('en')('Hello Earth!') if tok.pos_ != 'PROPN']` or:
+  >>> import spacy
+  >>> nlp = spacy.load('en_core_web_md')
+  >>> doc = nlp('Hello world from Hobson Lane in Mississippi sitting on the john.')
+  >>> [tok.pos_ for tok in doc]
+  ['INTJ', 'NOUN', 'ADP', 'PROPN', 'PROPN', 'ADP', 'PROPN', 'VERB', 'ADP', 'DET', 'PROPN', 'PUNCT']
+  >>> [(tok.text, tok.pos_) for tok in doc]
+  "
+-
+  Q: "When I bootstrapped a shuffled dataset and calculated the confidence 95% interval the mean of my actual data is well outside the 95% confidence interval. What does this mean?"
+  A: "This means that the two means are statistically different and are unlikely to have occurred by chance so you can reject your null hypothesis, just as if you'd gotten a p-value that was smaller than 5% (or 1 - .95)."
