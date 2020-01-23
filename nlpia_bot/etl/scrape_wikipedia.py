@@ -203,7 +203,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     >>> len(texts) == 10
     True
     """
-    titles = list([titles] if isinstance(titles, str) else titles)
+    titles = list(list_ngrams(titles) if isinstance(titles, str) else titles)
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
     depths = list([0] * len(titles))
     # depth is always zero here, but this would be useful further down
