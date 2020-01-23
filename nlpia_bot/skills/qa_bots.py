@@ -18,7 +18,7 @@ class Bot:
             pass
 
     def __init__(self, path=os.path.join(DATA_DIR, 'simple-transformers')):
-        self.model = QuestionAnsweringModel('bert', path, use_cuda=USE_CUDA)
+        self.model = QuestionAnsweringModel('distilbert', path, use_cuda=USE_CUDA)
 
     def encode_input(self, statement, context):
         encoded = [{
