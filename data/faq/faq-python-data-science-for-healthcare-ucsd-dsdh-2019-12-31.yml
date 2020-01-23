@@ -1,0 +1,4 @@
+# dsfaq-healthcare.yml
+-
+    Q: I have a 20GB table with millions of rows and individual opiod prescription data including the patients zipcodes, city, state, county, but many of the county name are missing or `NaN`. Can I fill or correct these missing values with `.bfill`, `.ffill`, or a mean or median?
+    A: The best way to fill these values would be to create a mapping from zipcode to county. Verify that the relationship is one to many from county to zipcode, then use all the existing data with valid county names to create a dictionary mapping zipcode to county. `.replace()` can then easily use this python `dict` to fill in the missing and nan values for the county name.

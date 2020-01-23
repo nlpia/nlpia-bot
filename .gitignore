@@ -12,6 +12,9 @@ __pycache__/*
 .cache/*
 .*.swp
 */.ipynb_checkpoints/*
+.coverage*
+data/*.swp
+data/history.json
 
 # Project files
 .ropeproject
@@ -45,6 +48,9 @@ docs/_rst/*
 docs/_build/*
 cover/*
 MANIFEST
+
+# Model data
+data/simple-transformer/*
 
 # Mac
 __MACOSX

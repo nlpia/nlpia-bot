@@ -1,0 +1,18 @@
+-
+  Q: "My model gets 99% accuracy on the fastball no-fastbball prediction problem."
+  A: "You are probably \"cheating\" by allowing some leakage from your target variable into your predictor variables."
+-
+  Q: "In `sklearn.train_test_split` does a value of test_size=.25 mean that 25% of the data will be reserved for training or for testing?"
+  A: "As long as the return arguments are in the order `x_train, y_train, x_test, y_test` then the test_size argument controls the size of the samples in the test_set (`x_test` and `y_test`). But as with all data transformations you should verify that your intended transformation has been accomplished. In this case this means verifying the `.shape` of the 4 returned variables after having run `train_test_split()`."
+-
+  Q: What is the simplest possible question-answering chatbot architecture?
+  A: If you have a dataset of questions and answers, like a FAQ page from a website you can build a search-based chatbot that finds the closest TFIDF.
+-
+  Q: How can I improve the accuracy search query has a misspelling or uses synonyms.
+  A: You can use a stemmer, lemmatizer, or spelling corrector to increase the recall of your search model. You can also use semantic vectors like docvectors or wordvectors or USE vectors that are somewhat more robust to misspellings.
+-
+  Q: How can I make a good impression on people I'm networking with? #data-science #career #student #job-search #mentee #springboard
+  A: Ask insightful questions about their work and what they do or their presentation if you've seen one of their presentations. And if you can try to insert some of your knowledge into the question, like "What python packages do you use for natural language processing?" or "What do you think of [Pandas|StatsModels|SciKit-Learn|Tensorflow|Keras|PyTorch|SpaCy|NLTK|gensim]?"
+-
+  Q: How can I use machine learning to get useful information to create an interesting project using the Google N-gram.
+  A: You could start by predicting the year for a phrase by doing a linear regression with the TFIDF vectors as your input features and the year as your target variable.
