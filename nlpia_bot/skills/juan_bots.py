@@ -40,7 +40,7 @@ def plot_describe(df, **kwargs):
 class Bot:
     def reply(self, statement):
         """ Generate an invoice or timecard for a project """
-        log.warn('Timcard reply in progress...')
+        log.warning('Timcard reply in progress...')
         responses = []
         match = regex.match(r'(\bplot[-_.:,;\s]{0,3}describe\b\s*)(.*)', statement.lower())
         if match:
