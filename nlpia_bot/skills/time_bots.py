@@ -182,7 +182,7 @@ def get_ipython_cursor(path=IPYTHON_HISTORY_PATH):
 class Bot:
     def reply(self, statement):
         """ Generate an invoice or timecard for a project """
-        log.warn('Timcard reply in progress...')
+        log.info('Timcard reply in progress...')
         responses = []
         match = regex.match(r'\b(timecard|punchcard|invoice)\b[\s]*([a-zA-Z0-9_-]*)\b', statement.lower())
         if match:
