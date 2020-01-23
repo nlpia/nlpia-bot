@@ -13,12 +13,13 @@ log = logging.getLogger(__name__)
 
 class Bot:
 
-    class NullWriter(object):
-        def write(self, arg):
-            pass
-
     def __init__(self, path=os.path.join(DATA_DIR, 'simple-transformers')):
-        self.model = QuestionAnsweringModel('distilbert', path, use_cuda=USE_CUDA)
+        #self.transformer_loggers = []
+        #for name in logging.root.manager.loggerDict:
+        #    if len(name) >= 12 and name[:12] == 'transformers':
+        #        self.transformer_loggers.append(logging.getLogger(name))
+        #        self.transformer_loggers[-1].setLevel(logging.ERROR)
+        self.model = QuestionAnsweringModel('bert', path, use_cuda=USE_CUDA)
 
     def encode_input(self, statement, context):
         encoded = [{
