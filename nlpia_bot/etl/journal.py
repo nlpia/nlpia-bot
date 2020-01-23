@@ -75,7 +75,7 @@ def get_sentences(df, size_limit=50000, vector_dim=None):
             sents.extend(docsents)
             sentvecs.extend([s.vector for s in doc.sents])
         else:
-            log.warn(f"skipped {row['path']}")
+            log.warning(f"skipped {row['path']}")
 
     df['encoding'] = encodings
     df = pd.concat([df, pd.DataFrame(np.array(docvecs))], axis=1)
