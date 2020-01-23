@@ -51,7 +51,9 @@ def load(lang=None):
     model = None
     log.warning(f"Loading SpaCy model...")
     nlp_lang = getattr(nlp, 'lang', '')
-    if nlp_lang and (not lang or nlp_lang == lang[:2]):
+    nlp_meta = getattr(nlp, 'meta', {})
+    nlp_size = nlp_meta['name'][-2:]
+    if nlp_lang and (not lang or (nlp_lang == lang[:2] and nlp_size == lang[-2:])):
         model = nlp
     if model is None and lang:
         try:
