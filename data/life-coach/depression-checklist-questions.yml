@@ -1,0 +1,47 @@
+# Depression Sentiment Analysis Training set
+# from Feeling Good from David D. Burns, M.D.
+# Depression self-assessment on p. 20-22
+# Dr. Aaron Beck: Beck, Aaron T. Depression: Clinical, Experimental, & Theoretical Aspects. New York: Hoeber, 1967. (Republished as Depression: Causes and Treatment. Philadelphia: University of Pennsylvania Press, 1972, pp. 17-23.)
+# https://depressivedisorder.blogspot.com/2015/06/burns-depression-checklist.html
+# http://healingheartscc.com/docs/first_steps/FS_DepressionQuiz.pdf
+# http://feelinggood.com/
+# http://alumni.stanford.edu/get/page/magazine/article/?article_id=64350
+
+- "Answer these 25 statements according to how much they apply to your current situation. You can use numbers or words. 0 means 'not at all'. 1 means 'somewhat'. 2 means 'moderately'. 3 means 'a lot'. 4 means 'extremely'."
+-
+    "The first ten statements are about your thoughts and feelings.":
+      - 1: "Feeling sad or down in the dumps"
+      - 2: "Feeling unhappy or blue"
+      - 3: "Crying spells or tearfulness"
+      - 4: Feeling discouraged
+      - 5: Feeling hopeless
+      - 6: Low self-esteem
+      - 7: Feeling worthless or inadequate
+      - 8: Guilt or shame
+      - 9: Criticizing yourself or blaming others
+      - 10: Difficulty making decisions
+    The next seven statements are about anxieties and personal relationships.:
+      - 11: Loss of interest in family, friends or colleagues
+      - 12: Loneliness
+      - 13: Spending less time with family or friends
+      - 14: Loss of motivation
+      - 15: Loss of interest in work or other activities
+      - 16: Avoiding work or other activities
+      - 17: Loss of pleasure or satisfaction in life
+    The next five questions are about your body or physical symptoms.:
+      - 18: Feeling tired
+      - 19: Difficulty sleeping or sleeping too much
+      - 20: Decreased or increased appetite
+      - 21: Loss of interest in sex
+      - 22: Worrying about your health
+    The last three questions are about suicidal and self-harm urges.:
+      - 23: Do you have any suicidal thoughts?
+      - 24: Would you like to end your life?
+      - 25: Do you have a plan for harming yourself?
+    To evaluate your total depression score compare the sum of your answers on each question to this list:
+      - 0-5: no depression
+      - 6-10: normal but unhappy
+      - 11-25: mild depression
+      - 26-50: moderate depression
+      - 51-75: severe depression
+      - 76-100: extreme depression
