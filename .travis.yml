@@ -23,8 +23,9 @@ before_script:
   - git config --global user.name "Travis Admin User for nlpia-bot"
 
 script:
+  - export spacy_lang=en_core_web_sm
   - python setup.py test
-  # ^  Change here if using tox
+  # - spacy_lang=en_core_web_sm pytest
 
 after_success:
   - if [[ "$COVERAGE" == "true" ]]; then coveralls || echo "failed"; fi
