@@ -9,35 +9,45 @@ dependencies:
   - beautifulsoup4
   - boto3
   - botocore
+  - ConfigArgParse
   - django
   - django-environ
-  - django_extensions
+  - django-extensions
   - gitpython
+  # - gcc
   - html5lib
+  # - hunspell
+  # - hunspell-en
+  # - ipython
   - jupyter
+  # - jupyter_core
+  # - jupyter_console
   - keras
+  # - libgcc
+  - matplotlib
   - mysqlclient
+  - nbconvert
   - nltk
   - pandas
   - pandoc
-  - pip>=19.0
+  - pip
   - plotly
   - pre-commit
+  - prompt_toolkit
   - psycopg2
-  # - pyasn1  # jupyter
   - pyscaffold
   - pytest-cov
   - python-levenshtein
   - python=3.7
   - redis-py
-  - regex==2018-01-10
+  - regex  # ==2018.1.10
   - scipy
-  - spacy==2.0.12
+  - spacy>=2.2.2
   - sqlparse
-  - tensorflow
-  # - twisted  # jupyter
+  - tensorflow  # ==1.13.1
 
   - pip:
     - wikipedia-api
-    - nlpia
-    - msgpack<0.6.0,>=0.5.6
+    - fuzzywuzzy
+    # - nlpia
+    # - msgpack<0.6.0,>=0.5.6
