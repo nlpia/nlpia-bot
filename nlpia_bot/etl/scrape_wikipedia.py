@@ -296,7 +296,7 @@ def list_ngrams(token_list, n=3, sep=' '):
     'Hello,Hello_big,Hello_big_blue,big,big_blue,big_blue_marble,blue,blue_marble,marble'
     """
     if isinstance(token_list, str):
-        token_list = nlp(token_list)
+        token_list = [tok.text for tok in nlp(token_list)]
     ngram_list = []
 
     for i in range(len(token_list)):
