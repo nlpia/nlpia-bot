@@ -84,3 +84,9 @@
 -
   Q: I have a TFIDF table that is wider than it is tall. I have more tokens in my vocabulary than I have example documents. Is that a problem.
   A: Yes. That will usually cause overfitting. It's usually best to reduce your dimensions to create a data set that has at 10 or 100 examples (documents) for each dimension (token or term in your vocabulary).
+-
+  Q: My LinearRegression.fit() keeps giving me errors because of nonnumeric data or NaNs in my dataset.
+  A: Simplify your problem by using only a single feature and a single target variables and use `.dropna()` to ensure neither column have any NaNs. Once you have a fit and score working you can incrementally add more and more features and monitor how your error or score is improving with each pipeline modification that you make.
+-
+  Q: What are some good visualization and data cleaning plots to demonstrate for an NLP data set?
+  A: Plot a Zipf plot that shows how the frequency of word usage (TFIDFVectorizer.df) decreases linearly for a log plot of a sorted list of document frequencies. Also it's often helpful to list the most popular and least popular words using the TFIDFVectorizer object.
