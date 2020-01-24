@@ -97,7 +97,7 @@ def parse_args(args):
         version='nlpia_bot {ver}'.format(ver=__version__))
     parser.add_argument(
         '--name',
-        default=DEFAULT_CONFIG['name'],
+        default=None,  # DEFAULT_CONFIG['name'],
         dest="nickname",
         help="IRC nick or CLI command name for the bot",
         type=str,
@@ -105,7 +105,7 @@ def parse_args(args):
     parser.add_argument(
         '-n',
         '--num_top_replies',
-        default=DEFAULT_CONFIG['num_top_replies'],
+        default=None,  # DEFAULT_CONFIG['num_top_replies'],
         dest="num_top_replies",
         help="Limit on the number of top (high score) replies that are randomly selected from.",
         type=int,
@@ -120,7 +120,7 @@ def parse_args(args):
     parser.add_argument(
         '-b',
         '--bots',
-        default=DEFAULT_CONFIG['bots'],  # None so config.ini can populate defaults
+        default=None,  # DEFAULT_CONFIG['bots'],  # None so config.ini can populate defaults
         dest="bots",
         help="Comma-separated list of bot personalities to load. Defaults: pattern,parul,search_fuzzy,time,eliza",
         type=str,
@@ -152,10 +152,10 @@ def parse_args(args):
         dest="loglevel",
         help="Raw integer loglevel (10=debug, 20=info, 30=warn, 40=error, 50=fatal)",
         type=int,
-        default=DEFAULT_CONFIG['loglevel'])
+        default=None)  # DEFAULT_CONFIG['loglevel'])
     parser.add_argument(
         '--spacy_lang',
-        default=DEFAULT_CONFIG['spacy_lang'],
+        default=None,  # None allows ini to set default
         dest="spacy_lang",
         help="SpaCy language model: en_core_web_sm, en_core_web_md, or en_core_web_lg",
         type=str,
@@ -211,16 +211,16 @@ def setup_logging(loglevel):
 
 def parse_argv(argv=sys.argv):
     """Entry point for console_scripts"""
-    global BOT
+    global BOT, LOGLEVEL
 
     new_argv = []
     if len(argv) > 1:
         new_argv.extend(list(argv[1:]))
     args = parse_args(new_argv)
-    args.loglevel = args.loglevel or logging.WARNING
-    log.setLevel(args.loglevel)
+    LOGLEVEL = args.loglevel = args.loglevel or logging.WARNING
+    log.setLevel(LOGLEVEL)
 
-    setup_logging(args.loglevel)
+    setup_logging(LOGLEVEL)
     # set the root logger to the same log level
     logging.getLogger().setLevel(args.loglevel)
     log.debug(f'RAW ARGS (including config file): {vars(args)}')
@@ -260,7 +260,7 @@ LANGS_ABBREV += 'de demd delg'.split()
 # tuple('de de de'.split())  # df=pd.read_html('https://spacy.io/usage/models')[0]
 LANGS_ABBREV = dict(zip(LANGS_ABBREV, LANGS))
 
-LANG = env.parsed.get('spacy_lang') or getattr(args, 'spacy_lang', None) or DEFAULT_CONFIG.get('spacy_lang') or LANGS[0]
+LANG = getattr(args, 'spacy_lang', None) or DEFAULT_CONFIG.get('spacy_lang') or LANGS[0]
 log.info(f'LANG=spacy_lang={LANG}')
 
 try:
