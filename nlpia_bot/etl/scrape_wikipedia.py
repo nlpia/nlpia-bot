@@ -93,6 +93,7 @@ class WikiIndex():
         return self.df_titles
 
     def find_similar_titles(self, title=None, n=1):
+        """ Takes dot product of a doc vector with all wikipedia title doc vectors to find closest article titles """
         if isinstance(title, str):
             vec = nlp(title).vector
         else:
