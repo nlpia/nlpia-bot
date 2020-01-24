@@ -81,7 +81,6 @@ __license__ = "The Hippocratic License (MIT + *Do No Harm*, see LICENSE.txt)"
 
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
 
 
 BOT = None
