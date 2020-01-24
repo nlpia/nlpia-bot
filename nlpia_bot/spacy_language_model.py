@@ -52,7 +52,7 @@ def load(lang=None):
     log.warning(f"Loading SpaCy model...")
     nlp_lang = getattr(nlp, 'lang', '')
     nlp_meta = getattr(nlp, 'meta', {})
-    nlp_size = nlp_meta['name'][-2:]
+    nlp_size = nlp_meta.get('name', '')[-2:]
     if nlp_lang and (not lang or (nlp_lang == lang[:2] and nlp_size == lang[-2:])):
         model = nlp
     if model is None and lang:
@@ -75,16 +75,16 @@ def load(lang=None):
                 spacy.cli.download(lang)
                 model = spacy.load(lang)
     log.info(
-        f"Finished loading SpaCy model: {model}\n"
-        f"    with {model._meta['accuracy']['token_acc']:.2f}% token accuracy\n"
-        f"     and {model._meta['accuracy']['ents_f']:.2f}% named entity recognition F1 score.\n"
+        f"Finished loading SpaCy model: {model} ({model.meta['lang']}_{model.meta['name']})\n"
+        f"    with {model.meta['accuracy']['token_acc']:.2f}% token accuracy\n"
+        f"     and {model.meta['accuracy']['ents_f']:.2f}% named entity recognition F1 score.\n"
     )
     model = add_hunspell_pipe(model)
     if nlp is None:
         nlp = model
     # load the highest accuracy model into the global singleton nlp variable (user can still override)
     if nlp.lang == 'en':
-        if nlp._meta['accuracy']['token_acc'] < model._meta['accuracy']['token_acc']:
+        if nlp.meta['accuracy']['token_acc'] < model.meta['accuracy']['token_acc']:
             nlp = model
     return model  # return value may be lower accuracy, so `nlp=load('en_web_core_sm')` will have lower accuracy `nlp`
 
