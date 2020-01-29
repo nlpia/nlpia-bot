@@ -2,8 +2,11 @@
 
 import logging
 import os
+import urllib.request
 import uuid
+import zipfile
 from multiprocessing import cpu_count
+from tqdm import tqdm
 
 from simpletransformers.question_answering import QuestionAnsweringModel
 
@@ -11,6 +14,14 @@ from nlpia_bot.etl import scrape_wikipedia
 from nlpia_bot.constants import DATA_DIR, USE_CUDA
 
 log = logging.getLogger(__name__)
+
+
+class DownloadProgressBar(tqdm):
+
+    def update_to(self, b=1, bsize=1, tsize=None):
+        if tsize is not None:
+            self.total = tsize
+        self.update(b * bsize - self.n)
 
 
 class Bot:
@@ -22,19 +33,41 @@ class Bot:
                 self.transformer_loggers.append(logging.getLogger(name))
                 self.transformer_loggers[-1].setLevel(logging.ERROR)
 
+        url_str = 'https://totalgood.org/midata/models/bert/cased_simpletransformers.zip'
+        model_dir = os.path.join(DATA_DIR, 'simple-transformer')
+        if not os.path.isdir(model_dir):
+            os.mkdir(model_dir)
+        
+        if (
+            not os.path.exists(os.path.join(model_dir, 'config.json'))
+            or not os.path.exists(os.path.join(model_dir, 'pytorch_model.bin'))
+            or not os.path.exists(os.path.join(model_dir, 'special_tokens_map.json'))
+            or not os.path.exists(os.path.join(model_dir, 'tokenizer_config.json'))
+            or not os.path.exists(os.path.join(model_dir, 'training_args.bin'))
+            or not os.path.exists(os.path.join(model_dir, 'vocab.txt'))
+        ):
+            zip_local_path = os.path.join(model_dir, 'cased_simpletransformers.zip')
+            self.download_file(url_str, os.path.join(model_dir, zip_local_path))
+            with zipfile.ZipFile(zip_local_path, 'r') as zip_file:
+                zip_file.extractall(model_dir)
+            os.remove(zip_local_path)
+
         process_count = cpu_count() - 2 if cpu_count() > 2 else 1
-        model_path = os.path.join(DATA_DIR, 'simple-transformer')
         args = {
             'process_count': process_count,
-            'output_dir': model_path,
-            'cache_dir': model_path,
+            'output_dir': model_dir,
+            'cache_dir': model_dir,
             'no_cache': True,
             'use_cached_eval_features': False,
             'overwrite_output_dir': False,
             'silent': True
         }
     
-        self.model = QuestionAnsweringModel('bert', model_path, args=args, use_cuda=USE_CUDA)
+        self.model = QuestionAnsweringModel('bert', model_dir, args=args, use_cuda=USE_CUDA)
+
+    def download_file(self, url, output_path):
+        with DownloadProgressBar(unit='B', unit_scale=True, miniters=1, desc=url.split('/')[-1]) as t:
+            urllib.request.urlretrieve(url, filename=output_path, reporthook=t.update_to)
 
     def encode_input(self, statement, context):
         encoded = [{
