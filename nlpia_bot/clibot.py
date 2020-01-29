@@ -26,11 +26,13 @@ import collections.abc
 import importlib
 import json
 import logging
+import os
 
 import numpy as np
 import pandas as pd
 
 from nlpia_bot import constants
+from nlpia_bot.constants import DATA_DIR
 from nlpia_bot.scores.quality_score import QualityScore
 
 
@@ -109,22 +111,22 @@ class CLIBot:
     def log_reply(self, statement, reply):
         try:
             history = list()
-            with open('data/history.json', 'r') as f:
+            with open(os.path.join(DATA_DIR, 'history.json'), 'r') as f:
                 history = json.load(f)
         except IOError as e:
             log.error(str(e))
-            with open('data/history.json', 'w') as f:
+            with open(os.path.join(DATA_DIR, 'history.json'), 'w') as f:
                 f.write('[]')
         except json.JSONDecodeError as e:
             log.error(str(e))
             log.info('Saving history.json contents to history.json.swp before overwriting')
-            with open('data/history.json', 'r') as f:
+            with open(os.path.join(DATA_DIR, 'history.json'), 'r') as f:
                 data = f.read()
-            with open('data/history.json.swp', 'w') as f:
+            with open(os.path.join(DATA_DIR, 'history.json.swp'), 'w') as f:
                 f.write(data)
         history.append(['user', statement])
         history.append(['bot', reply])
-        with open('data/history.json', 'w') as f:
+        with open(os.path.join(DATA_DIR, 'history.json'), 'w') as f:
             json.dump(history, f)
 
     def reply(self, statement=''):
