@@ -40,7 +40,7 @@ dependencies:
   - pyscaffold
   - pytest-cov
   - python-levenshtein
-  - python=3.8
+  - python
   - redis-py
   - regex  # ==2018.1.10
   - scipy
