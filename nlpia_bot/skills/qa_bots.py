@@ -17,6 +17,7 @@ log = logging.getLogger(__name__)
 
 
 class DownloadProgressBar(tqdm):
+    """ Utility class that adds tqdm progress bar to urllib.request.urlretrieve """
 
     def update_to(self, b=1, bsize=1, tsize=None):
         if tsize is not None:
@@ -25,6 +26,7 @@ class DownloadProgressBar(tqdm):
 
 
 class Bot:
+    """ Bot that provides answers to questions given context data containing the answer """
 
     def __init__(self):
         self.transformer_loggers = []
@@ -47,7 +49,8 @@ class Bot:
             or not os.path.exists(os.path.join(model_dir, 'vocab.txt'))
         ):
             zip_local_path = os.path.join(model_dir, 'cased_simpletransformers.zip')
-            self.download_file(url_str, os.path.join(model_dir, zip_local_path))
+            with DownloadProgressBar(unit='B', unit_scale=True, miniters=1, desc=url_str.split('/')[-1]) as t:
+                urllib.request.urlretrieve(url_str, filename=zip_local_path, reporthook=t.update_to)
             with zipfile.ZipFile(zip_local_path, 'r') as zip_file:
                 zip_file.extractall(model_dir)
             os.remove(zip_local_path)
@@ -65,11 +68,15 @@ class Bot:
     
         self.model = QuestionAnsweringModel('bert', model_dir, args=args, use_cuda=USE_CUDA)
 
-    def download_file(self, url, output_path):
-        with DownloadProgressBar(unit='B', unit_scale=True, miniters=1, desc=url.split('/')[-1]) as t:
-            urllib.request.urlretrieve(url, filename=output_path, reporthook=t.update_to)
-
     def encode_input(self, statement, context):
+        """
+        Packs statement and context strings into expected input format for the model
+
+        >>> bot = Bot()
+        >>> encoded = bot.encode_input('statement', 'context')
+        >>> assert encoded[0]['qas'][0]['question'] == 'statement'
+        >>> assert encoded[0]['context'] == 'context'
+        """
         encoded = [{
             'qas': [{
                 'id': str(uuid.uuid1()),
@@ -80,6 +87,13 @@ class Bot:
         return encoded
 
     def decode_output(self, output):
+        """
+        Extracts reply string from the model's prediction output
+
+        >>> bot = Bot()
+        >>> bot.decode_output([{'id': 'unique_id', 'answer': 'response'}])
+        'response'
+        """
         return output[0]['answer']
 
     def reply(self, statement):
