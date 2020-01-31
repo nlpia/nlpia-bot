@@ -148,24 +148,25 @@ class CLIBot:
         return new_bots
 
     def log_reply(self, statement, reply):
+        history_path= os.path.join(constants.DATA_DIR, 'history.json')
         try:
             history = list()
-            with open('data/history.json', 'r') as f:
+            with open(history_path, 'r') as f:
                 history = json.load(f)
         except IOError as e:
             log.error(str(e))
-            with open('data/history.json', 'w') as f:
+            with open(history_path, 'w') as f:
                 f.write('[]')
         except json.JSONDecodeError as e:
             log.error(str(e))
             log.info('Saving history.json contents to history.json.swp before overwriting')
-            with open('data/history.json', 'r') as f:
+            with open(history_path, 'r') as f:
                 data = f.read()
-            with open('data/history.json.swp', 'w') as f:
+            with open(history_path + '.swp', 'w') as f:
                 f.write(data)
         history.append(['user', statement])
         history.append(['bot', reply])
-        with open('data/history.json', 'w') as f:
+        with open(history_path, 'w') as f:
             json.dump(history, f)
 
     def reply(self, statement=''):
