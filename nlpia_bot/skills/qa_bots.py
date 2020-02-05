@@ -8,7 +8,7 @@ import zipfile
 from multiprocessing import cpu_count
 from tqdm import tqdm
 
-from simpletransformers.question_answering import QuestionAnsweringModel
+from nlpia_bot.skills.qa_models import QuestionAnsweringModel
 
 from nlpia_bot.etl import scrape_wikipedia
 from nlpia_bot.constants import DATA_DIR, USE_CUDA
@@ -31,7 +31,7 @@ class Bot:
     def __init__(self):
         self.transformer_loggers = []
         for name in logging.root.manager.loggerDict:
-            if len(name) >= 11 and name[:11] in ['transformer', 'simpletrans']:
+            if (len(name) >= 12 and name[:12] == 'transformers') or name == 'nlpia_bot.skills.qa_utils':
                 self.transformer_loggers.append(logging.getLogger(name))
                 self.transformer_loggers[-1].setLevel(logging.ERROR)
 
@@ -66,7 +66,7 @@ class Bot:
             'silent': True
         }
     
-        self.model = QuestionAnsweringModel('bert', model_dir, args=args, use_cuda=USE_CUDA)
+        self.model = QuestionAnsweringModel('bert', model_dir, args=args, pretrained=True, use_cuda=USE_CUDA)
 
     def encode_input(self, statement, context):
         """
@@ -91,10 +91,10 @@ class Bot:
         Extracts reply string from the model's prediction output
 
         >>> bot = Bot()
-        >>> bot.decode_output([{'id': 'unique_id', 'answer': 'response'}])
-        'response'
+        >>> bot.decode_output([{'id': 'unique_id', 'answer': 'response', 'probability': 0.75}])
+        (0.75, 'response')
         """
-        return output[0]['answer']
+        return output[0]['probability'], output[0]['answer']
 
     def reply(self, statement):
         responses = []
@@ -102,7 +102,7 @@ class Bot:
         for context in docs:
             encoded_input = self.encode_input(statement, context)
             encoded_output = self.model.predict(encoded_input)
-            decoded_output = self.decode_output(encoded_output)
-            if len(decoded_output) > 0:
-                responses.append((1, decoded_output))
+            probability, response = self.decode_output(encoded_output)
+            if len(response) > 0:
+                responses.append((probability, response))
         return responses
