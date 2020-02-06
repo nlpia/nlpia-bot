@@ -80,7 +80,7 @@ class QuestionAnsweringModel:
     
     def __init__(
         self, model_type='bert', model_name_or_path='bert-base-cased',
-        pretrained=False, use_cuda=True, cuda_device=-1, args=None
+        pretrained=True, use_cuda=True, cuda_device=-1, args=None
     ):
         """
         Initializes an instance of QuestionAnsweringModel
