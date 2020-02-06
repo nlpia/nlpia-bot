@@ -23,14 +23,16 @@ DATA_DIR = os.path.join(BASE_DIR, 'data')
 LOG_DIR = os.path.join(DATA_DIR, 'log')
 os.makedirs(LOG_DIR, exist_ok=True)
 
+USE_CUDA = False
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
 DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'False',  # Yes, yes, 1, Y, y, T, t
-    'bots': 'glossary',  # ,parul,eliza,glossary,search_fuzzy',
+    'bots': 'glossary',  # glossary,qa,parul,eliza,search_fuzzy'
     'spacy_lang': 'en_core_web_sm',
+    'use_cuda': False,
     'loglevel': logging.WARNING,
     'num_top_replies': 10,
     'self_score': '.5',
@@ -46,7 +48,8 @@ LOGLEVEL_NAMES = 'DEBUG INFO WARNING ERROR FATAL'.split()
 LOGLEVEL_ABBREVIATIONS = [s[:4].lower() for s in LOGLEVEL_NAMES]
 LOGLEVEL_ABBR_DICT = dict(zip(LOGLEVEL_ABBREVIATIONS, LOGLEVELS))
 # this is the LOGLEVEL for the top of this file, once args and .ini file are read, it will change
-LOGLEVEL = getattr(env, 'loglevel', None) or DEFAULT_CONFIG.get('loglevel', logging.WARNING)
+LOGLEVEL = getattr(env, 'loglevel', DEFAULT_CONFIG.get('loglevel', logging.WARNING))
+USE_CUDA = getattr(env, 'use_cuda', DEFAULT_CONFIG.get('use_cuda', USE_CUDA))
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
@@ -110,6 +113,13 @@ def parse_args(args):
         help="Limit on the number of top (high score) replies that are randomly selected from.",
         type=int,
         metavar="INT")
+    parser.add_argument(
+        '-u',
+        '--use_cuda',
+        help="Use CUDA and GPU to speed up transformer inference.",
+        dest='use_cuda',
+        default=str(DEFAULT_CONFIG['use_cuda'])[0].lower() in 'fty1p',
+        action='store_true')
     parser.add_argument(
         '-p',
         '--persist',
