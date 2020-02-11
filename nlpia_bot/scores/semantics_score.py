@@ -31,6 +31,6 @@ def semantics(reply, stmt=None, **kwargs):
         # FIXME: levenshtien would be better or fuzzywuzzy
         return iou(reply, stmt)
 
-    cos_sim = nlp(reply).similarity(nlp(stmt))
+    cos_sim = reply_doc.similarity(stmt_doc)
     log.debug(f'cos_sim={cos_sim}')
     return cos_sim
