@@ -1,4 +1,4 @@
-name: nlpiaenv
+name: nlpia
 
 channels:
   - conda-forge  # conda-forge is higher priority than defaults in nlpia package
