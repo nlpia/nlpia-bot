@@ -204,7 +204,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     >>> len(texts) == 10
     True
     """
-    titles = list_ngrams(titles) if isinstance(titles, str) else titles
+    titles = [titles] if isinstance(titles, str) else titles
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
     depths = list([0] * len(titles))
     # depth is always zero here, but this would be useful further down
@@ -323,6 +323,16 @@ def find_titles(query='What is a chatbot?', max_titles=30, ngrams=3):
     return list_ngrams([tok for tok in toks if tok not in ignore_words and len(tok) > 1], n=ngrams)
 
 
+def find_titles_sorted(query='What is a chatbot?'):
+    # sort by importance (TFIDF) rather than alphabet
+    titles = find_titles(query)
+    titles = sorted(((len(t), t) for t in titles), reverse=True)
+    log.info(titles)
+    titles = [t for (n, t) in titles]
+    log.info(titles)
+    return titles
+
+
 def find_article_texts(query='What is a chatbot?', titles=[], max_depth=2, max_articles=200, **scrape_kwargs):
     r""" Retrieve Wikipedia article texts relevant to the query text
 
@@ -339,9 +349,19 @@ def find_article_texts(query='What is a chatbot?', titles=[], max_depth=2, max_a
         # sort by importance (TFIDF) rather than alphabet
         titles = find_titles(query)
         titles = sorted(((len(t), t) for t in titles), reverse=True)
+        log.info(titles)
         titles = [t for (n, t) in titles]
+        log.info(titles)
     return scrape_article_texts(titles, max_depth=max_depth, max_articles=200, **scrape_kwargs)
 
+
+def test_find_article_texts():
+    """ test
+
+    >>> texts = find_article_texts('Who was the President of the United States after George Bush?'
+    ...                            max_depth=2, max_articles=100)
+    >>> len(texts) > 10
+    """
 
 # def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
 
