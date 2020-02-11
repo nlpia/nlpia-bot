@@ -84,3 +84,45 @@
 -
   Q: I have a TFIDF table that is wider than it is tall. I have more tokens in my vocabulary than I have example documents. Is that a problem.
   A: Yes. That will usually cause overfitting. It's usually best to reduce your dimensions to create a data set that has at 10 or 100 examples (documents) for each dimension (token or term in your vocabulary).
+-
+  Q: My LinearRegression.fit() keeps giving me errors because of nonnumeric data or NaNs in my dataset.
+  A: Simplify your problem by using only a single feature and a single target variables and use `.dropna()` to ensure neither column have any NaNs. Once you have a fit and score working you can incrementally add more and more features and monitor how your error or score is improving with each pipeline modification that you make.
+-
+  Q: What are some good visualization and data cleaning plots to demonstrate for an NLP data set?
+  A: Plot a Zipf plot that shows how the frequency of word usage (TFIDFVectorizer.df) decreases linearly for a log plot of a sorted list of document frequencies. Also it's often helpful to list the most popular and least popular words using the TFIDFVectorizer object.
+-
+  Q: In python, when would I use an `OrderedDict` vs a `dict`.
+  A: An OrderedDict is useful for ranked or sorted lists of key-value pairs. If you want to be able to retrieve a key-value pair instantly, in `O(1)`, but you also want to be able to iterate through the key-value pairs in a particular consistent order, without sorting or reordering the sequence each time. A `list` of `tuple`s has lookup (seek) time of `O(N)` but maintains a consistent order. So an OrderedDict is the best of both a list of tuples and a `dict`, with fast lookup and consistent ordering.
+-
+  Q: When should I use a python data structure like a `list` or `dict` instead of a Pandas data structure like a `DataFrame` or a `Series`?
+  A: Data downloaded from a REST API will usually be in a json string which converts naturally to a nested sequence of python `dict`s and `list`s. So it will be more easily cleaned and manipulated as in python data structures. However, a Pandas `DataFrame` or `Series` is much more memory efficient than an equivalent python data structure. But a Pandas data structure is less efficient to mutate (change) and less efficient to iterate through with a `for` loop or a `list` comprehension, `dict` *comprehension*, or *generator*. So if you need dramatically speed up your througput, and you have sufficient DRAM or RAM, you can often use a python data structure to improve your throughput by 10x or more.
+-
+  Q: How do I know which variables I should clean up in my traffic accident data?
+  A: Create an end-to-end model with an accuracy metric that reflects the objectives of your project. Incrementally extract features from your data and measure the improvement to your test set and training set accuracy metric to gain insight into which features and cleaning approaches work best.
+-
+  Q: Should I remove records with NaN values or fill them with the average value for the column?
+  A: There are many approaches to dealing with missing values or NaNs besides just dropping or filling them with the average. The most important thing is to dummy variable associated with that column that contains a 0 or 1 depending on whether the value is unusual in some way, including NaN values. Whenever you impute or change any data you should always "register" the change with this new dummy variable so your ML algorithm can incorporate this fact into your model. This approach applies to missing or erroneous or nan values in any column. You should have a dummy "suspect" binary variable for each column that contains any suspect data, including outliers, that you may want to modify. In addition to dropping and filling with the mean, you can also interpolate or fill with the median or max or mode values. You can compare each of these approaches by observing their impact on your test set accuracy.
+-
+  Q: "My opiod death rates dataset contains many NaN values for counties where no population or opiod deaths were available. And I'm getting  a large negative score: `LinearRegression.score(X_test, y_test)` returns approximately -1e25. What should I do?"
+  A: "First make sure that you X_test and y_test are aligned so that each row has the correct death rate for each state and county. It's best to do `dropna()` on the complete dataset to ensure that there is not misalignment. Next, check for correlation between feature variables (county and state `get_dummies` binary features) and your target variable (death rate). You can just df.corr()['death_rate'].sort_values() to display the large and small correlations. Finally you can either remove features with low magnitude correlation or you can use PCA to reduce dimensions before your fit and score."
+-
+  Q: What is an easy NLP deep learning project that can be accomplished in a week?
+  A: Try predicting salaries from job titles. Or try predicting book popularity from book titles. Any short natural language string with a numerical label that depends on the semantics of the string will work well if you use Word2Vec document vectors. If you use Word2Vec vectors (in spacy, or gensim, or downloaded directly from Google Drive) you can get high accuracy with only a few (~10) labeled examples. You can build a 2-layer fully connected (`Dense`) network or use a LinearRegression. The transfer learning from the Word2Vec model allows you to call this a Deep Learning project.
+-
+  Q: "Some people names in my database have OCR errors or unnormalized title suffixes, like \"Smith, Judge.\" and \"Smith, J.\" and \"Smith, C. J.\" (C.P means Chief Judge). What's a good strategy for cleaning the data? #data-science #data-cleaning #etl #springboard"
+  A: "Sort the `df['name'].value_counts()` and work your way down from the top. Since most of your names in the Harvard case database have a comma-delimitted suffixes, you probably want to do `df['name'].str.split(',').apply(lambda x: x[0])` to strip off most suffixes. Then you can sort the value_counts again to look for OCR errors and fix them one at a time, like deleting \" C. J.\" suffixes that didn't have the comma or misplaced it due to OCR. Here's one wat to do that: `df['name'].replace(r'(\\s*C[.,\\s]*J[.,\\s]*')$', '', regex=True)`"
+-
+  Q: "What is a trigram? #technical-interview #bioinformatics #computer-science"
+  A: A trigram is a sequence of 3 characters or words or tokens within a string.
+-
+  Q: "How are trigrams used in the real world? #technical-interview #bioinformatics #computer-science"
+  A: Trigrams of characters or character trigrams are often used to index strings or documents to enable extremely fast ( O(1) ) full text search. They allow you to search for any substring or even if your query string or the documents contain misspellings or typos
+-
+  Q: What does the 'kde' argument mean in a seaborn joint distribution plot (`sns.jointplot`)?
+  A: KDE stands for Kernel Density Estimate. If a histogram plot includes a kde, seaborn will interpolate between the discrete counts in each of the histogram bins to create a smooth curve using gaussian probability density curves for each histogram bin. This is also called a GMM or Gaussian Mixture Model.
+-
+  Q: "How do I remove propernouns and abbreviations in a TfidfVectorizer?  #sklearn #python #nlp"
+  A: "Define a function that uses spacy to tokenize and iterates through each token, skipping the ones with `.pos_` attribute `== \"PPN\"` or similar."
+-
+  Q: "Why isn't XGBoost better at classifying images and natural language than CNNs?"
+  A: "Dimensionality and heirarchical & categorical nature of the data. Each decision tree can be simplified into an equation with only 2 nonlinear activation functions (2 neurons). It's equivalent to a 2-layer ANN: y = OR(B*AND(A*x)) = g(B*(f(A*x))), where A and B are tensors of dimension equal to x for single-neuron layer, not matrices for multiple neurons in a layer. Random Forests just add additional neurons to the 2 layers and perhaps an additional 2 layers for the ensembling. DL is deeper so it deals well with heirarchical data like pixels, 2x2 features, 3x3 features, 4x4 features (first layer), combinations of those features/filters (second layer) and so on, heirarchically. Images are heirarchical. As is natural language."
