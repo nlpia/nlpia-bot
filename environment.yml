@@ -1,4 +1,4 @@
-name: nlpiaenv
+name: simplet
 
 channels:
   - conda-forge  # conda-forge is higher priority than defaults in nlpia package
@@ -6,15 +6,14 @@ channels:
   # - anaconda  # bad idea: https://github.com/conda/conda/issues/9462
 
 dependencies:
-  - beautifulsoup4
-  - boto3
-  - botocore
+  # - beautifulsoup4
+  # - boto3
+  # - botocore
   - ConfigArgParse
   - django
   - django-environ
   - django-extensions
-  - fuzzywuzzy
-  - gitpython
+  # - gitpython
   # - gcc
   - html5lib
   - hunspell
@@ -27,29 +26,35 @@ dependencies:
   # - libgcc
   - lxml
   # - matplotlib
-  - mysqlclient
-  - nbconvert
+  # - mysqlclient
+  # - nbconvert
   - nltk
   - pandas
-  - pandoc
+  # - pandoc
   - pip
-  - plotly
+  # - plotly
   - pre-commit
-  - prompt_toolkit<3.0
+  # - prompt_toolkit<3.0
   - psycopg2
   - pyscaffold
   - pytest-cov
-  - python-levenshtein
-  - python
-  - redis-py
+
+  - python=3.7
+  # - pytorch
+  # conda install pytorch cudatoolkit=10.1 -c pytorch
+
+  # - redis-py
   - regex  # ==2018.1.10
   - scipy
   - spacy>=2.2.2
-  - sqlparse
+  - tqdm
+  # - sqlparse
   # - tensorflow==2.0  # ==1.13.1
 
   - pip:
-    - wikipedia-api
+    # - apex
     - environment
     - fuzzywuzzy
     # - nlpia
+    - simpletransformers
+    - wikipedia-api
