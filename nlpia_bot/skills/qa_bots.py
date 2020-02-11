@@ -72,18 +72,10 @@ class Bot:
         """ Converts statement and context strings into json format compatible with BERT transformer
 
         >>> bot = Bot()
-        >>> bot.encode_input("hello", "world")
-        [{
-            'qas': [{
-                'id': ...,
-                'question': 'hello'
-            }],
-            'context': 'world'
-        }]
         >>> encoded = bot.encode_input('statement', 'context')
         >>> encoded[0]['qas'][0]['question']
         'statement'
-        >>> assert encoded[0]['context']
+        >>> encoded[0]['context']
         'context'
         """
         encoded = [{
