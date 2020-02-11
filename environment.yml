@@ -1,4 +1,4 @@
-name: simplet
+name: nlpiaenv
 
 channels:
   - conda-forge  # conda-forge is higher priority than defaults in nlpia package
