@@ -6,6 +6,7 @@ import nlpia_bot.clibot
 
 import nlpia_bot.skills.eliza_bots
 import nlpia_bot.skills.glossary_bots
+import nlpia_bot.skills.qa_bots
 
 import nlpia_bot.etl.glossaries
 import nlpia_bot.etl.scrape_wikipedia
@@ -40,6 +41,12 @@ def test_glossaries():
     results = doctest.testmod(nlpia_bot.etl.glossaries, **DOCTEST_KWARGS)
     assert results.failed < 1
     assert results.attempted > 4
+
+
+def test_qa_bots():
+    results = doctest.testmod(nlpia_bot.skills.qa_bots, **DOCTEST_KWARGS)
+    assert results.failed < 1
+    assert results.attempted > 0
 
 
 def test_scrape_wikipedia():
