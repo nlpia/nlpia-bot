@@ -26,11 +26,13 @@ import collections.abc
 import importlib
 import json
 import logging
+import os
 
 import numpy as np
 import pandas as pd
 
 from nlpia_bot import constants
+from nlpia_bot.constants import DATA_DIR
 from nlpia_bot.scores.quality_score import QualityScore
 
 
@@ -107,29 +109,32 @@ class CLIBot:
         return new_bots
 
     def log_reply(self, statement, reply):
+        history_path= os.path.join(constants.DATA_DIR, 'history.json')
         try:
             history = list()
-            with open('data/history.json', 'r') as f:
+            with open(history_path, 'r') as f:
                 history = json.load(f)
         except IOError as e:
             log.error(str(e))
-            with open('data/history.json', 'w') as f:
+            with open(history_path, 'w') as f:
                 f.write('[]')
         except json.JSONDecodeError as e:
             log.error(str(e))
             log.info('Saving history.json contents to history.json.swp before overwriting')
-            with open('data/history.json', 'r') as f:
+            with open(history_path, 'r') as f:
                 data = f.read()
-            with open('data/history.json.swp', 'w') as f:
+            with open(history_path + '.swp', 'w') as f:
                 f.write(data)
         history.append(['user', statement])
         history.append(['bot', reply])
-        with open('data/history.json', 'w') as f:
+        with open(history_path, 'w') as f:
             json.dump(history, f)
 
     def reply(self, statement=''):
+        ''' Collect replies from from loaded bots and return best reply (str). '''
         log.info(f'statement={statement}')
         replies = []
+        # Collect replies from each bot.
         for replier in self.repliers:
             bot_replies = []
             try:
@@ -146,19 +151,20 @@ class CLIBot:
                     log.error(str(e))
             bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
+
+        # Weighted random selection of reply from those with top n confidence scores 
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies, limiting to {self.num_top_replies}...')
             replies = self.quality_score.update_replies(replies, statement)
             replies = sorted(replies, reverse=True)[:self.num_top_replies]
-            cumsum = 0
-            cdf = list()
-            for reply in replies:
-                cumsum += reply[0]
-                cdf.append(cumsum)
-            roll = np.random.rand() * cumsum
-            for i, threshold in enumerate(cdf):
+            
+            confidences, texts = list(zip(*replies))
+            conf_sums = np.cumsum(confidences)
+            roll = np.random.rand() * conf_sums[-1]
+            
+            for i, threshold in enumerate(conf_sums):
                 if roll < threshold:
-                    reply = replies[i][1]
+                    reply = texts[i]
                     self.log_reply(statement, reply)
                     return reply
 
@@ -198,8 +204,8 @@ def cli(args):
         if user_statement:
             log.info(f"Computing a reply to {user_statement}...")
             # state = BOT.reply(statement, **state)
-            print(BOT)
-            print(type(BOT))
+            # print(BOT)
+            # print(type(BOT))
             bot_statement = BOT.reply(user_statement)
             statements[-1]['bot'] = bot_statement
             print(f"{args.nickname}: {bot_statement}")
