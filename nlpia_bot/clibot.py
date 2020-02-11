@@ -131,10 +131,7 @@ class CLIBot:
             json.dump(history, f)
 
     def reply(self, statement=''):
-        '''
-        MVP of class methods. Collects and selects from all possible replies from all loaded bots. Logs process. 
-        Returns chosen reply as string.  
-        '''
+        ''' Collect replies from from loaded bots and return best reply (str). '''
         log.info(f'statement={statement}')
         replies = []
         # Collect replies from each bot.
@@ -161,13 +158,13 @@ class CLIBot:
             replies = self.quality_score.update_replies(replies, statement)
             replies = sorted(replies, reverse=True)[:self.num_top_replies]
             
-            confidences, strings = list(zip(*replies))
+            confidences, texts = list(zip(*replies))
             conf_sums = np.cumsum(confidences)
             roll = np.random.rand() * conf_sums[-1]
             
             for i, threshold in enumerate(conf_sums):
                 if roll < threshold:
-                    reply = strings[i]
+                    reply = texts[i]
                     self.log_reply(statement, reply)
                     return reply
 
