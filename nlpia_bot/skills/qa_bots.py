@@ -39,14 +39,14 @@ class Bot:
         model_dir = os.path.join(DATA_DIR, 'simple-transformer')
         if not os.path.isdir(model_dir):
             os.mkdir(model_dir)
-        
+
         if (
-            not os.path.exists(os.path.join(model_dir, 'config.json'))
-            or not os.path.exists(os.path.join(model_dir, 'pytorch_model.bin'))
-            or not os.path.exists(os.path.join(model_dir, 'special_tokens_map.json'))
-            or not os.path.exists(os.path.join(model_dir, 'tokenizer_config.json'))
-            or not os.path.exists(os.path.join(model_dir, 'training_args.bin'))
-            or not os.path.exists(os.path.join(model_dir, 'vocab.txt'))
+            not os.path.exists(os.path.join(model_dir, 'config.json')) or
+            not os.path.exists(os.path.join(model_dir, 'pytorch_model.bin')) or
+            not os.path.exists(os.path.join(model_dir, 'special_tokens_map.json')) or
+            not os.path.exists(os.path.join(model_dir, 'tokenizer_config.json')) or
+            not os.path.exists(os.path.join(model_dir, 'training_args.bin')) or
+            not os.path.exists(os.path.join(model_dir, 'vocab.txt'))
         ):
             zip_local_path = os.path.join(model_dir, 'cased_simpletransformers.zip')
             with DownloadProgressBar(unit='B', unit_scale=True, miniters=1, desc=url_str.split('/')[-1]) as t:
@@ -65,12 +65,11 @@ class Bot:
             'overwrite_output_dir': False,
             'silent': True
         }
-    
+
         self.model = QuestionAnsweringModel('bert', model_dir, args=args, pretrained=True, use_cuda=USE_CUDA)
 
     def encode_input(self, statement, context):
-        """
-        Packs statement and context strings into expected input format for the model
+        """ Converts statement and context strings into json format compatible with BERT transformer
 
         >>> bot = Bot()
         >>> encoded = bot.encode_input('statement', 'context')
