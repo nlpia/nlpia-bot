@@ -74,8 +74,10 @@ class Bot:
 
         >>> bot = Bot()
         >>> encoded = bot.encode_input('statement', 'context')
-        >>> assert encoded[0]['qas'][0]['question'] == 'statement'
-        >>> assert encoded[0]['context'] == 'context'
+        >>> encoded[0]['qas'][0]['question']
+        'statement'
+        >>> encoded[0]['context']
+        'context'
         """
         encoded = [{
             'qas': [{
