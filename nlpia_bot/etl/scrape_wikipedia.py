@@ -204,7 +204,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     >>> len(texts) == 10
     True
     """
-    titles = list([titles] if isinstance(titles, str) else titles)
+    titles = [titles] if isinstance(titles, str) else titles
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
     depths = list([0] * len(titles))
     # depth is always zero here, but this would be useful further down
@@ -296,6 +296,8 @@ def list_ngrams(token_list, n=3, sep=' '):
     >>> ','.join(list_ngrams('Hello big blue marble'.split(), n=3, sep='_'))
     'Hello,Hello_big,Hello_big_blue,big,big_blue,big_blue_marble,blue,blue_marble,marble'
     """
+    if isinstance(token_list, str):
+        token_list = [tok.text for tok in nlp(token_list)]
     ngram_list = []
 
     for i in range(len(token_list)):
@@ -321,23 +323,30 @@ def find_titles(query='What is a chatbot?', max_titles=30, ngrams=3):
     return list_ngrams([tok for tok in toks if tok not in ignore_words and len(tok) > 1], n=ngrams)
 
 
+def find_titles_sorted(query='What is a chatbot?'):
+    # sort by importance (TFIDF) rather than alphabet
+    titles = find_titles(query)
+    titles = sorted(((len(t), t) for t in titles), reverse=True)
+    log.info(titles)
+    titles = [t for (n, t) in titles]
+    log.info(titles)
+    return titles
+
+
 def find_article_texts(query='What is a chatbot?', titles=[], max_depth=2, max_articles=200, **scrape_kwargs):
     r""" Retrieve Wikipedia article texts relevant to the query text
 
     >>> texts = find_article_texts('')
-    >>> len(texts) >= 7
-    True
-    >>> types = [type(txt) for txt in texts]
-    >>> types[:7]
-    [<class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>, <class 'str'>]
-    >>> texts[0].split('\n')[0] in 'Chinese room Turing test Chatbot ELIZA'
+    >>> len(texts) > 5
     True
     """
     if not len(titles):
         # sort by importance (TFIDF) rather than alphabet
         titles = find_titles(query)
         titles = sorted(((len(t), t) for t in titles), reverse=True)
+        log.info(titles)
         titles = [t for (n, t) in titles]
+        log.info(titles)
     return scrape_article_texts(titles, max_depth=max_depth, max_articles=200, **scrape_kwargs)
 
 
