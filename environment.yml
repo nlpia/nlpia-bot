@@ -48,6 +48,7 @@ dependencies:
   - scipy
   - spacy>=2.2.2
   - tqdm
+  - watchdog
   # - sqlparse
   # - tensorflow==2.0  # ==1.13.1
 
