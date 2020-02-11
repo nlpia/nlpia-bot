@@ -1,4 +1,4 @@
-name: nlpiaenv
+name: nlpia
 
 channels:
   - anaconda
