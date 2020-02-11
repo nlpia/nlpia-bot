@@ -131,8 +131,10 @@ class CLIBot:
             json.dump(history, f)
 
     def reply(self, statement=''):
+        ''' Collect replies from from loaded bots and return best reply (str). '''
         log.info(f'statement={statement}')
         replies = []
+        # Collect replies from each bot.
         for replier in self.repliers:
             bot_replies = []
             try:
@@ -149,19 +151,20 @@ class CLIBot:
                     log.error(str(e))
             bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
+
+        # Weighted random selection of reply from those with top n confidence scores 
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies, limiting to {self.num_top_replies}...')
             replies = self.quality_score.update_replies(replies, statement)
             replies = sorted(replies, reverse=True)[:self.num_top_replies]
-            cumsum = 0
-            cdf = list()
-            for reply in replies:
-                cumsum += reply[0]
-                cdf.append(cumsum)
-            roll = np.random.rand() * cumsum
-            for i, threshold in enumerate(cdf):
+            
+            confidences, texts = list(zip(*replies))
+            conf_sums = np.cumsum(confidences)
+            roll = np.random.rand() * conf_sums[-1]
+            
+            for i, threshold in enumerate(conf_sums):
                 if roll < threshold:
-                    reply = replies[i][1]
+                    reply = texts[i]
                     self.log_reply(statement, reply)
                     return reply
 
@@ -201,8 +204,8 @@ def cli(args):
         if user_statement:
             log.info(f"Computing a reply to {user_statement}...")
             # state = BOT.reply(statement, **state)
-            print(BOT)
-            print(type(BOT))
+            # print(BOT)
+            # print(type(BOT))
             bot_statement = BOT.reply(user_statement)
             statements[-1]['bot'] = bot_statement
             print(f"{args.nickname}: {bot_statement}")
