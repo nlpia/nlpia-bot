@@ -336,7 +336,7 @@ def find_titles_sorted(query='What is a chatbot?'):
 def find_article_texts(query='What is a chatbot?', titles=[], max_depth=2, max_articles=200, **scrape_kwargs):
     r""" Retrieve Wikipedia article texts relevant to the query text
 
-    >>> texts = find_article_texts('')
+    >>> texts = find_article_texts(' ')
     >>> len(texts) >= 7
     True
     >>> types = [type(txt) for txt in texts]
@@ -354,14 +354,6 @@ def find_article_texts(query='What is a chatbot?', titles=[], max_depth=2, max_a
         log.info(titles)
     return scrape_article_texts(titles, max_depth=max_depth, max_articles=200, **scrape_kwargs)
 
-
-def test_find_article_texts():
-    """ test
-
-    >>> texts = find_article_texts('Who was the President of the United States after George Bush?'
-    ...                            max_depth=2, max_articles=100)
-    >>> len(texts) > 10
-    """
 
 # def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
 
