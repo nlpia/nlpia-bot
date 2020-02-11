@@ -336,8 +336,9 @@ def find_titles_sorted(query='What is a chatbot?'):
 def find_article_texts(query='What is a chatbot?', titles=[], max_depth=2, max_articles=200, **scrape_kwargs):
     r""" Retrieve Wikipedia article texts relevant to the query text
 
-    >>> find_article_texts('')
-    []
+    >>> texts = find_article_texts('')
+    >>> len(texts) > 5
+    True
     """
     if not len(titles):
         # sort by importance (TFIDF) rather than alphabet
