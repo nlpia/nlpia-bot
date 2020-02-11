@@ -40,7 +40,7 @@ dependencies:
   - pytest-cov
 
   - python=3.7
-  # - pytorch
+  - pytorch
   # conda install pytorch cudatoolkit=10.1 -c pytorch
 
   # - redis-py
