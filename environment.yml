@@ -45,6 +45,7 @@ dependencies:
 
   # - redis-py
   - regex  # ==2018.1.10
+  - seaborn
   - scipy
   - spacy>=2.2.2
   - tqdm
