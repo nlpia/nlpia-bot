@@ -17,61 +17,22 @@ Note: This skeleton file can be safely removed if not needed!
 
 ```bash
 $ bot -b 'pattern,parul' -vv -p --num_top_replies=1
-2019-12-09:20:21:46.404 WARNING  [spacy_language_model.py:14] Failed to import spaCyHunSpell. Substituting with fake . . .
-2019-12-09:20:21:46.404 WARNING  [spacy_language_model.py:42] Loading SpaCy model...
-2019-12-09:20:21:47.142 INFO     [clibot.py:285] Building a BOT with: ['pattern', 'parul']
-2019-12-09:20:21:47.142 INFO     [clibot.py:109] Adding bot named pattern_bots
-2019-12-09:20:21:47.143 INFO     [clibot.py:116] Adding a Bot class <class 'nlpia_bot.skills.pattern_bots.Bot'>
-from module <module 'nlpia_bot.skills.pattern_bots' from '/Users/hobs/code/chatbot/nlpia-bot/nlpia_bot/skills/pattern_bots.py'>...
-2019-12-09:20:21:47.143 INFO     [clibot.py:109] Adding bot named parul_bots
-2019-12-09:20:21:50.911 INFO     [clibot.py:116] Adding a Bot class <class 'nlpia_bot.skills.parul_bots.Bot'>
-from module <module 'nlpia_bot.skills.parul_bots' from '/Users/hobs/code/chatbot/nlpia-bot/nlpia_bot/skills/parul_bots.py'>...
-2019-12-09:20:21:50.923 WARNING  [clibot.py:290] Type "quit" or "exit" to end the conversation...
-YOU: Hello someone not a chatbot.
-2019-12-09:20:22:55.741 INFO     [clibot.py:305] Computing a reply to Hello someone not a chatbot....
-2019-12-09:20:22:55.741 INFO     [clibot.py:126] statement=Hello someone not a chatbot.
-2019-12-09:20:22:55.748 INFO     [clibot.py:145] Found 4 suitable replies, limiting to 1...
-{'replies': [(0.2, "Hey. That's a good one."), (0.1, 'Hello'), (0.05, 'Wuh?'),
-(0.4588375897316045, 'hello barbie is an internet-connected version of the doll that uses a chatbot provided by the company toytalk,
-which previously used the chatbot for a range of smartphone-based characters for children.')],
-'self': <nlpia_bot.scores.quality_score.QualityScore object at 0x117c6b290>, 'stmt': 'Hello someone not a chatbot.'}
-bot: hello barbie is an internet-connected version of the doll that uses a chatbot provided by the company toytalk, which previously
- used the chatbot for a range of smartphone-based characters for children.
-YOU: Hello another chatbot.
-2019-12-09:20:23:14.798 INFO     [clibot.py:305] Computing a reply to Hello another chatbot....
-2019-12-09:20:23:14.799 INFO     [clibot.py:126] statement=Hello another chatbot.
-2019-12-09:20:23:14.804 INFO     [clibot.py:145] Found 4 suitable replies, limiting to 1...
-{'replies': [(0.2, "Hey. That's a good one."), (0.1, 'Hello'), (0.05, 'Wuh?'),
-(0.4588375897316045, 'hello barbie is an internet-connected version of the doll that uses a chatbot provided by the company toytalk,
-which previously used the chatbot for a range of smartphone-based characters for children.')],
-'self': <nlpia_bot.scores.quality_score.QualityScore object at 0x117c6b290>, 'stmt': 'Hello another chatbot.'}
-bot: hello barbie is an internet-connected version of the doll that uses a chatbot provided by the company toytalk,
-which previously used the chatbot for a range of smartphone-based characters for children.
 YOU: Hi
-2019-12-09:20:23:21.182 INFO     [clibot.py:305] Computing a reply to Hi...
-2019-12-09:20:23:21.182 INFO     [clibot.py:126] statement=Hi
-2019-12-09:20:23:21.187 INFO     [clibot.py:145] Found 2 suitable replies, limiting to 1...
-{'replies': [(1.0, 'Hello!'), (1e-10, "I am sorry! I don't understand you")],
-'self': <nlpia_bot.scores.quality_score.QualityScore object at 0x117c6b290>, 'stmt': 'Hi'}
 bot: Hello!
 YOU: Looking good!
-2019-12-09:20:23:33.617 INFO     [clibot.py:305] Computing a reply to Looking good!...
-2019-12-09:20:23:33.617 INFO     [clibot.py:126] statement=Looking good!
-2019-12-09:20:23:33.622 INFO     [clibot.py:145] Found 2 suitable replies, limiting to 1...
-{'replies': [(0.05, 'Wuh?'), (0.31232662648349846, 'the internet) retrieving information about goods and services.')],
-'self': <nlpia_bot.scores.quality_score.QualityScore object at 0x117c6b290>, 'stmt': 'Looking good!'}
-bot: the internet) retrieving information about goods and services.
 ```
 """
 import collections.abc
 import importlib
 import json
 import logging
+import os
 
 import numpy as np
 import pandas as pd
 
 from nlpia_bot import constants
+from nlpia_bot.constants import DATA_DIR
 from nlpia_bot.scores.quality_score import QualityScore
 
 
@@ -148,29 +109,32 @@ class CLIBot:
         return new_bots
 
     def log_reply(self, statement, reply):
+        history_path= os.path.join(constants.DATA_DIR, 'history.json')
         try:
             history = list()
-            with open('data/history.json', 'r') as f:
+            with open(history_path, 'r') as f:
                 history = json.load(f)
         except IOError as e:
             log.error(str(e))
-            with open('data/history.json', 'w') as f:
+            with open(history_path, 'w') as f:
                 f.write('[]')
         except json.JSONDecodeError as e:
             log.error(str(e))
             log.info('Saving history.json contents to history.json.swp before overwriting')
-            with open('data/history.json', 'r') as f:
+            with open(history_path, 'r') as f:
                 data = f.read()
-            with open('data/history.json.swp', 'w') as f:
+            with open(history_path + '.swp', 'w') as f:
                 f.write(data)
         history.append(['user', statement])
         history.append(['bot', reply])
-        with open('data/history.json', 'w') as f:
+        with open(history_path, 'w') as f:
             json.dump(history, f)
 
     def reply(self, statement=''):
+        ''' Collect replies from from loaded bots and return best reply (str). '''
         log.info(f'statement={statement}')
         replies = []
+        # Collect replies from each bot.
         for replier in self.repliers:
             bot_replies = []
             try:
@@ -187,19 +151,20 @@ class CLIBot:
                     log.error(str(e))
             bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
+
+        # Weighted random selection of reply from those with top n confidence scores 
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies, limiting to {self.num_top_replies}...')
             replies = self.quality_score.update_replies(replies, statement)
             replies = sorted(replies, reverse=True)[:self.num_top_replies]
-            cumsum = 0
-            cdf = list()
-            for reply in replies:
-                cumsum += reply[0]
-                cdf.append(cumsum)
-            roll = np.random.rand() * cumsum
-            for i, threshold in enumerate(cdf):
+            
+            confidences, texts = list(zip(*replies))
+            conf_sums = np.cumsum(confidences)
+            roll = np.random.rand() * conf_sums[-1]
+            
+            for i, threshold in enumerate(conf_sums):
                 if roll < threshold:
-                    reply = replies[i][1]
+                    reply = texts[i]
                     self.log_reply(statement, reply)
                     return reply
 
@@ -239,8 +204,8 @@ def cli(args):
         if user_statement:
             log.info(f"Computing a reply to {user_statement}...")
             # state = BOT.reply(statement, **state)
-            print(BOT)
-            print(type(BOT))
+            # print(BOT)
+            # print(type(BOT))
             bot_statement = BOT.reply(user_statement)
             statements[-1]['bot'] = bot_statement
             print(f"{args.nickname}: {bot_statement}")
