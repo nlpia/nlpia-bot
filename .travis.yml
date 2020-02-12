@@ -16,7 +16,7 @@ matrix:
       # /home/travis/.travis/functions: line 104: /home/travis/virtualenv/python3.6_with_system_site_packages/bin/activate: No such file or directory
 
 install:
-  - source tests/travis_install.sh
+  - source tests/install.sh
 
 before_script:
   - git config --global user.email "nlpia-bot+travis@totalgood.com"
