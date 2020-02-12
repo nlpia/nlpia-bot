@@ -59,5 +59,6 @@ dependencies:
     - environment
     - fuzzywuzzy
     # - nlpia
-    # - simpletransformers
+    - simpletransformers
+    - tensorboardX
     - wikipedia-api
