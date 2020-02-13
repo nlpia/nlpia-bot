@@ -6,6 +6,7 @@ client = Elasticsearch("http://localhost:9200")
 def index_dir(path=os.path.expanduser('~')):
 
     paths = []
+<<<<<<< HEAD:nlpia_bot/etl/etl.py
     # r=root, d=directories, f = files
     for r, d, f in os.walk(path):
         for file in f:
@@ -60,3 +61,8 @@ def query_document(index="chatbot",id=1):
     except Exception as error:
         print ("client.index() ERROR:", error, "n")
 
+=======
+    # for p in walk(path):
+    #     add_file_to_elastic_search(p)
+    return len(paths)
+>>>>>>> d324d6a443673fd6df0efd1bb213acec5cd90b41:nlpia_bot/etl/elastic.py
