@@ -6,59 +6,36 @@ channels:
   # - anaconda  # bad idea: https://github.com/conda/conda/issues/9462
 
 dependencies:
-  # - beautifulsoup4
-  # - boto3
-  # - botocore
   - ConfigArgParse
   - django
   - django-environ
   - django-extensions
-  # - gitpython
-  # - gcc
   - html5lib
   - hunspell
   - hunspell-en
-  # - ipython
   - jupyter
-  # - jupyter_core
-  # - jupyter_console
-  # - keras
-  # - libgcc
   - lxml
-  # - matplotlib
-  # - mysqlclient
-  # - nbconvert
   - nltk
   - pandas
-  # - pandoc
   - pip
-  # - plotly
   - pre-commit
-  # - prompt_toolkit<3.0
   - psycopg2
   - pyscaffold
   - pytest-cov
-
   - python=3.7
   - pytorch
-  # conda install pytorch cudatoolkit=10.1 -c pytorch
-
-  # - redis-py
   - regex  # ==2018.1.10
   - seaborn
   - scipy
-  - spacy>=2.2.2
+  - spacy>=2.2.2,<2.3.0
   - tqdm
   - watchdog
-  # - sqlparse
-  # - tensorflow==2.0  # ==1.13.1
 
   - pip:
-    # - apex
     - environment
     - fuzzywuzzy
-    # - nlpia
+    - nboost
     - simpletransformers
     - tensorboardX
-    - transformers>=2.4.1
+    - transformers>=2.4.1,<2.5.0
     - wikipedia-api
