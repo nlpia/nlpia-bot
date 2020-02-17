@@ -12,6 +12,11 @@ log.setLevel(logging.INFO)
 
 
 class QualityScore:
+    """
+    to get weighted score from different metrics and update final score for the reply
+    >>> QualityScore(sentiment=.8,semantics=0.2).update_replies([(1,"you are so good")]) > 0.5
+    True
+    """
     def __init__(self, **kwargs):
         self.metrics = list(kwargs.keys())
         self.weights = list(kwargs.values())
