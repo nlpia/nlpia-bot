@@ -1,11 +1,11 @@
-from nlpia_bot.constants import DATA_DIR
+from qary.constants import DATA_DIR
 import os
 import pandas as pd
 import numpy as np
-# from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics.pairwise import cosine_similarity
 
-from nlpia_bot.spacy_language_model import load
+from qary.spacy_language_model import load
 import logging
 log = logging.getLogger(locals().get('__name__', ''))
 
@@ -44,14 +44,3 @@ class vector_collection():
         nearest = self.vector_df.iloc[arg]
         log.info(f'Match found with cosim of {sims[arg]}.')
         return nearest
-
-#  class vector_cluster(size, factor=10):
-#     self.size=size
-#     self.factor=factor
-#     self.root_vec = [0*size]
-#     self.children = []
-
-#     def add_vectors(self, vectors):
-#         n = len(vectors[0])
-#         n_clusters= n//self.factor
-#         labels = AgglomerativeClustering(n_clusters=n_clusters).fit_predict()
