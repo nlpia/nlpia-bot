@@ -1,6 +1,6 @@
 # How to submit an Issue
 
-When submitting an Issue to a Mycroft repository, it will help if you...
+When submitting an Issue to the `nlpia-bot` repository, it will help if you follow this template:
 
 ## Environment
 
@@ -16,5 +16,5 @@ You can find the latest tag for your version with `
 
 Show us how to replicate the Issue. For example:
 
-1. launch the bot with `bot -vv -b parul`
+1. launch the bot with `bot -vv -b qa`
 2. Ask "What is a chatbot?" and it will respond with an unrelated answer.
