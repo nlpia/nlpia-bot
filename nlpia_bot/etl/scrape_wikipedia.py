@@ -10,6 +10,7 @@ from wikipediaapi import Wikipedia
 
 from nlpia_bot import constants
 from nlpia_bot.spacy_language_model import load
+from nlpia_bot.etl.vectors import phrase_to_vec
 
 import logging
 log = logging.getLogger(locals().get('__name__', ''))
@@ -32,7 +33,7 @@ class WikiIndex():
         # AttributeError: 'tuple' object has no attribute 'lower
         # self.title_row.update({k.lower(): v for (k, v) in tqdm(self.title_row.items()) if k.lower() not in self.title_row})
         # self.df_vectors = self.compute_vectors()
-
+ 
     def compute_vectors(self, filename='wikipedia-title-vectors.csv.gz'):
         log.warning(f'Computing title vectors for {len(self.df_titles)} titles. This will take a while.')
         filepath = os.path.join(constants.DATA_DIR, filename)
@@ -43,13 +44,7 @@ class WikiIndex():
             csv_writer = csv.writer(fout)
             csv_writer.writerow(['page_title'] + [f'x{i}' for i in range(300)])
             for i, s in tqdm(enumerate(self.df_titles.index.values[start:]), total=total):
-                vec = nlp(str(s)).vector  # s can sometimes (rarely) be a float because of pd.read_csv (df_titles)
-                vec /= pd.np.linalg.norm(vec) or 1.
-                vec = vec.round(7)
-                mask_zeros = pd.np.abs(vec) > 0
-                if mask_zeros.sum() < len(mask_zeros):
-                    log.error(f'BAD VEC: {s} [0]*{mask_zeros.sum()}')
-                vec = [s] + list(vec)
+                vec = [s] + phrase_to_vec(str(s))  # s can sometimes (rarely) be a float because of pd.read_csv (df_titles)
                 vec_batch.append(vec)
                 if not (i % 1000) or i == total - 1:
                     csv_writer.writerows(vec_batch)
