@@ -1,7 +1,42 @@
 import os
+import json
 from elasticsearch import Elasticsearch
+import wikipediaapi
+from slugify import slugify
 
 client = Elasticsearch("http://localhost:9200")
+
+''' 
+Search and scrape wikipedia articles by category
+
+'''
+
+def print_categorymembers(categorymembers, level=0, max_level=1):
+        for c in categorymembers.values():
+            print("%s: %s (ns: %d)" % ("*" * (level + 1), c.title, c.ns))
+            if c.ns == wikipediaapi.Namespace.CATEGORY and level < max_level:
+                print_categorymembers(c.categorymembers, level=level + 1, max_level=max_level)
+
+
+cat = wiki_wiki.page("Category:Natural_language_processing")
+print("Category members: Category:Natural_language_processing")
+print_categorymembers(cat.categorymembers)
+
+# Save the articles in separate .txt files
+
+def save_articles(path = 'C:\PythonPrograms\Jupyter\elasticsearch_test\wikipedia_articles', wiki_dict = cat.categorymembers):
+    for key, value in wiki_dict.items():
+        page = .page(key)
+        slug = slugify(key)
+        
+        with open(f'{path}\{slug}.txt', 'w') as new_file:
+            new_file.write(page.title)
+            new_file.write('\n')
+            new_file.write(page.fullurl)
+            new_file.write('\n')
+            new_file.write(page.text)
+
+
 
 def index_dir(path=os.path.expanduser('~')):
 
@@ -12,51 +47,53 @@ def index_dir(path=os.path.expanduser('~')):
             if '.py' in file:
                 paths.append(os.path.join(r, file))
     
-    return paths, len(paths)
+    return paths
 
 
 class Document:
     
-    def __init__(self, index, id, source):
-        self.index = index
-        self.id = id
+    def __init__(self, title, text, source):
+        self.title = title
+        self.text = text
         self.source = source
         
-        self.json = {}
+        self.body = {}
         
         try:
             
-            self.json = {
-                "_index": self.index,
-                "_id": self.id,
-                "doc_type":"_doc",
-                "_source": self.source,
+            self.body = {
+                "title": self.title,
+                "text": self.text
+                "source": self.source,
             }
             print("Elasticsearch Document JSON:", self.json)
             
         except Exception as error:
             print("Document JSON instance error: ", error)
 
-# Example document entry
-doc = Document(index = "chatbot", 
-               id =1, 
-               source = {'author1': 'Louis',
-                        'author2': 'Clark'})
+    def insert_to_elastic(self.body):
 
-def insert_document(document):
+        slug = slugify(self.body["title"])
 
-    try:
-        response = client.index(doc.index, body=doc.source, id=doc.id)
-        print ("Document index() response:", response, "n")
-    except Exception as error:
-        print ("client.index() ERROR:", error, "n")
+        try:
+            res = client.index(index = slug, body = self.body)
 
+        except Exception as error:
+        print(f"Could not create a JSON entry for an article {slug}"
+
+
+
+# Example document search
 
 def query_document(index="chatbot",id=1):
 
     try:
-        response = client.get(index = index, id=id)
-        print ("Document index() response:", response, "n")
+        res = client.search(index = "", body = {"query": {"match": {"text": "text similarity"}}})
+        
+        print('Relevant articles:')
+        for doc in res['hits']['hits']:
+            print(doc['_source']['title'])
+    
     except Exception as error:
         print ("client.index() ERROR:", error, "n")
 
