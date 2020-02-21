@@ -11,6 +11,7 @@ import nlpia_bot.skills.qa_bots
 import nlpia_bot.etl.glossaries
 import nlpia_bot.etl.scrape_wikipedia
 import nlpia_bot.etl.yml
+import nlpia_bot.etl.elastic
 
 import nlpia_bot.scores.semantics_score
 # import nlpia_bot.template_generators
@@ -77,3 +78,9 @@ def test_glossary_bots():
     results = doctest.testmod(nlpia_bot.skills.glossary_bots, **DOCTEST_KWARGS)
     assert results.failed < 1
     assert results.attempted > 2
+
+
+def test_etl_elastic():
+    results = doctest.testmod(nlpia_bot.etl.elastic, **DOCTEST_KWARGS)
+    assert results.failed == 0
+    assert results.attempted > 0
