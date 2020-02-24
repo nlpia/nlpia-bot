@@ -4,12 +4,16 @@ from elasticsearch import Elasticsearch
 import wikipediaapi
 from slugify import slugify
 
-client = Elasticsearch("http://localhost:9200")
+client = Elasticsearch()
+
 
 ''' 
 Search and scrape wikipedia articles from a chosen category
 
 '''
+
+wiki_wiki = wikipediaapi.Wikipedia('en')
+
 
 def print_categorymembers(categorymembers, level=0, max_level=1):
         for c in categorymembers.values():
@@ -19,19 +23,17 @@ def print_categorymembers(categorymembers, level=0, max_level=1):
 
 
 cat = wiki_wiki.page("Category:Natural_language_processing")
-print("Category members: Category:Natural_language_processing")
-print_categorymembers(cat.categorymembers)
 
 # Save articles in separate .txt files
 
-def save_articles(path = 'C:\data\wikipedia_articles', wiki_dict = cat.categorymembers):
+def save_articles(path = 'data', wiki_dict = cat.categorymembers):
     for key, value in wiki_dict.items():
         page = wiki_wiki.page(key)
         slug = slugify(key)
         
         try:
         
-            with open(f'C:\PythonPrograms\Jupyter\elasticsearch_test\wikipedia_articles\{slug}.txt', 'w') as new_file:
+            with open(f'{path}/{slug}.txt', 'w') as new_file:
                 new_file.write(page.title)
                 new_file.write('\n')
                 new_file.write(page.fullurl)
@@ -70,7 +72,7 @@ class Document:
                 "title": self.title,
                 "text": self.text,
                 "source": self.source
-            }
+            }n
             print("Elasticsearch Document JSON created:", self.body)
             
         except Exception as error:
@@ -87,21 +89,6 @@ class Document:
             print(f"Could not create a JSON entry for an article {slug}")
 
 
-
-# Example document search
-
-def query_document(index="chatbot",id=1):
-
-    try:
-        res = client.search(index = "", body = {"query": {"match": {"text": "text similarity"}}})
-        
-        print('Relevant articles:')
-        for doc in res['hits']['hits']:
-            print(doc['_source']['title'])
-    
-    except Exception as error:
-        print ("client.index() ERROR:", error, "n")
-
 # Example document search:
 
 def search_elastic(search_term, index = ''):
@@ -111,6 +98,8 @@ def search_elastic(search_term, index = ''):
                                   {"text": search_term}
                                  }
                                 }
+    )
+
 res = search_elastic(search_term = 'text similarity')
 
 print('Relevant articles:')
