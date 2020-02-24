@@ -72,7 +72,7 @@ class Document:
                 "title": self.title,
                 "text": self.text,
                 "source": self.source
-            }n
+            }
             print("Elasticsearch Document JSON created:", self.body)
             
         except Exception as error:
