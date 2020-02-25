@@ -10,7 +10,8 @@ from wikipediaapi import Wikipedia
 
 from nlpia_bot import constants
 from nlpia_bot.spacy_language_model import load
-from nlpia_bot.etl.vectors import phrase_to_vec
+from nlpia_bot.etl.vectors import phrase_to_vec, VectorCollection
+from nlpia_bot.constants import DATA_DIR
 
 import logging
 log = logging.getLogger(locals().get('__name__', ''))
@@ -18,6 +19,8 @@ log = logging.getLogger(locals().get('__name__', ''))
 nlp = load('en_core_web_md')
 TITLES = ['Chatbot', 'ELIZA', 'Turing_test', 'AIML', 'Chatterbot', 'Loebner_prize', 'Chinese_room']
 EXCLUDE_HEADINGS = ['See also', 'References', 'Bibliography', 'External links']
+#title_file = os.path.join(DATA_DIR, 'wikipedia-title-vectors.csv')
+title_file = os.path.join(DATA_DIR, 'wikipedia-title-vectors_sample.csv')
 
 
 class WikiIndex():
@@ -32,6 +35,9 @@ class WikiIndex():
         self.title_row = dict(zip(self.df_titles.index.values, range(len(self.df_titles))))
         # AttributeError: 'tuple' object has no attribute 'lower
         # self.title_row.update({k.lower(): v for (k, v) in tqdm(self.title_row.items()) if k.lower() not in self.title_row})
+        # if file at title file:
+        self.title_vectors = VectorCollection(title_file)
+        # else
         # self.df_vectors = self.compute_vectors()
  
     def compute_vectors(self, filename='wikipedia-title-vectors.csv.gz'):
@@ -87,18 +93,34 @@ class WikiIndex():
         self.df_titles = df
         return self.df_titles
 
-    def find_similar_titles(self, title=None, n=1):
-        """ Takes dot product of a doc vector with all wikipedia title doc vectors to find closest article titles """
-        if isinstance(title, str):
-            vec = nlp(title).vector
-        else:
-            vec = title
-        vec /= pd.np.linalg.norm(vec) or 1.
-        dot_products = vec.dot(self.df_vectors.values.T)
-        if n == 1:
-            return self.df_titles.index.values[dot_products.argmax()]
-        sorted(dot_products, reverse=True)
+    #Not currently in use
+    #  def find_similar_titles(self, title=None, n=1):
+    #     """ Takes dot product of a doc vector with all wikipedia title doc vectors to find closest article titles """
+    #     if isinstance(title, str):
+    #         vec = nlp(title).vector
+    #     else:
+    #         vec = title
+    #     vec /= pd.np.linalg.norm(vec) or 1.
+    #     dot_products = vec.dot(self.df_vectors.values.T)
+    #     if n == 1:
+    #         return self.df_titles.index.values[dot_products.argmax()]
+    #     sorted(dot_products, reverse=True)
 
+    def find_titles(self, query='What is a chatbot?', max_titles=30, ngrams=3)
+         """ Search db of wikipedia titles for articles relevant to a statement or questions
+
+        >>> set(find_titles('What is a chatbot?')) == set(TITLES)
+        True
+        >>> find_titles('What is a ELIZA?')
+        ['eliza']
+        """
+       #TODO: test this for the very first time
+       if not query or query.lower().strip().strip('?').strip().endswith('chatbot'):
+            return TITLES[:max_titles]
+        
+        q_vec=phrase_to_vec(query)
+        title = self.title_vectors.brute_find_nearest(q_vec)
+        return title
 
 def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                     see_also=True, max_articles=10000, max_depth=1):
@@ -303,7 +325,7 @@ def list_ngrams(token_list, n=3, sep=' '):
     return ngram_list
 
 
-def find_titles(query='What is a chatbot?', max_titles=30, ngrams=3):
+def find_titles_ngram(query='What is a chatbot?', max_titles=30, ngrams=3):
     """ Search db of wikipedia titles for articles relevant to a statement or questions
 
     >>> set(find_titles('What is a chatbot?')) == set(TITLES)
