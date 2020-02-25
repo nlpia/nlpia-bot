@@ -3,16 +3,18 @@ import json
 from elasticsearch import Elasticsearch
 import wikipediaapi
 from slugify import slugify
+from nlpia_bot import constants
 
-client = Elasticsearch()
+try:
+    client = Elasticsearch()
+except ConnectionRefusedError:
+    print("Failed to launch Elstcisearch")
 
 
 ''' 
 Search and scrape wikipedia articles from a chosen category
 
 '''
-
-wiki_wiki = wikipediaapi.Wikipedia('en')
 
 
 def print_categorymembers(categorymembers, level=0, max_level=1):
@@ -22,12 +24,19 @@ def print_categorymembers(categorymembers, level=0, max_level=1):
                 print_categorymembers(c.categorymembers, level=level + 1, max_level=max_level)
 
 
-cat = wiki_wiki.page("Category:Natural_language_processing")
+
 
 # Save articles in separate .txt files
 
-def save_articles(path = 'data', wiki_dict = cat.categorymembers):
-    for key, value in wiki_dict.items():
+def save_articles(path=os.path.join(constants.DATA_DIR, "wikipedia"), category='Natural_language_processing'):
+
+    os.makedirs(path, exist_ok=True)
+
+    wiki_wiki = wikipediaapi.Wikipedia('en')
+
+    cat = wiki_wiki.page(f"Category:{category}")
+
+    for key, value in cat.categorymembers.items():
         page = wiki_wiki.page(key)
         slug = slugify(key)
         
@@ -45,7 +54,7 @@ def save_articles(path = 'data', wiki_dict = cat.categorymembers):
 
 
 
-def index_dir(path=os.path.expanduser('~')):
+def index_dir(path=os.path.join(constants.DATA_DIR, "wikipedia")):
 
     paths = []
     # r=root, d=directories, f = files
@@ -60,6 +69,7 @@ def index_dir(path=os.path.expanduser('~')):
 class Document:
     
     def __init__(self, title, text, source):
+
         self.title = title
         self.text = text
         self.source = source
@@ -72,7 +82,7 @@ class Document:
                 "title": self.title,
                 "text": self.text,
                 "source": self.source
-            }n
+            }
             print("Elasticsearch Document JSON created:", self.body)
             
         except Exception as error:
@@ -91,18 +101,20 @@ class Document:
 
 # Example document search:
 
-def search_elastic(search_term, index = ''):
-    return client.search(index = index, 
-                         body = {"query": 
+def search(text, index=''):
+    return client.search(index=index, 
+                         body={"query": 
                                  {"match": 
-                                  {"text": search_term}
+                                  {"text": text}
                                  }
                                 }
     )
 
-res = search_elastic(search_term = 'text similarity')
 
-print('Relevant articles:')
-print('===================')
-for doc in res['hits']['hits']:
-    print(doc['_source']['title'])
+def test_search():
+    res = search(text='text similarity')
+
+    print('Relevant articles:')
+    print('===================')
+    for doc in res['hits']['hits']:
+        print(doc['_source']['title'])
