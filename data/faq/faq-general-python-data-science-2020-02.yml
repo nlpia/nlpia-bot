@@ -38,3 +38,21 @@
 -
   Q: "What kind of dataset would you need to try to predict whether a price is going to increase or decrease tomorrow?"
   A: "You would need a table of prices and other features along with a date. You would then need to shift the price data you want to predict by one day into the future. Your price for the current day (indicated by the date column) is a feature. You price for tomorrow (the next trading date after the date in the date column) would be your target variable."
+-
+  Q: My company has millions of shipment records and I want to predict shipping cost. Do I have to load the entire dataset or can I start with a limited date range?
+  A: You can start with any small sample of your dataset that you think you can understand and work with. If you're doing SQL queries to retrieve the data, you can use the `WHERE` clause to limit the date range of your query. With SQL you can also limit the columns or features that you load using the `SELECT` keyword.
+-
+  Q: What kind of data science variable is a weather condition string like "Partly Cloudy", "Rainy", and "Sunny".
+  A: It's a python string which you can use as a categorical variable.
+-
+  Q: What is the pandas function we can use to turn a categorical variable in numbers that are useful as features in a linear regression?
+  A: The python line `df = pd.get_dummies(df, columns=['Weather_Condition'])` will create one new column with a binary or boolean value for each possible `'Weather_Condition'` string value, such as 'rainy' or 'partly cloudy'. You can check `df['Weather_Condition'].value_counts()` to make sure that won't create too many new columns.
+-
+  Q: What is the difference between a logistic regression and a *support vector machine* (SVM) ?
+  A: A *support vector machine* (SVM) maximizes the distance between the decision boundary and the points near the dicision boundary. In a logistic regression, points far away from the decision boundary still have a significant affect on the location of the boundary. Also an SVM only requires that you define a kernel or a distance metric to compute the distance between points/vectors. This is called the kernel trick. It allows the decision boundary of an SVUM to be nonlinear in the feature vector space, while a logistic regression always defines a linear hyperplane decision boundary.
+-
+  Q: What is the one method that nearly every class (object) has?
+  A: The constructor method which is called `__init__()` in python. It is used to initialize (or "instantiate") an object (also called a class instance).
+-
+  Q: What is the first argument named in object or class instance methods?
+  A: The variable is named `self` because it contains the entire object instance so that the method can access all the methods and attributes of that instance.
