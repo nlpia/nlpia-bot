@@ -93,7 +93,7 @@ class Document:
         slug = slugify(self.body['title'])
 
         try:
-            res = client.index(index = slug, body = self.body)
+            res = client.index(index=slug, body=self.body)
 
         except Exception as error:
             print(f"Could not create a JSON entry for an article {slug}")

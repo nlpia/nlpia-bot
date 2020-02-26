@@ -97,12 +97,22 @@ class Bot:
         return output[0]['probability'], output[0]['answer']
 
     def reply(self, statement):
+        
         responses = []
         docs = elastic.search(statement)
-        for context in docs:
+
+        for doc in docs['hits']['hits']:
+            context = doc['_source']['text']
+            
             encoded_input = self.encode_input(statement, context)
             encoded_output = self.model.predict(encoded_input)
             probability, response = self.decode_output(encoded_output)
             if len(response) > 0:
                 responses.append((probability, response))
         return responses
+
+
+def test_reply():
+    bot = Bot()
+    answers = bot.reply('What is natural language processing?')
+    print(answers)
