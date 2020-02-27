@@ -120,8 +120,8 @@ from multiple sources (default settings):
 Work in Progress
 ----------------
 
--  Travis (@travis-harper): markhov chain reply selection and other data
-   science enhancements
+-  Travis (@travis-harper): model management, context filtering, and
+   the addition of more conversational agents
 -  Nima (@hulkgeek): question answering bot based on his state of the
    art question classifier
 -  Xavier (@spirovanni): employment counselor for workforce.org and the
