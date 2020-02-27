@@ -32,7 +32,6 @@ import numpy as np
 import pandas as pd
 
 from nlpia_bot import constants
-from nlpia_bot.constants import DATA_DIR
 from nlpia_bot.scores.quality_score import QualityScore
 
 
@@ -109,7 +108,7 @@ class CLIBot:
         return new_bots
 
     def log_reply(self, statement, reply):
-        history_path= os.path.join(constants.DATA_DIR, 'history.json')
+        history_path = os.path.join(constants.DATA_DIR, 'history.json')
         try:
             history = list()
             with open(history_path, 'r') as f:
@@ -152,16 +151,16 @@ class CLIBot:
             bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
 
-        # Weighted random selection of reply from those with top n confidence scores 
+        # Weighted random selection of reply from those with top n confidence scores
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies, limiting to {self.num_top_replies}...')
             replies = self.quality_score.update_replies(replies, statement)
             replies = sorted(replies, reverse=True)[:self.num_top_replies]
-            
+
             confidences, texts = list(zip(*replies))
             conf_sums = np.cumsum(confidences)
             roll = np.random.rand() * conf_sums[-1]
-            
+
             for i, threshold in enumerate(conf_sums):
                 if roll < threshold:
                     reply = texts[i]
