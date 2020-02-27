@@ -26,6 +26,7 @@ os.makedirs(LOG_DIR, exist_ok=True)
 USE_CUDA = False
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
+QA_MODEL = 'albert-large-v2-0.2.0'
 
 DEFAULT_CONFIG = {
     'name': 'bot',
@@ -38,6 +39,7 @@ DEFAULT_CONFIG = {
     'self_score': '.5',
     'semantic_score': '.5',
     'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}',
+    'qa_model': 'albert-large-v2-0.2.0'
 }
 DEFAULT_CONFIG.update(env.parsed)
 
@@ -50,6 +52,7 @@ LOGLEVEL_ABBR_DICT = dict(zip(LOGLEVEL_ABBREVIATIONS, LOGLEVELS))
 # this is the LOGLEVEL for the top of this file, once args and .ini file are read, it will change
 LOGLEVEL = getattr(env, 'loglevel', DEFAULT_CONFIG.get('loglevel', logging.WARNING))
 USE_CUDA = getattr(env, 'use_cuda', DEFAULT_CONFIG.get('use_cuda', USE_CUDA))
+QA_MODEL = getattr(env, 'qa_model', DEFAULT_CONFIG.get('qa_model', QA_MODEL))
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
@@ -204,6 +207,13 @@ def parse_args(args):
         type=str,
         nargs='*',
         help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
+    parser.add_argument(
+        '--qa_model',
+        help="Select which model qa_bots will use",
+        dest='qa_model',
+        default=str(DEFAULT_CONFIG['qa_model'])[0].lower(),
+        type=str,
+        metavar='STR')
     parsed_args = parser.parse_args(args)
     return parsed_args
 
