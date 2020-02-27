@@ -1,0 +1,78 @@
+{
+    "sentences": [
+        "Your blood pressure is too ___ .",
+        "How old are ________ ?",
+        "Does it hurt when you ________ ?",
+        "Do you have a family history of ________ ?",
+        "Dr. ________ told me the diagnosis .",
+        "Patient LDL level is 100, ________ level is 50, and the total is ______ .            .",
+        "Dr. Smith gave me ________ best estimate ."
+    ],
+    "answers": [
+        [
+            {
+                "high": 0.65,
+                "low": 0.3,
+                "erratic": 0.05
+            }
+        ],
+        [
+            {
+                "you": 0.95,
+                "they": 0.03,
+                "yous": 0.01,
+                "yall": 0.01
+            }
+        ],
+        [
+            {
+                "breath": 0.2,
+                "swallow": 0.2,
+                "cough": 0.15,
+                "inhale": 0.15,
+                "exhale": 0.1,
+                "move": 0.1,
+                "run": 0.1
+            }
+        ],
+        [
+            {
+                "cancer": 0.4,
+                "heart_disease": 0.3,
+                "depression": 0.3
+            }
+        ],
+        [
+            {
+                "Smith": 0.1,
+                "Jones": 0.1,
+                "Wu": 0.1,
+                "Cho": 0.1,
+                "Kulkarni": 0.1,
+                "Eisenbaum": 0.1,
+                "Thomas": 0.1,
+                "Doolittle": 0.1,
+                "Doe": 0.1,
+                "Petrov": 0.1
+            }
+        ],
+        [
+            {
+                "HDL": 0.95,
+                "good_cholesterol": 0.05
+            },
+            {
+                "150": 0.01,
+                "145": 0.01,
+                "unk": 0.98
+            }
+        ],
+        [
+            {
+                "her": 0.8,
+                "his": 0.15,
+                "their": 0.05
+            }
+        ]
+    ]
+}
