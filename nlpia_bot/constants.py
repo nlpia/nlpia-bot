@@ -37,6 +37,7 @@ DEFAULT_CONFIG = {
     'num_top_replies': 10,
     'self_score': '.5',
     'semantic_score': '.5',
+    'debug': True,
     'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}',
 }
 DEFAULT_CONFIG.update(env.parsed)
@@ -89,11 +90,17 @@ def parse_args(args):
             # '~/nlpiabot.ini',
             # '~/nlpia.ini',
             # os.path.join(BASE_DIR, '*.ini'),
-            # os.path.join(DATA_DIR, '*.ini'),
+            os.path.join(DATA_DIR, '*.ini'),
         ],
         description="Command line bot application. Try `$ bot how do you work?`")
     parser.add('-c', '--config', required=False, is_config_file=True,
                help="Config file path (default: ~/nlpia-bot.ini)")
+    parser.add_argument(
+        '-d', '--debug',
+        help="Set DEBUG logging level and raise more exceptions immediately.",
+        dest="debug",
+        default=str(DEFAULT_CONFIG['debug'])[0].lower() in 'fty1p',
+        action='store_true')
     parser.add_argument(
         '--version',
         action='version',
