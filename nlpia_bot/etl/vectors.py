@@ -24,25 +24,43 @@ def phrase_to_vec(phrase):
         log.error(f'BAD VEC: {phrase} [0]*{mask_zeros.sum()}')
     return list(vec)
 
-class vector_collection():
+class VectorCollection():
+    # eventually incorporate features from wiki index
     def __init__(self, filename=default_vector_file):
-        self.vector_df=pd.read_csv(filename).set_index('index')
+        #check on setting other= float
+        self.vector_df=pd.read_csv(filename, dtype={'index':int}).set_index('index')
     
     def add_phrase(self, phrase):
         vec = phrase_to_vec(phrase)
         self.vector_df.append(pd.DataFrame(vec, index=[phrase]))
 
-    def brute_find_nearest(self, input_vector):
-        sims = cosine_similarity(self.vector_df.values, [input_vector])
+    def brute_find_nearest(self, input_vector, n=1):
+        # add test for dims
+        sims = cosine_similarity(self.vector_df.values, [input_vector]).flatten()
         print('similarities\n', sims, sims.shape)
-        assert sims.shape == (len(self.vector_df), 1), "Distance calculation error"
 
-        arg= np.argmax(sims)
+        sim_pd = pd.Series(sims).sort_values()
+        indexes=sim_pd[:n].index.values
+        return indexes
 
-        nearest = self.vector_df.iloc[arg]
-        log.info(f'Match found with cosim of {sims[arg]}.')
-        return nearest
+'''
+In [1]: from nlpia_bot.etl.vectors import phrase_to_vec, VectorCollection
 
+In [2]: vc= VectorCollection()
+
+In [4]: vc.brute_find_nearest([1]*300)
+similarities
+ [ 0.05691113  0.10072965  0.07687775 ...  0.1001407   0.05286667
+ -0.02163353] (10000,)
+Out[4]: array([9846])
+
+In [5]: vc.brute_find_nearest([1]*300,5)
+similarities
+ [ 0.05691113  0.10072965  0.07687775 ...  0.1001407   0.05286667
+ -0.02163353] (10000,)
+Out[5]: array([9846, 8070, 5492, 2998, 6317])
+
+'''
 #  class vector_cluster(size, factor=10):
 #     self.size=size
 #     self.factor=factor
