@@ -139,6 +139,8 @@ class CLIBot:
             try:
                 bot_replies = replier(statement)
             except Exception as e:
+                if constants.args.debug:
+                    raise
                 log.error(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
                 log.error(str(e))
                 try:
