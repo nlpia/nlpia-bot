@@ -33,7 +33,7 @@ class WikiIndex():
         # AttributeError: 'tuple' object has no attribute 'lower
         # self.title_row.update({k.lower(): v for (k, v) in tqdm(self.title_row.items()) if k.lower() not in self.title_row})
         # self.df_vectors = self.compute_vectors()
- 
+
     def compute_vectors(self, filename='wikipedia-title-vectors.csv.gz'):
         log.warning(f'Computing title vectors for {len(self.df_titles)} titles. This will take a while.')
         filepath = os.path.join(constants.DATA_DIR, filename)
@@ -199,21 +199,20 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     >>> len(texts) == 10
     True
     """
-    titles = [titles] if isinstance(titles, str) else titles
+    titles = find_titles(titles) if isinstance(titles, str) else titles
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
-    depths = list([0] * len(titles))
-    # depth is always zero here, but this would be useful further down
-    title_depths = list(zip(titles, depths))
-    texts = []
+    # depth starts at zero here, but as additional titles are appended the depth will increase
+    title_depths = list(zip(titles, [0] * len(titles)))
+    text_lens = []
     # FIXME: breadth-first search so you can do a tqdm progress bar for each depth
     # FIXME: record title tree (see also) so that .2*title1+.3*title2+.5*title3 can be semantically appended to sentences
     titles_scraped = set([''])
-    title, d, num_articles = '', 0, 0
+    d, num_articles = 0, 0
     wiki = Wikipedia()
     # TODO: should be able to use depth rather than d:
     for depth in range(max_depth):
         while num_articles < max_articles and d <= depth and len(title_depths):
-            title = None
+            title = ''
 
             # skip titles already scraped
             while len(title_depths) and len(titles_scraped) and (not title or title in titles_scraped):
@@ -253,16 +252,17 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
                 text += f'\n{section.title}\n' if heading_text else '\n'
                 text += section.text.replace('’', "'") + '\n'  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
-            texts.append(text)
-            log.warn(f'Added article "{page.title}" with {len(text)} characters. Total chars = {sum((len(t) for t in texts))}')
+            yield text
+            text_lens.append(len(text))
+            log.warn(f'Added article "{page.title}" with {len(text)} chars.')
+            log.info(f'  Total scraped {sum(text_lens)} chars')
             log.warn(str([depth, d, num_articles, title]))
-            if len(texts) >= max_articles:
-                log.warn(f"num_articles={num_articles} ==> len(texts)={len(texts)} > max_depth={max_depth}")
+            if len(text_lens) >= max_articles:
+                log.warn(f"num_articles={num_articles} ==> len(text_lens)={len(text_lens)} > max_depth={max_depth}")
                 break
             if d > depth:
                 log.warn(f"{d} > {depth}")
                 break
-    return texts
 
 
 def count_nonzero_vector_dims(self, strings, nominal_dims=1):
@@ -303,7 +303,7 @@ def list_ngrams(token_list, n=3, sep=' '):
     return ngram_list
 
 
-def find_titles(query='What is a chatbot?', max_titles=30, ngrams=3):
+def find_titles(query='What is a chatbot?', max_titles=30, ngrams=3, min_len=2):
     """ Search db of wikipedia titles for articles relevant to a statement or questions
 
     >>> set(find_titles('What is a chatbot?')) == set(TITLES)
@@ -314,8 +314,8 @@ def find_titles(query='What is a chatbot?', max_titles=30, ngrams=3):
     if not query or query.lower().strip().strip('?').strip().endswith('chatbot'):
         return TITLES[:max_titles]
     ignore_words = constants.QUESTION_STOPWORDS
-    toks = [tok.text.lower() for tok in nlp(query)]
-    return list_ngrams([tok for tok in toks if tok not in ignore_words and len(tok) > 1], n=ngrams)
+    toks = list_ngrams(query, n=ngrams)
+    return [t.lower() for t in toks if t not in ignore_words and len(t) >= min_len]
 
 
 def find_titles_sorted(query='What is a chatbot?'):
