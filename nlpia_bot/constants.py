@@ -85,11 +85,11 @@ def parse_args(args):
     parser = configargparse.ArgParser(
         default_config_files=[
             '~/nlpia-bot.ini',
-            '~/nlpia_bot.ini',
-            '~/nlpiabot.ini',
-            '~/nlpia.ini',
-            os.path.join(BASE_DIR, '*.ini'),
-            os.path.join(DATA_DIR, '*.ini'),
+            # '~/nlpia_bot.ini',
+            # '~/nlpiabot.ini',
+            # '~/nlpia.ini',
+            # os.path.join(BASE_DIR, '*.ini'),
+            # os.path.join(DATA_DIR, '*.ini'),
         ],
         description="Command line bot application. Try `$ bot how do you work?`")
     parser.add('-c', '--config', required=False, is_config_file=True,
