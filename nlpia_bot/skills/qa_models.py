@@ -21,7 +21,10 @@ from transformers import AdamW, get_linear_schedule_with_warmup
 from transformers import (
     BertConfig,
     BertForQuestionAnswering,
-    BertTokenizer
+    BertTokenizer,
+    AlbertConfig,
+    AlbertForQuestionAnswering,
+    AlbertTokenizer
 )
 
 from nlpia_bot.skills.qa_utils import (
@@ -37,11 +40,13 @@ from nlpia_bot.skills.qa_utils import (
     get_best_predictions_extended,
 )
 
+from nlpia_bot.constants import USE_CUDA
+
 QABOTS_ARGS = {
-    'output_dir': 'outputs/',
-    'cache_dir': 'cache_dir/',
+    'output_dir': '',
+    'cache_dir': '',
     'fp16': True,
-    'fp16_opt_level': 'O1',
+    'fp16_opt_level': 'O2',
     'max_seq_length': 128,
     'train_batch_size': 8,
     'gradient_accumulation_steps': 1,
@@ -56,7 +61,7 @@ QABOTS_ARGS = {
     'do_lower_case': False,
     'logging_steps': 50,
     'save_steps': 2000,
-    'no_cache': False,
+    'no_cache': True,
     'save_model_every_epoch': True,
     'evaluate_during_training': True,
     'evaluate_during_training_steps': 2000,
@@ -68,7 +73,7 @@ QABOTS_ARGS = {
     'process_count': cpu_count() - 2 if cpu_count() > 2 else 1,
     'n_gpu': 1,
     'use_multiprocessing': True,
-    'silent': False
+    'silent': True
 }
 
 
@@ -79,8 +84,8 @@ class QuestionAnsweringModel:
     """
     
     def __init__(
-        self, model_type='bert', model_name_or_path='bert-base-cased',
-        pretrained=True, use_cuda=True, cuda_device=-1, args=None
+        self, model_type, model_name_or_path,
+        pretrained=True, use_cuda=USE_CUDA, cuda_device=-1, args=None
     ):
         """
         Initializes an instance of QuestionAnsweringModel
@@ -99,7 +104,10 @@ class QuestionAnsweringModel:
                 "pretrained=True, but pytorch_model.bin not found in {}".format(self.args['output_dir'])
             )
         
-        model_classes = {'bert': (BertConfig, BertForQuestionAnswering, BertTokenizer)}
+        model_classes = {
+            'bert': (BertConfig, BertForQuestionAnswering, BertTokenizer),
+            'albert': (AlbertConfig, AlbertForQuestionAnswering, AlbertTokenizer)
+        }
         config_class, model_class, tokenizer_class = model_classes[model_type]
         
         self.model = model_class.from_pretrained(model_name_or_path)
