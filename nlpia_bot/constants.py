@@ -205,6 +205,7 @@ def parse_args(args):
         nargs='*',
         help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
     parsed_args = parser.parse_args(args)
+    print(parsed_args)
     return parsed_args
 
 
