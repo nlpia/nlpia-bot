@@ -193,11 +193,12 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     >>> nlp('hello')  # to eager-load spacy model
     hello
     >>> texts = scrape_article_texts(['ELIZA'], see_also=False)
+    >>> texts = list(texts)
     >>> len(texts)
     1
-    >>> texts = scrape_article_texts(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3)
-    >>> len(texts) == 10
-    True
+    >>> texts = list(scrape_article_texts(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
+    >>> len(texts)
+    10
     """
     titles = find_titles(titles) if isinstance(titles, str) else titles
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
