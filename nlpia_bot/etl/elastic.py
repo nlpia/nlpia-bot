@@ -87,11 +87,7 @@ class Document:
 def search(text, index=''):
     """ Full text search within an ElasticSearch index (''=all indexes) for the indicated text """
     return client.search(index=index,
-                         body={"query":
-                               {"match":
-                                {"text": text}
-                                }
-                               }
+                         body={"query": {"match": {"text": text}}}
                          )
 
 
