@@ -61,4 +61,4 @@
   A: To load the map image into python try `img = plt.imread('map.jpg')`. Then, after your scatterplot add the line `plt.imshow(img, extent=[left, right, bottom, top])`. Use the coordinates of the left, right, top and bottom of your image in the scatter plot cooredinates (usually latitude and longitude).
 -
   Q: When I try to `dict(zip(array1, array2))` two arrays or pandas `Series` or `DataFrame` columns together I end up with a lot of nans in my values. How can I get rid of them?
-  A: The easiest way might be to filter them out before the `dict()`
+  A: The easiest way might be to filter them out before the `dict()` with a list comprehension that includes a `np.isnan()` check.
