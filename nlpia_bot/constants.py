@@ -32,7 +32,7 @@ DEFAULT_CONFIG = {
     'persist': 'False',  # Yes, yes, 1, Y, y, T, t
     'bots': 'glossary',  # glossary,qa,parul,eliza,search_fuzzy'
     'spacy_lang': 'en_core_web_sm',
-    'use_cuda': False,
+    'use_cuda': USE_CUDA,
     'loglevel': logging.WARNING,
     'num_top_replies': 10,
     'self_score': '.5',
