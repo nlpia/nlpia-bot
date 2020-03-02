@@ -26,17 +26,21 @@ def print_categorymembers(categorymembers, level=0, max_level=1):
 
 def search_insert_wiki(category):
 
+    if type(category) is not list: category = [ category ]
+
     wiki_wiki = wikipediaapi.Wikipedia('en')
+    
+    for c in category:
 
-    cat = wiki_wiki.page(f"Category:{category}")
+        cat = wiki_wiki.page(f"Category:{c}")
 
-    for key in cat.categorymembers.keys():
-        page = wiki_wiki.page(key)
+        for key in cat.categorymembers.keys():
+            page = wiki_wiki.page(key)
 
-        if not "Category:" in page.title:
-            doc = Document(page.title, page.text, page.fullurl, category)
-            doc.insert()
-            print(f'{doc.title} is entered into elasticsearch database')
+            if not "Category:" in page.title:
+                doc = Document(page.title, page.text, page.fullurl, category=c)
+                doc.insert()
+
 
 # Save articles in separate .txt files
 
@@ -115,7 +119,7 @@ def search(text, index=''):
 
 
 def test_search():
-    res = search(text='what is most popular marvel comic')
+    res = search(text='how many seasons is in altered carbon series?')
 
     print('Relevant articles:')
     print('===================')
@@ -123,5 +127,13 @@ def test_search():
         print(doc['_source']['title'])
 
 
-# search_insert_wiki('Marvel Comics')
-test_search()
+categories = ['Machine learning',
+            'Marvel Comics',
+            'Marvel Comics editors-in-chief',
+            'American science fiction television series',
+            'Science fiction television',
+            'Natural language processing',
+            'American comics writers', 
+            ]
+search_insert_wiki(categories)
+# test_search()

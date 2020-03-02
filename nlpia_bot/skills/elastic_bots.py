@@ -115,7 +115,7 @@ class Bot:
 
 def test_reply():
     bot = Bot()
-    answers = bot.reply('machine learning')
+    answers = bot.reply('who is stan lee?')
     print(answers)
 
 test_reply()
