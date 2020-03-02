@@ -103,6 +103,7 @@ class Bot:
 
         for doc in docs['hits']['hits']:
             context = doc['_source']['text']
+            # print(context)
             
             encoded_input = self.encode_input(statement, context)
             encoded_output = self.model.predict(encoded_input)
@@ -114,5 +115,7 @@ class Bot:
 
 def test_reply():
     bot = Bot()
-    answers = bot.reply('What is natural language processing?')
+    answers = bot.reply('machine learning')
     print(answers)
+
+test_reply()

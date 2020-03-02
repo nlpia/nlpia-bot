@@ -24,7 +24,19 @@ def print_categorymembers(categorymembers, level=0, max_level=1):
                 print_categorymembers(c.categorymembers, level=level + 1, max_level=max_level)
 
 
+def search_insert_wiki(category):
 
+    wiki_wiki = wikipediaapi.Wikipedia('en')
+
+    cat = wiki_wiki.page(f"Category:{category}")
+
+    for key in cat.categorymembers.keys():
+        page = wiki_wiki.page(key)
+
+        if not "Category:" in page.title:
+            doc = Document(page.title, page.text, page.fullurl, category)
+            doc.insert()
+            print(f'{doc.title} is entered into elasticsearch database')
 
 # Save articles in separate .txt files
 
@@ -67,36 +79,27 @@ def index_dir(path=os.path.join(constants.DATA_DIR, "wikipedia")):
 
 
 class Document:
-    
-    def __init__(self, title, text, source):
 
+    def __init__(self, title, text, source, category):
+
+        self.category = category
         self.title = title
         self.text = text
         self.source = source
         
-        self.body = {}
-        
-        try:
-            
-            self.body = {
-                "title": self.title,
-                "text": self.text,
-                "source": self.source
-            }
-            print("Elasticsearch Document JSON created:", self.body)
-            
-        except Exception as error:
-            print("Document JSON instance error: ", error)
+        self.body = {"title": self.title,
+                     "text": self.text,
+                     "source":self.source}
 
     def insert(self):
         
-        slug = slugify(self.body['title'])
+        index = slugify(self.category)
 
         try:
-            res = client.index(index=slug, body=self.body)
+            client.index(index=index, body=self.body)
 
         except Exception as error:
-            print(f"Could not create a JSON entry for an article {slug}")
+            print(f"Could not create a JSON entry for an article {self.source}")
 
 
 # Example document search:
@@ -112,9 +115,13 @@ def search(text, index=''):
 
 
 def test_search():
-    res = search(text='text similarity')
+    res = search(text='what is most popular marvel comic')
 
     print('Relevant articles:')
     print('===================')
     for doc in res['hits']['hits']:
         print(doc['_source']['title'])
+
+
+# search_insert_wiki('Marvel Comics')
+test_search()
