@@ -41,6 +41,8 @@ def search_insert_wiki(category):
                 doc = Document(page.title, page.text, page.fullurl, category=c)
                 doc.insert()
 
+    print("Done")
+
 
 # Save articles in separate .txt files
 
@@ -127,13 +129,13 @@ def test_search():
         print(doc['_source']['title'])
 
 
-categories = ['Machine learning',
-            'Marvel Comics',
-            'Marvel Comics editors-in-chief',
-            'American science fiction television series',
-            'Science fiction television',
-            'Natural language processing',
-            'American comics writers', 
-            ]
-search_insert_wiki(categories)
-# test_search()
+# categories = ['Machine learning',
+#             'Marvel Comics',
+#             'Marvel Comics editors-in-chief',
+#             'American science fiction television series',
+#             'Science fiction television',
+#             'Natural language processing',
+#             'American comics writers', 
+#             ]
+# search_insert_wiki(categories)
+test_search()
