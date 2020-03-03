@@ -56,3 +56,9 @@
 -
   Q: What is the first argument named in object or class instance methods?
   A: The variable is named `self` because it contains the entire object instance so that the method can access all the methods and attributes of that instance.
+-
+  Q: How can I add an image of a city map to the background of my matplotlib scatterplot.
+  A: To load the map image into python try `img = plt.imread('map.jpg')`. Then, after your scatterplot add the line `plt.imshow(img, extent=[left, right, bottom, top])`. Use the coordinates of the left, right, top and bottom of your image in the scatter plot cooredinates (usually latitude and longitude).
+-
+  Q: When I try to `dict(zip(array1, array2))` two arrays or pandas `Series` or `DataFrame` columns together I end up with a lot of nans in my values. How can I get rid of them?
+  A: The easiest way might be to filter them out before the `dict()` with a list comprehension that includes a `np.isnan()` check.
