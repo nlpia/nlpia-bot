@@ -32,11 +32,12 @@ DEFAULT_CONFIG = {
     'persist': 'False',  # Yes, yes, 1, Y, y, T, t
     'bots': 'glossary',  # glossary,qa,parul,eliza,search_fuzzy'
     'spacy_lang': 'en_core_web_sm',
-    'use_cuda': False,
+    'use_cuda': USE_CUDA,
     'loglevel': logging.WARNING,
     'num_top_replies': 10,
     'self_score': '.5',
     'semantic_score': '.5',
+    'debug': True,
     'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}',
 }
 DEFAULT_CONFIG.update(env.parsed)
@@ -85,15 +86,21 @@ def parse_args(args):
     parser = configargparse.ArgParser(
         default_config_files=[
             '~/nlpia-bot.ini',
-            '~/nlpia_bot.ini',
-            '~/nlpiabot.ini',
-            '~/nlpia.ini',
-            os.path.join(BASE_DIR, '*.ini'),
+            # '~/nlpia_bot.ini',
+            # '~/nlpiabot.ini',
+            # '~/nlpia.ini',
+            # os.path.join(BASE_DIR, '*.ini'),
             os.path.join(DATA_DIR, '*.ini'),
         ],
         description="Command line bot application. Try `$ bot how do you work?`")
     parser.add('-c', '--config', required=False, is_config_file=True,
                help="Config file path (default: ~/nlpia-bot.ini)")
+    parser.add_argument(
+        '-d', '--debug',
+        help="Set DEBUG logging level and raise more exceptions immediately.",
+        dest="debug",
+        default=str(DEFAULT_CONFIG['debug'])[0].lower() in 'fty1p',
+        action='store_true')
     parser.add_argument(
         '--version',
         action='version',
@@ -205,6 +212,7 @@ def parse_args(args):
         nargs='*',
         help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
     parsed_args = parser.parse_args(args)
+    print(parsed_args)
     return parsed_args
 
 
