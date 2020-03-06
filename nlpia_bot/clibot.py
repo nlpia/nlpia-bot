@@ -32,7 +32,6 @@ import numpy as np
 import pandas as pd
 
 from nlpia_bot import constants
-from nlpia_bot.constants import DATA_DIR
 from nlpia_bot.scores.quality_score import QualityScore
 
 
@@ -109,7 +108,7 @@ class CLIBot:
         return new_bots
 
     def log_reply(self, statement, reply):
-        history_path= os.path.join(constants.DATA_DIR, 'history.json')
+        history_path = os.path.join(constants.DATA_DIR, 'history.json')
         try:
             history = list()
             with open(history_path, 'r') as f:
@@ -140,6 +139,8 @@ class CLIBot:
             try:
                 bot_replies = replier(statement)
             except Exception as e:
+                if constants.args.debug:
+                    raise
                 log.error(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
                 log.error(str(e))
                 try:
@@ -152,21 +153,26 @@ class CLIBot:
             bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
 
-        # Weighted random selection of reply from those with top n confidence scores 
+        # Weighted random selection of reply from those with top n confidence scores
         if len(replies):
             log.info(f'Found {len(replies)} suitable replies, limiting to {self.num_top_replies}...')
             replies = self.quality_score.update_replies(replies, statement)
             replies = sorted(replies, reverse=True)[:self.num_top_replies]
-            
+
             confidences, texts = list(zip(*replies))
             conf_sums = np.cumsum(confidences)
             roll = np.random.rand() * conf_sums[-1]
-            
+
             for i, threshold in enumerate(conf_sums):
                 if roll < threshold:
                     reply = texts[i]
                     self.log_reply(statement, reply)
                     return reply
+            log.error(f"Error rolling dice to select reply. roll: {roll}\nthreshold: {threshold}\nconf_sums: {conf_sums}\n"
+                      f"replies: {pd.DataFrame(replies)}")
+            return texts[0]
+        else:
+            log.error("No replies ({replies}) were returned by {self.bots}!!")
 
         # TODO: np.choice from list of more friendly random unknown error replies...
         reply = "Sorry, something went wrong. Not sure what to say..."
