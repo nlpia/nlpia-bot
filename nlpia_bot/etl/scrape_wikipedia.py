@@ -200,7 +200,9 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     >>> len(texts)
     10
     """
-    titles = find_titles(titles) if isinstance(titles, str) else titles
+    if isinstance(titles, str):
+        log.error(f'DEPRECATED `titles` should be a list of strs, not titles="{titles}"')
+        titles = find_titles(titles)
     exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
     # depth starts at zero here, but as additional titles are appended the depth will increase
     title_depths = list(zip(titles, [0] * len(titles)))
@@ -317,7 +319,7 @@ def count_ignorable_words(text, ignore=constants.QUESTION_STOPWORDS, min_len=2):
     return sum(1 for w in text.split() if w in ignore or len(w) <= min_len)
 
 
-def find_titles(query='What is a chatbot?', max_titles=30, ngrams=5, min_len=2, ignore=True):
+def find_titles(query='What is a chatbot?', max_titles=30, ngrams=5, min_len=2, max_ignorable_pct=.5, ignore=True):
     """ Search db of wikipedia titles for articles relevant to a statement or questions
 
     >>> set(find_titles('What is a chatbot?')) == set(TITLES)
@@ -333,7 +335,7 @@ def find_titles(query='What is a chatbot?', max_titles=30, ngrams=5, min_len=2, 
     toks = list_ngrams(query, n=ngrams)
     ans = []
     for t in toks:
-        if count_ignorable_words(t.lower().strip(), ignore=ignore, min_len=min_len) < len(t.strip().split()):
+        if count_ignorable_words(t.lower().strip(), ignore=ignore, min_len=min_len) < max_ignorable_pct * len(t.strip().split()):
             ans.append(t)
             if len(ans) >= max_titles:
                 return ans
@@ -342,6 +344,7 @@ def find_titles(query='What is a chatbot?', max_titles=30, ngrams=5, min_len=2, 
 
 def find_titles_sorted(query='What is a chatbot?',
                        max_titles=50, ngrams=5, min_len=2,
+                       max_ignorable_pct=.5,
                        ignore=True, reverse=True, score=len):
     """ Use find_ngrams and ignore stopwords then sort the resulting list of titles with longest first
 
@@ -350,15 +353,17 @@ def find_titles_sorted(query='What is a chatbot?',
     >>> find_titles_sorted('What is a ELIZA?')
     ['ELIZA']
     """
-    # TODO: sort by importance (TFIDF) rather than length of strings
-    titles = find_titles(query, max_titles=max_titles, ngrams=ngrams, min_len=min_len, ignore=ignore)
+    # TODO Kendra: sort by importance (TFIDF) rather than length of strings
+    titles = find_titles(query, max_titles=max_titles, ngrams=ngrams, min_len=min_len, ignore=ignore,
+                         max_ignorable_pct=max_ignorable_pct)
     titles = sorted(((score(t), t) for t in titles), reverse=reverse)
     log.info('sorted titles ({ngrams}-grams): \n' + str(pd.DataFrame(titles)))
     return [t for (n, t) in titles]
 
 
-def find_article_texts(query=None, titles=(), max_depth=3,
+def find_article_texts(query=None, max_depth=3,
                        max_articles=100, ngrams=5, min_len=2,
+                       max_ignorable_pct=.5,
                        ignore=True, reverse=True, score=len,
                        **scrape_kwargs):
     r""" Retrieve Wikipedia article texts relevant to the query text
@@ -367,12 +372,16 @@ def find_article_texts(query=None, titles=(), max_depth=3,
     >>> len(texts) > 5
     True
     """
-    if not len(titles):
+    if isinstance(query, str):
         query = query or "What is a prosocial chatbot, conversational ai, or dialog engine?"
         # TODO Kendra: sort by importance (TFIDF) rather than length of text
         titles = find_titles_sorted(query,
                                     max_titles=max_articles * ngrams * 2, ngrams=ngrams, min_len=min_len,
+                                    max_ignorable_pct=max_ignorable_pct,
                                     ignore=True, reverse=reverse, score=score)
+    else:
+        log.error(f'DEPRECATED: query should be a str, not query={query}')
+        titles = list(query)
     return scrape_article_texts(titles, max_depth=max_depth, max_articles=max_articles, **scrape_kwargs)
 
 
