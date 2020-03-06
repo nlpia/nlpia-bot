@@ -1,4 +1,4 @@
-""" Transformer based chatbot dialog engine for answering questions """
+""" Transformer based chatbot dialog engine for answering questions with ElasticSearch of Wikipedia"""
 
 import logging
 import os
@@ -7,10 +7,9 @@ import uuid
 import zipfile
 from multiprocessing import cpu_count
 from tqdm import tqdm
-
 from nlpia_bot.skills.qa_models import QuestionAnsweringModel
 
-from nlpia_bot.etl import scrape_wikipedia
+from nlpia_bot.etl import scrape_wikipedia, elastic
 from nlpia_bot.constants import DATA_DIR, USE_CUDA
 
 log = logging.getLogger(__name__)
@@ -98,13 +97,22 @@ class Bot:
         return output[0]['probability'], output[0]['answer']
 
     def reply(self, statement):
+        
         responses = []
-        docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=25, max_depth=2, ngrams=5,
-                                                   ignore='who what when where why'.split())
-        for context in docs:
+        docs = elastic.search(statement)
+
+        for doc in docs['hits']['hits']:
+            context = doc['_source']['text']
+            
             encoded_input = self.encode_input(statement, context)
             encoded_output = self.model.predict(encoded_input)
             probability, response = self.decode_output(encoded_output)
             if len(response) > 0:
                 responses.append((probability, response))
         return responses
+
+
+def test_reply():
+    bot = Bot()
+    answers = bot.reply('What is natural language processing?')
+    print(answers)
