@@ -168,6 +168,11 @@ class CLIBot:
                     reply = texts[i]
                     self.log_reply(statement, reply)
                     return reply
+            log.error(f"Error rolling dice to select reply. roll: {roll}\nthreshold: {threshold}\nconf_sums: {conf_sums}\n"
+                      f"replies: {pd.DataFrame(replies)}")
+            return texts[0]
+        else:
+            log.error("No replies ({replies}) were returned by {self.bots}!!")
 
         # TODO: np.choice from list of more friendly random unknown error replies...
         reply = "Sorry, something went wrong. Not sure what to say..."
