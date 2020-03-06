@@ -100,13 +100,13 @@ class WikiIndex():
         sorted(dot_products, reverse=True)
 
 
-def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
-                    see_also=True, max_articles=10000, max_depth=1):
+def scrape_articles_dataframe(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
+                              see_also=True, max_articles=10000, max_depth=1):
     """ Download text for an article and parse into sections and sentences
 
     >>> nlp('hello')  # to eager-load spacy model
     hello
-    >>> df = scrape_articles(['ELIZA'], see_also=False)
+    >>> df = scrape_articles_dataframe(['ELIZA'], see_also=False)
     >>> df.shape[0] > 80
     True
     >>> df.columns
@@ -140,8 +140,8 @@ def scrape_articles(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 continue
             titles_scraped.add(title)
             page = wiki.article(title)
-            if not (len(page.text) + len(page.summary)):
-                log.error(f"Unable to retrieve {title}")
+            if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
+                log.error(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
                 time.sleep(2.17)
                 continue
             num_articles += 1
@@ -229,8 +229,8 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 continue
             titles_scraped.add(title)
             page = wiki.article(title)
-            if not (len(page.text) + len(page.summary)):
-                log.warn(f"Unable to retrieve {title}")
+            if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
+                log.error(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
                 time.sleep(2.17)
                 continue
             # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
@@ -240,9 +240,9 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 if not section:
                     continue
                 for t in section.text.split('\n')[1:]:
-                    log.info(f'  Checking see also link: {t}')
+                    log.info(f"  Checking _SEE ALSO_ link: {t}")
                     if t in page.links:
-                        log.info(f'    yep, found it in page.links')
+                        log.info(f'     Found title "{t}" in page.links at depth {d}, so adding it to titles to scrape...')
                         title_depths.append((t, d + 1))
                 log.info(f'  extended title_depths at depth {d}: {title_depths}')
             text = f'{page.title}\n\n' if title_text else ''
@@ -317,7 +317,7 @@ def count_ignorable_words(text, ignore=constants.QUESTION_STOPWORDS, min_len=2):
     return sum(1 for w in text.split() if w in ignore or len(w) <= min_len)
 
 
-def find_titles(query='What is a chatbot?', max_titles=30, ngrams=3, min_len=2, ignore=True):
+def find_titles(query='What is a chatbot?', max_titles=30, ngrams=5, min_len=2, ignore=True):
     """ Search db of wikipedia titles for articles relevant to a statement or questions
 
     >>> set(find_titles('What is a chatbot?')) == set(TITLES)
@@ -329,18 +329,20 @@ def find_titles(query='What is a chatbot?', max_titles=30, ngrams=3, min_len=2, 
         return TITLES[:max_titles]
     ignore = constants.QUESTION_STOPWORDS if ignore is True else ignore
     ignore = ignore if ignore is not None and ignore is not False else []
-    log.info(str(ignore))
+    log.info(f"stopwords_to_ignore: {ignore}")
     toks = list_ngrams(query, n=ngrams)
     ans = []
     for t in toks:
-        if not count_ignorable_words(t.lower().strip(), ignore=ignore, min_len=min_len):
+        if count_ignorable_words(t.lower().strip(), ignore=ignore, min_len=min_len) < len(t.strip().split()):
             ans.append(t)
             if len(ans) >= max_titles:
                 return ans
     return ans
 
 
-def find_titles_sorted(query='What is a chatbot?', max_titles=30, ngrams=3, min_len=2, ignore=True):
+def find_titles_sorted(query='What is a chatbot?',
+                       max_titles=50, ngrams=5, min_len=2,
+                       ignore=True, reverse=True, score=len):
     """ Use find_ngrams and ignore stopwords then sort the resulting list of titles with longest first
 
     >>> find_titles_sorted('What is a ELIZA?', max_titles=30, ngrams=3, min_len=2, ignore=False)
@@ -350,14 +352,15 @@ def find_titles_sorted(query='What is a chatbot?', max_titles=30, ngrams=3, min_
     """
     # TODO: sort by importance (TFIDF) rather than length of strings
     titles = find_titles(query, max_titles=max_titles, ngrams=ngrams, min_len=min_len, ignore=ignore)
-    titles = sorted(((len(t), t) for t in titles), reverse=True)
-    log.info(titles)
-    titles = [t for (n, t) in titles]
-    log.info(titles)
-    return titles
+    titles = sorted(((score(t), t) for t in titles), reverse=reverse)
+    log.info('sorted titles ({ngrams}-grams): \n' + str(pd.DataFrame(titles)))
+    return [t for (n, t) in titles]
 
 
-def find_article_texts(query='What is a chatbot?', titles=[], max_depth=2, max_articles=200, **scrape_kwargs):
+def find_article_texts(query=None, titles=(), max_depth=3,
+                       max_articles=100, ngrams=5, min_len=2,
+                       ignore=True, reverse=True, score=len,
+                       **scrape_kwargs):
     r""" Retrieve Wikipedia article texts relevant to the query text
 
     >>> texts = list(find_article_texts(''))
@@ -365,13 +368,12 @@ def find_article_texts(query='What is a chatbot?', titles=[], max_depth=2, max_a
     True
     """
     if not len(titles):
-        # TODO: sort by importance (TFIDF) rather than length of text
-        titles = find_titles(query)
-        titles = sorted(((len(t), t) for t in titles), reverse=True)
-        log.info(titles)
-        titles = [t for (n, t) in titles]
-        log.info(titles)
-    return scrape_article_texts(titles, max_depth=max_depth, max_articles=200, **scrape_kwargs)
+        query = query or "What is a prosocial chatbot, conversational ai, or dialog engine?"
+        # TODO Kendra: sort by importance (TFIDF) rather than length of text
+        titles = find_titles_sorted(query,
+                                    max_titles=max_articles * ngrams * 2, ngrams=ngrams, min_len=min_len,
+                                    ignore=True, reverse=reverse, score=score)
+    return scrape_article_texts(titles, max_depth=max_depth, max_articles=max_articles, **scrape_kwargs)
 
 
 # def parse_sentences(title, sentences, title_depths, see_also=True, exclude_headings=(), d=0, depth=0, max_depth=3):
