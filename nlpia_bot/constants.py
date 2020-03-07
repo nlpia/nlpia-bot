@@ -26,14 +26,13 @@ os.makedirs(LOG_DIR, exist_ok=True)
 USE_CUDA = False
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
-QA_MODEL = 'albert-large-v2-0.2.0'
 
 DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'False',  # Yes, yes, 1, Y, y, T, t
     'bots': 'glossary',  # glossary,qa,parul,eliza,search_fuzzy'
     'spacy_lang': 'en_core_web_sm',
-    'use_cuda': False,
+    'use_cuda': USE_CUDA,
     'loglevel': logging.WARNING,
     'num_top_replies': 10,
     'self_score': '.5',
@@ -52,7 +51,6 @@ LOGLEVEL_ABBR_DICT = dict(zip(LOGLEVEL_ABBREVIATIONS, LOGLEVELS))
 # this is the LOGLEVEL for the top of this file, once args and .ini file are read, it will change
 LOGLEVEL = getattr(env, 'loglevel', DEFAULT_CONFIG.get('loglevel', logging.WARNING))
 USE_CUDA = getattr(env, 'use_cuda', DEFAULT_CONFIG.get('use_cuda', USE_CUDA))
-QA_MODEL = getattr(env, 'qa_model', DEFAULT_CONFIG.get('qa_model', QA_MODEL))
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
@@ -121,7 +119,7 @@ def parse_args(args):
         '--use_cuda',
         help="Use CUDA and GPU to speed up transformer inference.",
         dest='use_cuda',
-        default=str(DEFAULT_CONFIG['use_cuda'])[0].lower() in 'fty1p',
+        default=USE_CUDA,
         action='store_true')
     parser.add_argument(
         '-p',
@@ -211,7 +209,7 @@ def parse_args(args):
         '--qa_model',
         help="Select which model qa_bots will use",
         dest='qa_model',
-        default=str(DEFAULT_CONFIG['qa_model'])[0].lower(),
+        default=DEFAULT_CONFIG['qa_model'],
         type=str,
         metavar='STR')
     parsed_args = parser.parse_args(args)
@@ -231,7 +229,7 @@ def setup_logging(loglevel):
 
 def parse_argv(argv=sys.argv):
     """Entry point for console_scripts"""
-    global BOT, LOGLEVEL
+    global BOT, LOGLEVEL, USE_CUDA
 
     new_argv = []
     if len(argv) > 1:
@@ -252,6 +250,9 @@ def parse_argv(argv=sys.argv):
     log.info(f"Building a BOT with: {args.bots}")
     log.info(f"Weights: {args.score_weights}")
     # log.info(f"Parsed Weights: {type(json.loads(args.score_weights))}")
+
+    USE_CUDA = args.use_cuda
+
     return args
 
 
@@ -321,7 +322,7 @@ USE = None
 
 class passthroughSpaCyPipe:
     """ Callable pass-through SpaCy Pipeline Component class (callable) for fallback if spacy_hunspell.spaCyHunSpell fails"""
-    def __init__(*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         pass
 
     def __call__(self, doc):
