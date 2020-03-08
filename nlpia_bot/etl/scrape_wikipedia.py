@@ -185,6 +185,11 @@ def scrape_articles_dataframe(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     return pd.DataFrame(sentences, columns='depth title section sentence'.split())
 
 
+class WikiNotFound:
+    text = ''
+    summary = ''
+
+
 def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                          see_also=True, max_articles=10000, max_depth=1,
                          heading_text=True, title_text=True):
@@ -214,7 +219,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     wiki = Wikipedia()
     # TODO: should be able to use depth rather than d:
     for depth in range(max_depth):
-        while num_articles < max_articles and d <= depth and len(title_depths):
+        while num_articles < max_articles and d <= depth and len(title_depths) > 0:
             title = ''
 
             # skip titles already scraped
@@ -230,11 +235,13 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 log.info(f"{d} > {max_depth} or title ('{title}') is empty")
                 continue
             titles_scraped.add(title)
+            log.info(f'len(title_depths): {len(title_depths)}Looking')
             page = wiki.article(title)
             if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
-                log.error(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
+                log.warning(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
                 time.sleep(2.17)
                 continue
+            # FIXME: this postprocessing of Article objects to compost a text string should be in separate funcition
             # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
             if see_also and d + 1 < max_depth:
                 # .full_text() includes the section heading ("See also"). .text does not
