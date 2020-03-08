@@ -66,6 +66,7 @@ Travis's probabilistic conversation manager is working nicely to chose a reply f
 - `parul_bots.py`: Wikipedia searches using conventional TFIDF like a search engine
 - `eliza_bots.py`: A python port of the ELIZA therapist bot
 - `time_bots.py`: A time and productivity tracker that parses your git logs and bash history
+- `elastic_bots.py`: Semantic search with elasticsearch and `nboost`
 
 Here's how those bots work together:
 
