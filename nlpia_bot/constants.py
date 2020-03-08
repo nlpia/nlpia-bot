@@ -37,6 +37,7 @@ DEFAULT_CONFIG = {
     'num_top_replies': 10,
     'self_score': '.5',
     'semantic_score': '.5',
+    'debug': True,
     'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}',
     'qa_model': 'albert-large-v2-0.2.0'
 }
@@ -86,15 +87,21 @@ def parse_args(args):
     parser = configargparse.ArgParser(
         default_config_files=[
             '~/nlpia-bot.ini',
-            '~/nlpia_bot.ini',
-            '~/nlpiabot.ini',
-            '~/nlpia.ini',
-            os.path.join(BASE_DIR, '*.ini'),
+            # '~/nlpia_bot.ini',
+            # '~/nlpiabot.ini',
+            # '~/nlpia.ini',
+            # os.path.join(BASE_DIR, '*.ini'),
             os.path.join(DATA_DIR, '*.ini'),
         ],
         description="Command line bot application. Try `$ bot how do you work?`")
     parser.add('-c', '--config', required=False, is_config_file=True,
                help="Config file path (default: ~/nlpia-bot.ini)")
+    parser.add_argument(
+        '-d', '--debug',
+        help="Set DEBUG logging level and raise more exceptions immediately.",
+        dest="debug",
+        default=str(DEFAULT_CONFIG['debug'])[0].lower() in 'fty1p',
+        action='store_true')
     parser.add_argument(
         '--version',
         action='version',
@@ -213,6 +220,7 @@ def parse_args(args):
         type=str,
         metavar='STR')
     parsed_args = parser.parse_args(args)
+    print(parsed_args)
     return parsed_args
 
 

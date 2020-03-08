@@ -1,0 +1,30 @@
+-
+  Q: I feel overwhelmed with this dataset. what should I do?
+  A: "Take it one column at a time. Identify your target variable. For example, you could select the home price in a table of real estate prices for homes. `y = df['price']`. Then look at the dtype (data type) for each of the columns and work with just the first numeric column you see, for example the total square footage of the home. `X = df[['sqft']]`. Then you can train a linear regression to predict home price from square footage. `lr, lr = sklearn.linear_model.LinearRegression(), lr.fit(X, y)` and you can score it for accuracy with `lr.score(X, y)`. Then add one column at a time to your variable X (features) and see how your `fit` improves by checking the `score` each time."
+-
+  Q: "I went through a Linear Regression to predict Severity using 4 features.  I used ffill to fill NANs. The score was about 0.003, which made me think about alternative ways to fillna that might be better. What should I do? #student"
+  A: "What are some other options for filling in NaN values? Which ones are going to most correctly fill in the values closest to the *truth* of the missing values? #teacher #socratic"
+-
+  Q: "For precipitation, filling with 0s might be all it takes, but for temperature, windspeed, and other weather related numerical data, it might be beneficial to use DateTime data as an index, and then try ffill or mean(?)"
+  A: "Whenever you are trying to decide on a particular cleaning step what is the best way to decide between different options? #teacher #socratic"
+-
+  Q: "How do I decide which features to use and which ML method in order to get the best predictive model? I started by pairplotting the raw data. "
+  A: "What do you mean by \"best\"*? Can you answer your own question about which is *best* using python code? #teacher #socratic"
+-
+  Q: "Is it time to put a plan in place as to what needs to happen so I may move forward in A direction? I find myself going everywhere all at once and nowhere fast. #student"
+  A: "Yes. You're doing fine. It's OK to feel overwhelmed. You do need a general plan in your mind. But the most important thing is just to remind you of the destination and what that looks like. Like driving from Houston to San Diego, it doesn't help to list all the possible turns between here and there. And you won't chose the *best* path even if you do. You need to replan at every intersection based on what you see around you.  #teacher #socratic"
+-
+  Q: "When explained variance is high, like 99%, does that mean that PCA is good for my model?"
+  A: "The only variance that you'd like to explain is the variance in your target variable. So if the 1% variance in your features included all of the covariance with your target, then you can still harm your model accuracy by doing PCA, even with 99% explained variance in your reduced dimensional feature vectors."
+-
+  Q: "I have a model that can predict the authorship of judicial ruling texts with 95% accuracy. What can I do with it?"
+  A: "You can examine the word frequencies that are most important to each judge's authorship prediction."
+-
+  Q: What are some good resources for learning how to program in python?
+  A: One of my favorites is `learnpython.org`.
+-
+  Q: What are some good resources for learning about object oriented programming and how to define classes in python?
+  A: Try the section on "Objects and Classes" in [learnpython.org](https://www.learnpython.org/en/Classes_and_Objects)
+-
+  Q: How can I implement a Kalman Filter in python?
+  A: The `pykalman` package implements both a linear kalman filter as well as a nonlinear unscented kalman filter.
