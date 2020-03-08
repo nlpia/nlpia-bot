@@ -49,10 +49,16 @@
   A: The python line `df = pd.get_dummies(df, columns=['Weather_Condition'])` will create one new column with a binary or boolean value for each possible `'Weather_Condition'` string value, such as 'rainy' or 'partly cloudy'. You can check `df['Weather_Condition'].value_counts()` to make sure that won't create too many new columns.
 -
   Q: What is the difference between a logistic regression and a *support vector machine* (SVM) ?
-  A: A *support vector machine* (SVM) maximizes the distance between the decision boundary and the points near the dicision boundary. In a logistic regression, points far away from the decision boundary still have a significant affect on the location of the boundary. Also an SVM only requires that you define a kernel or a distance metric to compute the distance between points/vectors. This is called the kernel trick. It allows the decision boundary of an SVUM to be nonlinear in the feature vector space, while a logistic regression always defines a linear hyperplane decision boundary.
+  A: A *support vector machine* (SVM) maximizes the distance between the decision boundary and the points near the decision boundary. In a logistic regression, points far away from the decision boundary still have a significant affect on the location of the boundary. Also an SVM only requires that you define a kernel or a distance metric to compute the distance between points/vectors. This is called the kernel trick. It allows the decision boundary of an SVUM to be nonlinear in the feature vector space, while a logistic regression always defines a linear hyperplane decision boundary.
 -
   Q: What is the one method that nearly every class (object) has?
   A: The constructor method which is called `__init__()` in python. It is used to initialize (or "instantiate") an object (also called a class instance).
 -
   Q: What is the first argument named in object or class instance methods?
   A: The variable is named `self` because it contains the entire object instance so that the method can access all the methods and attributes of that instance.
+-
+  Q: How can I add an image of a city map to the background of my matplotlib scatterplot.
+  A: To load the map image into python try `img = plt.imread('map.jpg')`. Then, after your scatterplot add the line `plt.imshow(img, extent=[left, right, bottom, top])`. Use the coordinates of the left, right, top and bottom of your image in the scatter plot cooredinates (usually latitude and longitude).
+-
+  Q: When I try to `dict(zip(array1, array2))` two arrays or pandas `Series` or `DataFrame` columns together I end up with a lot of nans in my values. How can I get rid of them?
+  A: The easiest way might be to filter them out before the `dict()` with a list comprehension that includes a `np.isnan()` check.
