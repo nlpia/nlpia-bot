@@ -138,6 +138,7 @@ class CLIBot:
             bot_replies = []
             try:
                 bot_replies = replier(statement)
+                log.debug("{replier.__name__} replies: {bot_replies}")
             except Exception as e:
                 if constants.args.debug:
                     raise
@@ -172,7 +173,7 @@ class CLIBot:
                       f"replies: {pd.DataFrame(replies)}")
             return texts[0]
         else:
-            log.error("No replies ({replies}) were returned by {self.bots}!!")
+            log.error(f"No replies ({replies}) were returned by {self.bots}!!")
 
         # TODO: np.choice from list of more friendly random unknown error replies...
         reply = "Sorry, something went wrong. Not sure what to say..."
