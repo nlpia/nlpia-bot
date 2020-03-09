@@ -1,0 +1,23 @@
+# fictional_dialog.yml
+-
+    description: "In \"Trouble with Tribbles\", an episode of Star Trek, the original television series, Captain Kirk is questioning why Scotty started the brawl with the Klingons, and lists all the insults they said about Kirk."
+    characters:
+        Scotty: "Montgomery \"Scotty\" Scott"
+        Kirk: "Captain James Tibereus Kirk"
+    actors:
+        Scotty: "James Doohan"
+        Kirk: "William Shatner"
+    source: "_Star Trek_ television series"
+    earliest: 1966
+    source: "_Star Trek_ television series"
+    episode: Trouble with Tribbles
+    earliest: 1966
+    script:
+        -
+            Kirk: And that's when you hit him.
+        -
+            Scotty: No, sir. I wasn’t gonna let a little thing like that make me start a fight.
+        -
+            Kirk: Then what did?
+        -
+            Scotty: They insulted the Enterprise!
