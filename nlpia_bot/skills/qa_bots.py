@@ -99,7 +99,8 @@ class Bot:
 
     def reply(self, statement):
         responses = []
-        docs = scrape_wikipedia.scrape_article_texts(statement)
+        docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=25, max_depth=2, ngrams=5,
+                                                   ignore='who what when where why'.split())
         for context in docs:
             encoded_input = self.encode_input(statement, context)
             encoded_output = self.model.predict(encoded_input)

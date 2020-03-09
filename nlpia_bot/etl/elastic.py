@@ -1,3 +1,5 @@
+
+""" Search and scrape wikipedia articles from a chosen category """
 import os
 import json
 from elasticsearch import Elasticsearch 
@@ -11,10 +13,7 @@ except ConnectionRefusedError:
     print("Failed to launch Elstcisearch")
 
 
-''' 
-Search and scrape wikipedia articles from a chosen category
-
-'''
+log = constants.logging.getLogger(__name__)
 
 
 def print_categorymembers(categorymembers, level=0, max_level=1):
@@ -48,29 +47,22 @@ def search_insert_wiki(category):
 # Save articles in separate .txt files
 
 def save_articles(path=os.path.join(constants.DATA_DIR, "wikipedia"), category='Natural_language_processing'):
-
     os.makedirs(path, exist_ok=True)
-
     wiki_wiki = wikipediaapi.Wikipedia('en')
-
     cat = wiki_wiki.page(f"Category:{category}")
 
     for key, value in cat.categorymembers.items():
         page = wiki_wiki.page(key)
         slug = slugify(key)
-        
         try:
-        
             with open(f'{path}/{slug}.txt', 'w') as new_file:
                 new_file.write(page.title)
                 new_file.write('\n')
                 new_file.write(page.fullurl)
                 new_file.write('\n')
                 new_file.write(page.text)
-                
         except Exception as error:
-            print(f"Error writing document {page.title}: ", error)
-
+            log.error(f"Error writing document {page.title}: {error}")
 
 
 def index_dir(path=os.path.join(constants.DATA_DIR, "wikipedia")):
@@ -81,7 +73,7 @@ def index_dir(path=os.path.join(constants.DATA_DIR, "wikipedia")):
         for file in f:
             if '.txt' in file:
                 paths.append(os.path.join(r, file))
-    
+
     return paths
 
 
@@ -120,13 +112,10 @@ def get_indices():
     return client.indices.get_alias("*")
 
 def search(text, index=''):
-    return client.search(index=index, 
-                         body={"query": 
-                                 {"match": 
-                                  {"text": text}
-                                 }
-                                }
-    )
+    """ Full text search within an ElasticSearch index (''=all indexes) for the indicated text """
+    return client.search(index=index,
+                         body={"query": {"match": {"text": text}}}
+                         )
 
 def search_title(text, index=''):
     return client.search(index=index, 
