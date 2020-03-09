@@ -1,10 +1,10 @@
 import os
 import json
-from elasticsearch import Elasticsearch
-import wikipediaapi
+from elasticsearch import Elasticsearch 
+import wikipediaapi 
 from slugify import slugify
 from nlpia_bot import constants
-
+from nlpia_bot.etl import wikisearch as ws
 try:
     client = Elasticsearch()
 except ConnectionRefusedError:
@@ -40,6 +40,7 @@ def search_insert_wiki(category):
             if not "Category:" in page.title:
                 doc = Document(page.title, page.text, page.fullurl, category=c)
                 doc.insert()
+            print(page.title)
 
     print("Done")
 
@@ -107,8 +108,16 @@ class Document:
         except Exception as error:
             print(f"Could not create a JSON entry for an article {self.source}")
 
+    def delete(self, index):
+        client.indices.delete(index=index, ignore=[400,404])
+        print(f'{index} has been successfully deleted from database')
+
+
 
 # Example document search:
+
+def get_indices():
+    return client.indices.get_alias("*")
 
 def search(text, index=''):
     return client.search(index=index, 
@@ -119,23 +128,69 @@ def search(text, index=''):
                                 }
     )
 
+def search_title(text, index=''):
+    return client.search(index=index, 
+                         body={"query": 
+                                 {"match": 
+                                  {"title": text}
+                                 }
+                                }
+    )
 
-def test_search():
-    res = search(text='how many seasons is in altered carbon series?')
+def search_url(text, index=''):
+    return client.search(index=index, 
+                         body={"query": 
+                                 {"match": 
+                                  {"source": text}
+                                 }
+                                }
+    )
 
-    print('Relevant articles:')
+def delete_index(index):
+    client.indices.delete(index=index, ignore=[400,404])
+    print(f'{index} has been successfully deleted from database')
+
+def test_search(statement):
+    res = search(text=statement)
+    res_wiki = ws.summary(statement)
+    print('Relevant articles from your ElasicSearch library:')
     print('===================')
     for doc in res['hits']['hits']:
         print(doc['_source']['title'])
+        print(doc['_source']['source'])
+        print("----------------------")
+
+    print('Summary found on Wikipedia')
+    print("======================")
+    print(res_wiki)
+    print('Full text of the article')
+    print("=======================")
+    print(ws.content(statement))
 
 
-# categories = ['Machine learning',
-#             'Marvel Comics',
-#             'Marvel Comics editors-in-chief',
-#             'American science fiction television series',
-#             'Science fiction television',
-#             'Natural language processing',
-#             'American comics writers', 
-#             ]
-# search_insert_wiki(categories)
-test_search()
+if __name__=="__main__":
+
+    statement = "who is Stan Lee"
+
+
+    def test_indices():
+        res = get_indices()
+        ind_list = []
+        for r in res:
+            ind_list.append(r)
+        return ind_list
+
+    test_search(statement)
+
+    # Add new categories to elasticsearch:
+    # categories = ['Machine learning',
+    #             'Marvel Comics',
+    #             'Marvel Comics editors-in-chief',
+    #             'American science fiction television series',
+    #             'Science fiction television',
+    #             'Natural language processing',
+    #             'American comics writers', 
+    #             'Presidents of the United States'
+    #             ]
+    # search_insert_wiki(categories)
+    

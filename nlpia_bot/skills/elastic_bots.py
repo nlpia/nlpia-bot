@@ -8,6 +8,8 @@ import zipfile
 from multiprocessing import cpu_count
 from tqdm import tqdm
 from nlpia_bot.skills.qa_models import QuestionAnsweringModel
+from nlpia_bot.etl import wikisearch as ws
+
 
 from nlpia_bot.etl import scrape_wikipedia, elastic
 from nlpia_bot.constants import DATA_DIR, USE_CUDA
@@ -103,7 +105,6 @@ class Bot:
 
         for doc in docs['hits']['hits']:
             context = doc['_source']['text']
-            # print(context)
             
             encoded_input = self.encode_input(statement, context)
             encoded_output = self.model.predict(encoded_input)
@@ -112,10 +113,34 @@ class Bot:
                 responses.append((probability, response))
         return responses
 
+    def reply_from_wiki(self, statement):
+        context = ws.summary(statement)
+        encoded_input = self.encode_input(statement, context)
+        encoded_output = self.model.predict(encoded_input)
+        probability, response = self.decode_output(encoded_output)
+        return (probability, response)
 
-def test_reply():
-    bot = Bot()
-    answers = bot.reply('who is stan lee?')
-    print(answers)
 
-test_reply()
+
+if __name__=="__main__":
+ 
+    # def test_reply():
+    #     bot = Bot()
+    #     answers = bot.reply("when Stan Lee was born?")
+    #     print(answers)
+
+    def test_reply_from_wiki():
+        bot = Bot()
+        answers = bot.reply_from_wiki("when was Stan Lee born?")
+        print(answers)
+
+    # question = "when stan lee was born?"
+    # elastic.test_search(question)
+    # print("==============================")
+    # print("Response: full text elasticsearch")
+    # print("--------------------------------")
+    # test_reply()
+    # print("==============================")
+    # print("Response: answer from Wikipedia summary")
+    # print("--------------------------------")
+    test_reply_from_wiki()
