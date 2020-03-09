@@ -38,6 +38,7 @@ DEFAULT_CONFIG = {
     'self_score': '.5',
     'semantic_score': '.5',
     'debug': True,
+    'wiki_title_max_words': 4,
     'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}',
 }
 DEFAULT_CONFIG.update(env.parsed)
