@@ -28,3 +28,6 @@
 -
   Q: How can I implement a Kalman Filter in python?
   A: The `pykalman` package implements both a linear kalman filter as well as a nonlinear unscented kalman filter.
+-
+  Q: When was the first deep learning backpropagation algorithm discovered?
+  A: The basics of continuous backpropagation were first derived by Henry J. Kelley in 1960 to solve control theory problems. Arthur E. Bryson published a similar approach to solving control theory problems in 1961. The actual word \"backpropagation\" was popularized as a word to describe the learning algorithm for neural networks in 1986 by Rumelhart, Geoffrey Hinton & Williams,
