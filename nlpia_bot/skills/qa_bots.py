@@ -41,7 +41,7 @@ class Bot:
         model_dir = os.path.join(DATA_DIR, 'qa-models', f"{qa_model}")
         model_type = qa_model.split('-')[0].lower()
         if not os.path.isdir(model_dir):
-            os.mkdir(model_dir)
+            os.makedirs(model_dir)
 
         if (
             not os.path.exists(os.path.join(model_dir, 'config.json')) or
@@ -112,3 +112,6 @@ class Bot:
             if len(response) > 0:
                 responses.append((probability, response))
         return responses
+
+if __name__ == '__main__':
+    bot = Bot()
