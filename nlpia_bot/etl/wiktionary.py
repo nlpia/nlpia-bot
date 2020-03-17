@@ -6,7 +6,7 @@ import requests
 
 import pandas as pd
 
-from nlpia_bot.constants import DATA_DIR
+from ..constants import DATA_DIR
 
 
 def scrape_slang(url='https://bestlifeonline.com/2010s-slang/'):

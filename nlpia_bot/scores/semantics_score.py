@@ -1,6 +1,7 @@
-from nlpia_bot.spacy_language_model import nlp  # noqa
-
 import logging
+
+from ..spacy_language_model import nlp  # noqa
+
 log = logging.getLogger(__name__)
 
 
