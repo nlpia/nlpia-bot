@@ -9,7 +9,7 @@ from multiprocessing import cpu_count
 from tqdm import tqdm
 from nlpia_bot.skills.qa_models import QuestionAnsweringModel
 
-from nlpia_bot.etl import scrape_wikipedia, elastic
+from nlpia_bot.etl import elastic
 from nlpia_bot.constants import DATA_DIR, USE_CUDA
 
 log = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ class Bot:
                 self.transformer_loggers.append(logging.getLogger(name))
                 self.transformer_loggers[-1].setLevel(logging.ERROR)
 
-        url_str = 'https://totalgood.org/midata/models/bert/cased_simpletransformers.zip'
+        url_str = 'http://totalgood.org/midata/models/bert/cased_simpletransformers.zip'
         model_dir = os.path.join(DATA_DIR, 'simple-transformer')
         if not os.path.isdir(model_dir):
             os.mkdir(model_dir)
@@ -97,13 +97,13 @@ class Bot:
         return output[0]['probability'], output[0]['answer']
 
     def reply(self, statement):
-        
+
         responses = []
         docs = elastic.search(statement)
 
         for doc in docs['hits']['hits']:
             context = doc['_source']['text']
-            
+
             encoded_input = self.encode_input(statement, context)
             encoded_output = self.model.predict(encoded_input)
             probability, response = self.decode_output(encoded_output)
