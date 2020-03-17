@@ -8,9 +8,9 @@ from tqdm import tqdm
 import pandas as pd
 from wikipediaapi import Wikipedia
 
-from nlpia_bot import constants
-from nlpia_bot.spacy_language_model import load
-from nlpia_bot.etl.vectors import phrase_to_vec
+from .. import constants
+from ..spacy_language_model import load
+from .vectors import phrase_to_vec
 
 import logging
 log = logging.getLogger(locals().get('__name__', ''))

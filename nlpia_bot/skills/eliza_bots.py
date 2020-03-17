@@ -4,7 +4,7 @@ import random
 import re
 # from collections import namedtuple
 
-from nlpia_bot.constants import DATA_DIR
+from ..constants import DATA_DIR
 
 # python 2/3 compatibility
 try:

@@ -3,7 +3,7 @@ import logging
 
 import spacy
 
-from nlpia_bot.constants import LANG, LANGS, passthroughSpaCyPipe
+from .constants import LANG, LANGS, passthroughSpaCyPipe
 
 
 log = logging.getLogger(__name__)
