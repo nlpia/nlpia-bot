@@ -23,7 +23,7 @@ dependencies:
   - psycopg2
   - pyscaffold
   - pytest-cov
-  - python=3.7
+  - python>=3.7.6
   - pytorch
   - regex  # ==2018.1.10
   - seaborn
@@ -42,4 +42,3 @@ dependencies:
     - transformers>=2.4.1,<2.5.0
     - wikipedia-api
     # - hunspell
-
