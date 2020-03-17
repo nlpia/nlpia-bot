@@ -50,7 +50,7 @@ cover/*
 MANIFEST
 
 # Model data
-data/simple-transformer/*
+data/qa-models/*
 
 # Mac
 __MACOSX
