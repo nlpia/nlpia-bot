@@ -4,7 +4,7 @@ import logging
 # import pandas as pd
 
 from ..etl import glossaries
-from . import spacy_language_model
+from .. import spacy_language_model
 from ..etl import knowledge_extraction as extract
 
 log = logging.getLogger(__name__)
