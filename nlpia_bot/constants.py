@@ -261,7 +261,7 @@ def parse_argv(argv=sys.argv):
 
     # strip quotes in case ini file incorrectly uses single quotes that become part of the str
     args.nickname = str(args.nickname).strip().strip('"').strip("'")
-    # args.bots = args.bots or 'search_fuzzy,pattern,parul,time'
+    args.bots = 'glossary,qa' if getattr(args, 'bots', None) is None else args.bots
     args.bots = [m.strip() for m in args.bots.split(',')]
     log.info(f"Building a BOT with: {args.bots}")
     log.info(f"Weights: {args.score_weights}")
@@ -338,6 +338,7 @@ USE = None
 
 class passthroughSpaCyPipe:
     """ Callable pass-through SpaCy Pipeline Component class (callable) for fallback if spacy_hunspell.spaCyHunSpell fails"""
+
     def __init__(self, *args, **kwargs):
         pass
 
