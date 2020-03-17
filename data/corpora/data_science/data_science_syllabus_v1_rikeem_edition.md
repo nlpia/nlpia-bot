@@ -48,7 +48,7 @@ Though you should rotate between each of these, you should try to make more prog
         - go for a run
         - go to the gym
     - mental health:
-        - daily/ or weekly: record your Beck Depression Invintory (BDI) score: [Feeling Good p. 29](https://totalgood.org/midata/books/Feeling%20Good.pdf#page=36)
+        - daily/ or weekly: record your Beck Depression Invintory (BDI) score: [Feeling Good p. 29](http://totalgood.org/midata/books/Feeling%20Good.pdf#page=36)
             - answer 21 multiple choices questions on paper
             - interact with nlpia-bot at nlpia.org or on your laptopß
         - label and think about negative emotions & thoughts
@@ -60,7 +60,7 @@ Though you should rotate between each of these, you should try to make more prog
             - anxiety
             - anger
             - frustration
-        - look for cognitive distortions in your inner dialog [(Feeling Good p. 40)](https://totalgood.org/midata/books/Feeling%20Good.pdf#page=56):
+        - look for cognitive distortions in your inner dialog [(Feeling Good p. 40)](http://totalgood.org/midata/books/Feeling%20Good.pdf#page=56):
 
 
 - software development best practices
