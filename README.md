@@ -1,4 +1,5 @@
 [![Build Status](https://api.travis-ci.com/nlpia/nlpia-bot.svg?branch=master)](https://travis-ci.com/nlpia/nlpia-bot)
+[![Buy Us Tea](docs/media/small-leaf-and-name-screenshot-31x80.png)](https://buymeacoffee.com/hobs)
 [![Coverage](https://codecov.io/gh/nlpia/nlpia-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/nlpia/nlpia-bot)
 [![GitHub release](https://img.shields.io/github/release/nlpia/nlpia-bot.svg)](https://github.com/nlpia/nlpia-bot/releases/latest)
 [![PyPI version](https://img.shields.io/pypi/pyversions/nlpia-bot.svg)](https://pypi.org/project/nlpia-bot/)
