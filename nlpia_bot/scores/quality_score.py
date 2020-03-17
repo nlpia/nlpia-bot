@@ -1,12 +1,15 @@
-# TODO: add doc strings? 
+# TODO: add doc strings?
 import logging
 import nltk
 import importlib
+import sys
 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-from nlpia_bot import spacy_language_model
+from .. import constants
+from .. import spacy_language_model
 
+sys.path.append(constants.BASE_DIR)
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
