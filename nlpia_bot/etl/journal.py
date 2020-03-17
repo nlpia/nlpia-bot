@@ -13,8 +13,8 @@ import numpy as np
 import pandas as pd
 from annoy import AnnoyIndex
 
-from nlpia_bot.spacy_language_model import nlp
-from nlpia.futil import find_files
+from ..spacy_language_model import nlp
+from .futil import find_files
 
 log = logging.getLogger(__name__)
 

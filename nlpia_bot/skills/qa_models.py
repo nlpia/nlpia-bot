@@ -3,16 +3,18 @@
 import os
 import math
 import json
-import random
+# import random
 from multiprocessing import cpu_count
 from tqdm import tqdm
 
-from sklearn.metrics import (
-    mean_squared_error,
-    matthews_corrcoef,
-    confusion_matrix,
-    label_ranking_average_precision_score
-)
+import pandas as pd
+
+# from sklearn.metrics import (
+#     mean_squared_error,
+#     matthews_corrcoef,
+#     confusion_matrix,
+#     label_ranking_average_precision_score
+# )
 
 import torch
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
@@ -27,20 +29,20 @@ from transformers import (
     AlbertTokenizer
 )
 
-from nlpia_bot.skills.qa_utils import (
+from .qa_utils import (
     get_examples,
     convert_examples_to_features,
     RawResult,
     write_predictions,
-    RawResultExtended,
-    write_predictions_extended,
+    # RawResultExtended,
+    # write_predictions_extended,
     to_list,
     build_examples,
     get_best_predictions,
-    get_best_predictions_extended,
+    # get_best_predictions_extended,
 )
 
-from nlpia_bot.constants import USE_CUDA
+from ..constants import USE_CUDA
 
 QABOTS_ARGS = {
     'output_dir': '',
@@ -82,14 +84,14 @@ class QuestionAnsweringModel:
     Trains and loads transformer used in question answering tasks
     Forked from https://github.com/ThilinaRajapakse/simpletransformers
     """
-    
+
     def __init__(
         self, model_type, model_name_or_path,
         pretrained=True, use_cuda=USE_CUDA, cuda_device=-1, args=None
     ):
         """
         Initializes an instance of QuestionAnsweringModel
-        
+
         Args:
             model_type: Identifier for which architecture to use (currently supporting Bert)
             model_name_or_path: Identifier for which architecture to download or path to saved model
@@ -103,24 +105,24 @@ class QuestionAnsweringModel:
             raise ValueError(
                 "pretrained=True, but pytorch_model.bin not found in {}".format(self.args['output_dir'])
             )
-        
+
         model_classes = {
             'bert': (BertConfig, BertForQuestionAnswering, BertTokenizer),
             'albert': (AlbertConfig, AlbertForQuestionAnswering, AlbertTokenizer)
         }
         config_class, model_class, tokenizer_class = model_classes[model_type]
-        
+
         self.model = model_class.from_pretrained(model_name_or_path)
         self.device = self._get_device(use_cuda, cuda_device)
         self.results = {}
         self.tokenizer = tokenizer_class.from_pretrained(
             model_name_or_path, do_lower_case=self.args['do_lower_case']
         )
-    
+
     def train_model(self, train_data, output_dir=False, show_running_loss=True, args=None, eval_data=None):
         """
         Trains the model. Saves files to output_dir.
-        
+
         Args:
             train_data: Path to JSON file containing training data
                 or list of Python dicts in the correct format. The model will be trained on this data.
@@ -128,7 +130,7 @@ class QuestionAnsweringModel:
             args (optional): Optional changes to the args dict of the model. Changes will persist for model.
             eval_data (optional): Path to JSON file containing evaluation data used when
                 evaluate_during_training is enabled. Required if evaluate_during_training is enabled.
-        
+
         Returns:
             None
         """
@@ -150,24 +152,23 @@ class QuestionAnsweringModel:
                 "Output directory '{}' already exists and is not empty."
                 " Set argument overwrite_output_dir=True to overwrite.".format(output_dir)
             )
-        
+
         # Convert train_data to json if not already
         if isinstance(train_data, str):
             with open(train_data, 'r') as f:
                 train_examples = json.load(f)
         else:
             train_examples = train_data
-        
+
         # Load the training dataset
         train_dataset = self._load_and_cache_examples(train_examples)
-        
 
         # Train the model and save to output_dir
         self.model.to(self.device)
-        
+
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        
+
         global_step, tr_loss = self._train(
             train_dataset,
             output_dir,
@@ -179,10 +180,10 @@ class QuestionAnsweringModel:
         model_to_save.save_pretrained(output_dir)
         self.tokenizer.save_pretrained(output_dir)
         torch.save(self.args, os.path.join(output_dir, 'training_args.bin'))
-        
+
         if not self.args['silent']:
             print('Training of {} model complete. Saved to {}.'.format(self.args['model_type'], output_dir))
-    
+
     def eval_model(self, eval_data, output_dir=None, verbose=False):
         """
         Evaluates the model on eval_data. Saves results to output_dir.
@@ -195,7 +196,8 @@ class QuestionAnsweringModel:
 
         Returns:
             result: Dictionary containing evaluation results. (correct, similar, incorrect)
-            text: A dictionary containing the 3 dictionaries correct_text, similar_text (the predicted answer is a substring of the correct answer or vise versa), incorrect_text.
+            text: A dictionary containing the 3 dictionaries correct_text, similar_text
+                 (the predicted answer is a substring of the correct answer or vise versa), incorrect_text.
         """
         if not output_dir:
             output_dir = self.args['output_dir']
@@ -218,7 +220,7 @@ class QuestionAnsweringModel:
             print(self.results)
 
         return result, texts
-    
+
     def predict(self, to_predict, n_best_size=None):
         """
         Performs predictions on a list of python dicts containing contexts and qas.
@@ -240,7 +242,7 @@ class QuestionAnsweringModel:
         Returns:
             preds: A python list containg the predicted answer, and id for each question in to_predict.
         """
-        tokenizer = self.tokenizer
+        # tokenizer = self.tokenizer
         device = self.device
         model = self.model
         args = self.args
@@ -261,7 +263,7 @@ class QuestionAnsweringModel:
         )
 
         all_results = []
-        
+
         model.eval()
         for batch in tqdm(eval_dataloader, disable=args['silent']):
             batch = tuple(t.to(device) for t in batch)
@@ -271,10 +273,10 @@ class QuestionAnsweringModel:
                     'input_ids': batch[0],
                     'attention_mask': batch[1]
                 }
-                
+
                 if args['model_type'] != 'distilbert':
                     inputs['token_type_ids'] = batch[2]
-                    
+
                 example_indices = batch[3]
 
                 outputs = model(**inputs)
@@ -328,8 +330,8 @@ class QuestionAnsweringModel:
                 correct += 1
                 correct_text[q_id] = answer
             elif (
-                predictions[q_id].strip() in answer.strip()
-                or answer.strip() in predictions[q_id].strip()
+                predictions[q_id].strip() in answer.strip() or
+                answer.strip() in predictions[q_id].strip()
             ):
                 similar += 1
                 similar_text[q_id] = {
@@ -358,9 +360,9 @@ class QuestionAnsweringModel:
         }
 
         return result, texts
-    
+
     ''' Utility Methods '''
-    
+
     def _get_device(self, use_cuda, cuda_device):
         """
         Utility method called from constructor
@@ -385,7 +387,7 @@ class QuestionAnsweringModel:
         else:
             device = 'cpu'
         return device
-    
+
     def _get_updated_args(self, use_cuda, args, model_type, model_name_or_path):
         updated_args = {
             'doc_stride': 384,
@@ -394,20 +396,20 @@ class QuestionAnsweringModel:
             'max_answer_length': 100,
             'null_score_diff_threshold': 0.0
         }
-        
+
         updated_args.update(QABOTS_ARGS)
-        
+
         if not use_cuda:
             updated_args['fp16'] = False
-        
+
         if args:
             updated_args.update(args)
 
         updated_args['model_type'] = model_type
         updated_args['model_name_or_path'] = model_name_or_path
-        
+
         return updated_args
-    
+
     def _load_and_cache_examples(self, examples, evaluate=False, no_cache=False, output_examples=False):
         tokenizer = self.tokenizer
         args = self.args
@@ -418,7 +420,7 @@ class QuestionAnsweringModel:
 
         # preprocess examples into an InputExample list
         examples = get_examples(examples, is_training=not evaluate)
-        
+
         mode = 'dev' if evaluate else 'train'
         cached_features_file = os.path.join(
             args['cache_dir'],
@@ -426,11 +428,11 @@ class QuestionAnsweringModel:
                 mode, args['model_type'], args['max_seq_length'], len(examples)
             )
         )
-        
+
         # get features
         if os.path.exists(cached_features_file) and (
-            (not args['reprocess_input_data'] and not no_cache)
-            or (mode == 'dev' and args['use_cached_eval_features'])
+            (not args['reprocess_input_data'] and not no_cache) or
+            (mode == 'dev' and args['use_cached_eval_features'])
         ):
             features = torch.load(cached_features_file)
             if not args['silent']:
@@ -465,7 +467,7 @@ class QuestionAnsweringModel:
         all_cls_index = torch.tensor([f.cls_index for f in features], dtype=torch.long)
         all_p_mask = torch.tensor([f.p_mask for f in features], dtype=torch.float)
         all_example_index = torch.arange(all_input_ids.size(0), dtype=torch.long)
-        
+
         # build TensorDataset from data extracted from features
         if evaluate:
             dataset = TensorDataset(
@@ -496,7 +498,7 @@ class QuestionAnsweringModel:
         if output_examples:
             return dataset, examples, features
         return dataset
-    
+
     def _train(self, train_dataset, output_dir, show_running_loss=True, eval_data=None):
         device = self.device
         model = self.model
@@ -510,18 +512,18 @@ class QuestionAnsweringModel:
         no_decay = ['bias', 'LayerNorm.weight']
         optimizer_grouped_parameters = [
             {'params': [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
-            'weight_decay': args['weight_decay']},
+             'weight_decay': args['weight_decay']},
             {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
-            'weight_decay': 0.0}
+             'weight_decay': 0.0}
         ]
-        
+
         t_total = len(train_dataloader) // args['gradient_accumulation_steps'] * args['num_train_epochs']
         warmup_steps = math.ceil(t_total * args['warmup_ratio'])
         args['warmup_steps'] = warmup_steps if args['warmup_steps'] == 0 else args['warmup_steps']
 
         optimizer = AdamW(optimizer_grouped_parameters, lr=args['learning_rate'], eps=args['adam_epsilon'])
         scheduler = get_linear_schedule_with_warmup(optimizer, warmup_steps=args['warmup_steps'], num_training_steps=t_total)
-        
+
         # setup mixed precision training and data parallelism
         if args['fp16']:
             try:
@@ -532,12 +534,14 @@ class QuestionAnsweringModel:
 
         if args['n_gpu'] > 1:
             model = torch.nn.DataParallel(model)
-        
+
         # zero epoch, steps, loss, model's gradient, and training history
         epoch_number = 0
         global_step = 0
-        tr_loss, logging_loss = 0.0, 0.0
+        tr_loss = 0.0
+        # logging_loss = 0.0
         model.zero_grad()
+        trange = range
         train_iterator = trange(int(args['num_train_epochs']), desc='Epoch', disable=args['silent'])
         if args['evaluate_during_training']:
             training_progress_scores = {
@@ -594,7 +598,7 @@ class QuestionAnsweringModel:
                     global_step += 1
 
                     # TODO log metrics after the step
-                    
+
                     # save model checkpoint
                     if args['save_steps'] > 0 and global_step % args['save_steps'] == 0:
                         output_dir_current = os.path.join(output_dir, 'checkpoint-{}'.format(global_step))
@@ -605,11 +609,12 @@ class QuestionAnsweringModel:
                         self.tokenizer.save_pretrained(output_dir_current)
 
                     # evaluate the model
-                    if args['evaluate_during_training'] and args['evaluate_during_training_steps'] > 0 and global_step % args['evaluate_during_training_steps'] == 0:
+                    if (args['evaluate_during_training'] and args['evaluate_during_training_steps'] > 0 and
+                            global_step % args['evaluate_during_training_steps'] == 0):
                         results, _ = self.eval_model(eval_data, verbose=True)
 
                         output_dir_current = os.path.join(output_dir, 'checkpoint-{}'.format(global_step))
-                        
+
                         if not os.path.exists(output_dir_current):
                             os.makedirs(output_dir_current)
 
@@ -649,12 +654,12 @@ class QuestionAnsweringModel:
                         writer.write('{} = {}\n'.format(key, str(results[key])))
 
         return global_step, tr_loss / global_step
-    
+
     def _evaluate(self, eval_data, output_dir):
         """
         Utility method that evaluates the model on eval_data. Called by the eval_model() method
         """
-        tokenizer = self.tokenizer
+        tokenizer = self.tokenizer  # noqa
         device = self.device
         model = self.model
         args = self.args
@@ -675,7 +680,7 @@ class QuestionAnsweringModel:
         )
 
         all_results = []
-        
+
         # pytorch evaluation loop
         model.eval()
         for batch in tqdm(eval_dataloader, disable=args['silent']):

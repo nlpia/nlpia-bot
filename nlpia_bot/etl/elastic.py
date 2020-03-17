@@ -5,7 +5,7 @@ import os
 from elasticsearch import Elasticsearch
 import wikipediaapi
 from slugify import slugify
-from nlpia_bot import constants
+from . import constants
 
 try:
     client = Elasticsearch()
