@@ -8,11 +8,9 @@ import zipfile
 from multiprocessing import cpu_count
 from tqdm import tqdm
 
-from constants import args  # noqa
-
 from nlpia_bot.skills.qa_models import QuestionAnsweringModel
 from nlpia_bot.etl import scrape_wikipedia
-from nlpia_bot.constants import DATA_DIR, USE_CUDA
+from nlpia_bot.constants import DATA_DIR, USE_CUDA, args  # noqa
 
 log = logging.getLogger(__name__)
 
