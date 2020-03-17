@@ -13,7 +13,7 @@ import spacy  # noqa
 import configargparse
 from environment import Environment
 
-from nlpia_bot import __version__
+from . import __version__
 
 env = Environment(spacy_lang=str, loglevel=int, name=str)
 
