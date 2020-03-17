@@ -8,7 +8,7 @@ import pandas as pd
 import logging
 log = logging.getLogger(__name__)
 
-df = pd.read_csv('https://totalgood.org/midata/teaching/rikeem-u/heights_weights_genders.csv')
+df = pd.read_csv('http://totalgood.org/midata/teaching/rikeem-u/heights_weights_genders.csv')
 df.describe()
 # Add Color column with red for Female and blue for Male
 df['Color'] = (df['Gender'] == 'Male').apply(lambda x: 'blue' if x else 'red')
