@@ -11,7 +11,7 @@ from tqdm import tqdm
 from nlpia_bot.skills.qa_models import QuestionAnsweringModel
 
 from nlpia_bot.etl import scrape_wikipedia
-from nlpia_bot.constants import DATA_DIR, USE_CUDA, args
+from nlpia_bot.constants import DATA_DIR, USE_CUDA
 
 log = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ class Bot:
                 self.transformer_loggers[-1].setLevel(logging.ERROR)
 
         qa_model = args.qa_model
-        url_str = f"https://totalgood.org/midata/models/qa/{qa_model}.zip"
+        url_str = f"http://totalgood.org/midata/models/qa/{qa_model}.zip"
         model_dir = os.path.join(DATA_DIR, 'qa-models', f"{qa_model}")
         model_type = qa_model.split('-')[0].lower()
         if not os.path.isdir(model_dir):
@@ -112,6 +112,7 @@ class Bot:
             if len(response) > 0:
                 responses.append((probability, response))
         return responses
+
 
 if __name__ == '__main__':
     bot = Bot()
