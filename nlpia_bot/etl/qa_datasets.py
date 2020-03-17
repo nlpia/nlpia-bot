@@ -1,14 +1,14 @@
 """ Question Answering dataset loaders """
 import re
-import os
+# import os
 import logging
 
 import numpy as np
 import pandas as pd
 import requests
-from tqdm import tqdm
+# from tqdm import tqdm
 
-from nlpia.futil import expand_filepath, mkdir_p
+# from nlpia.futil import expand_filepath, mkdir_p
 
 log = logging.getLogger(__name__)
 
@@ -44,30 +44,30 @@ def load_trec_taxonomy(url='http://cogcomp.org/Data/QA/QC/definition.html'):
     return taxonomy
 
 
-def download_word_lists(
-        source_url_path='https://cogcomp.seas.upenn.edu/Data/QA/QC/lists',
-        dest_path='~/midata/public/upenn_word_lists',
-        word_list_names=None):
-    dest_path = expand_filepath(dest_path)
-    mkdir_p(dest_path)
+# def download_word_lists(
+#         source_url_path='https://cogcomp.seas.upenn.edu/Data/QA/QC/lists',
+#         dest_path='~/midata/public/upenn_word_lists',
+#         word_list_names=None):
+#     dest_path = expand_filepath(dest_path)
+#     mkdir_p(dest_path)
 
-    if not word_list_names:
-        word_list_names = PRIMARY_WORD_LIST_NAMES + SECONDARY_WORD_LIST_NAMES
-    source_url_path = source_url_path or 'https://cogcomp.seas.upenn.edu/Data/QA/QC/lists'
-    dest_file_paths = []
-    for name in tqdm(word_list_names):
-        source_url_file_path = f'{source_url_path}/{name}'
-        try:
-            resp = requests.get(source_url_file_path)
-        except Exception as e:
-            log.warning(f'Unable to download {source_url_file_path}')
-            log.warning(str(e))
-            continue
-        file_path = os.path.join(dest_path, f'{name}.txt')
-        dest_file_paths.append(file_path)
-        with open(file_path, 'w') as fout:
-            fout.write(resp.text)
-    return list(zip(word_list_names, dest_file_paths))
+#     if not word_list_names:
+#         word_list_names = PRIMARY_WORD_LIST_NAMES + SECONDARY_WORD_LIST_NAMES
+#     source_url_path = source_url_path or 'https://cogcomp.seas.upenn.edu/Data/QA/QC/lists'
+#     dest_file_paths = []
+#     for name in tqdm(word_list_names):
+#         source_url_file_path = f'{source_url_path}/{name}'
+#         try:
+#             resp = requests.get(source_url_file_path)
+#         except Exception as e:
+#             log.warning(f'Unable to download {source_url_file_path}')
+#             log.warning(str(e))
+#             continue
+#         file_path = os.path.join(dest_path, f'{name}.txt')
+#         dest_file_paths.append(file_path)
+#         with open(file_path, 'w') as fout:
+#             fout.write(resp.text)
+#     return list(zip(word_list_names, dest_file_paths))
 
 
 def load_trec_trainset(url='http://cogcomp.org/Data/QA/QC/train_5500.label'):
