@@ -3,8 +3,8 @@ import re
 
 import numpy as np
 
-from nlpia_bot.constants import SENTENCE_SPEC
-from nlpia_bot.spacy_language_model import nlp
+from .constants import SENTENCE_SPEC
+from .spacy_language_model import nlp
 
 
 def generate_sentence(spec=SENTENCE_SPEC, sentence_id=None):
