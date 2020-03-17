@@ -40,6 +40,7 @@ DEFAULT_CONFIG = {
     'debug': True,
     'wiki_title_max_words': 4,
     'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}',
+    'qa_model': 'albert-large-v2-0.2.0'
 }
 DEFAULT_CONFIG.update(env.parsed)
 
@@ -126,7 +127,7 @@ def parse_args(args):
         '--use_cuda',
         help="Use CUDA and GPU to speed up transformer inference.",
         dest='use_cuda',
-        default=str(DEFAULT_CONFIG['use_cuda'])[0].lower() in 'fty1p',
+        default=USE_CUDA,
         action='store_true')
     parser.add_argument(
         '-p',
@@ -219,6 +220,13 @@ def parse_args(args):
         type=str,
         nargs='*',
         help="Words to pass to bot as an utterance or conversational statement requiring a bot reply or action.")
+    parser.add_argument(
+        '--qa_model',
+        help="Select which model qa_bots will use",
+        dest='qa_model',
+        default=DEFAULT_CONFIG['qa_model'],
+        type=str,
+        metavar='STR')
     parsed_args = parser.parse_args(args)
     print(parsed_args)
     return parsed_args
@@ -237,7 +245,7 @@ def setup_logging(loglevel):
 
 def parse_argv(argv=sys.argv):
     """Entry point for console_scripts"""
-    global BOT, LOGLEVEL
+    global BOT, LOGLEVEL, USE_CUDA
 
     new_argv = []
     if len(argv) > 1:
@@ -258,6 +266,9 @@ def parse_argv(argv=sys.argv):
     log.info(f"Building a BOT with: {args.bots}")
     log.info(f"Weights: {args.score_weights}")
     # log.info(f"Parsed Weights: {type(json.loads(args.score_weights))}")
+
+    USE_CUDA = args.use_cuda
+
     return args
 
 
@@ -327,7 +338,7 @@ USE = None
 
 class passthroughSpaCyPipe:
     """ Callable pass-through SpaCy Pipeline Component class (callable) for fallback if spacy_hunspell.spaCyHunSpell fails"""
-    def __init__(*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         pass
 
     def __call__(self, doc):
