@@ -7,10 +7,10 @@ import uuid
 import zipfile
 from multiprocessing import cpu_count
 from tqdm import tqdm
-from nlpia_bot.skills.qa_models import QuestionAnsweringModel
+from .qa_models import QuestionAnsweringModel
 
-from nlpia_bot.etl import elastic
-from nlpia_bot.constants import DATA_DIR, USE_CUDA
+from ..etl import elastic
+from ..constants import DATA_DIR, USE_CUDA
 
 log = logging.getLogger(__name__)
 

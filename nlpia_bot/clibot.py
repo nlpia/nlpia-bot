@@ -31,8 +31,8 @@ import os
 import numpy as np
 import pandas as pd
 
-from nlpia_bot import constants
-from nlpia_bot.scores.quality_score import QualityScore
+from . import constants
+from .scores.quality_score import QualityScore
 
 
 __author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Maria, Hobson, ..."
