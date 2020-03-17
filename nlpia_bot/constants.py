@@ -159,7 +159,7 @@ def parse_args(args):
         const=logging.INFO)
     parser.add_argument(
         '-vv',
-        '--very-verbose',
+        '--very_verbose',
         dest="loglevel",
         help="set loglevel to DEBUG",
         action='store_const',
@@ -178,6 +178,13 @@ def parse_args(args):
         help="SpaCy language model: en_core_web_sm, en_core_web_md, or en_core_web_lg",
         type=str,
         metavar="STR")
+    parser.add_argument(
+        '--wiki_title_max_words',
+        default=DEFAULT_CONFIG['wiki_title_max_words'],
+        dest="wiki_title_max_words",
+        help='Maximum n-gram length (in tokens) for wikipedia article title guesses.',
+        type=int,
+        metavar="INT")
     parser.add_argument(
         '-s',
         '--score_weights',
