@@ -5,7 +5,7 @@ import logging
 
 from tqdm import tqdm
 
-from nlpia_bot.constants import DATA_DIR
+from .constants import DATA_DIR
 log = logging.getLogger(__name__)
 
 

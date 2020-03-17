@@ -7,10 +7,10 @@ from tqdm import tqdm
 # import pandas as pd
 import yaml
 
-# from nlpia_bot.spacy_language_model import nlp
-from nlpia_bot.constants import DATA_DIR, STOPWORDS, DEFAULT_GLOSSARY_DOMAINS
-from nlpia_bot.spacy_language_model import nlp
-# from nlpia_bot.etl.yml import find_hashtags
+# from .spacy_language_model import nlp
+from ..constants import DATA_DIR, STOPWORDS, DEFAULT_GLOSSARY_DOMAINS
+from ..spacy_language_model import nlp
+# from .etl.yml import find_hashtags
 
 import logging
 log = logging.getLogger(locals().get('__name__'))

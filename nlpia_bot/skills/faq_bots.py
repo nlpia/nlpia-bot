@@ -3,10 +3,10 @@ import logging
 
 import pandas as pd
 
-from nlpia_bot.etl import faqs
-from nlpia_bot.constants import DEFAULT_FAQ_DOMAINS
-from nlpia_bot import spacy_language_model
-from nlpia_bot.etl import knowledge_extraction as extract
+from ..etl import faqs
+from ..constants import DEFAULT_FAQ_DOMAINS
+from .. import spacy_language_model
+from ..etl import knowledge_extraction as extract
 
 log = logging.getLogger(__name__)
 nlp = spacy_language_model.load()  # 'en_core_web_md'
