@@ -27,13 +27,12 @@ import importlib
 import json
 import logging
 import os
+import sys
 
 import numpy as np
 import pandas as pd
 
 from . import constants
-from .scores.quality_score import QualityScore
-
 
 __author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Maria, Hobson, ..."
 __copyright__ = "Hobson Lane"
@@ -41,6 +40,12 @@ __license__ = "The Hippocratic License (MIT + *Do No Harm*, see LICENSE.txt)"
 
 
 log = logging.getLogger(__name__)
+
+log.info(f'sys.path: {sys.path}')
+log.info(f'constants: {dir(constants)}')
+log.info(constants.append_sys_path())
+
+from .scores.quality_score import QualityScore  # noqa
 
 
 BOT = None

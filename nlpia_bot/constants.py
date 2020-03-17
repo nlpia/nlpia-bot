@@ -19,8 +19,6 @@ env = Environment(spacy_lang=str, loglevel=int, name=str)
 
 SRC_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(SRC_DIR)
-# FIXME: to avoid PYTHONPATH hack, use relative imports: `from .constants` not `from nlpia_bot.constants`
-sys.path.append(BASE_DIR)
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 LOG_DIR = os.path.join(DATA_DIR, 'log')
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -64,6 +62,14 @@ root_logger = logging.getLogger()
 log = logging.getLogger(__name__)
 
 
+# FIXME: to avoid PYTHONPATH hack, use relative imports: `from .constants` not `from nlpia_bot.constants`
+def append_sys_path():
+    if sys.path[-1] != SRC_DIR:
+        log.warn(f'Package path not in sys.path: {sys.path}')
+        sys.path.append(BASE_DIR)
+
+
+append_sys_path()
 # def parse_config(filepath='nlpia-bot.ini'):
 #     config = ConfigParser()
 #     config['DEFAULT'] = config_defaults
