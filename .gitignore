@@ -49,18 +49,18 @@ docs/_build/*
 cover/*
 MANIFEST
 
-# Model data
-data/qa-models/*
-
 # Mac
 __MACOSX
 
 # KDE
 .directory
 
-# BigData
+# BigData and Models
 db.sqlite3
 *.bz2
+*.zip
+nlpia_bot/data/qa-models/*
+nlpia_bot/data/simple-transformer/
 
 # Per-project virtualenvs
 .venv*/
@@ -69,3 +69,4 @@ db.sqlite3
 .bash_env
 **/*secret*
 **/*private*
+nlpia_bot/data/*.json
