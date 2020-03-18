@@ -143,6 +143,7 @@ class CLIBot:
         # Collect replies from each bot.
         for replier in self.repliers:
             bot_replies = []
+            log.info(f'Running bot {replier}')
             try:
                 bot_replies = replier(statement)
                 log.debug("{replier.__name__} replies: {bot_replies}")
@@ -200,7 +201,7 @@ def run_bot():
     if constants.args.persist:
         print('Type "quit" or "exit" to end the conversation...')
 
-    log.debug(f'FINAL PROCESSED ARGS: {vars(constants.args)}')
+    log.debug(f'FINAL PROCESSED ARGS AFTER INSTANTIATING CLIBot:\n{vars(constants.args)}\n')
     return BOT
 
 
@@ -217,9 +218,6 @@ def cli(args):
             break
         if user_statement:
             log.info(f"Computing a reply to {user_statement}...")
-            # state = BOT.reply(statement, **state)
-            # print(BOT)
-            # print(type(BOT))
             bot_statement = BOT.reply(user_statement)
             statements[-1]['bot'] = bot_statement
             print(f"{args.nickname}: {bot_statement}")
