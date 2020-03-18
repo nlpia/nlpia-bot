@@ -1,8 +1,7 @@
 include *.md
-recursive-include examples *.txt *.py
 include nlpia_bot/data/*.json
 include nlpia_bot/data/eliza_doctor.txt
 include nlpia_bot/data/movie_dialog.csv
 include nlpia_bot/data/medical_sentences.json
 include nlpia_bot/data/*.ini
-recursive-include nlpia_bot/data/faq
+recursive-include nlpia_bot/data/faq *.yml *.csv *.json
