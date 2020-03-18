@@ -1,0 +1,128 @@
+-
+  Q: "Can supercomputers simulate a human brain yet? #neuroscience #neural-networks #ann #ai"
+  A: "According to a [2017 Forbes' article](https://www.forbes.com/sites/quora/2017/08/24/supercomputers-can-now-simulate-basic-brain-functions-and-theres-more-on-the-horizon/#170a5c8a29df), a Japanese supercomputer would have theoretically been able to simulate most of the brain functions that we know about at about 1/4000th speed. Assuming Moore's law, that would put us at about 1/1000th speed today. And that is only a crude approximation of the higher level thinking in the human brain that ignores emotion, sensory and motor neurons, and the interaction between our biome and brain. And that's just the things we know about. And it's not yet possible to even measure the connection architecture in a single human brain. So it's likely to be possible for at least a decade before a human brain simulation is even remotely possible, and only for the large corporations that can afford it. Human brains will still be much cheaper and more versatile for at least two more decades."
+-
+  Q: "Any advice for my first capstone project? #data-science #problem #hypothesis"
+  A: "Focus on the data first, rather than the problem statement. Your goal is to find a table of data that you can turn into meaningful numbers. Categorical variables like gender might become three binary columns, one for male, one for female, and one for other. Continuous numerical variables do not need any preprocessing or feature extraction. Once you have your table of numbers, just pick one of the columns that you think would be interesting to predict if you knew all the others."
+-
+  Q: "Why is the test set accuracy for the min_max scaled data so much worse than for the unscaled data (51% vs 62%)? #data-science #overfitting #evaluation #training #hyperparameter-tuning"
+  A: "
+    1. Copy the code for the two runs into py files and run them to reproduce the two results.
+    2. If step 1 still shows the discrepancy, compare the two .py files using PyCharm **Compare To...** feature or `Meld` or `diff`.
+    3. If the only changes were the scaler, then examine the datasets and make sure that they do indeed contain the same data, only scaled differently.
+    In one case a student found that she had accidentally swapped the test set and training set CSVs in the model that was performing poorly, so it only had 5% of the data to train on as the better performing model.
+    "
+-
+  Q: "I want to do unsupervised learning (clustering) on move data like genre, cast, title, box office ticket sales, and duration (time). How do I deal with multi-class categorical variables? For example, some movies have more than one genre. One movie had three genres listed: ['Science Fiction', 'Action', 'Drama']." #clustering #unsupervised-learning #data-science #ml
+  A: " Use a TfidfVectorizer, but just make sure it doesn't try to tokenize your genre strings (since they are already a list type):\n
+    ```python
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    vectorizer = TfidfVectorizer(tokenizer=list, lowercase=False, min_df=3, max_df=.8)
+    vectorizer.fit(df['genre'])
+    df_tfidf_genre = pd.DataFrame(vectorizer.transform(df['genre']), columns=['genre_' + g for g in vectorizer.get_feature_names()])
+    df = pd.concat([df, df_tfidf_genre], axis=1)
+    ```
+    "
+-
+  Q: "My jupyter notebooks aren't uploading to GitHub? #git #github #jupyter"
+  A: "You need to hit the green commit button at the bottom of the page on github after uploading."
+-
+  Q: "My jupyter notebooks are empty, just a file:// url? #windows #file-system #os #bash #file #directory #url #jupyter"
+  A: "On windows you cannot drag from the File Explorer to the browser window where you have the Jupyter webapp running because that just creates a URL text file rather than copying the entire notebook. When creating, copying, moving, or deleting files or directories, I like to us a terminal and a linux shell like `bash`. You can use the command `tree` on most linux systems to provide an overview of the directory structure from the command line."
+-
+  Q: "My jupyter notebooks aren't loading, they only contain a url. What should I do? #windows #file-system #os #bash #file #directory #url #jupyter"
+  A: "Under options in Windows File Explorer make sure the checkbox for *hide file extensions for known file types* is **not** checked.  Also makes sure *display hidden files* is selected. Then apply those settings to all folders, not just the particular directory you have open at the moment by hitting the Apply button at the bottom right. Because of all this poor UX in Windows, I do all file creating, copying, moving, or deleting in a terminal with a linux shell like `bash`. On windows you can use git-bash. You can use the command `tree` on most bash shells (including git-bash on windows) to provide an overview of the directory structure from the command line."
+-
+  Q: "My dataset contains zipcodes (categorical variables) for the origin and destination of our shipments, so we must use RandomForestRegressor to predict the cost or price of the shipment, right? #feature-extraction #feature-engineering #model-type #regression #categorical"
+  A: "No, you can use any model, as long as your categorical feature are processed correctly to create a binary one-hot encoding of the data. For example you could process the first digit of the zip code to create 10 new binary variables, one for each digit 0 through 9 that might be present in the first position."
+-
+  Q: "Should I combine all the news articles for a given year to create a labeled datset of TFIDF vectors, one for each year label? #feature-engineering #problem-statement #hypothesis #regression #date #datetime"
+  A: "No. Leave all the news articles separate so that it can generalize from the articles to identify the words that are present in a lot of different documents for each time period. In addition, you can have a target label for year and also a target label for month, or season (quarter) to create a more interesting and useful model."
+-
+  Q: "When I run read_csv on the NYC crime dataset, the *PARKS_NM* column is flagged as \"mixed data type\". So I used the `dtype` argument to coerce these values to a str. I no longer get the *mixed datatype* warning, but there are still `np.nan` (float) values and `str` values (like \"Central Park\") in the column. Is this right?#pandas #data-science #csv #etl #data-cleaning"
+  A: "Yes. An `np.nan` value is retained despite the dtype specification. This will allow you to use `.fillna()` and `.dropna()` to replace or ignore those nan values, depending on what is best for your algorithm or model."
+-
+  Q: "My `pd.DataFrame` merge (inner join) operation is creating only 7 rows out of the millions in my two tables. #pandas #data-cleaning #merge #join #sql #relational-database"
+  A: "You must have a mismatch in some of the values listed in the columns listed for the `on` argument to the `.merge()` method."
+-
+  Q: "What sort of dataset should I look for so I don't get something too difficult or too hard? #dataset #data-science #data-cleaning #problem #hypothesis #datatypes"
+  A: "Look for a tabular dataset that has some continuous and categorical data types in it. Some *other* data types are fine, and would be nice to have so you can grow your skills to handle natural language, dates, times, and geographic information like zip codes and GPS coordinates."
+-
+  Q: "What do you call the data columns that are used to train a machine learning model. #datatypes #data-science #tabular-data"
+  A: "The target or label is what your model is trying to predict or output. The input data columns that it's using to predict those outputs are called the input variables, attributes, features, or predictor variables."
+-
+  Q: "What would an NBA dataset look like and how could I create a project out of it?"
+  A: "You could have a row for every game ever played and a column with the list of player names, the datetime and location of the game, the names of the teams and which was the home team. Even things like attendance numbers, the number of fouls and the score of the game could be columns. You could then use the player roster and the time/day team to predict scores, fouls, or the winner of the game."
+-
+  Q: "I feel overwhelmed with this dataset. what should I do?"
+  A: "Take it one column at a time. Identify your target variable. For example you could select the home price in a table of real estate prices for homes. `y = df['price']`. Then look at the dtype (data type) for each of the columns and work with just the first numeric column you see, for example the total square footage of the home. `X = df[['sqft']]`. Then you can train a linear regression to predict home price from square footage. `lr, lr = sklearn.linear_model.LinearRegression(), lr.fit(X, y)` and you can score it for accuracy with `lr.score(X, y)`. Then add one column at a time to your variable X (features) and see how your `fit` improves by checking the `score` each time."
+-
+  Q: "How can I filter out proper nouns from supreme court rulings so I can build a model to predict the judge's name and use that to suggest words for lawyers to use in their arguments?"
+  A: "Spacy has a built-in POS tagger: `[tok.text for tok in spacy.load('en')('Hello Earth!') if tok.pos_ != 'PROPN']` or:
+  >>> import spacy
+  >>> nlp = spacy.load('en_core_web_md')
+  >>> doc = nlp('Hello world from Hobson Lane in Mississippi sitting on the john.')
+  >>> [tok.pos_ for tok in doc]
+  ['INTJ', 'NOUN', 'ADP', 'PROPN', 'PROPN', 'ADP', 'PROPN', 'VERB', 'ADP', 'DET', 'PROPN', 'PUNCT']
+  >>> [(tok.text, tok.pos_) for tok in doc]
+  "
+-
+  Q: "When I bootstrapped a shuffled dataset and calculated the confidence 95% interval the mean of my actual data is well outside the 95% confidence interval. What does this mean?"
+  A: "This means that the two means are statistically different and are unlikely to have occurred by chance so you can reject your null hypothesis, just as if you'd gotten a p-value that was smaller than 5% (or 1 - .95)."
+-
+  Q: "In the national auto accident severity database the `seaborn.count_plot(df['Severity'])` shows only 2 values for severity. The values `2` and `3` are present but there aren't any `1` and `4` values. Is this OK for doing a regression?"
+  A: "Yes. A regression will work no matter how many or how few discrete ordinal values you have. But if you use the `.value_counts()` method on your `severity` column you will see an actual numerical count of the number of 1 and 4 values in this column. There aren't many, but there are a few. This makes sense, because minor fender benders do no usually result in a police report, and there are very few accidents that result in enough damage and death to rate 4 on this scale."
+-
+  Q: How do I compute the TFIDF matrix with limited RAM and millions of documents?
+  A: It's usually best to tune your pipeline on a sample of you entire dataset before attempting to run it on the entire dataset. Start with whatever amount of data you can fit in RAM. Only if that does not give you results that meet your requirements should you attempt to improve accuracy by adding more data. You can use `gensim` to work on large datasets that do not fit in RAM. Or you can use batch loading in pandas combined with a fixed vocabulary and CountVectorizer to vstack batches of Vectors.
+-
+  Q: What are the two fundamental kinds of variables in a data science model?
+  A: Continuous numerical and categorical variables. Categorical variables are converted to multiple binary dummy variables which are themselves treated as continuous by a data science model. So in reality, a data science model does math only on continuous numerical values. Ordinal variables (discrete variables with a natural order) must be treated as discrete categories (one-hot binary variable) or as continuous numerical values in their original form.
+-
+  Q: What is overfitting?
+  A: When your test set accuracy is significantly lower than your training set accuracy?
+-
+  Q: I have a TFIDF table that is wider than it is tall. I have more tokens in my vocabulary than I have example documents. Is that a problem.
+  A: Yes. That will usually cause overfitting. It's usually best to reduce your dimensions to create a data set that has at 10 or 100 examples (documents) for each dimension (token or term in your vocabulary).
+-
+  Q: My LinearRegression.fit() keeps giving me errors because of nonnumeric data or NaNs in my dataset.
+  A: Simplify your problem by using only a single feature and a single target variables and use `.dropna()` to ensure neither column have any NaNs. Once you have a fit and score working you can incrementally add more and more features and monitor how your error or score is improving with each pipeline modification that you make.
+-
+  Q: What are some good visualization and data cleaning plots to demonstrate for an NLP data set?
+  A: Plot a Zipf plot that shows how the frequency of word usage (TFIDFVectorizer.df) decreases linearly for a log plot of a sorted list of document frequencies. Also it's often helpful to list the most popular and least popular words using the TFIDFVectorizer object.
+-
+  Q: In python, when would I use an `OrderedDict` vs a `dict`.
+  A: An OrderedDict is useful for ranked or sorted lists of key-value pairs. If you want to be able to retrieve a key-value pair instantly, in `O(1)`, but you also want to be able to iterate through the key-value pairs in a particular consistent order, without sorting or reordering the sequence each time. A `list` of `tuple`s has lookup (seek) time of `O(N)` but maintains a consistent order. So an OrderedDict is the best of both a list of tuples and a `dict`, with fast lookup and consistent ordering.
+-
+  Q: When should I use a python data structure like a `list` or `dict` instead of a Pandas data structure like a `DataFrame` or a `Series`?
+  A: Data downloaded from a REST API will usually be in a json string which converts naturally to a nested sequence of python `dict`s and `list`s. So it will be more easily cleaned and manipulated as in python data structures. However, a Pandas `DataFrame` or `Series` is much more memory efficient than an equivalent python data structure. But a Pandas data structure is less efficient to mutate (change) and less efficient to iterate through with a `for` loop or a `list` comprehension, `dict` *comprehension*, or *generator*. So if you need dramatically speed up your througput, and you have sufficient DRAM or RAM, you can often use a python data structure to improve your throughput by 10x or more.
+-
+  Q: How do I know which variables I should clean up in my traffic accident data?
+  A: Create an end-to-end model with an accuracy metric that reflects the objectives of your project. Incrementally extract features from your data and measure the improvement to your test set and training set accuracy metric to gain insight into which features and cleaning approaches work best.
+-
+  Q: Should I remove records with NaN values or fill them with the average value for the column?
+  A: There are many approaches to dealing with missing values or NaNs besides just dropping or filling them with the average. The most important thing is to dummy variable associated with that column that contains a 0 or 1 depending on whether the value is unusual in some way, including NaN values. Whenever you impute or change any data you should always "register" the change with this new dummy variable so your ML algorithm can incorporate this fact into your model. This approach applies to missing or erroneous or nan values in any column. You should have a dummy "suspect" binary variable for each column that contains any suspect data, including outliers, that you may want to modify. In addition to dropping and filling with the mean, you can also interpolate or fill with the median or max or mode values. You can compare each of these approaches by observing their impact on your test set accuracy.
+-
+  Q: "My opiod death rates dataset contains many NaN values for counties where no population or opiod deaths were available. And I'm getting  a large negative score: `LinearRegression.score(X_test, y_test)` returns approximately -1e25. What should I do?"
+  A: "First make sure that you X_test and y_test are aligned so that each row has the correct death rate for each state and county. It's best to do `dropna()` on the complete dataset to ensure that there is not misalignment. Next, check for correlation between feature variables (county and state `get_dummies` binary features) and your target variable (death rate). You can just df.corr()['death_rate'].sort_values() to display the large and small correlations. Finally you can either remove features with low magnitude correlation or you can use PCA to reduce dimensions before your fit and score."
+-
+  Q: What is an easy NLP deep learning project that can be accomplished in a week?
+  A: Try predicting salaries from job titles. Or try predicting book popularity from book titles. Any short natural language string with a numerical label that depends on the semantics of the string will work well if you use Word2Vec document vectors. If you use Word2Vec vectors (in spacy, or gensim, or downloaded directly from Google Drive) you can get high accuracy with only a few (~10) labeled examples. You can build a 2-layer fully connected (`Dense`) network or use a LinearRegression. The transfer learning from the Word2Vec model allows you to call this a Deep Learning project.
+-
+  Q: "Some people names in my database have OCR errors or unnormalized title suffixes, like \"Smith, Judge.\" and \"Smith, J.\" and \"Smith, C. J.\" (C.P means Chief Judge). What's a good strategy for cleaning the data? #data-science #data-cleaning #etl #springboard"
+  A: "Sort the `df['name'].value_counts()` and work your way down from the top. Since most of your names in the Harvard case database have a comma-delimitted suffixes, you probably want to do `df['name'].str.split(',').apply(lambda x: x[0])` to strip off most suffixes. Then you can sort the value_counts again to look for OCR errors and fix them one at a time, like deleting \" C. J.\" suffixes that didn't have the comma or misplaced it due to OCR. Here's one wat to do that: `df['name'].replace(r'(\\s*C[.,\\s]*J[.,\\s]*')$', '', regex=True)`"
+-
+  Q: "What is a trigram? #technical-interview #bioinformatics #computer-science"
+  A: A trigram is a sequence of 3 characters or words or tokens within a string.
+-
+  Q: "How are trigrams used in the real world? #technical-interview #bioinformatics #computer-science"
+  A: Trigrams of characters or character trigrams are often used to index strings or documents to enable extremely fast ( O(1) ) full text search. They allow you to search for any substring or even if your query string or the documents contain misspellings or typos
+-
+  Q: What does the 'kde' argument mean in a seaborn joint distribution plot (`sns.jointplot`)?
+  A: KDE stands for Kernel Density Estimate. If a histogram plot includes a kde, seaborn will interpolate between the discrete counts in each of the histogram bins to create a smooth curve using gaussian probability density curves for each histogram bin. This is also called a GMM or Gaussian Mixture Model.
+-
+  Q: "How do I remove propernouns and abbreviations in a TfidfVectorizer?  #sklearn #python #nlp"
+  A: "Define a function that uses spacy to tokenize and iterates through each token, skipping the ones with `.pos_` attribute `== \"PPN\"` or similar."
+-
+  Q: "Why isn't XGBoost better at classifying images and natural language than CNNs?"
+  A: "Dimensionality and heirarchical & categorical nature of the data. Each decision tree can be simplified into an equation with only 2 nonlinear activation functions (2 neurons). It's equivalent to a 2-layer ANN: y = OR(B*AND(A*x)) = g(B*(f(A*x))), where A and B are tensors of dimension equal to x for single-neuron layer, not matrices for multiple neurons in a layer. Random Forests just add additional neurons to the 2 layers and perhaps an additional 2 layers for the ensembling. DL is deeper so it deals well with heirarchical data like pixels, 2x2 features, 3x3 features, 4x4 features (first layer), combinations of those features/filters (second layer) and so on, heirarchically. Images are heirarchical. As is natural language."

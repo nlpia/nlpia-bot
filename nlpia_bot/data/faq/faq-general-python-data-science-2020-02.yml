@@ -1,0 +1,64 @@
+-
+  Q: I feel overwhelmed with this dataset. what should I do?
+  A: "Take it one column at a time. Identify your target variable. For example, you could select the home price in a table of real estate prices for homes. `y = df['price']`. Then look at the dtype (data type) for each of the columns and work with just the first numeric column you see, for example the total square footage of the home. `X = df[['sqft']]`. Then you can train a linear regression to predict home price from square footage. `lr, lr = sklearn.linear_model.LinearRegression(), lr.fit(X, y)` and you can score it for accuracy with `lr.score(X, y)`. Then add one column at a time to your variable X (features) and see how your `fit` improves by checking the `score` each time."
+-
+  Q: "How can I filter out proper nouns from supreme court rulings so I can build a model to predict the judge's name and use that to suggest words for lawyers to use in their arguments?"
+  A: "Spacy has a built-in POS tagger: `[tok.text for tok in spacy.load('en')('Hello Earth!') if tok.pos_ != 'PROPN']` or:
+  >>> import spacy
+  >>> nlp = spacy.load('en_core_web_md')
+  >>> doc = nlp('Hello world from Hobson Lane in Mississippi sitting on the john.')
+  >>> [tok.pos_ for tok in doc]
+  ['INTJ', 'NOUN', 'ADP', 'PROPN', 'PROPN', 'ADP', 'PROPN', 'VERB', 'ADP', 'DET', 'PROPN', 'PUNCT']
+  >>> [(tok.text, tok.pos_) for tok in doc]
+  "
+-
+  Q: "When I bootstrapped a shuffled dataset and calculated the confidence 95% interval the mean of my actual data is well outside the 95% confidence interval. What does this mean?"
+  A: "This means that the two means are statistically different and are unlikely to have occurred by chance so you can reject your null hypothesis, just as if you'd gotten a p-value that was smaller than 5% (or 1 - .95)."
+-
+  Q: "What is the bias-variance trade-off? What does the U shaped parabola mean when the horizontal axis is model complexity and the vertical axis is the model prediction error? #interview #teacher #student"
+  A: "The bias is the mean absolute error (MAE) or mean absolute precision (MAP) on your test set. This is what you care about the most. The variance is the mean absolute error or mean absolute precision (MAP) on your training set. The bias-variance trade-off means that as you increase model complexity, while keeping the information content or variety of your features constant, both bias and variance will be reduced until eventually your your bias will start to increase, even though your variance is continuing to get smaller. Takeaway: when your test set error starts increasing, stop adding model complexity and start simplifying your model."
+-
+  Q: "In the bias-variance tradeoff for your model you want to reduce model variance (the error on your training set). How can you increase model complexity without adding new features (columns) to your dataset? #interview #teacher #student"
+  A: "You can add addition transformations of your existing features. One easy transformation is to add an additional polynomial term, such as `x_1**2` or `x_1**3`, as a feature without adding any new feature with new information about the world. Another common way is to add a nonlinear term to your model, like the product or quotient of two features that are already included in your model, such as `x_1 * x_2` or `x_1 / x_2`. Transcendental functions are also good nonlinear transformations to try when you have  a feature variable that is proportional to time or or location (or any situation where you target variable or input feature variable might be periodic), such as `sin(x_1)` and `cos(x_1)`."
+-
+  Q: "The song classification dataset seems to difficult for me because I don't know how to load the audio files into python."
+  A: "You can ignore the audio files and just train a model on the meta data about the songs."
+-
+  Q: "Should I try to find more data or generate and extract more features from my existing data?"
+  A: "If you have geographic data like city, state, address, or even latiitude/longitude data, often the best features are hidden within your existing data. For example one very predictive feature for a crim dataset is the distance to the nearest liquor store or the distance to the nearest transit station or stop (subway or bus)."
+-
+  Q: "I don't understand how to interpret a scatter plot of predicted vs truth."
+  A: "I find it better to plot the truth on the horizontal axis and the error or residual on the vertical axis. This is called the residual plot. It will help you identify any nonlinearity in your target variable's relationship to your features so that you can engineer new nonlinear features or perhaps use a nonlinear model to improve its accuracy."
+-
+  Q: "How can I deal with my shipping data that doesn't have any shipments from or too some zip codes."
+  A: "Your model will have to generalize from one zipcode to another. That is accomplished by joining your zipcode data on another continuous variable related to that zipcode, like population, latitude and longitude, maximum speed limit, etc. Any demographic or statistical or geographic information that might be related to shipping cost can be added to your dataset to help your model generalize from one zip code to another."
+-
+  Q: "Would predicting basketball players success based on their stats in the first year be a good data science project? #student"
+  A: "Probably not. It's better to start with a dataset that you can easily download and manipulate and let the data define the question or hypothesis you want to answer. If you try to dream up a problem that you will be interested in, it may not be solvable with publicly available data. But if you are able to find a column in a CSV file that looks like it would be interesting as a target variable (the variable you are trying to predict), they you know that the problem is solvable. You may not get the accuracy you'd like, but you at least know you'll be able to build a model to attempt to predict it."
+-
+  Q: "What kind of dataset would you need to try to predict whether a price is going to increase or decrease tomorrow?"
+  A: "You would need a table of prices and other features along with a date. You would then need to shift the price data you want to predict by one day into the future. Your price for the current day (indicated by the date column) is a feature. You price for tomorrow (the next trading date after the date in the date column) would be your target variable."
+-
+  Q: My company has millions of shipment records and I want to predict shipping cost. Do I have to load the entire dataset or can I start with a limited date range?
+  A: You can start with any small sample of your dataset that you think you can understand and work with. If you're doing SQL queries to retrieve the data, you can use the `WHERE` clause to limit the date range of your query. With SQL you can also limit the columns or features that you load using the `SELECT` keyword.
+-
+  Q: What kind of data science variable is a weather condition string like "Partly Cloudy", "Rainy", and "Sunny".
+  A: It's a python string which you can use as a categorical variable.
+-
+  Q: What is the pandas function we can use to turn a categorical variable in numbers that are useful as features in a linear regression?
+  A: The python line `df = pd.get_dummies(df, columns=['Weather_Condition'])` will create one new column with a binary or boolean value for each possible `'Weather_Condition'` string value, such as 'rainy' or 'partly cloudy'. You can check `df['Weather_Condition'].value_counts()` to make sure that won't create too many new columns.
+-
+  Q: What is the difference between a logistic regression and a *support vector machine* (SVM) ?
+  A: A *support vector machine* (SVM) maximizes the distance between the decision boundary and the points near the decision boundary. In a logistic regression, points far away from the decision boundary still have a significant affect on the location of the boundary. Also an SVM only requires that you define a kernel or a distance metric to compute the distance between points/vectors. This is called the kernel trick. It allows the decision boundary of an SVUM to be nonlinear in the feature vector space, while a logistic regression always defines a linear hyperplane decision boundary.
+-
+  Q: What is the one method that nearly every class (object) has?
+  A: The constructor method which is called `__init__()` in python. It is used to initialize (or "instantiate") an object (also called a class instance).
+-
+  Q: What is the first argument named in object or class instance methods?
+  A: The variable is named `self` because it contains the entire object instance so that the method can access all the methods and attributes of that instance.
+-
+  Q: How can I add an image of a city map to the background of my matplotlib scatterplot.
+  A: To load the map image into python try `img = plt.imread('map.jpg')`. Then, after your scatterplot add the line `plt.imshow(img, extent=[left, right, bottom, top])`. Use the coordinates of the left, right, top and bottom of your image in the scatter plot cooredinates (usually latitude and longitude).
+-
+  Q: When I try to `dict(zip(array1, array2))` two arrays or pandas `Series` or `DataFrame` columns together I end up with a lot of nans in my values. How can I get rid of them?
+  A: The easiest way might be to filter them out before the `dict()` with a list comprehension that includes a `np.isnan()` check.
