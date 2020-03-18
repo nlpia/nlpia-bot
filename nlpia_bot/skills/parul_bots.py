@@ -14,7 +14,7 @@ from nltk.stem import WordNetLemmatizer
 
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
 GREETING_RESPONSES = ["hi", "hey", "*nods*", "hi there", "hello", "I am glad! You are talking to me"]
-WIKI_TEXT_PATH = os.path.join(DATA_DIR, 'chatbot-depth3.txt')
+WIKI_TEXT_PATH = os.path.join(DATA_DIR, 'parul', 'chatbot-depth3.txt')
 REMOVE_PUNCT_TRANS_DICT = dict((ord(punct), None) for punct in string.punctuation)
 
 warnings.filterwarnings('ignore')
