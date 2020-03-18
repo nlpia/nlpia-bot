@@ -1,5 +1,0 @@
-* [Chatbot - Wikipedia](https://en.wikipedia.org/wiki/Chatbot)
-* [data science glossary](http://www.datascienceglossary.org/#algorithm)
-* [Machine Learning Glossary  |  Google Developers](https://developers.google.com/machine-learning/glossary/)
-* [Data Science Terms and Jargon: A Glossary – Dataquest](https://www.dataquest.io/blog/data-science-glossary/)
-* [Artificial intelligence - Wikipedia](https://en.wikipedia.org/wiki/Artificial_intelligence)
