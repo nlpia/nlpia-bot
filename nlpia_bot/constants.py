@@ -67,15 +67,15 @@ log = logging.getLogger(__name__)
 
 # FIXME: to avoid PYTHONPATH hack, use relative imports: `from .constants` not `from nlpia_bot.constants`
 def append_sys_path():
-    if BASE_DIR not in sys.path:
-        log.warn(f'Package BASE_DIR ({BASE_DIR}) not in sys.path: {sys.path}')
-        sys.path.append(BASE_DIR)
-    if SRC_DIR not in sys.path:
-        log.warn(f'Package SRC_DIR ({SRC_DIR}) not in sys.path: {sys.path}')
-        sys.path.append(SRC_DIR)
+    pass
+    # if BASE_DIR not in sys.path:
+    #     log.warn(f'Package BASE_DIR ({BASE_DIR}) not in sys.path: {sys.path}')
+    #     sys.path.append(BASE_DIR)
+    # if SRC_DIR not in sys.path:
+    #     log.warn(f'Package SRC_DIR ({SRC_DIR}) not in sys.path: {sys.path}')
+    #     sys.path.append(SRC_DIR)
 
-
-append_sys_path()
+# append_sys_path()
 # def parse_config(filepath='nlpia-bot.ini'):
 #     config = ConfigParser()
 #     config['DEFAULT'] = config_defaults
