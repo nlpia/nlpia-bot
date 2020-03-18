@@ -19,9 +19,12 @@ env = Environment(spacy_lang=str, loglevel=int, name=str)
 
 SRC_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(SRC_DIR)
-DATA_DIR = os.path.join(BASE_DIR, 'data')
+DATA_DIR = os.path.join(SRC_DIR, 'data')
 LOG_DIR = os.path.join(DATA_DIR, 'log')
+HISTORY_PATH = os.path.join(DATA_DIR, 'history.json')
 os.makedirs(LOG_DIR, exist_ok=True)
+# with open(HISTORY_PATH, 'a') as fap:
+#     pass
 
 USE_CUDA = False
 MAX_TURNS = 10000
