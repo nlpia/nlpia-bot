@@ -6,7 +6,7 @@ Spacy doesn't yet have a [Turkish language model](https://spacy.io/usage/models#
 
 ## erturgrul_bot
 
-Try replacing [this](https://github.com/nlpia/nlpia-bot/blob/474b9d7157503ce494bcbb46a551daad1ec354c8/nlpia_bot/scrape_wikipedia.py#L38) call to `Wikipedia()` with `Wikpedia('tr')`.
+Try replacing [this](https://github.com/nlpia/nlpia-bot/blob/474b9d7157503ce494bcbb46a551daad1ec354c8/nlpia-bot/scrape_wikipedia.py#L38) call to `Wikipedia()` with `Wikpedia('tr')`.
 
 Then you will need to come up with a way to seed the page scraper with an appropriate equivalent for the wikipedia page on chatbots. What is the Turkish word for Chatbot?
 
