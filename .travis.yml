@@ -19,8 +19,8 @@ install:
   - source tests/install.sh
 
 before_script:
-  - git config --global user.email "nlpia-bot+travis@totalgood.com"
-  - git config --global user.name "Travis Admin User for nlpia-bot"
+  - git config --global user.email "qary@totalgood.com"
+  - git config --global user.name "Travis Admin User for qary"
 
 script:
   - export spacy_lang=en_core_web_sm
