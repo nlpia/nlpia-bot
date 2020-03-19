@@ -1,8 +1,8 @@
-=========
-nlpia_bot
-=========
+====
+qary
+====
 
-This is the documentation of **nlpia_bot**.
+This is the documentation of **qary**.
 
 .. note::
 
