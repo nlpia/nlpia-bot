@@ -1,7 +1,7 @@
 |Build Status| |Coverage| |GitHub release| |PyPI version| |License|
 
-nlpia_bot
-=========
+qary
+====
 
 Use `NLP in
 Action <https://www.manning.com/books/natural-language-processing-in-action>`__
@@ -31,8 +31,8 @@ standard operating system like Linux.
 
 .. code:: bash
 
-   git clone git@github.com:nlpia/nlpia-bot
-   cd nlpia-bot
+   git clone git@github.com:nlpia/qary
+   cd qary
    conda env create -n nlpia -f environment.yml  # or environment-windoze.yml
    conda activate nlpia
    pip install --editable .
@@ -95,7 +95,7 @@ from multiple sources (default settings):
 .. code:: bash
 
    $ bot
-   (nlpia) hobs@Hobsons-MacBook-Air:~/code/chatbot/nlpia-bot$ bot
+   (nlpia) hobs@Hobsons-MacBook-Air:~/code/chatbot/qary$ bot
    # 2019-11-21 12:59:05,854 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
    # 100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 495935.48it/s]
    YOU: Hi
@@ -135,7 +135,7 @@ Ideas
 -----
 
 Please submit your feature ideas `github
-issues <https://github.com/nlpia/nlpia-bot/issues/>`__. Here are a few
+issues <https://github.com/nlpia/qary/issues/>`__. Here are a few
 ideas to get you started.
 
 1.  movie dialog in django database to hold the statement->response
@@ -185,7 +185,7 @@ ideas to get you started.
        `example
        app <https://jgraph.github.io/mxgraph/javascript/examples/grapheditor/www/index.html>`__
     3. convert the dialog graph into a set of records/rows in the
-       nlpia-bot db so it acts
+       qary db so it acts
 
 8.  tag different dialog graphs in the db so the user can turn them
     on/off for their bot
@@ -285,13 +285,13 @@ Open Source Frameworks
    -  integrations: facebook messenger, google search, kik, line, alexa,
       webchat, viber
 
-.. |Build Status| image:: https://api.travis-ci.com/nlpia/nlpia-bot.svg?branch=master
-   :target: https://travis-ci.com/nlpia/nlpia-bot
-.. |Coverage| image:: https://codecov.io/gh/nlpia/nlpia-bot/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/nlpia/nlpia-bot
-.. |GitHub release| image:: https://img.shields.io/github/release/nlpia/nlpia-bot.svg
-   :target: https://github.com/nlpia/nlpia-bot/releases/latest
-.. |PyPI version| image:: https://img.shields.io/pypi/pyversions/nlpia-bot.svg
-   :target: https://pypi.org/project/nlpia-bot/
-.. |License| image:: https://img.shields.io/pypi/l/nlpia-bot.svg
-   :target: https://pypi.python.org/pypi/nlpia-bot/
+.. |Build Status| image:: https://api.travis-ci.com/nlpia/qary.svg?branch=master
+   :target: https://travis-ci.com/nlpia/qary
+.. |Coverage| image:: https://codecov.io/gh/nlpia/qary/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/nlpia/qary
+.. |GitHub release| image:: https://img.shields.io/github/release/nlpia/qary.svg
+   :target: https://github.com/nlpia/qary/releases/latest
+.. |PyPI version| image:: https://img.shields.io/pypi/pyversions/qary.svg
+   :target: https://pypi.org/project/qary/
+.. |License| image:: https://img.shields.io/pypi/l/qary.svg
+   :target: https://pypi.python.org/pypi/qary/
