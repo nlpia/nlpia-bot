@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import sqlite3
 
-from nlpia_bot.constants import BASE_DIR
+from ..constants import BASE_DIR
 
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 
@@ -26,7 +26,7 @@ def walk_repos(base_dir=BASE_DIR):
     Does not recurse within .git repos!
 
     >>> next(walk_repos(BASE_DIR))
-    <git.Repo "...nlpia-bot/.git">
+    <git.Repo "...qary/.git">
     """
     base_dir = os.path.abspath(os.path.expanduser(base_dir))
     if os.path.basename(base_dir) == '.git' or not os.path.isdir(base_dir):
