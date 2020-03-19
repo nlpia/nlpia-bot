@@ -72,7 +72,7 @@ def append_sys_path():
     #     sys.path.append(SRC_DIR)
 
 # append_sys_path()
-# def parse_config(filepath='nlpia-bot.ini'):
+# def parse_config(filepath='qary.ini'):
 #     config = ConfigParser()
 #     config['DEFAULT'] = config_defaults
 #     config['bitbucket.org'] = {}
@@ -87,7 +87,7 @@ def append_sys_path():
 
 
 def parse_args(args):
-    """Parse command line parameters using nlpia-bot.ini for the default values
+    """Parse command line parameters using qary.ini for the default values
 
     Args:
       args ([str]): command line parameters as list of strings
@@ -97,7 +97,7 @@ def parse_args(args):
     """
     parser = configargparse.ArgParser(
         default_config_files=[
-            '~/nlpia-bot.ini',
+            '~/qary.ini',
             # '~/qary.ini',
             # '~/nlpiabot.ini',
             # '~/nlpia.ini',
@@ -106,7 +106,7 @@ def parse_args(args):
         ],
         description="Command line bot application. Try `$ bot how do you work?`")
     parser.add('-c', '--config', required=False, is_config_file=True,
-               help="Config file path (default: ~/nlpia-bot.ini)")
+               help="Config file path (default: ~/qary.ini)")
     parser.add_argument(
         '-d', '--debug',
         help="Set DEBUG logging level and raise more exceptions immediately.",

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-    Setup file for nlpia_bot.
+    Setup file for qary.
     Use setup.cfg to configure your project.
 
     This file was generated with PyScaffold 3.1.
@@ -20,4 +20,4 @@ except VersionConflict:
 
 
 if __name__ == "__main__":
-    setup(use_pyscaffold=True, package_data={'': ['nlpia_bot/data']})
+    setup(use_pyscaffold=True, package_data={'': ['qary/data']})
