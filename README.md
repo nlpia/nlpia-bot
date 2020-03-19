@@ -63,10 +63,10 @@ bot: So what are you feeling right now? How does your body feel?
 You'll want to install and use the conda package manager within Anaconda3, especially if your development environment is not an open standard operating system like Linux.
 
 ```bash
-git clone git@github.com:nlpia/qary
+git clone git@gitlab.com:tangibleai/qary
 cd qary
-conda env create -n nlpia -f environment.yml  # or environment-windoze.yml
-conda activate nlpia
+conda env create -n qaryenv -f environment.yml  # or environment-windoze.yml
+conda activate qaryenv
 pip install --editable .
 ```
 
@@ -155,7 +155,7 @@ DM @hobson if youwould like to participate in the weekly Zoom collaborative-prog
 
 ## Crazy Ideas
 
-Please submit your feature ideas [github issues](https://github.com/nlpia/qary/issues/). Here are a few ideas to get you started.
+Please submit your feature ideas [GitLab issues](https://gitlab.com/tangibleai/qary/issues/). Here are a few ideas to get you started.
 
 1. movie dialog in django database to hold the statement->response pairs
     1. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow   charts.
