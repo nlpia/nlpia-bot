@@ -59,8 +59,8 @@ __MACOSX
 db.sqlite3
 *.bz2
 *.zip
-nlpia_bot/data/qa-models/*
-nlpia_bot/data/simple-transformer/
+qary/data/qa-models/*
+qary/data/simple-transformer/
 
 # Per-project virtualenvs
 .venv*/
@@ -69,4 +69,4 @@ nlpia_bot/data/simple-transformer/
 .bash_env
 **/*secret*
 **/*private*
-nlpia_bot/data/*.json
+qary/data/*.json
