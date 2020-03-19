@@ -5,9 +5,9 @@
 [![PyPI version](https://img.shields.io/pypi/pyversions/nlpia-bot.svg)](https://pypi.org/project/nlpia-bot/)
 [![License](https://img.shields.io/pypi/l/nlpia-bot.svg)](https://pypi.python.org/pypi/nlpia-bot/)
 
-# `nlpia_bot`
+# `qary`
 
-The `nlpia_bot` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your intelligence.
+The `qary` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your intelligence.
 
 The presentations for San Diego Python User Group are at [totalgood.org/midata/talks/](http://totalgood.org/midata/talks/) and in `docs/`.
 
@@ -45,7 +45,7 @@ We'll use that to train deep learning networks as well as actual answers if the 
 
 ### `bot -b your_name_here`
 
-And soon `nlpia_bot` will be able to detect your mood and carry on more meaningful conversations, to give you encouragement and emotional support.
+And soon `qary` will be able to detect your mood and carry on more meaningful conversations, to give you encouragement and emotional support.
 We'll have something like this online in a couple months:
 
 ```
