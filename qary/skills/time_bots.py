@@ -26,7 +26,7 @@ def walk_repos(base_dir=BASE_DIR):
     Does not recurse within .git repos!
 
     >>> next(walk_repos(BASE_DIR))
-    <git.Repo "...nlpia-bot/.git">
+    <git.Repo "...qary/.git">
     """
     base_dir = os.path.abspath(os.path.expanduser(base_dir))
     if os.path.basename(base_dir) == '.git' or not os.path.isdir(base_dir):
