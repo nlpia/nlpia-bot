@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.com/nlpia/qary.svg?branch=master)](https://travis-ci.com/nlpia/qary)
+[![Build Status](https://api.travis-ci.com/tangibleai/qary.svg?branch=master)](https://travis-ci.com/tangibleai/qary)
 [![Buy Us Tea](https://github.com/nlpia/nlpia-bot/raw/develop/docs/media/small-leaf-and-name-screenshot-31x80.png)](https://buymeacoffee.com/hobs)
 [![PyPI version](https://img.shields.io/pypi/pyversions/qary.svg)](https://pypi.org/project/qary/)
 [![License](https://img.shields.io/pypi/l/qary.svg)](https://pypi.python.org/pypi/qary/)
