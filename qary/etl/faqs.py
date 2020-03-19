@@ -1,13 +1,8 @@
-# import os
-# import re
-
 from tqdm import tqdm
-# import pandas as pd
 import yaml
 
-# from ..spacy_language_model import nlp
-# from .yml
-from .constants import DEFAULT_FAQ_DOMAINS
+
+from ..constants import DEFAULT_FAQ_DOMAINS
 
 import logging
 log = logging.getLogger(locals().get('__name__'))

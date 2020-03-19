@@ -1,7 +1,7 @@
 |Build Status| |Coverage| |GitHub release| |PyPI version| |License|
 
-nlpia_bot
-=========
+qary
+====
 
 Use `NLP in
 Action <https://www.manning.com/books/natural-language-processing-in-action>`__
