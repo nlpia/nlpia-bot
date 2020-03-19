@@ -1,7 +1,7 @@
 include *.md
-include nlpia_bot/data/*.json
-include nlpia_bot/data/eliza_doctor.txt
-include nlpia_bot/data/movie_dialog.csv
-include nlpia_bot/data/medical_sentences.json
-include nlpia_bot/data/*.ini
-recursive-include nlpia_bot/data/faq *.yml *.csv *.json
+include qary/data/*.json
+include qary/data/eliza_doctor.txt
+include qary/data/movie_dialog.csv
+include qary/data/medical_sentences.json
+include qary/data/*.ini
+recursive-include qary/data/faq *.yml *.csv *.json
