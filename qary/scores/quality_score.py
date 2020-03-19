@@ -18,7 +18,7 @@ class QualityScore:
     def __init__(self, **kwargs):
         self.metrics = list(kwargs.keys())
         self.weights = list(kwargs.values())
-        self.modules = {metric: importlib.import_module(f'nlpia_bot.scores.{metric}_score') for metric in self.metrics}
+        self.modules = {metric: importlib.import_module(f'qary.scores.{metric}_score') for metric in self.metrics}
         self.nlp = spacy_language_model.nlp
         try:
             self.sentiment_analyzer = SentimentIntensityAnalyzer()

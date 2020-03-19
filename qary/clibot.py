@@ -6,7 +6,7 @@ console script. To run this script uncomment the following lines in the
 [options.entry_points] section in setup.cfg:
 
     console_scripts =
-         fibonacci = nlpia_bot.skeleton:run
+         bot = qary.skeleton:run
 
 Then run `python setup.py install` which will install the command `fibonacci`
 inside your current environment.
@@ -100,7 +100,7 @@ class CLIBot:
         bot_name = bot_name if bot_name.endswith('_bots') else f'{bot_name}_bots'
         log.info(f'Adding bot named {bot_name}')
         self.bot_names.append(bot_name)
-        bot_module = importlib.import_module(f'nlpia_bot.skills.{bot_name}')
+        bot_module = importlib.import_module(f'qary.skills.{bot_name}')
         new_modules, new_bots = [], []
         if bot_module.__class__.__name__ == 'module':
             module_vars = tuple(vars(bot_module).items())
@@ -109,7 +109,7 @@ class CLIBot:
                 new_bots.append(bot_class(**bot_kwargs))
                 new_modules.append(bot_module)
         else:
-            log.warning(f'FIXME: add feature to allow import of specific bot classes like "nlpia_bot.skills.{bot_name}"')
+            log.warning(f'FIXME: add feature to allow import of specific bot classes like "qary.skills.{bot_name}"')
         self.bots.extend(new_bots)
         self.bot_modules.extend(new_modules)
         return new_bots
