@@ -1,12 +1,8 @@
-# constants.py
 import os
 import sys
-# import re
 import logging
 from collections import Counter
-# import json
 
-# import pandas as pd
 import nltk
 import nltk.corpus
 import spacy  # noqa
@@ -65,7 +61,7 @@ root_logger = logging.getLogger()
 log = logging.getLogger(__name__)
 
 
-# FIXME: to avoid PYTHONPATH hack, use relative imports: `from .constants` not `from nlpia_bot.constants`
+# FIXME: to avoid PYTHONPATH hack, use relative imports: `from .constants` not `from qary.constants`
 def append_sys_path():
     pass
     # if BASE_DIR not in sys.path:
@@ -102,7 +98,7 @@ def parse_args(args):
     parser = configargparse.ArgParser(
         default_config_files=[
             '~/nlpia-bot.ini',
-            # '~/nlpia_bot.ini',
+            # '~/qary.ini',
             # '~/nlpiabot.ini',
             # '~/nlpia.ini',
             # os.path.join(BASE_DIR, '*.ini'),
@@ -120,7 +116,7 @@ def parse_args(args):
     parser.add_argument(
         '--version',
         action='version',
-        version='nlpia_bot {ver}'.format(ver=__version__))
+        version='qary {ver}'.format(ver=__version__))
     parser.add_argument(
         '--name',
         default=None,  # DEFAULT_CONFIG['name'],
@@ -291,7 +287,7 @@ args = parse_argv()
 LOGLEVEL = args.loglevel or LOGLEVEL
 
 
-# handler = logging.handlers.TimedRotatingFileHandler(os.path.join(LOG_DIR, 'nlpia_bot.constants.log'), when='midnight')
+# handler = logging.handlers.TimedRotatingFileHandler(os.path.join(LOG_DIR, 'qary.constants.log'), when='midnight')
 # handler.setLevel(logging.INFO)
 # log.addHandler(handler)
 
