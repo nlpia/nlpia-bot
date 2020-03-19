@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import pytest  # noqa
 
-from nlpia_bot.clibot import CLIBot
+from qary.clibot import CLIBot
 
 __author__ = "SEE AUTHORS.md"
 __copyright__ = "Hobson Lane"
