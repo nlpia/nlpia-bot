@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import sqlite3
 
-from nlpia_bot.constants import BASE_DIR
+from ..constants import BASE_DIR
 
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 
