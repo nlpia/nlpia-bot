@@ -2,25 +2,28 @@
 
 ## Background
 Chatbots, or conversational assistants are one of the most effective public engagement and education tools, providing timely information in 24/7 manner.
-Since the beginning of COVID-19 outbreak, several chatbots have been released to provide the public with information regarding the virus. However, the assistants available today to the public are based on curated answers to pre-defined questions, and are unable to answer to the satisfactory manner.
-In addition, they are often unable to address questions that are not related directly to the medical aspect of the epidemic, leading users to consult other, potentially unreliable, sources.
+Since the beginning of COVID-19 outbreak, several chatbots have been released to provide the public with information regarding the virus. However, the assistants available today to the public are based on curated answers to pre-defined questions, either by giving the user a list of questions to choose from [1](https://thenextweb.com/apps/2020/03/20/world-health-organizations-whatsapp-bot-texts-you-coronavirus-facts/), or matching a open-text question to a pre-defined set of question intents ([1](https://www.forbes.com/sites/leahrosenbaum/2020/03/12/worried-about-coronavirus-now-you-can-text-message-a-chatbot-with-questions/#aeca3b7825e9), [2](https://gyant.com/). Therefore, they often unable to answer the posed question with satisfactory accuracy, or to address questions that are not related directly to the medical aspect of the epidemic, leading users to consult other, potentially unreliable, sources.
 
 
 ## Project Description
-We propose to create a Web-based chatbot to assist those affected by a coronavirus lockdown in three domains:
+We propose to leverage cutting-edge natural language processing (NLP) technology to create a Web-based chatbot to assist those affected by a coronavirus lockdown in three domains:
 
 - Answer open domain questions about COVID-19 using authoritative reference corpora such as Wikipedia, the CDC, and PubMed
-- Provide updates on the global status of the pandemic (using curated, verified news sources)
+- Provide updates on the global status of the pandemic (using up-to-date, verified news sources)
 - Provide tips for wellness and self-care while working in isolation
 
-The project will be based on the technology developed as a part of "qary" open-source project.
-All training of the bot and software development will be performed by volunteers contributing to open-source repository.
+The project will be based on the technology developed as a part of "qary" open-source project. All training of the bot and software development will be performed by interns and volunteers contributing to open-source repository.
+
 
 ## Project outcomes and impact evaluation
-The main deliverable of the project will be a mobile web application for Covid-19 question-answering and wellness coaching to mitigate the psychological strains of isolation and promote prosocial behaviors and habits.
+The main deliverable of the project will be a mobile web application for Covid-19 question-answering and wellness coaching to mitigate the psychological strains of isolation and promote pro-social behaviors and habits. We will evaluate the success of the project using the following parameters: 
+- Chatbot accuracy: the accuracy of the chatbot will be benchmarked with a list of questions collected from the public forums, such as reddit, Quora and similar sources. Chatbot's answers will be scored using USE metric using answers collected as a benchmark. The chatbot will not be released to public use until reaching the F1 score of X.
+In addition, the chatbot accuracy would be evaluated using similar benchmarking method after the release. 
+- User engagement: the engagement of the public with the chatbot will be measured using internal analytics tools. Usage metrics, such as number of users, sessions, and user satisfaction from the conversation with the bot, will be collected to analyze and improve the chatbot's performance. 
 
 
-## Project timeline and milestones
+## Project timeline and budget
+
 Total budget is estimated at **$5000** to be expended as grants to volunteers over three weeks beginning March 23, 2020.
 
 ## Budget
