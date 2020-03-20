@@ -24,8 +24,8 @@ The main deliverable of the project will be a mobile web application for Covid-1
 Total budget is estimated at **$5000** to be expended as grants to volunteers over three weeks beginning March 23, 2020.
 
 ## Budget
-- **$4400**: grants to interns and volunteers who are otherwise unemployed (see schedule below)
-- **$600**: compute cloud resources and subscription fees to cloud services for 6 months
+- **$4200**: grants to interns and volunteers who are otherwise unemployed (see schedule below)
+- **$800**: compute cloud resources and subscription fees to cloud services for 6 months
 
 ### Approach
 Two components of our architecture will be developed in parallel as separate mobile web applications. Both apps can be deployed  independently and integrated once they each have been tested and verfied with beta users. All software and data will be pushed to GitLab daily and can be run by anyone from the general public familiar with the installation of python packages. Features and milestones will be tracked within GitLab "issues" allowing the general public to provide feedback and feature suggestions.
@@ -35,33 +35,36 @@ Volunteers who are not currently actively employed on salary will be given prior
 Training and mentoring of volunteers will be provided free of charge by TangibleAI staff.
 All grant funding will be granted to volunteers and interns to deliver according to their portion of the implementation of the features described in the three parallel schedules below.
 
-### Labor Estimate
+### Estimate
 Total volunteer and intern effort is estimated at 120 person-hours.
+This will allow for $35/hr grants to be provided to volunteers according the schedule below.
+Four of our volunteers are currently contributing to the software package, "qary".
+These volunteers will are expected to volunteer for these additional tasks and be allocated funds in proportion to the hour estimates below.
 Tangible AI professional software development effort as well as mentoring of volunteers will be donated to the project at no cost as part of our core mission to develop AI tools for nonprofits.
 
 #### State of the Art Question Answering App
 Total volunteer effort is estimated at 52 person-hours (approximately 2 weeks) to build and deploy the Question Answering mobile web application.
 
-- 8h: compile list of urls and API querys that provide authoritative unstructured natural language text on covid-19
-- 8h: build/test/deploy python script to scrape URLs and query APIs indexing documents in ellastic search at least daily (using crontab on totalgood.org)
-- 8h: compile training set of at least 100 question/answer pairs based on authoritative resources (e.g. CDC, Johns Hopkins University, pubmed, arxiv.org, wikipedia)
-- 16h: train (fine tune) ALBERT to answer 100+ covid-19 FAQs accurately
-- 12h: create/test/deploy Django REST open API (urls.py, views.py, template.html, serializer.py, and models.py) for user interaction with COVID-19 chatbot
+- 8h ($280): compile list of urls and API querys that provide authoritative unstructured natural language text on covid-19
+- 8h ($280): build/test/deploy python script to scrape URLs and query APIs indexing documents in ellastic search at least daily (using crontab on totalgood.org)
+- 8h ($280): compile training set of at least 100 question/answer pairs based on authoritative resources (e.g. CDC, Johns Hopkins University, pubmed, arxiv.org, wikipedia)
+- 16h ($560): train (fine tune) ALBERT to answer 100+ covid-19 FAQs accurately
+- 12h ($420): create/test/deploy Django REST open API (urls.py, views.py, template.html, serializer.py, and models.py) for user interaction with COVID-19 chatbot
 
 ### Deterministic Conversational Covid-19 Coach
 Total volunteer effort is estimated at 48 person-hours (approximately 1 week) to build and deploy the Covid-19 Coach for Isolation wellbeing support.
 
-- 8h: Build deterministic chatbot (using Landbot.io GUI or equivalent) for answering FAQ questions about COVID-19 i(from FAQs at CDC and Johns Hopkins websites)
-- 16h: Add emotional well-being and self-help coaching features to Covid-19 Coach, including home isolation, social distancing, exercise, and productivity tips and tricks
-- 8h: test with beta users
-- 8h: refine Covid-19 Coach
-- 8h: deploy and maintain Covid-19 Coach webapp for 3 months
+- 8h ($280): Build deterministic chatbot (using Landbot.io GUI or equivalent) for answering FAQ questions about COVID-19 i(from FAQs at CDC and Johns Hopkins websites)
+- 16h ($560): Add emotional well-being and self-help coaching features to Covid-19 Coach, including home isolation, social distancing, exercise, and productivity tips and tricks
+- 8h ($280): test with beta users
+- 8h ($280): refine Covid-19 Coach
+- 8h ($280): deploy and maintain Covid-19 Coach webapp for 3 months
 
 ### Integrate Deterministic Chatbot web
 Total effort required to integrate the Covid-19 Coach with the Quesiton Answering App is estimated at 20 hours.
 
-- 16h: Integrate Covid-19 Coach with SotA question answering chatbot REST API
-- 4h: Purchase and integrate custom URL (or utilize a subdomain at Brown Institute's website)
+- 16h ($560): Integrate Covid-19 Coach with SotA question answering chatbot REST API
+- 4h ($140): Purchase and integrate custom URL (or utilize a subdomain at Brown Institute's website)
 
 
 ## RFP from Brown Institute for Media Inovation
