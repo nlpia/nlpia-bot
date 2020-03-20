@@ -1,4 +1,4 @@
-# [Brown Institute RFP](https://brown.submittable.com/submit/162874/2020-covid-19-micro-grant) reprinted at the bottom of this issue.
+# [Brown Institute RFP](https://brown.submittable.com/submit/162874/2020-covid-19-micro-grant)
 
 ## Background
 Chatbots, or conversational assistants are one of the most effective public engagement and education tools, providing timely information in 24/7 manner.
@@ -9,9 +9,9 @@ In addition, they are often unable to address questions that are not related dir
 ## Project Description
 We propose to create a Web-based chatbot to assist those affected by a coronavirus lockdown in three domains:
 
-- answer open domain questions about COVID-19 using unstructured reference corpora such as Wikipedia and PubMed
-- provide updates on the global status of the pandemic (using curated, verified news sources)
-- provide tips for wellness and self-care while working in isolation
+- Answer open domain questions about COVID-19 using authoritative reference corpora such as Wikipedia, the CDC, and PubMed
+- Provide updates on the global status of the pandemic (using curated, verified news sources)
+- Provide tips for wellness and self-care while working in isolation
 
 The project will be based on the technology developed as a part of "qary" open-source project.
 All training of the bot and software development will be performed by volunteers contributing to open-source repository.
