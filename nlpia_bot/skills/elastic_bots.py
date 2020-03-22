@@ -97,20 +97,32 @@ class Bot:
         (0.75, 'response')
         """
         return output[0]['probability'], output[0]['answer']
-
+    
+    
     def reply(self, statement):
         
         responses = []
-        docs = elastic.search(statement)
-
+        docs = elastic.boosted_search(statement)
+        
         for doc in docs['hits']['hits']:
-            context = doc['_source']['text']
-            
-            encoded_input = self.encode_input(statement, context)
-            encoded_output = self.model.predict(encoded_input)
-            probability, response = self.decode_output(encoded_output)
-            if len(response) > 0:
-                responses.append((probability, response))
+
+            context = doc['_source']['text'].split('\n\n')
+
+            for section in context:
+
+                try:
+
+                    encoded_input = self.encode_input(statement, section)
+                    encoded_output = self.model.predict(encoded_input)
+                    probability, response = self.decode_output(encoded_output)
+
+                    if len(response) > 0:
+                        responses.append((probability, response))
+                        # print(section)
+
+                except:
+                    pass
+
         return responses
 
     def reply_from_wiki(self, statement):
@@ -124,15 +136,15 @@ class Bot:
 
 if __name__=="__main__":
  
-    # def test_reply():
-    #     bot = Bot()
-    #     answers = bot.reply("when Stan Lee was born?")
-    #     print(answers)
-
-    def test_reply_from_wiki():
+    def test_reply():
         bot = Bot()
-        answers = bot.reply_from_wiki("when was Stan Lee born?")
+        answers = bot.reply("What is machine learning?")
         print(answers)
+
+    # def test_reply_from_wiki():
+    #     bot = Bot()
+    #     answers = bot.reply_from_wiki("when was Stan Lee born?")
+    #     print(answers)
 
     # question = "when stan lee was born?"
     # elastic.test_search(question)
@@ -143,4 +155,4 @@ if __name__=="__main__":
     # print("==============================")
     # print("Response: answer from Wikipedia summary")
     # print("--------------------------------")
-    test_reply_from_wiki()
+    test_reply()

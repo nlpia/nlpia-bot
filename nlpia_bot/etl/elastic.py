@@ -7,6 +7,7 @@ import wikipediaapi
 from slugify import slugify
 from nlpia_bot import constants
 from nlpia_bot.etl import wikisearch as ws
+
 try:
     client = Elasticsearch()
 except ConnectionRefusedError:
@@ -23,13 +24,15 @@ def print_categorymembers(categorymembers, level=0, max_level=1):
                 print_categorymembers(c.categorymembers, level=level + 1, max_level=max_level)
 
 
-def search_insert_wiki(category):
+def search_insert_wiki(categories):
+    print(categories)
 
-    if type(category) is not list: category = [ category ]
+    if type(categories) is not list: categories = [ categories ]
 
     wiki_wiki = wikipediaapi.Wikipedia('en')
     
-    for c in category:
+    for c in categories:
+        print(c)
 
         cat = wiki_wiki.page(f"Category:{c}")
 
@@ -37,9 +40,9 @@ def search_insert_wiki(category):
             page = wiki_wiki.page(key)
 
             if not "Category:" in page.title:
-                doc = Document(page.title, page.text, page.fullurl, category=c)
+                
+                doc = Document(page.title, page.text, page.fullurl, page.pageid, category = c)
                 doc.insert()
-            print(page.title)
 
     print("Done")
 
@@ -78,32 +81,41 @@ def index_dir(path=os.path.join(constants.DATA_DIR, "wikipedia")):
 
 
 class Document:
-
-    def __init__(self, title, text, source, category):
+    
+    def __init__(self, title, text, source, page_id, category):
 
         self.category = category
         self.title = title
         self.text = text
         self.source = source
+        self.page_id = page_id
         
         self.body = {"title": self.title,
                      "text": self.text,
-                     "source":self.source}
+                     "source":self.source,
+                     "page_id": self.page_id}
 
     def insert(self):
         
-        index = slugify(self.category)
+        slug = slugify(self.category)
 
-        try:
-            client.index(index=index, body=self.body)
+        res = client.search(index="", 
+                         body={"query": 
+                                 {"match": 
+                                  {"page_id": self.page_id}}})
+        
+        if res['hits']['hits'] == []:
 
-        except Exception as error:
-            print(f"Could not create a JSON entry for an article {self.source}")
+            try:
+                print(self.page_id, self.title, self.source)
+                
+                client.index(index=slug, body=self.body)
 
-    def delete(self, index):
-        client.indices.delete(index=index, ignore=[400,404])
-        print(f'{index} has been successfully deleted from database')
-
+            except Exception as error:
+                print(f"Could not create a JSON entry for an article {self.source}")
+                
+        else:
+            print(f"Article {self.source} is already in the database")
 
 
 # Example document search:
@@ -135,13 +147,43 @@ def search_url(text, index=''):
                                 }
     )
 
+def search_field(text, field="text", index=''):
+    return client.search(index=index, 
+                         body={"query": 
+                                 {"match": {field: text}}
+                                })
+
+def boosted_search(text, index='', boost_factor=3):
+    return client.search(index=index, body=\
+                        {
+                        "query": {
+                            "bool": {
+                            "should": [
+                                {
+                                "match": {
+                                    "title": {
+                                    "query": text,
+                                    "boost": boost_factor
+                                    }
+                                }
+                                },
+                                {
+                                "match": { 
+                                    "text": text
+                                }
+                                }
+                            ]
+                            }
+                        }
+                        })
+
 def delete_index(index):
     client.indices.delete(index=index, ignore=[400,404])
     print(f'{index} has been successfully deleted from database')
 
 def test_search(statement):
-    res = search(text=statement)
-    res_wiki = ws.summary(statement)
+    res = boosted_search(text=statement)
+    # res_wiki = ws.summary(statement)
     print('Relevant articles from your ElasicSearch library:')
     print('===================')
     for doc in res['hits']['hits']:
@@ -149,31 +191,25 @@ def test_search(statement):
         print(doc['_source']['source'])
         print("----------------------")
 
-    print('Summary found on Wikipedia')
-    print("======================")
-    print(res_wiki)
-    print('Full text of the article')
-    print("=======================")
-    print(ws.content(statement))
-
 
 if __name__=="__main__":
 
-    statement = "who is Stan Lee"
+    # statement = "who is Stan Lee"
 
 
-    def test_indices():
-        res = get_indices()
-        ind_list = []
-        for r in res:
-            ind_list.append(r)
-        return ind_list
+    # def test_indices():
+    #     res = get_indices()
+    #     ind_list = []
+    #     for r in res:
+    #         ind_list.append(r)
+    #     return ind_list
 
-    test_search(statement)
+    # test_indices()
+    test_search("stan lee")
 
     # Add new categories to elasticsearch:
-    # categories = ['Machine learning',
-    #             'Marvel Comics',
+    # categories = ['Marvel Comics',
+    #             'Machine learning',
     #             'Marvel Comics editors-in-chief',
     #             'American science fiction television series',
     #             'Science fiction television',
@@ -181,5 +217,6 @@ if __name__=="__main__":
     #             'American comics writers', 
     #             'Presidents of the United States'
     #             ]
+    
     # search_insert_wiki(categories)
     
