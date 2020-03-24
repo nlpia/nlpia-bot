@@ -1,4 +1,4 @@
-exclude: '^nlpia_bot/data/'
+exclude: '^qary/data/'
 exclude: '^docs/conf.py'
 
 repos:

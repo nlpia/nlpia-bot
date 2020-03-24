@@ -24,8 +24,8 @@ from keras import backend as K
 import tensorflow as tf
 import tensorflow_hub as hub
 
-from nlpia_bot.constants import DATA_DIR
-from nlpia_bot import spacy_language_model
+from ..constants import DATA_DIR
+from .. import spacy_language_model
 
 nlp = spacy_language_model.load("en_core_web_lg")
 
