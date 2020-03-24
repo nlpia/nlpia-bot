@@ -6,7 +6,7 @@ import os
 import yaml
 import pandas as pd
 from fuzzywuzzy import process
-from nlpia_bot.constants import DATA_DIR
+from ..constants import DATA_DIR
 
 log = logging.getLogger(__name__)
 
