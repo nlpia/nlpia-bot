@@ -1,13 +1,11 @@
-[![Build Status](https://api.travis-ci.com/nlpia/nlpia-bot.svg?branch=master)](https://travis-ci.com/nlpia/nlpia-bot)
+[![Build Status](https://api.travis-ci.com/tangibleai/qary.svg?branch=master)](https://travis-ci.com/tangibleai/qary)
 [![Buy Us Tea](https://github.com/nlpia/nlpia-bot/raw/develop/docs/media/small-leaf-and-name-screenshot-31x80.png)](https://buymeacoffee.com/hobs)
-[![Coverage](https://codecov.io/gh/nlpia/nlpia-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/nlpia/nlpia-bot)
-[![GitHub release](https://img.shields.io/github/release/nlpia/nlpia-bot.svg)](https://github.com/nlpia/nlpia-bot/releases/latest)
-[![PyPI version](https://img.shields.io/pypi/pyversions/nlpia-bot.svg)](https://pypi.org/project/nlpia-bot/)
-[![License](https://img.shields.io/pypi/l/nlpia-bot.svg)](https://pypi.python.org/pypi/nlpia-bot/)
+[![PyPI version](https://img.shields.io/pypi/pyversions/qary.svg)](https://pypi.org/project/qary/)
+[![License](https://img.shields.io/pypi/l/qary.svg)](https://pypi.python.org/pypi/qary/)
 
-# `nlpia_bot`
+# `qary`
 
-The `nlpia_bot` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your intelligence.
+The `qary` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your intelligence.
 
 The presentations for San Diego Python User Group are at [totalgood.org/midata/talks/](http://totalgood.org/midata/talks/) and in `docs/`.
 
@@ -38,14 +36,14 @@ YOU: #goodone
 ### Others
 
 The current version of `qary` can imitate the classic therapist bot "Eliza" and carry on a relatively entertaining conversation based on lines it's read from movie scripts.
-You can select any or all of these skills with command line args and the configuration file `~/nlpia-bot.ini` in your user directory.
+You can select any or all of these skills with command line args and the configuration file `~/qary.ini` in your user directory.
 
-You can also expand the complicated questions that nlpia-bot can answer by adding Q/A pairs to yaml text files in  `data/faq`.
+You can also expand the complicated questions that qary can answer by adding Q/A pairs to yaml text files in  `data/faq`.
 We'll use that to train deep learning networks as well as actual answers if the questions are close enough to your wording in that training file.
 
 ### `bot -b your_name_here`
 
-And soon `nlpia_bot` will be able to detect your mood and carry on more meaningful conversations, to give you encouragement and emotional support.
+And soon `qary` will be able to detect your mood and carry on more meaningful conversations, to give you encouragement and emotional support.
 We'll have something like this online in a couple months:
 
 ```
@@ -65,10 +63,10 @@ bot: So what are you feeling right now? How does your body feel?
 You'll want to install and use the conda package manager within Anaconda3, especially if your development environment is not an open standard operating system like Linux.
 
 ```bash
-git clone git@github.com:nlpia/nlpia-bot
-cd nlpia-bot
-conda env create -n nlpia -f environment.yml  # or environment-windoze.yml
-conda activate nlpia
+git clone git@gitlab.com:tangibleai/qary
+cd qary
+conda env create -n qaryenv -f environment.yml  # or environment-windoze.yml
+conda activate qaryenv
 pip install --editable .
 ```
 
@@ -101,7 +99,7 @@ Here's how those bots work together:
 
 ```bash
 $ bot
-(nlpia) hobs@Hobsons-MacBook-Air:~/code/chatbot/nlpia-bot$ bot
+(nlpia) hobs@Hobsons-MacBook-Air:~/code/chatbot/qary$ bot
 # 2019-11-21 12:59:05,854 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
 # 100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 495935.48it/s]
 YOU: Hi
@@ -124,7 +122,7 @@ YOU: bye
 $
 ```
 
-Check out the config file in `nlpia-bot.ini` or `$ bot -h` to change the default bot personalities loaded for your own personalized bot.
+Check out the config file in `qary.ini` or `$ bot -h` to change the default bot personalities loaded for your own personalized bot.
 
 ## Approach
 
@@ -157,7 +155,7 @@ DM @hobson if youwould like to participate in the weekly Zoom collaborative-prog
 
 ## Crazy Ideas
 
-Please submit your feature ideas [github issues](https://github.com/nlpia/nlpia-bot/issues/). Here are a few ideas to get you started.
+Please submit your feature ideas [GitLab issues](https://gitlab.com/tangibleai/qary/issues/). Here are a few ideas to get you started.
 
 1. movie dialog in django database to hold the statement->response pairs
     1. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow   charts.
@@ -180,7 +178,7 @@ Please submit your feature ideas [github issues](https://github.com/nlpia/nlpia-
 7. create a UX for dialog graph creation/design:
     1. install [mxgraph](https://github.com/totalgood/mxgraph) in the django app
     2. create a basic page based on this mxgraph example so the user can build and save dialog to the db as a graph: [tutorial](https://jgraph.github.io/mxgraph/docs/tutorial.html#1), [example app](https://jgraph.github.io/mxgraph/javascript/examples/grapheditor/www/index.html)
-    3. convert the dialog graph into a set of records/rows in the nlpia-bot db so it acts
+    3. convert the dialog graph into a set of records/rows in the qary db so it acts
 8. tag different dialog graphs in the db so the user can turn them on/off for their bot
     1. allow the user to prioritize some dialogs/models over others
     2. allow the user to create their own weighting function to prioritize individual statements produced by the api

@@ -7,9 +7,9 @@ import warnings
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from nlpia_bot.constants import DATA_DIR
+from ..constants import DATA_DIR
 
-import nltk  # FIXME: from nlpia_bot.spacy_language_model import nlp
+import nltk  # FIXME: from qary.spacy_language_model import nlp
 from nltk.stem import WordNetLemmatizer
 
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
