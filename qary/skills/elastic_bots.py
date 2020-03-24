@@ -30,7 +30,7 @@ class Bot:
     def __init__(self):
         self.transformer_loggers = []
         for name in logging.root.manager.loggerDict:
-            if (len(name) >= 12 and name[:12] == 'transformers') or name == 'nlpia_bot.skills.qa_utils':
+            if (len(name) >= 12 and name[:12] == 'transformers') or name == 'qary.skills.qa_utils':
                 self.transformer_loggers.append(logging.getLogger(name))
                 self.transformer_loggers[-1].setLevel(logging.ERROR)
 
