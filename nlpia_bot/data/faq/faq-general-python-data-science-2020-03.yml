@@ -49,3 +49,12 @@
 -
   Q: Is it OK to use ffill or bfill the NaNs in the *age* feature in a dataset for predicting income or salary?  #student
   A: No. There is almost always a better approach for filling NaN valuescontinuous values than `.fillna('bfill')` or `.fillna('ffill')`. For age, the appropriate fill value is probably median or mean. Your model's accuracy using each approach will tell you which one. And all continuous features that contain null or NaN values should be split into two variables or columns. One variable should be created to contain a binary categorical 0 or 1 value indicating that the variable was null or NaN before your filled. You would probably want to call this new feature `age_is_nan`. You can then fill the NaNs in the age column and train a model, knowing that it will have all the information from the original dataset and it will not be too badly affected by your assumptions about how best to fill in the NaN values. And you should try many `fillna` approaches to see which one yields the best results (highest accuracy).
+-
+  Q: How should my second capstone project be different from the first?
+  A: You should build on what you learned in the first capstone project and expand it on a new type of problem. If you did not use a deep learning model, now would be a good time to select a problem and dataset that is likely to require it.
+-
+  Q: What are the kinds of datasets and problems that are likely to require neural networks or deep learning?
+  A: Neural networks are well-suited to problems that involve high dimensional data or sequence data where explainability and learning causal relationships is not as important as prediction accuracy. Some examples include image processing (computer vision), audio processing (such as voice recognition), time series forecasting (such as stock market forecasting), genome sequence processing, natural language processing, and spatiotemporal data prediction (such as epidemiology and weather forecasting).
+-
+  Q: How can I use a for loop to extract only the rows of a dataframe that meet a certain criteria?
+  A: "The dataframe has an `iterrows()` method that will yield a 2-tuple of the index value (such as the row number) and the row values as a Series. So your conditional (`if` statement) in the for loop can then access the particular value for that row that you are interested in using the getitem square brackets. Here it is as a list comprehension: [row['column_name'] for idx, row in df.iterrows() if row['column_name'] == whatever]"
