@@ -1,6 +1,6 @@
 # How to submit an Issue
 
-When submitting an Issue to the `nlpia-bot` repository, it will help if you follow this template:
+When submitting an Issue to the `qary` repository, it will help if you follow this template:
 
 ## Environment
 
