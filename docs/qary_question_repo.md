@@ -1,8 +1,8 @@
 ## qary for individuals 
 
-- Who is <person I met before>?
-- Where did I meet <person I met before>?
-- Add note: <note content> 
+- Who is \<person I met before\>?
+- Where did I meet \<person I met before \>?
+- Add note: \<note content\> 
 - Where have I seen an article like this recently about the psychology of bots?
 - Who do I know in the nonprofit space in San Francisco? 
 
