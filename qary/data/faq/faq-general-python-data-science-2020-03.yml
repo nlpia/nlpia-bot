@@ -58,3 +58,13 @@
 -
   Q: "Is this a good data science problem:  Work with bitcoin blockchain data using sender and receiver addresses to cluster addresses based on timing and volume of transactions and see if any are leading indicators of price or volume?"
   A: "This could be difficult. Blockchain IDs are typically designed to be completely random and can be self-assigned by individuals or firms to try to hide any information that could be used to predict future behavior. This is an adversarial problem that will be difficult because the data is being created by people trying to make your prediction inaccurate, or unreliable."
+-
+  Q: How should my second capstone project be different from the first?
+  A: You should build on what you learned in the first capstone project and expand it on a new type of problem. If you did not use a deep learning model, now would be a good time to select a problem and dataset that is likely to require it.
+-
+  Q: What are the kinds of datasets and problems that are likely to require neural networks or deep learning?
+  A: Neural networks are well-suited to problems that involve high dimensional data or sequence data where explainability and learning causal relationships is not as important as prediction accuracy. Some examples include image processing (computer vision), audio processing (such as voice recognition), time series forecasting (such as stock market forecasting), genome sequence processing, natural language processing, and spatiotemporal data prediction (such as epidemiology and weather forecasting).
+-
+  Q: How can I use a for loop to extract only the rows of a dataframe that meet a certain criteria?
+  A: "The dataframe has an `iterrows()` method that will yield a 2-tuple of the index value (such as the row number) and the row values as a Series. So your conditional (`if` statement) in the for loop can then access the particular value for that row that you are interested in using the getitem square brackets. Here it is as a list comprehension: [row['column_name'] for idx, row in df.iterrows() if row['column_name'] == whatever]"
+
