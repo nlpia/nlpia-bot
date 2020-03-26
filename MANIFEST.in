@@ -1,9 +1,0 @@
-include LICENSE.txt
-include CONTRTIBUTING.md
-include *.md
-include qary/data/*.json
-include qary/data/eliza_doctor.txt
-include qary/data/movie_dialog.csv
-include qary/data/medical_sentences.json
-include qary/data/*.ini
-recursive-include qary/data/faq *.yml *.csv *.json
