@@ -1,3 +1,5 @@
+include LICENSE.txt
+include CONTRTIBUTING.md
 include *.md
 include qary/data/*.json
 include qary/data/eliza_doctor.txt
