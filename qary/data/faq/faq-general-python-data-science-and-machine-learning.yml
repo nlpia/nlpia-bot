@@ -1,6 +1,15 @@
 # faq-general-python-data-science-and-machine-learning-2019-12-23.yml
 -
-  Q: What are the types of data from a Data Science perspective?
+  Q: "What are the different types of data?  #data-science"
+  A: In data science all data must be converted to quantitative numerical data where the quantity has meaning in the real world. Ordinal strings like "small size", "medium size", "large size" or "first place", "second place" "third place" can all be converted to consecutive integers. Categorical data, like "red", "purple", "blue", "unknown" must be converted to separate binary (0 or 1) variables, one for each possible value for that categorical variable, like "category_red", "category_purple", etc.
+-
+  Q: "What kinds of data can a machine learning model train on?"
+  A: "Machine learning models can only train on numerical data."
+-
+  Q: "What are the basic variable data types in python?"
+  A: "`float`, `int`, `str`, and `bool`"
+-
+  Q: In Data Science, what are the different types of data?
   A: All data must be converted to quantitative numerical data where the quantity has meaning in the real world. Ordinal strings like "small size", "medium size", "large size" or "first place", "second place" "third place" can all be converted to consecutive integers. Categorical data, like "red", "purple", "blue", "unknown" must be converted to separate binary (0 or 1) variables, one for each possible value for that categorical variable, like "category_red", "category_purple", etc.
 -
   Q: What are some numerical features/factors you can extract from dates and times or `datetime` objects?
