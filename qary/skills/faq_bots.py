@@ -17,15 +17,11 @@ def capitalizations(s):
 
 
 class Bot:
-    """ Bot that can reply with definitions from glossary yml files in data/faq/glossary-*.yml
+    r""" Bot that can reply with answers to frequently asked questions using data/faq/*.yml
 
     >>> bot = Bot()
-    >>> bot.reply('allele')
-    [(0.05, "I don't understand...")]
-    >>> bot.reply('What is an Allele?')
-    [(0.94, 'A variant form of a given gene...')]
-    >>> bot.reply('What is a nucleotide?')
-    [(0.94, 'The basic building blocks of DNA and RNA...')]
+    >>> bot.reply('What are the basic variable data types in python?')[0][-1]
+    '`float`, `int`, `str`, and `bool`'
     """
 
     def __init__(self,
@@ -40,7 +36,7 @@ class Bot:
         self.vector['definition'] = pd.DataFrame(
             {term: nlp(d['definition']).vector for term, d in self.glossary.items()})
 
-        self.synonyms = {term: term for term in self.glossary}
+        # self.synonyms = {term: term for term in self.glossary}
         # create reverse index of synonyms to canonical terms
         # for term, d in self.glossary.items():
         #     self.synonyms.update(dict(zip(capitalizations(term), [term] * 4)))
