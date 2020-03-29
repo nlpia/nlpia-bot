@@ -54,7 +54,7 @@ class Bot:
                 if normalized_term in self.glossary:
                     responses.append((1 - .02 * i, self.glossary[normalized_term]['definition']))
         else:
-            responses = [(0.05, "I don't understand. That doesn't sound like a question I can answer using my glossary.")]
+            responses = [(0.05, "I don't understand. I can't find that question in my list of FAQa.")]
         if not len(responses):
             responses.append((0.25, f"My glossaries and dictionaries don't seem to contain that term ('{extracted_term}')."))
         return responses
