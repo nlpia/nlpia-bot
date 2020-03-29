@@ -68,3 +68,12 @@
   Q: How can I use a for loop to extract only the rows of a dataframe that meet a certain criteria?
   A: "The dataframe has an `iterrows()` method that will yield a 2-tuple of the index value (such as the row number) and the row values as a Series. So your conditional (`if` statement) in the for loop can then access the particular value for that row that you are interested in using the getitem square brackets. Here it is as a list comprehension: [row['column_name'] for idx, row in df.iterrows() if row['column_name'] == whatever]"
 
+-
+  Q: What is an example of a pair of tables with columns that you might want to merge or join. #teacher
+  A: House prices based on neighborhood and home characteristics could be joined with a table of crime rates in each neighborhood to improve a price prediction model.
+-
+  Q: Why can't I use the `.resample()` method on a dataframe with an integer row number for the index?
+  A: You'll need to convert the index to a Datetime or Timestamp Index before resample will work. It's designed to work with time series.
+-
+  Q: I can't resample a time series with duplicate time stamps.
+  A: Yes you can. You just can't use the `DataFrame.resample` method. You need to write a for loop or a while loop that does what you want.
