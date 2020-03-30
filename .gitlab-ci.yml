@@ -24,35 +24,40 @@ before_script:
   - python -v                                   # Print out Python version for debugging
   # Setup git
   - apt-get install git
-  - git config --global user.email "you@example.com"
-  - git config --global user.name "Your Name"
+  - git config --global user.email "gitlabci@totalgood.com"
+  - git config --global user.name "GitLab CI"
   # Install dependencies of your package and the testing environment
   - pip install -r requirements.txt
   - pip install -r test-requirements.txt
 
 # Run in different environments
-py27:
-  image: "python:2.7"
-  script:
-  - python setup.py test
+# py27:
+#   image: "python:2.7"
+#   script:
+#   - python setup.py test
 
-py33:
-  image: "python:3.3"
-  script:
-  - python setup.py test
+# py33:
+#   image: "python:3.3"
+#   script:
+#   - python setup.py test
 
-py34:
-  image: "python:3.4"
-  script:
-  - python setup.py test
+# py34:
+#   image: "python:3.4"
+#   script:
+#   - python setup.py test
 
-py35:
-  image: "python:3.5"
-  script:
-  - python setup.py test
+# py35:
+#   image: "python:3.5"
+#   script:
+#   - python setup.py test
 
 py36:
   image: "python:3.6"
+  script:
+  - python setup.py test
+
+py37:
+  image: "python:3.7"
   script:
   - python setup.py test
 
