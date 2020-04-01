@@ -32,7 +32,7 @@ DEFAULT_CONFIG = {
     'bots': 'glossary',  # glossary,qa,parul,eliza,search_fuzzy'
     'spacy_lang': 'en_core_web_sm',
     'use_cuda': USE_CUDA,
-    'loglevel': logging.WARNING,
+    'loglevel': logging.FATAL,
     'num_top_replies': 10,
     'self_score': '.5',
     'semantic_score': '.5',
@@ -56,7 +56,7 @@ USE_CUDA = getattr(env, 'use_cuda', DEFAULT_CONFIG.get('use_cuda', USE_CUDA))
 logging.basicConfig(
     format='%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
     datefmt='%Y-%m-%d:%H:%M:%S',
-    level=LOGLEVEL)  # FIXME: read from config file like in clibot.py
+    level=LOGLEVEL)
 root_logger = logging.getLogger()
 log = logging.getLogger(__name__)
 
@@ -142,7 +142,7 @@ def parse_args(args):
     parser.add_argument(
         '-p',
         '--persist',
-        help="Don't exit. Retain language model in memory and maintain dialog until user says 'exit' or 'quit'",
+        help="DEPRECATED: Don't exit. Retain language model in memory and maintain dialog until user says 'exit' or 'quit'",
         dest='persist',
         default=str(DEFAULT_CONFIG['persist'])[0].lower() in 'fty1p',
         action='store_true')
@@ -157,22 +157,29 @@ def parse_args(args):
     parser.add_argument(
         '-q',
         '--quiet',
-        dest="loglevel",
-        help="set loglevel to ERROR",
+        dest="verbosity",
+        help="Quiet: set loglevel to ERROR",
         action='store_const',
         const=logging.ERROR)
     parser.add_argument(
+        '-qq',
+        '--very_quiet',
+        dest="verbosity",
+        help="Very quiet: set loglevel to FATAL",
+        action='store_const',
+        const=logging.FATAL)
+    parser.add_argument(
         '-v',
         '--verbose',
-        dest="loglevel",
-        help="set loglevel to INFO",
+        dest="verbosity",
+        help="Verbose: set loglevel to INFO",
         action='store_const',
         const=logging.INFO)
     parser.add_argument(
         '-vv',
         '--very_verbose',
-        dest="loglevel",
-        help="set loglevel to DEBUG",
+        dest="verbosity",
+        help="Verty verbose: set loglevel to DEBUG",
         action='store_const',
         const=logging.DEBUG)
     parser.add_argument(
@@ -181,7 +188,7 @@ def parse_args(args):
         dest="loglevel",
         help="Raw integer loglevel (10=debug, 20=info, 30=warn, 40=error, 50=fatal)",
         type=int,
-        default=None)  # DEFAULT_CONFIG['loglevel'])
+        default=DEFAULT_CONFIG['loglevel'])
     parser.add_argument(
         '--spacy_lang',
         default=None,  # None allows ini to set default
@@ -242,32 +249,41 @@ def parse_args(args):
     return parsed_args
 
 
-def setup_logging(loglevel):
+def setup_logging(loglevel=LOGLEVEL):
     """Setup basic logging
 
     Args:
       loglevel (int): minimum loglevel for emitting messages
     """
-    logformat = "[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
-    logging.basicConfig(level=loglevel, stream=sys.stdout,
-                        format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
+    global LOGLEVEL, log
+
+    logformat = '%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s'
+    logdatefmt = "%Y-%m-%d%H:%M:%S"
+    log.setLevel(loglevel)
+    # FIXME: this doesn't seem to change things, the original format and level set at top of file rules
+    logging.basicConfig(level=loglevel, stream=sys.stdout, format=logformat, datefmt=logdatefmt)
+    # set the root logger to the same log level
+    logging.getLogger().setLevel(loglevel)
 
 
 def parse_argv(argv=sys.argv):
-    """Entry point for console_scripts"""
-    global BOT, LOGLEVEL, USE_CUDA
+    """ Parse the command line args and ini file. Business logic to resolve conflicting arg values """
+    global BOT, USE_CUDA
 
     new_argv = []
     if len(argv) > 1:
         new_argv.extend(list(argv[1:]))
     args = parse_args(new_argv)
-    LOGLEVEL = args.loglevel = args.loglevel or logging.WARNING
-    log.setLevel(LOGLEVEL)
 
-    setup_logging(LOGLEVEL)
-    # set the root logger to the same log level
-    logging.getLogger().setLevel(args.loglevel)
+    # consolidate the 2 synonymous args, loglevel and verbosity, by using the minimum of the 2
+    #   loglevel may be set by the ini file or the command line arg loglevel
+    #   verbosity may only be set by the command line args -v/verbose -qq -vv and -q/quiet
+    #   The more verbose of the 2 (lower loglevel value) wins
+
+    loglevel = min(args.loglevel or logging.WARNING, args.verbosity or logging.WARNING)
+    setup_logging(loglevel=loglevel)
     log.debug(f'RAW ARGS (including config file): {vars(args)}')
+    args.loglevel = loglevel
 
     # strip quotes in case ini file incorrectly uses single quotes that become part of the str
     args.nickname = str(args.nickname).strip().strip('"').strip("'")
