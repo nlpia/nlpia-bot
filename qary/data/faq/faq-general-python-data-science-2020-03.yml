@@ -77,3 +77,12 @@
 -
   Q: I can't resample a time series with duplicate time stamps.
   A: Yes you can. You just can't use the `DataFrame.resample` method. You need to write a for loop or a while loop that does what you want.
+-
+  Q: What are some advantages of content-based filtering over collaborative filtering in recommendation engines, such as for Amazon products?
+  A: Content based filtering can give recommendations even for new users without any purchase history or for new products or new product categories that very few other customers have been exposed to. Collaborative filtering only works well for customers with a lot of examples of previous purchases.
+-
+  Q: What are some advantages of collaborative filtering over content-based filtering in recommendation engines, such as for Amazon products?
+  A: Collaborative filtering is often more accurate and provides better recommendations for customers with a lot of examples of previous purchases.
+-
+  Q: What is a typical workflow for a Data Science project at a startup?
+  A: Talk to management about the ideas they have for using their data. Talk to engineers about what data is available. Retrieve a small subset of the data and do EDA and provide visualizations to management and IT. Train a predictive model that addresses one of the ideas brought up by the manager or IT team. Present results to management and IT and brainstorm about the next incremental features or models or visualizations that provide the most bang for the buck.
