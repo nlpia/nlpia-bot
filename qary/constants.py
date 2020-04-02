@@ -342,13 +342,23 @@ ASCII_LOWER = 'abcdefghijklmnopqrstuvwxyz'
 ASCII_UPPER = ASCII_LOWER.upper()
 
 
+# clibot.py
 DEFAULT_BOTS = {
     'pattern_bots': None,
     'search_fuzzy_bots': None,
     'parul_bots': None,
     'eliza_bots': None,
 }
-DEFAULT_FAQ_DOMAINS = ('general-python-data-science', 'python-data_science-for-healthcare')
+
+# faq_bots.py
+FAQ_DOMAINS = (
+    'general-python-data-science-2019-12',
+    'python-data-science-for-healthcare-ucsd-dsdh-2019-12-31',
+    'general-python-data-science-and-machine-learning-2019-11-30',
+)
+FAQ_MIN_SIMILARITY = 0.83
+
+# glossary_bots.py
 DEFAULT_GLOSSARY_DOMAINS = ('dsdh', )
 
 TFHUB_USE_MODULE_URL = "https://tfhub.dev/google/universal-sentence-encoder-large/3"
