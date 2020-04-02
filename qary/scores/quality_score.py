@@ -16,7 +16,7 @@ log.setLevel(logging.INFO)
 
 class QualityScore:
     def __init__(self, **kwargs):
-        self.metrics = list(kwargs.keys())
+        self.metrics = [metric_name for metric_name in kwargs.keys() if kwargs[metric_name]]
         self.weights = list(kwargs.values())
         self.modules = {metric: importlib.import_module(f'qary.scores.{metric}_score') for metric in self.metrics}
         self.nlp = spacy_language_model.nlp
