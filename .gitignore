@@ -24,6 +24,7 @@ data/history.json
 .idea
 .vscode
 tags
+*.code-workspace
 
 # Package files
 *.egg
