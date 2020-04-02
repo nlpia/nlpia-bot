@@ -356,7 +356,8 @@ FAQ_DOMAINS = (
     'python-data-science-for-healthcare-ucsd-dsdh-2019-12-31',
     'general-python-data-science-and-machine-learning-2019-11-30',
 )
-FAQ_MIN_SIMILARITY = 0.83
+FAQ_MIN_SIMILARITY = 0.88
+FAQ_MAX_NUM_REPLIES = 3
 
 # glossary_bots.py
 DEFAULT_GLOSSARY_DOMAINS = ('dsdh', )
