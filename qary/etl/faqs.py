@@ -40,10 +40,14 @@ def load(domains=FAQ_DOMAINS):
     question_vectors = np.array(question_vectors)
     question_vectors /= np.linalg.norm(
         question_vectors, axis=1).reshape(-1, 1).dot(np.ones((1, question_vectors.shape[1])))
+    questions = np.array(questions)
+    answers = np.array(answers)
+    mask = np.array([(bool(a) and bool(q) and len(str(a).strip()) > 0 and len(str(q).strip()) > 0)
+                     for a, q in zip(questions, answers)])
 
     # This should be a Kendra/gensim/annoy class (with methods like .find_similar)
     return dict(
-        questions=questions,
-        answers=answers,
-        question_vectors=np.array(question_vectors)
+        questions=questions[mask],
+        answers=answers[mask],
+        question_vectors=np.array([qv for qv, m in zip(question_vectors, mask) if m])
     )
