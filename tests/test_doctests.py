@@ -7,6 +7,7 @@ import qary.clibot
 import qary.skills.eliza_bots
 import qary.skills.glossary_bots
 import qary.skills.qa_bots
+import qary.skills.faq_bots
 
 import qary.etl.glossaries
 import qary.etl.scrape_wikipedia
@@ -54,6 +55,12 @@ def test_scrape_wikipedia():
     results = doctest.testmod(qary.etl.scrape_wikipedia, **DOCTEST_KWARGS)
     assert results.failed < 1
     assert results.attempted > 2
+
+
+def test_faq_bots():
+    results = doctest.testmod(qary.skills.faq_bots, **DOCTEST_KWARGS)
+    assert results.failed < 1
+    assert results.attempted > 0
 
 # def test_yml():
 #     results = doctest.testmod(qary.etl.yml, optionflags=doctest.ELLIPSIS |
