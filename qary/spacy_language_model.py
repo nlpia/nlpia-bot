@@ -1,6 +1,7 @@
 import sys
 import logging
 
+import numpy as np
 import spacy
 
 from .constants import LANG, LANGS, passthroughSpaCyPipe
@@ -8,6 +9,7 @@ from .constants import LANG, LANGS, passthroughSpaCyPipe
 
 log = logging.getLogger(__name__)
 nlp = None
+UNKNOWN_WORDVEC = np.array([])
 
 try:
     from spacy_hunspell import spaCyHunSpell
@@ -47,7 +49,7 @@ def load(lang=None):
     >>> load_spacy_model()  # doctest: +ELLIPSIS
     <spacy.lang.en.English object at ...
     """
-    global nlp
+    global nlp, UNKNOWN_WORDVEC
     model = None
     log.warning(f"Loading SpaCy model...")
     nlp_lang = getattr(nlp, 'lang', '')
@@ -86,6 +88,8 @@ def load(lang=None):
     if nlp.lang == 'en':
         if nlp.meta['accuracy']['token_acc'] < model.meta['accuracy']['token_acc']:
             nlp = model
+    UNKNOWN_WORDVEC = np.random.randn(nlp._meta['vectors']['width'])
+    UNKNOWN_WORDVEC /= np.linalg.norm(UNKNOWN_WORDVEC)
     return model  # return value may be lower accuracy, so `nlp=load('en_web_core_sm')` will have lower accuracy `nlp`
 
 
