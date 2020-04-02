@@ -1,0 +1,15 @@
+-
+  Q: What's an easy quantitative feature you can extract from natural language text, such as corporate annual reports?
+  A: The number of characters in a text string can be computed with just the builtin `len()` function. Word count might also be interesting, once you are familiar with the tokenizers in packages like SpaCy or nltk.
+-
+  Q: What is a good way to expand my network for a Data Science job search?
+  A: Update your status with a link to a github repo for a project that you are proud of, a software package that you find useful, or an article about a data science concept that you liked. Your outreach communication should offer some information to your reader. And keep doing that every week, interacting with anyone that comments on your update. Also, prioritize contacts with recruiters. They will be able to advocate for you in the job market.
+-
+  Q: What programming languages should I learn to get ready for a career in Data Science?
+  A: It's best to master one general purpose programming language like python first. This will help you build a mental model of all the different data structures, algorithms, and programming patterns that you can then transfer over to almost any other language.
+-
+  Q: I can't resample a time series with duplicate time stamps.
+  A: Try averaging all the values for duplicate timestamps first.
+-
+  Q: How can I create samples of a time series in a dataframe for 10 second intervals.
+  A: `df.timestamp.dt.round(freq='10S')`
