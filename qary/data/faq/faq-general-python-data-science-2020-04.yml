@@ -13,3 +13,23 @@
 -
   Q: How can I create samples of a time series in a dataframe for 10 second intervals.
   A: `df.timestamp.dt.round(freq='10S')`
+-
+  Q: I was wondering what is/are your data wrangling methods of choice? I find myself using `df.groupby()` just because it makes sense to me and goes with my way of thinking. I think it will take some experience to get used to melding and joining tabos or creating pivot tables and reindexing a table.
+  A: "
+  Yea, `groupby` is a powerful method. Stick with it. But there's one other tool you probably want to have in your bag of tricks and that's just the ability to iterate through the rows of a table and compute anything you want using if statements and math on all the columns. The pattern is:
+  ```python
+  new_feature = []
+  for rownum, row in df.iterrows():
+      new_feature.append(row['column_name'] * row['another_column_name'])
+  df['new_feature_column_name'] = new_feature
+  ```
+
+  Can you think of any creative features you might generate using this approach on your data. It's expecially useful for latitude and longitude data and other geographic or time data.
+  You can also use this approach to create a feature using data in another table (which is equivalent to join or merge). Basically once you understand the syntax of a for loop, you can do almost anything.
+  "
+-
+  Q: As a Data Scientist in industry do you use SQL in the real world?
+  A: If you have a strong computer science background or teach yourself web development you can often learn how to avoid using SQL at all, by using ORM (Object Relation Mappings) in python or your preferred language. The advantage of that approach is that your brain can learn one programming language syntax very well. But as a beginning data scientist, without significant python and web development experience, you will probably have to use some SQL to retrieve the data you need to do Data Scientist. And even as an experienced Data Scientist who uses ORMs to retrieve and manipulate data, you will often need to use SQL to improve the efficiency of your queries. And some queries and database operations are not possible at all without an understanding of SQL.
+  -
+  Q: As a Data Scientist in industry what query language do you use to query a NoSQL database, such as a graph database or document store? I'm thinking of databases like Hadoop, ElasticSearch, MongoDB, Reddis, and Neo4J.
+  A: Neo4J uses Gremlin. NetworkX has a python API. Neo4J uses Cypher. ElasticSearch uses their own custom DSL (domain-specific langauge) based on JSON. You can find many other languages for NoSQL listed on the Wikipedia [NoSQL article](https://en.wikipedia.org/wiki/NoSQL).
