@@ -47,7 +47,7 @@ class Bot:
     def reply(self, statement):
         """ Suggest responses to a user statement string with [(score, reply_string)..]"""
         responses = []
-        extracted_term = extract.whatis(statement) or ''
+        extracted_term = extract.whatis(statement) or extract.whatmeans(statement) or ''
         if extracted_term:
             for i, term in enumerate(capitalizations(extracted_term)):
                 normalized_term = self.synonyms.get(term, term)
