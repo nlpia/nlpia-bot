@@ -7,10 +7,11 @@ import uuid
 import zipfile
 from multiprocessing import cpu_count
 from tqdm import tqdm
-from .qa_models import QuestionAnsweringModel
+from qa_models import QuestionAnsweringModel
+from qary.clibot import CLIBot
 
-from ..etl import elastic
-from ..constants import DATA_DIR, USE_CUDA
+from qary.etl import elastic
+from qary.constants import DATA_DIR, USE_CUDA
 
 log = logging.getLogger(__name__)
 
@@ -99,11 +100,10 @@ class Bot:
     def reply(self, statement):
 
         responses = []
-        docs = elastic.search(statement)
+        docs = elastic.get_highlights(statement)
 
-        for doc in docs['hits']['hits']:
-            context = doc['_source']['text']
-
+        for doc in docs:
+            context = doc[3]
             encoded_input = self.encode_input(statement, context)
             encoded_output = self.model.predict(encoded_input)
             probability, response = self.decode_output(encoded_output)
@@ -111,8 +111,10 @@ class Bot:
                 responses.append((probability, response))
         return responses
 
-
 def test_reply():
     bot = Bot()
-    answers = bot.reply('What is natural language processing?')
+    answers = bot.reply('When was Barack Obama born?')
     print(answers)
+
+if __name__=="__main__":
+    test_reply()

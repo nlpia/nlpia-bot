@@ -29,7 +29,7 @@ EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'False',  # Yes, yes, 1, Y, y, T, t
-    'bots': 'glossary',  # glossary,qa,parul,eliza,search_fuzzy'
+    'bots': 'elastic',  # glossary,qa,parul,eliza,search_fuzzy'
     'spacy_lang': 'en_core_web_sm',
     'use_cuda': USE_CUDA,
     'loglevel': logging.FATAL,

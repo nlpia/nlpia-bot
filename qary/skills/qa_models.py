@@ -29,7 +29,7 @@ from transformers import (
     AlbertTokenizer
 )
 
-from .qa_utils import (
+from qa_utils import (
     get_examples,
     convert_examples_to_features,
     RawResult,
@@ -42,7 +42,7 @@ from .qa_utils import (
     # get_best_predictions_extended,
 )
 
-from ..constants import USE_CUDA
+from qary.constants import USE_CUDA
 
 QABOTS_ARGS = {
     'output_dir': '',
