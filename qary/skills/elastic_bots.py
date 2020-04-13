@@ -96,7 +96,8 @@ class Bot:
         (0.75, 'response')
         """
         return output[0]['probability'], output[0]['answer']
-
+    
+    
     def reply(self, statement):
 
         responses = []
