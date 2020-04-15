@@ -1,0 +1,25 @@
+# faq-general-python-data-science-and-machine-learning-2019-12-23.yml
+-
+  Q: "What are the different types of data?  #data-science"
+  A: In data science all data must be converted to quantitative numerical data where the quantity has meaning in the real world. Ordinal strings like "small size", "medium size", "large size" or "first place", "second place" "third place" can all be converted to consecutive integers. Categorical data, like "red", "purple", "blue", "unknown" must be converted to separate binary (0 or 1) variables, one for each possible value for that categorical variable, like "category_red", "category_purple", etc.
+-
+  Q: "What kinds of data can a machine learning model train on?"
+  A: "Machine learning models can only train on numerical data."
+-
+  Q: "What are the basic variable data types in python?"
+  A: "`float`, `int`, `str`, and `bool`"
+-
+  Q: In Data Science, what are the different types of data?
+  A: All data must be converted to quantitative numerical data where the quantity has meaning in the real world. Ordinal strings like "small size", "medium size", "large size" or "first place", "second place" "third place" can all be converted to consecutive integers. Categorical data, like "red", "purple", "blue", "unknown" must be converted to separate binary (0 or 1) variables, one for each possible value for that categorical variable, like "category_red", "category_purple", etc.
+-
+  Q: What are some numerical features/factors you can extract from dates and times or `datetime` objects?
+  A: It's a continuous numerical value already, if you encode it, for examples as the number of seconds since Jan 1, 1970.  You can also code it as independent binary categorical values for each of the the 12 years of the month, or the 4 seasons of the year, or even `is_holiday` or `is_night` or `is_rush_hour`. Another good pattern is to subtract a date or time from another reference date or time that might have some meaning, like the distance in time from the lunch hour (negative time until noon or positive time after 1).
+-
+  Q: I have separate cells in my jupyter notebook for each of my grid searches, one for each model type. How can I build a hyperparameter table from this output.
+  A: If your printed or saved output does not contain all the performance data you need, such as the training set accuracy along with the test set accuracy, then you will need to rerun all your training and testing code on each model and **append** all your output to a unified text file or CSV containing your results for each new model fit + score.
+-
+  Q: The tutorial recommends that I always do cross validation with 5 or more folds for any RandomForest model when there are a large number of features or a large number of samples. Is this correct.
+  A: My intuition says that is unnecessary. I think you'll find that the accuracy of the best of 5 random forest models trained on random folds of a data set will give you no better performance on unseen data than a random forest trained on a single fold with 5 times as many trees, or an ensemble model that combines the predictions of all 5 folds. But the only way to find whether this is the right approach for your particular dataset and problem is to try it. The cv parameter in the `CrossValidation` class is a hyperparameter just like number of trees and depth of trees in the `RandomForest` class are hyperparameters. That's what the hyperparameter tuning process is all about, you developing your own intuition and approach to architecting machine learning pipelines.
+-
+  Q: I've joined my genetics dataset with the reference genome to measure the position of each gene within the human genome, but some of the reference gene positions are not available so I have to mark them as missing. I don't want to fill the missing values with 0, since that will skew the model towards 0. What should I do?
+  A: Try various approaches and see which one improves the accuracy on your test set. For possible approaches, check out the `pd.DataFrame.fillna()` method and all the possible choices for the `how` argument, like `'mean'` `'median'`, `'mode'`, `'min'`, '`max`'. Only use `'bfill'`, `'ffill'`, or `'both'` if your dataset is sorted in time or some other order where this makes sense. Also consider the `pd.interpolate()` function. Finally, the most accurate, and most complicated approach, is to build your own interpolation function based on a model that is fit to the values of the other features in your dataset that do not have missing values for the examples where you are missing this genetic marker position information.  In all cases, you can add a separate binary variable for "missing_genetic_marker_position" so that the model can learn from the fact that this data is not available from the reference genome.
