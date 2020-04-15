@@ -271,7 +271,7 @@ def parse_argv(argv=sys.argv):
     global BOT, USE_CUDA
 
     new_argv = []
-    if len(argv) > 1:
+    if len(argv) > 1 and argv[0].lower().strip() in ('qary', 'bot'):
         new_argv.extend(list(argv[1:]))
     args = parse_args(new_argv)
 
