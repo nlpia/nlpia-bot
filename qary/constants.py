@@ -343,12 +343,7 @@ ASCII_UPPER = ASCII_LOWER.upper()
 
 
 # clibot.py
-DEFAULT_BOTS = {
-    'pattern_bots': None,
-    'search_fuzzy_bots': None,
-    'parul_bots': None,
-    'eliza_bots': None,
-}
+DEFAULT_BOTS = ['pattern']  # 'search_fuzzy', 'parul', 'eliza', 'glossary', 'qa'
 
 # faq_bots.py
 FAQ_DOMAINS = (
