@@ -54,3 +54,9 @@
 -
   Q: How is the gradient and gradient descent used in back propagation.
   A: Gradient descent is used to decide how much to adjust the weights on the last layer of the network first. But instead of adjusting the weights the full amount, the back propagation algorithm uses an algorithm to decide how much of the gradient to compensate for so that it can retain some error to propagate backward to the early layers. The back propagation algorithm is designed to avoid the problems of vanishing and exploding gradients.
+-
+  Q: What is the difference between stemming and lemmatization?
+  A: A stemmer removes suffixes and prefixes from a word based on spelling rules. Lemmatization attempts to find the root of a word and can use a variety of approaches like WordNet or Word2Vect.
+-
+  Q: What is a good way to improve upon a Naive Bayes sentiment analysis model that used hand-tuned keywords?
+  A: The most straightforward would be to use a TFIDFTransformer to filter out only those words with high df and low df and use all the other word fequencies as features in your model.
