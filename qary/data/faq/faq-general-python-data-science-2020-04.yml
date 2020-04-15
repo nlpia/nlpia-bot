@@ -60,3 +60,10 @@
 -
   Q: What is a good way to improve upon a Naive Bayes sentiment analysis model that used hand-tuned keywords?
   A: The most straightforward would be to use a TFIDFTransformer to filter out only those words with high df and low df and use all the other word fequencies as features in your model.
+-
+  Q: In an A/B test where you observe increased traffic for A when compared to the web traffic for B, what does a low P value mean?
+  A: It means that the difference in web traffic that you observed for A relative to B is statistically significant and is not just the result of random chance or good luck.
+-
+  Q: When should I use a T-test vs a Z-test?
+  A: It usually doesn't matter. When you have at least 10 samples to work with, both will give you very similar p-values. A T-test is slightly more conservative because it anticipates the possiblity of outliers. The T-distribution used to calcualte the T-statistic or T-test has fatter tails than the normal distribution which is used for the Z-score or the Z-test.
+
