@@ -362,9 +362,7 @@ DEFAULT_BOTS = ['pattern']  # 'search_fuzzy', 'parul', 'eliza', 'glossary', 'qa'
 
 # faq_bots.py
 FAQ_DOMAINS = (
-    'general-python-data-science-2019-12',
-    'python-data-science-for-healthcare-ucsd-dsdh-2019-12-31',
-    'general-python-data-science-and-machine-learning-2019-11-30',
+    'python-data-science',
 )
 FAQ_MIN_SIMILARITY = 0.88
 FAQ_MAX_NUM_REPLIES = 3
