@@ -1,0 +1,69 @@
+-
+  Q: "What's an easy quantitative feature you can extract from natural language text, such as corporate annual reports?"
+  A: "The number of characters in a text string can be computed with just the builtin `len()` function. Word count might also be interesting, once you are familiar with the tokenizers in packages like SpaCy or nltk. You can also check for the presence or absenc e of particular keywords using `df['name'].apply(lambda s: keyword in s)`. Just replace `keyword` with a word you think might be interesting such as \"awesome\" or \"horrible\"."
+-
+  Q: "What is a good way to expand my network for a Data Science job search?"
+  A: "Update your status with a link to a github repo for a project that you are proud of, a software package that you find useful, or an article about a data science concept that you liked. Your outreach communication should offer some information to your reader. And keep doing that every week, interacting with anyone that comments on your update. Also, prioritize contacts with recruiters. They will be able to advocate for you in the job market."
+-
+  Q: "What programming languages should I learn to get ready for a career in Data Science?"
+  A: "It's best to master one general purpose programming language like python first. This will help you build a mental model of all the different data structures, algorithms, and programming patterns that you can then transfer over to almost any other language."
+-
+  Q: I can't resample a time series with duplicate time stamps.
+  A: Try averaging all the values for duplicate timestamps first.
+-
+  Q: How can I create samples of a time series in a dataframe for 10 second intervals.
+  A: "`df.timestamp.dt.round(freq='10S')`"
+-
+  Q: "I was wondering what is/are your data wrangling methods of choice? I find myself using `df.groupby()` just because it makes sense to me and goes with my way of thinking. I think it will take some experience to get used to melding and joining tabos or creating pivot tables and reindexing a table."
+  A: "
+  Yea, `groupby` is a powerful method. Stick with it. But there's one other tool you probably want to have in your bag of tricks and that's just the ability to iterate through the rows of a table and compute anything you want using if statements and math on all the columns. The pattern is:
+  ```python
+  new_feature = []
+  for rownum, row in df.iterrows():
+      new_feature.append(row['column_name'] * row['another_column_name'])
+  df['new_feature_column_name'] = new_feature
+  ```
+
+  Can you think of any creative features you might generate using this approach on your data. It's expecially useful for latitude and longitude data and other geographic or time data.
+  You can also use this approach to create a feature using data in another table (which is equivalent to join or merge). Basically once you understand the syntax of a for loop, you can do almost anything.
+  "
+-
+  Q: "As a Data Scientist in industry do you use SQL in the real world?"
+  A: "If you have a strong computer science background or teach yourself web development you can often learn how to avoid using SQL at all, by using ORM (Object Relation Mappings) in python or your preferred language. The advantage of that approach is that your brain can learn one programming language syntax very well. But as a beginning data scientist, without significant python and web development experience, you will probably have to use some SQL to retrieve the data you need to do Data Scientist. And even as an experienced Data Scientist who uses ORMs to retrieve and manipulate data, you will often need to use SQL to improve the efficiency of your queries. And some queries and database operations are not possible at all without an understanding of SQL."
+-
+  Q: "As a Data Scientist in industry what query language do you use to query a NoSQL database, such as a graph database or document store? I'm thinking of databases like Hadoop, ElasticSearch, MongoDB, Reddis, and Neo4J."
+  A: "Neo4J uses Gremlin. NetworkX has a python API. Neo4J uses Cypher. ElasticSearch uses their own custom DSL (domain-specific langauge) based on JSON. You can find many other languages for NoSQL listed on the Wikipedia [NoSQL article](https://en.wikipedia.org/wiki/NoSQL)."
+-
+  Q: What is the best practice for selecting an index for my data in a DataFrame or database? Should I use the company name concatenated with the year as the index for financial data, or should I create a MultiIndex with company and year as the two levels of the index?
+  A: In most cases its best to let pandas or your database management system create the index for you by simply leaving it empty and adding independent columns for all the variables in your dataset, like company name and year. This will allow you to join on any combination of the variables that you like. The one exception to this in Pandas is that if you often need to look up (retrieve) records by company name or year or both, it would be best to use them as a MultiIndex in addition to maintaining them as columns in your DataFrame of feature variables.
+-
+  Q: "How can I count the number of records for a particular group of data, like the `country` column in a pandas DataFrame?"
+  A: "`[(country, len(group)) for country, group df.groupby('country')]"
+-
+  Q: I have blood alcohol levels from a breathalizer measured every 30 minutes. Subjects also carried a phone that recorded their x, y, z values based on accelerometer readings from the phone, measured approximately 50 milliseconds between samples. How can I join these tables to build a machine learning model to predict sobriety (blood alcohol level) based on accelerometer data.
+  A: Try aggregating the accelerometer data by measuring the variance, standard deviation, min-max separation or some other scalar statistic over a few minutes preceeding the blood-alcohol measurement. You may need to do this with a manual for loop over the blood alcohol level measurements to add the acceleromater data to new columns of that table.
+-
+  Q: What is a CDF (Cumulative Distribution Function) used for?
+  A: To estimate the probability or confidence interval for a range of values.
+-
+  Q: How can I read a large json file (more than 4 GB) without crashing my computer? It's the the yelp reviews dataset from Kaggle.
+  A: "Try opening the file with the python open function. You'll need to set encoding to 'latin' for that particular Kaggle dataset. Then iterate through the file one line at a time (`for line in open(filename, encoding='latin'):`). Use `json.loads(line)` to read in a dictionary for each row of data and you can filter based on any of the dictionary keys that you like."
+-
+  Q: What is a confidence interval?
+  A: A confidence interval is a range of values for a variable and the probability of a random sample falling within that range of values. Usually this is a range around the mean value in the dataset. This is because the mean value is usually the most likely value. And for a symmetric probability distribution, it is the center of the distribution. For example, for a large dataset of dice rolls (a pair of two die) the distribution is centered on a dice roll value of 7. For a pair of dice the 1/6 or 16.67% confidence interval is 7 +/- 0. The (5/36 + 6/36 + 5/36) or 4/9 or 44.44% confidence interval is 7 +/- 1. This is the same as saying you have a 44.44% chance of rolling a 6, 7 or 8 when you roll a pair of dice.
+-
+  Q: How is the gradient and gradient descent used in back propagation.
+  A: Gradient descent is used to decide how much to adjust the weights on the last layer of the network first. But instead of adjusting the weights the full amount, the back propagation algorithm uses an algorithm to decide how much of the gradient to compensate for so that it can retain some error to propagate backward to the early layers. The back propagation algorithm is designed to avoid the problems of vanishing and exploding gradients.
+-
+  Q: What is the difference between stemming and lemmatization?
+  A: A stemmer removes suffixes and prefixes from a word based on spelling rules. Lemmatization attempts to find the root of a word and can use a variety of approaches like WordNet or Word2Vect.
+-
+  Q: What is a good way to improve upon a Naive Bayes sentiment analysis model that used hand-tuned keywords?
+  A: The most straightforward would be to use a TFIDFTransformer to filter out only those words with high df and low df and use all the other word fequencies as features in your model.
+-
+  Q: In an A/B test where you observe increased traffic for A when compared to the web traffic for B, what does a low P value mean?
+  A: It means that the difference in web traffic that you observed for A relative to B is statistically significant and is not just the result of random chance or good luck.
+-
+  Q: When should I use a T-test vs a Z-test?
+  A: It usually doesn't matter. When you have at least 10 samples to work with, both will give you very similar p-values. A T-test is slightly more conservative because it anticipates the possiblity of outliers. The T-distribution used to calcualte the T-statistic or T-test has fatter tails than the normal distribution which is used for the Z-score or the Z-test.
+
