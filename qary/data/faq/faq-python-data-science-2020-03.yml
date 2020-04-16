@@ -1,0 +1,88 @@
+-
+  Q: I feel overwhelmed with this dataset. what should I do?
+  A: "Take it one column at a time. Identify your target variable. For example, you could select the home price in a table of real estate prices for homes. `y = df['price']`. Then look at the dtype (data type) for each of the columns and work with just the first numeric column you see, for example the total square footage of the home. `X = df[['sqft']]`. Then you can train a linear regression to predict home price from square footage. `lr, lr = sklearn.linear_model.LinearRegression(), lr.fit(X, y)` and you can score it for accuracy with `lr.score(X, y)`. Then add one column at a time to your variable X (features) and see how your `fit` improves by checking the `score` each time."
+-
+  Q: "I went through a Linear Regression to predict Severity using 4 features.  I used ffill to fill NANs. The score was about 0.003, which made me think about alternative ways to fillna that might be better. What should I do? #student"
+  A: "What are some other options for filling in NaN values? Which ones are going to most correctly fill in the values closest to the *truth* of the missing values? #teacher #socratic"
+-
+  Q: "For precipitation, filling with 0s might be all it takes, but for temperature, windspeed, and other weather related numerical data, it might be beneficial to use DateTime data as an index, and then try ffill or mean(?)"
+  A: "Whenever you are trying to decide on a particular cleaning step what is the best way to decide between different options? #teacher #socratic"
+-
+  Q: "How do I decide which features to use and which ML method in order to get the best predictive model? I started by pairplotting the raw data. "
+  A: "What do you mean by \"best\"*? Can you answer your own question about which is *best* using python code? #teacher #socratic"
+-
+  Q: "Is it time to put a plan in place as to what needs to happen so I may move forward in A direction? I find myself going everywhere all at once and nowhere fast. #student"
+  A: "Yes. You're doing fine. It's OK to feel overwhelmed. You do need a general plan in your mind. But the most important thing is just to remind you of the destination and what that looks like. Like driving from Houston to San Diego, it doesn't help to list all the possible turns between here and there. And you won't chose the *best* path even if you do. You need to replan at every intersection based on what you see around you.  #teacher #socratic"
+-
+  Q: "When explained variance is high, like 99%, does that mean that PCA is good for my model?"
+  A: "The only variance that you'd like to explain is the variance in your target variable. So if the 1% variance in your features included all of the covariance with your target, then you can still harm your model accuracy by doing PCA, even with 99% explained variance in your reduced dimensional feature vectors."
+-
+  Q: "I have a model that can predict the authorship of judicial ruling texts with 95% accuracy. What can I do with it?"
+  A: "You can examine the word frequencies that are most important to each judge's authorship prediction."
+-
+  Q: What are some good resources for learning how to program in python?
+  A: One of my favorites is `learnpython.org`.
+-
+  Q: What are some good resources for learning about object oriented programming and how to define classes in python?
+  A: Try the section on "Objects and Classes" in [learnpython.org](https://www.learnpython.org/en/Classes_and_Objects)
+-
+  Q: How can I implement a Kalman Filter in python?
+  A: The `pykalman` package implements both a linear kalman filter as well as a nonlinear unscented kalman filter.
+-
+  Q: When was the first deep learning backpropagation algorithm discovered?
+  A: The basics of continuous backpropagation were first derived by Henry J. Kelley in 1960 to solve control theory problems. Arthur E. Bryson published a similar approach to solving control theory problems in 1961. The actual word \"backpropagation\" was popularized as a word to describe the learning algorithm for neural networks in 1986 by Rumelhart, Geoffrey Hinton & Williams.
+-
+  Q: How many rows of data should I have for a machine learning problem?
+  A: You would like at least 10 rows for each feature in your cleaned dataset. Keep in mind you are likely to have many more features in your cleaned dataset than in your raw data. For example dates and times contain a lot of information about the world like seasons and times of day and things that are happening elsewhere in the world, like economic trends. So they may expand into hundreds of useful features. Likewise location data like zipcodes or latititude and longitude or addresses will typically expand to 100s of features during the cleaning process. Images and natural language objects are also worth "a thousand words" or nearly 1000 features.
+-
+  Q: Does the position of a feature in a decision tree near the top of the tree indicate that it is more important than features below it or in the leaves?
+  A: Yes, it is probably more valuable, but that importance is not guaranteed. The only way to know for sure how valuable any particular feature is, is to remove it from your training set, fit a model, and recalculate test set accuracy to see how much it drops.
+-
+  Q: How often should I commit and push my code to a git repository like GitLab?
+  A: As often as you can without significantly slowing your progress. If others on your team are working on the same project, they will be better able to coordinate their work with yours if they can see what you are working on. And even if you are the only developer working on your project, your future self will appreciate all the versions you have committed in case you want to see what changes helped or hurt the performance of your data science pipeline.
+-
+  Q: I trained a logistic regression to predict cannabis sales crime types for arrest records in NYC, either possession or sales. It shows a large negative coefficient for `race_is_white` for sales crimes, but a large positive coefficient for `race_is_black`. Does this mean that police officers are arresting black people for cannabis sales more often than white people?
+  A: Yes it probably does, but you don't know the cause of those arrests. It could have been because more of those types of crimes were being committed in NYC. Or it could have been that the areas where police officers patrol. Officers trained in identifying and arresting drug dealers may have a different "beat" that officers trained in catching buyers and users of drugs. And these different areas may have different demographic statistics.
+-
+  Q: "I want to recommend news articles for users based on their social media feed. #student #hypothesis"
+  A: "Do you have a table of users and the news articles that they like? You will need a large labeled dataset for any natural language processing problem. A data science problem should start with the data. See what parts of a table of data you would like to predict based on the other features in the data table. #teacher"
+-
+  Q: Is it OK to use ffill or bfill the NaNs in the *age* feature in a dataset for predicting income or salary?  #student
+  A: No. There is almost always a better approach for filling NaN valuescontinuous values than `.fillna('bfill')` or `.fillna('ffill')`. For age, the appropriate fill value is probably median or mean. Your model's accuracy using each approach will tell you which one. And all continuous features that contain null or NaN values should be split into two variables or columns. One variable should be created to contain a binary categorical 0 or 1 value indicating that the variable was null or NaN before your filled. You would probably want to call this new feature `age_is_nan`. You can then fill the NaNs in the age column and train a model, knowing that it will have all the information from the original dataset and it will not be too badly affected by your assumptions about how best to fill in the NaN values. And you should try many `fillna` approaches to see which one yields the best results (highest accuracy).
+-
+  Q: "Is this a good data science project: Working with annual statements of financial companies with NLP (Natural Language Processing) or word analysis to test hypotheses around financial performance, ESG performance or transparency metrics."
+  A: "Great idea, but it needs to be fleshed out a bit more from a data science perspective. What does your dataset look like? What are the columns, such as NL text for the financial report? What is your target variable? Do you have categorical or numerical values for your target variable that you are trying to predict?"
+-
+  Q: "Is this a good data science problem: Working with Twitter or LinkedIn data to cluster groups of people together and see if any of these groups can predict sentiment ahead of aggregate measures like price of a product, service, or company stock."
+  A: "Great concept, but to turn it into a data science problem you will need to dig into the dataset. Price is a good target variable to predict with a regressor, you just need to look at the features in your dataset in more detail. What does your dataset look like? What are the columns? Are they natural language text, dates, times, geo locations, numerical quantities, categorical variables? What is your target variable?"
+-
+  Q: "Is this a good data science problem:  Work with bitcoin blockchain data using sender and receiver addresses to cluster addresses based on timing and volume of transactions and see if any are leading indicators of price or volume?"
+  A: "This could be difficult. Blockchain IDs are typically designed to be completely random and can be self-assigned by individuals or firms to try to hide any information that could be used to predict future behavior. This is an adversarial problem that will be difficult because the data is being created by people trying to make your prediction inaccurate, or unreliable."
+-
+  Q: How should my second capstone project be different from the first?
+  A: You should build on what you learned in the first capstone project and expand it on a new type of problem. If you did not use a deep learning model, now would be a good time to select a problem and dataset that is likely to require it.
+-
+  Q: What are the kinds of datasets and problems that are likely to require neural networks or deep learning?
+  A: Neural networks are well-suited to problems that involve high dimensional data or sequence data where explainability and learning causal relationships is not as important as prediction accuracy. Some examples include image processing (computer vision), audio processing (such as voice recognition), time series forecasting (such as stock market forecasting), genome sequence processing, natural language processing, and spatiotemporal data prediction (such as epidemiology and weather forecasting).
+-
+  Q: How can I use a for loop to extract only the rows of a dataframe that meet a certain criteria?
+  A: "The dataframe has an `iterrows()` method that will yield a 2-tuple of the index value (such as the row number) and the row values as a Series. So your conditional (`if` statement) in the for loop can then access the particular value for that row that you are interested in using the getitem square brackets. Here it is as a list comprehension: [row['column_name'] for idx, row in df.iterrows() if row['column_name'] == whatever]"
+
+-
+  Q: What is an example of a pair of tables with columns that you might want to merge or join. #teacher
+  A: House prices based on neighborhood and home characteristics could be joined with a table of crime rates in each neighborhood to improve a price prediction model.
+-
+  Q: Why can't I use the `.resample()` method on a dataframe with an integer row number for the index?
+  A: You'll need to convert the index to a Datetime or Timestamp Index before resample will work. It's designed to work with time series.
+-
+  Q: I can't resample a time series with duplicate time stamps.
+  A: Yes you can. You just can't use the `DataFrame.resample` method. You need to write a for loop or a while loop that does what you want.
+-
+  Q: What are some advantages of content-based filtering over collaborative filtering in recommendation engines, such as for Amazon products?
+  A: Content based filtering can give recommendations even for new users without any purchase history or for new products or new product categories that very few other customers have been exposed to. Collaborative filtering only works well for customers with a lot of examples of previous purchases.
+-
+  Q: What are some advantages of collaborative filtering over content-based filtering in recommendation engines, such as for Amazon products?
+  A: Collaborative filtering is often more accurate and provides better recommendations for customers with a lot of examples of previous purchases.
+-
+  Q: What is a typical workflow for a Data Science project at a startup?
+  A: Talk to management about the ideas they have for using their data. Talk to engineers about what data is available. Retrieve a small subset of the data and do EDA and provide visualizations to management and IT. Train a predictive model that addresses one of the ideas brought up by the manager or IT team. Present results to management and IT and brainstorm about the next incremental features or models or visualizations that provide the most bang for the buck.
