@@ -1,8 +1,12 @@
-from django.conf.urls import url
+from django.contrib import admin
+from django.urls import path
+from django.conf.urls import url, include
 from first_app import views
 
 
-urlpatterns = [
+app_name = 'bot'
 
-    url(r'^$', views.index, name='index')
+
+urlpatterns = [
+    path('', home_view),
 ]
