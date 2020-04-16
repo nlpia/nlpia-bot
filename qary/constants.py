@@ -95,6 +95,7 @@ def parse_args(args):
     Returns:
       :obj:`argparse.Namespace`: command line parameters namespace
     """
+    print(f"args: {args}")
     parser = configargparse.ArgParser(
         default_config_files=[
             '~/qary.ini',
@@ -268,12 +269,16 @@ def setup_logging(loglevel=LOGLEVEL):
 
 def parse_argv(argv=sys.argv):
     """ Parse the command line args and ini file. Business logic to resolve conflicting arg values """
-    global BOT, USE_CUDA
+    global BOT, USE_CUDA, log
 
     new_argv = []
-    if len(argv) > 1 and argv[0].lower().strip() in ('qary', 'bot'):
-        new_argv.extend(list(argv[1:]))
-    args = parse_args(new_argv)
+    if len(argv) > 1:
+        command_line_path = str(argv[0]).lower().strip()
+        if command_line_path.endswith('qary') or command_line_path.endswith('bot'):
+            new_argv.extend(list(argv[1:]))
+    else:
+        log.error(f"It doesn't look like you're running this as a command line application. sys.argv: {argv}")
+    args = parse_args(args=new_argv)
 
     # consolidate the 2 synonymous args, loglevel and verbosity, by using the minimum of the 2
     #   loglevel may be set by the ini file or the command line arg loglevel
@@ -298,7 +303,17 @@ def parse_argv(argv=sys.argv):
     return args
 
 
-args = parse_argv()
+try:
+    # This will fail if another application (like gunicorn) imports qary and redirects stdin without running it as a command line app
+    print(f"sys.argv: {sys.argv}")
+    args = parse_argv(argv=sys.argv)
+except Exception as e:  # noqa
+    log.error(e)
+    log.error('Unable to parse command line arguments. Are you trying to import this into gunicorn?')
+    # Workaround for the bug when Django app tries to import qary.constants:
+    # `usage: gunicorn [-h] [-c CONFIG] ... gunicorn: error: unrecognized arguments
+    args = parse_argv(argv=[])
+
 
 LOGLEVEL = args.loglevel or LOGLEVEL
 

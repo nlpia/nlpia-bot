@@ -16,7 +16,11 @@ log = logging.getLogger(__name__)
 
 
 class DownloadProgressBar(tqdm):
-    """ Utility class that adds tqdm progress bar to urllib.request.urlretrieve """
+    """ tqdm wrapper (progress bar) that works with urllib.request.urlretrieve objects (byte streams)
+
+    Unlike tqdm, this wrapper Works with reading byte streams by setting the total attribute to the
+    length of the file (file size in bytes) which is known as soon as the file (or url) is opened.
+    """
 
     def update_to(self, b=1, bsize=1, tsize=None):
         if tsize is not None:
@@ -39,14 +43,13 @@ class Bot:
         if not os.path.isdir(model_dir):
             os.mkdir(model_dir)
 
-        if (
-            not os.path.exists(os.path.join(model_dir, 'config.json')) or
-            not os.path.exists(os.path.join(model_dir, 'pytorch_model.bin')) or
-            not os.path.exists(os.path.join(model_dir, 'special_tokens_map.json')) or
-            not os.path.exists(os.path.join(model_dir, 'tokenizer_config.json')) or
-            not os.path.exists(os.path.join(model_dir, 'training_args.bin')) or
-            not os.path.exists(os.path.join(model_dir, 'vocab.txt'))
-        ):
+        if not all(os.path.exists(os.path.join(model_dir, filename)) for filename in
+                   ('config.json',
+                    'pytorch_model.bin',
+                    'special_tokens_map.json',
+                    'tokenizer_config.json '
+                    'training_args.bin',
+                    'vocab.txt')):
             zip_local_path = os.path.join(model_dir, 'cased_simpletransformers.zip')
             with DownloadProgressBar(unit='B', unit_scale=True, miniters=1, desc=url_str.split('/')[-1]) as t:
                 urllib.request.urlretrieve(url_str, filename=zip_local_path, reporthook=t.update_to)

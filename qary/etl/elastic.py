@@ -56,6 +56,9 @@ def index_dir(path=os.path.join(constants.DATA_DIR, "wikipedia")):
     return paths
 
 
+# def read_up_on(categories):
+
+
 class Document:
 
     def __init__(self, title, text, source):
