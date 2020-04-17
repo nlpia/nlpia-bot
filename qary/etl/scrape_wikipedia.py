@@ -264,14 +264,14 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 text += section.text.replace('’', "'") + '\n'  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
             yield text
             text_lens.append(len(text))
-            log.warn(f'Added article "{page.title}" with {len(text)} chars.')
+            log.warning(f'Added article "{page.title}" with {len(text)} chars.')
             log.info(f'  Total scraped {sum(text_lens)} chars')
-            log.warn(str([depth, d, num_articles, title]))
+            log.warning(str([depth, d, num_articles, title]))
             if len(text_lens) >= max_articles:
-                log.warn(f"num_articles={num_articles} ==> len(text_lens)={len(text_lens)} > max_depth={max_depth}")
+                log.warning(f"num_articles={num_articles} ==> len(text_lens)={len(text_lens)} > max_depth={max_depth}")
                 break
             if d > depth:
-                log.warn(f"{d} > {depth}")
+                log.warning(f"{d} > {depth}")
                 break
 
 
