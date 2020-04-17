@@ -58,11 +58,11 @@ def isacronym(term):
     """ Estimate the probability that a given term is an acronym based only on its capitalization
 
     >>> isacronym('ABC')
-    1.0
+    0.6666...
     >>> isacronym('Cat')
-    0
+    0.0
     >>> isacronym('Cy')
-    0
+    0.0
     """
     if re.match(r'\s', term):
         return 0
