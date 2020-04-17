@@ -8,15 +8,18 @@ def whatis(statement):
     >>> whatis("What is a Secretary Bird?")
     'Secretary Bird'
     """
-    match = re.match(r"\b(what\s+(is|are)\s*(not|n't)?\s+(a|an|the)?)\s*\b([^\?]*)(\?*)", statement.lower())
+    match = re.match(
+        pattern=r"\b(what\s+(is|are)\s*(not|n't)?\s+(a|an|the)?)\s*\b([^\?]*)(\?*)",
+        string=statement.strip(),
+        flags=re.IGNORECASE)
     extracted_term = match.groups()[-2] if match else ''
-    return extracted_term
+    return extracted_term.strip()
 
 
 def whatmeans(statement):
     """ Extract the target noun phrase for questions like "What does RMSE mean?"
 
-    >>> whatmeans("What doesn rmse mean?")
+    >>> whatmeans("What does rmse mean?")
     'rmse'
     """
     pattern = (r"\b(what\s+(is|are)\s*(not|n't)?\s+(a|an|the|those|this|that)?)\s*\b"
@@ -40,7 +43,7 @@ def whatmeans(statement):
             string=statement.strip(),
             flags=re.IGNORECASE)
         extracted_term = match.groups()[-4] if match else ''
-    return extracted_term
+    return extracted_term.strip()
 
 
 def count_upper(s):
