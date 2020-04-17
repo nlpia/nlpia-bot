@@ -13,6 +13,7 @@ import qary.etl.glossaries
 import qary.etl.scrape_wikipedia
 import qary.etl.yml
 import qary.etl.elastic
+import qary.etl.knowledge_extraction
 
 import qary.scores.semantics_score
 # import qary.template_generators
@@ -89,5 +90,11 @@ def test_glossary_bots():
 
 def test_etl_elastic():
     results = doctest.testmod(qary.etl.elastic, **DOCTEST_KWARGS)
+    assert results.failed == 0
+    assert results.attempted >= 0
+
+
+def test_etl_knowledge_extraction():
+    results = doctest.testmod(qary.etl.knowledge_extraction, **DOCTEST_KWARGS)
     assert results.failed == 0
     assert results.attempted >= 0
