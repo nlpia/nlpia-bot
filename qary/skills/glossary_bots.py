@@ -22,7 +22,7 @@ class Bot:
     >>> bot.reply('allele')
     [(0.05, "I don't understand...")]
     >>> bot.reply('What is an Allele?')
-    [(0.94, 'A variant form of a given gene...')]
+    [(1.0, 'A variant form of a given gene...')]
     >>> bot.reply('What is a nucleotide?')
     [(0.94, 'The basic building blocks of DNA and RNA...')]
     """
