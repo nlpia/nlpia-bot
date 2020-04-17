@@ -11,8 +11,8 @@ def whatis(statement):
 def whatmeans(statement):
     match = re.match(
         r"\b(what\s+(is|are)\s*(not|n't)?\s+(a|an|the|those|this|that)?)\s*\b"
-        r"((meaning|definition|significance|origin|interpretation|translation)[s]*\s*"
-        r"(of|for|to|in|on)?\s*(a|an|the|those|this|that)?)?[s]*\s*"
+        r"(meaning|definition|significance|origin|interpretation|translation)[s]*\s*"
+        r"(of|for|to|in|on)?\s*((a|an|the|those|this|that)?)?[s]*)\s*"
         r"(tech|technology|science|biology|medicine|health|healthcare|genomic|data[ ]?science|machine[ ]?learning|dl|ml|ds|it|is|ir|nlp)?[es]*\s*"
         r"(phrase|quote|term|terminology|word|token|n[-]?gram?)[es]*)\s*"
         r"([^\?]*)(\?*)",
