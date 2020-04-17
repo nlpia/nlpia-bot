@@ -65,10 +65,10 @@ log = logging.getLogger(__name__)
 def append_sys_path():
     pass
     # if BASE_DIR not in sys.path:
-    #     log.warn(f'Package BASE_DIR ({BASE_DIR}) not in sys.path: {sys.path}')
+    #     log.warning(f'Package BASE_DIR ({BASE_DIR}) not in sys.path: {sys.path}')
     #     sys.path.append(BASE_DIR)
     # if SRC_DIR not in sys.path:
-    #     log.warn(f'Package SRC_DIR ({SRC_DIR}) not in sys.path: {sys.path}')
+    #     log.warning(f'Package SRC_DIR ({SRC_DIR}) not in sys.path: {sys.path}')
     #     sys.path.append(SRC_DIR)
 
 # append_sys_path()
