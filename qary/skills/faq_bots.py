@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 nlp = spacy_language_model.nlp
 if nlp._meta['vectors']['width'] < 300:  # len(nlp('word vector').vector) < 300:
-    log.warn(f"SpaCy Language model ({nlp._meta['name']}) doesn't contain 300D word2vec word vectors.")
+    log.warning(f"SpaCy Language model ({nlp._meta['name']}) doesn't contain 300D word2vec word vectors.")
     nlp = spacy_language_model.nlp = spacy_language_model.load('en_core_web_md')
 
 
