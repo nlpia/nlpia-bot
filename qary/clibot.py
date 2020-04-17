@@ -93,7 +93,7 @@ class CLIBot:
         self.num_top_replies = constants.DEFAULT_CONFIG['num_top_replies'] if num_top_replies is None else min(
             max(int(num_top_replies), 1), 10000)
         self.repliers = [bot.reply if hasattr(bot, 'reply') else bot for bot in self.bots if bot is not None]
-        log.warn(f'Loaded bots: {self.repliers}')
+        log.warning(f'Loaded bots: {self.repliers}')
         self.quality_score = QualityScore(**quality_kwargs)
 
     def add_bot(self, bot_name, **bot_kwargs):
