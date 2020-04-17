@@ -75,7 +75,7 @@ class Document:
             }
             log.info(f"Elasticsearch Document JSON created: {self.body}")
         except Exception as error:
-            log.warn(f"Document JSON instance error: ", error)
+            log.warning(f"Document JSON instance error: ", error)
 
     def insert(self):
         slug = slugify(self.body['title'])
