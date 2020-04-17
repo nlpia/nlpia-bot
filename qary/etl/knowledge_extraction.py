@@ -3,26 +3,43 @@ import re
 
 
 def whatis(statement):
+    """ Extract the target noun phrase phrase for "What is ... " questions.
+
+    >>> whatis("What is a Secretary Bird?")
+    'Secretary Bird'
+    """
     match = re.match(r"\b(what\s+(is|are)\s*(not|n't)?\s+(a|an|the)?)\s*\b([^\?]*)(\?*)", statement.lower())
     extracted_term = match.groups()[-2] if match else ''
     return extracted_term
 
 
 def whatmeans(statement):
+    """ Extract the target noun phrase for questions like "What does RMSE mean?"
+
+    >>> whatmeans("What doesn rmse mean?")
+    'rmse'
+    """
+    pattern = (r"\b(what\s+(is|are)\s*(not|n't)?\s+(a|an|the|those|this|that)?)\s*\b"
+               r"((meaning|definition|significance|origin|interpretation|translation)[s]*\s*|"
+               r"((mean|define|signifie|originate|interpret|translate)[s]*\s*))"
+               r"(of|for|to|in|on)?\s*((a|an|the|those|this|that)?[s]*)?\s*"
+               r"((tech|technology|science|biology|medicine|health|healthcare|genomic|data[ ]?science|machine[ ]?learning|dl|ml|ds|it|is|ir|nlp)?[es])*\s*"
+               r"((phrase|quote|term|terminology|word|token|n[-]?gram?)[es]*)?\s*"
+               r"([^\?]*)(\?*)"
+               )
     match = re.match(
-        r"\b(what\s+(is|are)\s*(not|n't)?\s+(a|an|the|those|this|that)?)\s*\b"
-        r"((meaning|definition|significance|origin|interpretation|translation)[s]*\s*"
-        r"(of|for|to|in|on)?\s*(a|an|the|those|this|that)?)?[s]*\s*"
-        r"(tech|technology|science|biology|medicine|health|healthcare|genomic|data[ ]?science|machine[ ]?learning|dl|ml|ds|it|is|ir|nlp)?[es]*\s*"
-        r"(phrase|quote|term|terminology|word|token|n[-]?gram?)[es]*)\s*"
-        r"([^\?]*)(\?*)",
-        statement.lower().strip())
-    match = match or re.match(
-        r"\b(what\s+(does)\s*(a|an|the)?)\s*"
-        r"\b([^\?\s]*\s*)+"
-        r"\b(mean|signify|represent|translate|stand)?\s*(for|to|as|in)?\s*(\?*)",
-        statement.lower().strip())
+        pattern=pattern,
+        string=statement.strip(),
+        flags=re.IGNORECASE)
     extracted_term = match.groups()[-2] if match else ''
+    if not extracted_term:
+        match = match or re.match(
+            pattern=(r"\b(what\s+(does)?\s*(a|an|the)?)\s*"
+                     r"([^\?\s]+\s+)+"
+                     r"\b(mean|signify|represent|translate|stand)?\s*(for|to|as|in)?\s*(\?*)"),
+            string=statement.strip(),
+            flags=re.IGNORECASE)
+        extracted_term = match.groups()[-4] if match else ''
     return extracted_term
 
 
