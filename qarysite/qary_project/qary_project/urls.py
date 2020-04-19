@@ -1,4 +1,4 @@
-"""first_project URL Configuration
+"""qary_project URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -16,13 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
-from first_app import views
+from qary_app import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', views.home_view),
-    url(r'^first_app/', include('first_app.urls', namespace='first_app')),
+    url(r'^qary_app/', include('qary_app.urls', namespace='qary_app')),
     url(r'question/', views.home_view, name='question'),
     url(r'answer/', views.reply, name='answer'),
 

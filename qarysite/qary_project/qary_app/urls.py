@@ -1,10 +1,11 @@
-from django.contrib import admin
-from django.urls import path
-from django.conf.urls import url, include
-from first_app import views
+# from django.contrib import admin
+# from django.urls import path
+from django.conf.urls import url  # , include
+
+from qary_app import views
 
 
-app_name = 'first_app'
+app_name = 'qary_app'
 
 
 urlpatterns = [
