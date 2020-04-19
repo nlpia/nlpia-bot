@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from . import models
 from nlpia_bot.clibot import CLIBot
-import re
+# import re  # noqa
 
 
-bot = CLIBot()
+bot = CLIBot(bots='glossary')
 
 get_request = None
 
@@ -37,4 +37,4 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     context_object_name = 'post_detail'
     model = models.Post
-    template_name = 'first_app/first_app_detail.html'
+    template_name = 'qary_app/first_app_detail.html'
