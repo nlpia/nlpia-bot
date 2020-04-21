@@ -136,7 +136,7 @@ class CLIBot:
         with open(history_path, 'w') as f:
             json.dump(history, f)
 
-    def reply(self, statement=''):
+    def reply(self, statement='', context=''):
         ''' Collect replies from from loaded bots and return best reply (str). '''
         log.info(f'statement={statement}')
         replies = []
@@ -144,14 +144,24 @@ class CLIBot:
         for replier in self.repliers:
             bot_replies = []
             log.info(f'Running bot {replier}')
+            # FIXME: create set_context() method on those bots that need it and do away with context try/except
             try:
-                bot_replies = replier(statement)
+                bot_replies = replier(statement, context=context)
                 log.debug("{replier.__name__} replies: {bot_replies}")
+            except TypeError as e:
+                log.warning(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
+                log.warning(str(e))
             except Exception as e:
-                if constants.args.debug:
-                    raise
-                log.error(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
-                log.error(str(e))
+                log.info(str(e))
+            if not len(bot_replies):
+                try:
+                    bot_replies = replier(statement)
+                    log.debug("{replier.__name__} replies: {bot_replies}")
+                except Exception as e:
+                    if constants.args.debug:
+                        raise
+                    log.error(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
+                    log.error(str(e))
                 try:
                     log.debug(repr(replier))
                     bot_replies = normalize_replies(replier.reply(statement))
