@@ -1,4 +1,4 @@
-""" Django settings for Django project "qary_project". """
+""" Django settings for Django project "qarysite". """
 
 import os
 
@@ -41,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'qary_project.urls'
+ROOT_URLCONF = 'qarysite.urls'
 
 TEMPLATES = [
     {
@@ -59,7 +59,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'qary_project.wsgi.application'
+WSGI_APPLICATION = 'qarysite.wsgi.application'
 
 
 # Database
