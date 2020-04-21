@@ -6,22 +6,14 @@ import urllib.request
 import uuid
 import zipfile
 from multiprocessing import cpu_count
-from tqdm import tqdm
 
-from .qa_models import QuestionAnsweringModel
-from ..etl import scrape_wikipedia
-from ..constants import DATA_DIR, USE_CUDA, args  # noqa
+from qary.skills.qa_models import QuestionAnsweringModel
+from qary.etl import scrape_wikipedia
+from qary.constants import DATA_DIR, USE_CUDA, args  # noqa
+from qary.etl.netutils import DownloadProgressBar
+
 
 log = logging.getLogger(__name__)
-
-
-class DownloadProgressBar(tqdm):
-    """ Utility class that adds tqdm progress bar to urllib.request.urlretrieve """
-
-    def update_to(self, b=1, bsize=1, tsize=None):
-        if tsize is not None:
-            self.total = tsize
-        self.update(b * bsize - self.n)
 
 
 class Bot:
