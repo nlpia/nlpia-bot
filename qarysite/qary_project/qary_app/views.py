@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from . import models
-from nlpia_bot.clibot import CLIBot
+from qary_app import models
+from qary.clibot import CLIBot
 # import re  # noqa
 
 
-bot = CLIBot(bots='glossary')
+bot = CLIBot(bots=('glossary',))
 
 get_request = None
 
