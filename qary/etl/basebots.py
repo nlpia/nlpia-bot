@@ -3,18 +3,33 @@ import logging
 import os
 import uuid
 import urllib.request
-import uuid
 import zipfile
-from multiprocessing import cpu_count
+# from multiprocessing import cpu_count
 
 from qary.etl.netutils import DownloadProgressBar
-from qary.constants import DATA_DIR, USE_CUDA, args
+from qary.constants import DATA_DIR, args  # , USE_CUDA
 
 
 log = logging.getLogger(__name__)
 
 
 class ContextBot:
+    """ Manages self.context attribute with update_, reset_ and reply(context=...) methods
+
+    >>> conbot = ContextBot({'init': 'init_value'})
+    >>> conbot.context
+    {'init': 'init_value'}
+    >>> conbot.update_context({'new': 'new_value'})
+    >>> conbot.context
+    {'init': 'init_value', 'new': 'new_value'}
+    >>> conbot.update_context({'init': 'updated_exisiting', 'new': {'inner': 'new_innards'}})
+    >>> conbot.context
+    {'init': 'updated_exisiting', 'new': {'inner': 'new_innards'}}
+    >>> conbot.reply('Hi', {'new': {'inner_reply': 'new_inner_reply'}})
+    >>> conbot.context
+    {'init': 'updated_exisiting', 'new': {'inner_reply': 'new_inner_reply'}}
+    """
+
     def __init__(self, context=None, args=args):
         super().__init__()
         self.context = {}
