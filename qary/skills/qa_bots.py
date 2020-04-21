@@ -9,14 +9,15 @@ from multiprocessing import cpu_count
 
 from qary.skills.qa_models import QuestionAnsweringModel
 from qary.etl import scrape_wikipedia
-from qary.constants import DATA_DIR, USE_CUDA, args  # noqa
+from qary.constants import DATA_DIR, USE_CUDA, args
+from qary.etl.basebots import ContextBot
 from qary.etl.netutils import DownloadProgressBar
 
 
 log = logging.getLogger(__name__)
 
 
-class Bot:
+class Bot(BaseBot):
     """ Bot that provides answers to questions given context data containing the answer """
 
     def __init__(self):
