@@ -21,7 +21,7 @@ class Bot(ContextBot):
     """ Bot that provides answers to questions given context data containing the answer """
 
     def __init__(self, context=None, args=args, **kwargs):
-        super().__init__(self, context=context, args=args, **kwargs)
+        super().__init__(context=context, args=args, **kwargs)
         self.transformer_loggers = []
         for name in logging.root.manager.loggerDict:
             if (len(name) >= 12 and name[:12] == 'transformers') or name == 'qary.skills.qa_utils':
@@ -64,22 +64,25 @@ class Bot(ContextBot):
             model_type, model_dir, args=model_args, pretrained=True, use_cuda=USE_CUDA
         )
 
-    def encode_input(self, statement, context):
+    def encode_input(self, statement, text):
         """ Converts statement and context strings into json format compatible with BERT transformer
 
+        BERT models use the word "context" to mean a single document read by BERT to do QA.
+        qary.skills.basebots uses context to manage a dict of many variables that help manage convo.
+
         >>> bot = Bot()
-        >>> encoded = bot.encode_input('statement', 'context')
+        >>> encoded = bot.encode_input('statement', text='example text')
         >>> encoded[0]['qas'][0]['question']
         'statement'
         >>> encoded[0]['context']
-        'context'
+        'example text'
         """
         encoded = [{
             'qas': [{
                 'id': str(uuid.uuid1()),
                 'question': statement
             }],
-            'context': context
+            'context': text
         }]
         return encoded
 
@@ -93,16 +96,17 @@ class Bot(ContextBot):
         """
         return output[0]['probability'], output[0]['answer']
 
-    def reply(self, statement, context='', **kwargs):
+    def reply(self, statement, context=None, **kwargs):
         responses = super().reply(statement=statement, context=context, **kwargs) or []
-        if context:
-            docs = [context]
+        docs = self.context['doc']['text']
+        if docs:
+            docs = [docs]
         else:
             docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=25, max_depth=2, ngrams=5,
                                                        ignore='who what when where why'.split())
         if len(docs):
-            for context in docs:
-                encoded_input = self.encode_input(statement, context)
+            for text in docs:
+                encoded_input = self.encode_input(statement, text)
                 encoded_output = self.model.predict(encoded_input)
                 probability, response = self.decode_output(encoded_output)
                 if len(response) > 0:
