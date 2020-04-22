@@ -16,10 +16,10 @@ The project will be based on the technology developed as a part of ["qary" open-
 
 
 ## Project outcomes and impact evaluation
-The main deliverable of the project will be a mobile web application for Covid-19 question-answering and wellness coaching to mitigate the psychological strains of isolation and promote pro-social behaviors and habits. We will evaluate the success of the project using the following parameters: 
+The main deliverable of the project will be a mobile web application for Covid-19 question-answering and wellness coaching to mitigate the psychological strains of isolation and promote pro-social behaviors and habits. We will evaluate the success of the project using the following parameters:
 - **Chatbot accuracy**: the accuracy of the chatbot will be benchmarked with a list of questions collected from the public forums, such as reddit, Quora and similar sources. Chatbot's answers will be scored using USE metric using answers collected as a benchmark. The chatbot will not be released to public use until reaching the F1 score of X.
-In addition, the chatbot accuracy would be evaluated using similar benchmarking method after the release. 
-- **User engagement**: the engagement of the public with the chatbot will be measured using internal analytics tools. Usage metrics, such as number of users, sessions, and user satisfaction from the conversation with the bot, will be collected to analyze and improve the chatbot's performance. 
+In addition, the chatbot accuracy would be evaluated using similar benchmarking method after the release.
+- **User engagement**: the engagement of the public with the chatbot will be measured using internal analytics tools. Usage metrics, such as number of users, sessions, and user satisfaction from the conversation with the bot, will be collected to analyze and improve the chatbot's performance.
 
 
 ## Project timeline and budget
@@ -64,7 +64,7 @@ Total volunteer effort is estimated at 48 person-hours (approximately 1 week) to
 - 8h ($280): deploy and maintain Covid-19 Coach webapp for 3 months
 
 ### Integrate Deterministic Chatbot web
-Total effort required to integrate the Covid-19 Coach with the Quesiton Answering App is estimated at 20 hours.
+Total effort required to integrate the Covid-19 Coach with the Question Answering App is estimated at 20 hours.
 
 - 16h ($560): Integrate Covid-19 Coach with SotA question answering chatbot REST API
 - 4h ($140): Purchase and integrate custom URL (or utilize a subdomain at Brown Institute's website)

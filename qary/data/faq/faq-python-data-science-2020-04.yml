@@ -66,4 +66,6 @@
 -
   Q: When should I use a T-test vs a Z-test?
   A: It usually doesn't matter. When you have at least 10 samples to work with, both will give you very similar p-values. A T-test is slightly more conservative because it anticipates the possiblity of outliers. The T-distribution used to calcualte the T-statistic or T-test has fatter tails than the normal distribution which is used for the Z-score or the Z-test.
-
+-
+  Q: What is overfitting?
+  A: When the accuracy on your training set is much better than for your test set. Test set accuracy is all you care about, because that helps you estimate how well your model will work in the real world. So having really high training set accuracy and overfitting is not necessarily a bad thing. Training set accuracy represents the best you could hope to do with that model and pipeline. So overfitting may suggest opportunities for improving your test set accuracy or other performance parameters.
