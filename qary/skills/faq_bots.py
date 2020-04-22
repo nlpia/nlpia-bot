@@ -54,5 +54,5 @@ class Bot:
         else:
             responses = [(
                 0.10,
-                f"I don't know. The only quesiton in my FAQs that is remotely similar to yours is \"{self.faq['questions'][idx]}\". ")]
+                f"I don't know. Here's a FAQ similar to yours that you might try: \"{self.faq['questions'][idx]}\". ")]
         return responses
