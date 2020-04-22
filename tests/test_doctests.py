@@ -4,6 +4,7 @@ import doctest
 
 import qary.clibot
 
+import qary.skills.basebots
 import qary.skills.eliza_bots
 import qary.skills.glossary_bots
 import qary.skills.qa_bots
@@ -26,6 +27,12 @@ __license__ = "The Hippocratic License, see LICENSE.txt (MIT + Do no Harm)"
 DOCTEST_KWARGS = dict(
     optionflags=doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE,
     verbose=True)
+
+
+def test_basebots():
+    results = doctest.testmod(qary.skills.basebots, **DOCTEST_KWARGS)
+    assert results.failed < 1
+    assert results.attempted > 0
 
 
 def test_eliza_bots():
