@@ -8,16 +8,16 @@ import zipfile
 from multiprocessing import cpu_count
 
 from qary.skills.qa_models import QuestionAnsweringModel
-from qary.etl import scrape_wikipedia
-from qary.constants import DATA_DIR, USE_CUDA, args
-from qary.etl.basebots import ContextBot
+from qary.constants import DATA_DIR, USE_CUDA  # , args
+from qary.skills.basebots import ContextBot
 from qary.etl.netutils import DownloadProgressBar
+from qary.etl import scrape_wikipedia
 
 
 log = logging.getLogger(__name__)
 
 
-class Bot(BaseBot):
+class Bot(ContextBot):
     """ Bot that provides answers to questions given context data containing the answer """
 
     def __init__(self):
@@ -93,8 +93,8 @@ class Bot(BaseBot):
         """
         return output[0]['probability'], output[0]['answer']
 
-    def reply(self, statement, context=''):
-        responses = []
+    def reply(self, statement, context='', **kwargs):
+        responses = super().reply(statement=statement, context=context, **kwargs) or []
         if context:
             docs = [context]
         else:
