@@ -8,7 +8,7 @@ import zipfile
 from multiprocessing import cpu_count
 
 from qary.skills.qa_models import QuestionAnsweringModel
-from qary.constants import DATA_DIR, USE_CUDA  # , args
+from qary.constants import DATA_DIR, USE_CUDA, args
 from qary.skills.basebots import ContextBot
 from qary.etl.netutils import DownloadProgressBar
 from qary.etl import scrape_wikipedia
@@ -20,8 +20,8 @@ log = logging.getLogger(__name__)
 class Bot(ContextBot):
     """ Bot that provides answers to questions given context data containing the answer """
 
-    def __init__(self):
-        global args
+    def __init__(self, context=None, args=args, **kwargs):
+        super().__init__(self, context=context, args=args, **kwargs)
         self.transformer_loggers = []
         for name in logging.root.manager.loggerDict:
             if (len(name) >= 12 and name[:12] == 'transformers') or name == 'qary.skills.qa_utils':
