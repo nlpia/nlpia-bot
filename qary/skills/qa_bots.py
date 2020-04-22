@@ -6,25 +6,18 @@ import urllib.request
 import uuid
 import zipfile
 from multiprocessing import cpu_count
-from tqdm import tqdm
 
-from .qa_models import QuestionAnsweringModel
-from ..etl import scrape_wikipedia
-from ..constants import DATA_DIR, USE_CUDA, args  # noqa
+from qary.skills.qa_models import QuestionAnsweringModel
+from qary.etl import scrape_wikipedia
+from qary.constants import DATA_DIR, USE_CUDA, args
+from qary.etl.basebots import ContextBot
+from qary.etl.netutils import DownloadProgressBar
+
 
 log = logging.getLogger(__name__)
 
 
-class DownloadProgressBar(tqdm):
-    """ Utility class that adds tqdm progress bar to urllib.request.urlretrieve """
-
-    def update_to(self, b=1, bsize=1, tsize=None):
-        if tsize is not None:
-            self.total = tsize
-        self.update(b * bsize - self.n)
-
-
-class Bot:
+class Bot(BaseBot):
     """ Bot that provides answers to questions given context data containing the answer """
 
     def __init__(self):
@@ -100,16 +93,20 @@ class Bot:
         """
         return output[0]['probability'], output[0]['answer']
 
-    def reply(self, statement):
+    def reply(self, statement, context=''):
         responses = []
-        docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=25, max_depth=2, ngrams=5,
-                                                   ignore='who what when where why'.split())
-        for context in docs:
-            encoded_input = self.encode_input(statement, context)
-            encoded_output = self.model.predict(encoded_input)
-            probability, response = self.decode_output(encoded_output)
-            if len(response) > 0:
-                responses.append((probability, response))
+        if context:
+            docs = [context]
+        else:
+            docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=25, max_depth=2, ngrams=5,
+                                                       ignore='who what when where why'.split())
+        if len(docs):
+            for context in docs:
+                encoded_input = self.encode_input(statement, context)
+                encoded_output = self.model.predict(encoded_input)
+                probability, response = self.decode_output(encoded_output)
+                if len(response) > 0:
+                    responses.append((probability, response))
         return responses
 
 
