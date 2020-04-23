@@ -100,7 +100,8 @@ class Bot(ContextBot):
         return output[0]['probability'], output[0]['answer']
 
     def reply(self, statement, context=None, **kwargs):
-        log.debug(f"qa_bot.reply(statement={statement}, context={context})")
+        """ Use context document + BERT to answer question in statement """
+        log.warning(f"qa_bot.reply(statement={statement}, context={context})")
         responses = super().reply(statement=statement, context=context, **kwargs) or []
         docs = [self.context['doc']['text']]
         if not docs or not any(len(d.strip()) for d in docs):
@@ -120,7 +121,3 @@ class Bot(ContextBot):
                     log.warning(f"Short circuiting wiki crawl because p > thresh: {probability} > {STOP_WIKI_PROBABILITY}")
                     break
         return responses
-
-
-if __name__ == '__main__':
-    bot = Bot()
