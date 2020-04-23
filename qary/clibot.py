@@ -147,7 +147,7 @@ class CLIBot:
             # FIXME: create set_context() method on those bots that need it and do away with context try/except
             try:
                 bot_replies = replier(statement, context=context)
-                log.debug("{replier.__name__} replies: {bot_replies}")
+                log.info("{replier.__name__} replies: {bot_replies}")
             except TypeError as e:
                 log.warning(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
                 log.warning(str(e))
