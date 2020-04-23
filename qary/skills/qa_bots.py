@@ -98,7 +98,7 @@ class Bot(ContextBot):
         if context:
             docs = [context]
         else:
-            docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=25, max_depth=2, ngrams=5,
+            docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=1, max_depth=1, ngrams=3,
                                                        ignore='who what when where why'.split())
         if len(docs):
             for context in docs:
