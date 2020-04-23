@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <style>  } 
+            #rightbox{ 
+                float:right; 
+                background:blue; 
+                width:25%; 
+                height:280px; 
+            }</style>
+     
+
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Django-Project</title>
@@ -9,16 +19,23 @@
 <div class="navbar navbar-dark bg-dark">
     <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="{% url 'first_app:list'%}">Posts</a>
-    <a class="navbar-brand "href="{% url 'admin:index'%}">Admin</a>
     <a class="navbar-brand "href="{% url 'question'%}">Bot</a>
-    <a class="navbar-brand "href="https://github.com/nlpia/nlpia-bot">Github</a>
+     <a class="navbar-brand "href="{% url 'chat'%}">Chat History</a>
+     <a class="navbar-brand "href="https://github.com/nlpia/nlpia-bot">Github</a>
+     <a class="navbar-brand "href="{% url 'admin:index'%}">Admin</a>
     </nav>
 </div>
 
-<div class='jumbotron'>
+<div class='jumbotron' >
         {% block body_block%}
         {% endblock %}
 </div>
+
+
+
+
+
+
 
  <!-- Optional JavaScript -->
             <!-- jQuery first, then Popper.js, then Bootstrap JS -->

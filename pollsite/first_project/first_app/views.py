@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from . import models
+from . models import Post, Chat
 from nlpia_bot.clibot import CLIBot
-import re
 
 
 bot = CLIBot()
@@ -16,17 +16,19 @@ def home_view(request):
     global get_request
     get_request = request.GET
 
-    return render(request, "question.html", )
+    return render(request, "bot.html", )
 
 
 def reply(request):
+    my_question = request.POST.get('question_req')
+    bot_reply = bot.reply(request.POST.get('question_req'))
 
-    # k = str(n[20:-4])
-    bot_reply = bot.reply(get_request['n'])
+    dict_1 = {'insert': bot_reply, 'Question': my_question}
 
-    dict_1 = {'insert': bot_reply, 'Question': get_request['n']}
+    if my_question and bot_reply:
+        Chat.objects.create(question=my_question, answer=bot_reply)
 
-    return render(request, "answer.html", context=dict_1)
+    return render(request, "bot.html", context=dict_1)
 
 
 class PostListView(ListView):
@@ -38,3 +40,10 @@ class PostDetailView(DetailView):
     context_object_name = 'post_detail'
     model = models.Post
     template_name = 'first_app/first_app_detail.html'
+
+
+class ChatHistory(ListView):
+
+    context_object_name = 'chat'
+    model = models.Chat
+    template_name = 'chat.html'

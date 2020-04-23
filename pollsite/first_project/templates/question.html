@@ -2,12 +2,9 @@
 {% block body_block%}
 
 <div class='jumbotron'>
-
-    <form action = "" method = "get"> 
+    <form action = "{% url 'answer'%}" method = "POST"> {% csrf_token %}
     <h3><label >Ask the bot a question: </label> </h3>
-    <input type="text" name="n"> 
-    <input type="submit" value="submit" > 
-    <p><a href="{% url 'answer'%}">click for answer</a></p>
+    <input type="text" name="question_req"> 
     </form>
 </div>
 
