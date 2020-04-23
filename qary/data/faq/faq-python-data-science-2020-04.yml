@@ -69,3 +69,9 @@
 -
   Q: What is overfitting?
   A: When the accuracy on your training set is much better than for your test set. Test set accuracy is all you care about, because that helps you estimate how well your model will work in the real world. So having really high training set accuracy and overfitting is not necessarily a bad thing. Training set accuracy represents the best you could hope to do with that model and pipeline. So overfitting may suggest opportunities for improving your test set accuracy or other performance parameters.
+-
+  Q: How is unsupervised learning or clustering used in the real world?  #data-science
+  A: Clustering (unsupervised learning) can sometimes be used to reduce dimensionality by creating an arbitrary class variable label to replace a high dimensional feature vector with. For example A natural language text field or image could be replaced with a label identifying a group of images or texts with similar content.
+-
+  Q: Is it OK for me to use external resources like stack overflow and google to complete the SQL exercises?
+  A: Yes. But make sure you know how to change the query to do something different and still have a working SQL query. For instance try limiting the SELECT to fewer rows or a different set of rows within the same query. Or try joining a different pair of tables. Or try different aggregation functions like MIN and MAX. Or try different WHERE clauses like ">", "<", "<=" and LIKE queries.
