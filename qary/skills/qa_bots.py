@@ -13,15 +13,18 @@ from qary.skills.basebots import ContextBot
 from qary.etl.netutils import DownloadProgressBar
 from qary.etl import scrape_wikipedia
 
-
 log = logging.getLogger(__name__)
+
+STOP_WIKI_PROBABILITY = .4
 
 
 class Bot(ContextBot):
     """ Bot that provides answers to questions given context data containing the answer """
 
     def __init__(self, context=None, args=args, **kwargs):
+        context = {'doc': {'text': ''}}
         super().__init__(context=context, args=args, **kwargs)
+        log.warning(f'Initial self.context: {self.context}')
         self.transformer_loggers = []
         for name in logging.root.manager.loggerDict:
             if (len(name) >= 12 and name[:12] == 'transformers') or name == 'qary.skills.qa_utils':
@@ -97,20 +100,25 @@ class Bot(ContextBot):
         return output[0]['probability'], output[0]['answer']
 
     def reply(self, statement, context=None, **kwargs):
+        log.debug(f"qa_bot.reply(statement={statement}, context={context})")
         responses = super().reply(statement=statement, context=context, **kwargs) or []
-        docs = self.context['doc']['text']
-        if docs:
-            docs = [docs]
-        else:
+        docs = [self.context['doc']['text']]
+        if not docs or not any(len(d.strip()) for d in docs):
             docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=1, max_depth=1, ngrams=3,
                                                        ignore='who what when where why'.split())
-        if len(docs):
-            for text in docs:
-                encoded_input = self.encode_input(statement, text)
-                encoded_output = self.model.predict(encoded_input)
-                probability, response = self.decode_output(encoded_output)
-                if len(response) > 0:
-                    responses.append((probability, response))
+        for text in docs:
+            log.info(f"text from context['doc']['text'] or wikipedia scrape: {text}")
+            if len(text.strip()) < 2:
+                log.warning(f'Context document text was too short: "{text}"')
+                continue
+            encoded_input = self.encode_input(statement, text)
+            encoded_output = self.model.predict(encoded_input)
+            probability, response = self.decode_output(encoded_output)
+            if len(response) > 0:
+                responses.append((probability, response))
+                if probability > STOP_WIKI_PROBABILITY:
+                    log.warning(f"Short circuiting wiki crawl because p > thresh: {probability} > {STOP_WIKI_PROBABILITY}")
+                    break
         return responses
 
 
