@@ -68,30 +68,32 @@ class HiBot(EmptyRepliesBot):
         return []
 
 
-class ContextBot(EmptyRepliesBot):
+class ContextBot:
     """ Manages self.context attribute with update_, reset_ and reply(context=...) methods
 
     >>> conbot = ContextBot({'init': 'init_value'})
     >>> conbot.context
     {'args': Namespace(bots=...words=[]), 'init': 'init_value'}
     >>> conbot.update_context({'new': 'new_value', 'args': None})
+    {'args': None, 'init': 'init_value', 'new': 'new_value'}
     >>> conbot.context
     {'args': None, 'init': 'init_value', 'new': 'new_value'}
     >>> conbot.update_context({'init': 'updated_existing', 'new': {'inner': 'new_innards'}})
+    {'args': None, 'init': 'updated_existing', 'new': {'inner': 'new_innards'}}
     >>> conbot.context
     {'args': None, 'init': 'updated_existing', 'new': {'inner': 'new_innards'}}
-    >>> conbot.reply('Hi', {'new': {'inner_reply': 'new_inner_reply'}})
+    >>> conbot.reply('Hi', context={'new': {'inner_reply': 'new_inner_reply'}})
     []
     >>> conbot.context['init']
     'updated_existing'
     >>> conbot.context['new']
-    {'inner': 'new_innards'}
+    {'inner': 'new_innards', 'inner_reply': 'new_inner_reply'}
     """
 
     def __init__(self, context=None, args=args, **kwargs):
         super().__init__(**kwargs)
         self.args = args
-        self.context = {'args': args}
+        self.context = {'args': self.args}
         # self.context = {}
         if isinstance(context, str):
             log.warning("Deprecated API: `context` should be a nested dictionary. Texts belong at `context['doc']['text']`).")
@@ -100,11 +102,35 @@ class ContextBot(EmptyRepliesBot):
             self.update_context(context)
 
     def update_context(self, context=None):
+        logging.warning(f"Reseting self.context using context: {context}")
+        if isinstance(context, str):
+            context = {'doc': {'text': context}}
         context = {} if context is None else context
         dict_merge(self.context, context)
+        logging.warning(f"Updated self.context: {self.context}")
+        return self.context
 
     def reset_context(self, context=None):
-        self.context = {} if context is None else dict(context)
+        self.context = {'args': self.args}
+        if isinstance(context, str):
+            context = {'doc': {'text': context}}
+        dict_merge(self.context, context)
+        logging.warning(f"Reset self.context: {self.context}")
+        return self.context
+
+    def reply(self, statement, context=None):
+        """ Chatbot "main" function to respond to a user command or statement
+
+        >>> bot = ContextBot()
+        >>> bot.reply('Hi', context={'new': 'context'})
+        []
+        >>> bot.context['new']
+        'context'
+        >>> len(bot.context.keys())
+        2
+        """
+        self.update_context(context=context)
+        return []
 
 
 class HistoryBot(EmptyRepliesBot):
