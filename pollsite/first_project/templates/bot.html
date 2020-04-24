@@ -1,0 +1,43 @@
+{% extends 'home.html'%}
+{% block body_block%}
+
+   
+    
+
+<!--  Question the bot-->            
+        <div >
+
+            <div class="list-group-item">
+                <h5><strong class="d-inline-block mb-2 text-success">YOU: {{Question}}</strong></h5>
+                <h5><strong >BOT: {{insert}}</strong></h5>
+              
+                <form action = "{% url 'answer'%}" method = "POST"> {% csrf_token %}
+                <input placeholder="write your question" type="text" name="question_req" size="50"> 
+                &#128515;</form>
+            </div>
+            <hr style="font-weight: 700; text-align: center; margin-bottom: 70px; margin-top: 70px; background-color: rgb(40, 167, 69); text-decoration-style: dotted;"></h4>
+          
+
+
+
+
+
+            <div >
+               {%for i in c%}
+            <h5><strong class="d-inline-block mb-2 text-success">{{i.question}}?</strong>
+             <strong >{{i.answer}}  <small>{{i.create_date}}</small></strong></h5>
+           
+            
+            {%endfor%}
+            </div>
+  
+        </div>
+
+
+
+{% endblock %}
+
+
+
+
+
