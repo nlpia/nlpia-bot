@@ -25,6 +25,5 @@ urlpatterns = [
     url(r'^first_app/', include('first_app.urls', namespace='first_app')),
     url(r'question/', views.home_view, name='question'),
     url(r'answer/', views.reply, name='answer'),
-    url(r'chat/', views.ChatHistory.as_view(), name='chat'),
 
 ]

@@ -3,30 +3,32 @@ from django.views.generic import ListView, DetailView, CreateView
 from . import models
 from . models import Post, Chat
 from nlpia_bot.clibot import CLIBot
+from django.utils import timezone
 
 
 bot = CLIBot()
 
-get_request = None
-
 
 def home_view(request):
 
-    # function return Query.dict from GET
-    global get_request
-    get_request = request.GET
+    obj = Chat.objects.all().order_by('-create_date')
 
-    return render(request, "bot.html", )
+    dict_1 = {'c': obj}
+
+    return render(request, "bot.html", context=dict_1)
 
 
 def reply(request):
     my_question = request.POST.get('question_req')
     bot_reply = bot.reply(request.POST.get('question_req'))
+    obj = Chat.objects.all().order_by('-create_date')
 
-    dict_1 = {'insert': bot_reply, 'Question': my_question}
+    dict_1 = {'insert': bot_reply, 'Question': my_question,
+              'c': obj}
 
     if my_question and bot_reply:
-        Chat.objects.create(question=my_question, answer=bot_reply)
+        Chat.objects.create(question=my_question,
+                            answer=bot_reply)
 
     return render(request, "bot.html", context=dict_1)
 
@@ -40,10 +42,3 @@ class PostDetailView(DetailView):
     context_object_name = 'post_detail'
     model = models.Post
     template_name = 'first_app/first_app_detail.html'
-
-
-class ChatHistory(ListView):
-
-    context_object_name = 'chat'
-    model = models.Chat
-    template_name = 'chat.html'

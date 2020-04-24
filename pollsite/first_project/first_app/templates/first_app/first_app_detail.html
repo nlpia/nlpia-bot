@@ -1,11 +1,19 @@
+
+
 {% extends 'first_app/first_app_base.html'%}
 {% block body_block%}
-
-<div class=jumbotron>
-   <h2>Welcome to a list of all detail post</h2>
-    <h3>Posts detail: </h3>
-    <p>Author: {{post_detail.author}}</p>
-    <p>Title: {{post_detail.title}}</p>
-    <p>{{post_detail.text}}</p>
-</div>
+    <center>
+      <div class="col-md-6" >
+          <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start" contenteditable="true" spellcheckker="false" >
+              <strong class="d-inline-block mb-2 text-success">{{post_detail.title}}</strong>
+              <h3 class="mb-0">
+                <a class="text-dark" href="#">{{post_detail.author}}</a>
+              </h3>
+              <p class="card-text mb-auto">{{post_detail.text}}</p>
+              
+            </div>
+            </div>
+            </div>
+</center>
 {% endblock %}

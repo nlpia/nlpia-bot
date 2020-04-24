@@ -1,4 +1,10 @@
-h1{
-	color: blue;
-}
 
+#rightbox{ 
+                float:right; 
+                background:blue; 
+                width:25%; 
+                height:280px; 
+            }
+#body{
+    background-color: rgb(255, 255, 255); position: relative; float: none; opacity: 1; text-align: left;font-family: &quot;Comic Sans MS&quot;, cursive, sans-serif;
+}
