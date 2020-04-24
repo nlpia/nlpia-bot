@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Hobson Lane, Travis Harper">
+  <title>Bioinformatics FAQ Bot</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reset.css">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Bioinformatics FAQ Bot</h1>
+  <p class="subtitle">SD Python Monthly Meetup</p>
+  <p class="author">Hobson Lane, Travis Harper</p>
+  <p class="date">Dec 19, 2019</p>
+</section>
+
+<section id="bioinformatics-faq-bot" class="slide level1">
+<h1>Bioinformatics FAQ Bot</h1>
+<p>San Diego Python Monthly Meetup by Hobson Lane, Travis Harper Oct 24, 2019</p>
+</section>
+<section id="bioinformatics-for-real" class="slide level1">
+<h1>Bioinformatics for Real</h1>
+<p>UCSD Extension <strong>Data Science for Digital Health</strong> Enroll at: <strong><a href="http://bit.ly/ucsd-ds">bit.ly/ucsd-ds</a></strong> Discount Code ($100 off): UCSDDSDHWI20</p>
+</section>
+<section id="thank-you-travis" class="slide level1">
+<h1>Thank you Travis!</h1>
+<ul>
+<li>Analyzing WikiQA</li>
+<li>Architecting a Transformer</li>
+</ul>
+</section>
+<section id="qa-bot" class="slide level1">
+<h1>QA Bot</h1>
+<ul>
+<li>WikiQA</li>
+<li>ANSQ</li>
+</ul>
+</section>
+<section id="soa" class="slide level1">
+<h1>SOA</h1>
+<figure>
+<img data-src="media/wikiqa-soa.png" alt="" /><figcaption>WikiQA State of the Art</figcaption>
+</figure>
+</section>
+<section id="basic-search-qa" class="slide level1">
+<h1>Basic Search QA</h1>
+<ul>
+<li>Find a question DB (<code>key</code>)</li>
+<li>Respond with associated answer (<code>value</code>)</li>
+</ul>
+</section>
+<section id="infinite-search-qa" class="slide level1">
+<h1>Infinite Search QA</h1>
+<ul>
+<li>Translate question to a statement</li>
+<li>Search Wikipedia</li>
+</ul>
+</section>
+<section id="example-q---a" class="slide level1">
+<h1>Example: Q -&gt; A</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="op">&gt;&gt;&gt;</span> question <span class="op">=</span> <span class="st">&quot;Who discovered radiation?&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="op">&gt;&gt;&gt;</span> statement <span class="op">=</span> question.replace(<span class="st">&#39;Who&#39;</span>, <span class="st">&#39;[MASK] [MASK]&#39;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="op">&gt;&gt;&gt;</span> statement</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">&quot;[MASK] [MASK] discovered radiation.&quot;</span></span></code></pre></div>
+</section>
+<section id="search-results" class="slide level1">
+<h1>Search Results</h1>
+<p>DuckDuckGo: <a href="https://duckduckgo.com/?q=%22discovered+radiation.%22&amp;t=h_&amp;ia=web">“discovered radiation”</a></p>
+<figure>
+<img data-src="media/discovered-radiation.png" alt="" /><figcaption>Person that discovered radiation</figcaption>
+</figure>
+</section>
+<section id="answer" class="slide level1">
+<h1>Answer</h1>
+<h2 id="marie-curie">Marie Curie</h2>
+</section>
+<section id="scalable-search-ologn" class="slide level1">
+<h1>Scalable Search: <code>O(log(N))</code></h1>
+<ul>
+<li>Discrete index</li>
+<li>Sparse BOW vectors</li>
+</ul>
+</section>
+<section id="synonyms-typos" class="slide level1">
+<h1>Synonyms &amp; Typos</h1>
+<ul>
+<li>Stemming</li>
+<li>Lemmatizing</li>
+<li>Spelling Corrector</li>
+<li>BPE (bytepair encoding)</li>
+</ul>
+</section>
+<section id="examples" class="slide level1">
+<h1>Examples</h1>
+<ul>
+<li>Full text search in Postgres</li>
+<li>Trigram indexes in Databases</li>
+<li>Ellastic Search</li>
+</ul>
+</section>
+<section id="prefilter" class="slide level1">
+<h1>Prefilter</h1>
+<ul>
+<li>Page rank</li>
+<li>Sparse TFIDF vectors</li>
+</ul>
+</section>
+<section id="examples-1" class="slide level1">
+<h1>Examples</h1>
+<ul>
+<li>Full Text (keywords): O(log(N))</li>
+<li>TFIDF (Ellastic Search): O(log(N))</li>
+<li>TFIDF + Semantic Search: O(L)</li>
+</ul>
+</section>
+<section id="academic-search-approachs" class="slide level1">
+<h1>Academic Search Approachs</h1>
+<ul>
+<li>Edit distance</li>
+</ul>
+</section>
+<section id="knowledg-based-qa" class="slide level1">
+<h1>Knowledg-based QA</h1>
+<ul>
+<li>Extract information from Wikipedia</li>
+<li>Build <em>Knowledge Graph</em> in DB</li>
+<li>Query Knowledge Graph</li>
+<li>Inference on Knowledge Graph</li>
+</ul>
+<aside class="notes">
+<p>If you just need to find an edge in your graph, like an “is-a” relationship you can do a simple query of a relational database for the node you’re looking for. Inference is only required when you need to go deeper into the graph to find an answer to a question that doesn’t have a direct answer in your graph edges.</p>
+</aside>
+</section>
+<section id="transformer" class="slide level1">
+<h1>Transformer</h1>
+<figure>
+<img data-src="media/transformer-test.png" alt="" /><figcaption>Transformer Test Example Output</figcaption>
+</figure>
+</section>
+<section id="transformer-1" class="slide level1">
+<h1>Transformer</h1>
+<figure>
+<img data-src="media/transformer-woz-output.png" alt="" /><figcaption>Transformer Wizard of Oz Question Answers</figcaption>
+</figure>
+</section>
+<section id="nlpia-bot-imports" class="slide level1">
+<h1><code>nlpia-bot</code> imports</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">from</span> qary.etl <span class="im">import</span> glossaries</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="im">from</span> qary <span class="im">import</span> spacy_language_model</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a>nlp <span class="op">=</span> spacy_language_model.load(<span class="st">&#39;en_core_web_md&#39;</span>)</span></code></pre></div>
+</section>
+<section id="qary.glossary_bots.bot" class="slide level1">
+<h1><code>qary.glossary_bots.Bot</code></h1>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">class</span> Bot:</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, domains<span class="op">=</span>(<span class="st">&#39;dsdh&#39;</span>,)):</span>
+<span id="cb3-4"><a href="#cb3-4"></a>        <span class="kw">global</span> nlp</span>
+<span id="cb3-5"><a href="#cb3-5"></a>        <span class="va">self</span>.nlp <span class="op">=</span> nlp</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="va">self</span>.glossary <span class="op">=</span> glossaries.load(domains<span class="op">=</span>domains)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>        <span class="va">self</span>.glossary.fillna(<span class="st">&#39;&#39;</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>        <span class="va">self</span>.vector <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb3-9"><a href="#cb3-9"></a>        <span class="va">self</span>.vector[<span class="st">&#39;term&#39;</span>] <span class="op">=</span> pd.DataFrame({s: nlp(s <span class="kw">or</span> <span class="st">&#39;&#39;</span>).vector <span class="cf">for</span> s <span class="kw">in</span> <span class="va">self</span>.glossary[<span class="st">&#39;term&#39;</span>]})</span>
+<span id="cb3-10"><a href="#cb3-10"></a>        <span class="va">self</span>.vector[<span class="st">&#39;definition&#39;</span>] <span class="op">=</span> pd.DataFrame({s: nlp(s <span class="kw">or</span> <span class="st">&#39;&#39;</span>).vector <span class="cf">for</span> s <span class="kw">in</span> <span class="va">self</span>.glossary[<span class="st">&#39;definition&#39;</span>]})</span></code></pre></div>
+</section>
+<section id="qary.glossary_bots.bot.reply" class="slide level1">
+<h1><code>qary.glossary_bots.Bot.reply</code></h1>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>    <span class="kw">def</span> reply(<span class="va">self</span>, statement):</span>
+<span id="cb4-2"><a href="#cb4-2"></a>        <span class="co">&quot;&quot;&quot; Suggest responses to a user statement string with [(score, reply_string)..]&quot;&quot;&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>        responses <span class="op">=</span> []</span>
+<span id="cb4-4"><a href="#cb4-4"></a>        match <span class="op">=</span> re.match(<span class="vs">r&#39;\b(what\s(is|are))\b([^\?]*)(\?*)&#39;</span>, statement.lower())</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="cf">if</span> match:</span>
+<span id="cb4-6"><a href="#cb4-6"></a>            responses.append((<span class="dv">1</span>, <span class="bu">str</span>(match.groups())))</span>
+<span id="cb4-7"><a href="#cb4-7"></a>        <span class="cf">else</span>:</span>
+<span id="cb4-8"><a href="#cb4-8"></a>            responses <span class="op">=</span> [(<span class="fl">1.0</span>, <span class="st">&quot;I don&#39;t understand&quot;</span>)]</span>
+<span id="cb4-9"><a href="#cb4-9"></a>        <span class="cf">return</span> responses</span></code></pre></div>
+</section>
+<section id="glossary_bots-test" class="slide level1">
+<h1><code>glossary_bots</code> test</h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> qary.skills <span class="im">import</span> glossary_bots</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="op">&gt;&gt;&gt;</span> bot <span class="op">=</span> glossary_bots.Bot()</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="op">&gt;&gt;&gt;</span> bot.nlp.lang</span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">&#39;en&#39;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(bot.vector[<span class="st">&#39;term&#39;</span>].keys())</span>
+<span id="cb5-6"><a href="#cb5-6"></a>[<span class="st">&#39;ACP (American College of Physicians)&#39;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7"></a> <span class="st">&#39;AKI (Acute Kidney Injury)&#39;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8"></a> <span class="st">&#39;Allele&#39;</span>,</span>
+<span id="cb5-9"><a href="#cb5-9"></a> ...</span>
+<span id="cb5-10"><a href="#cb5-10"></a> <span class="st">&#39;Xiaoice&#39;</span>]</span></code></pre></div>
+</section>
+<section id="glossary_bots-test-1" class="slide level1">
+<h1><code>glossary_bots</code> test</h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="op">&gt;&gt;&gt;</span> bot.reply(<span class="st">&#39;Nucleotide&#39;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>[(<span class="fl">1.0</span>, <span class="st">&quot;I don&#39;t understand&quot;</span>)]</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="op">&gt;&gt;&gt;</span> bot.reply(<span class="st">&#39;What is a Nucleotide&#39;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4"></a>[(<span class="dv">1</span>, <span class="st">&quot;(&#39;what is&#39;, &#39;is&#39;, &#39; a nucleotide&#39;, &#39;&#39;)&quot;</span>)]</span></code></pre></div>
+<p>Now strip whitespace and stop words and look up the definition in <code>bot.glossary</code>.</p>
+<p>Or use the semantic vectors…</p>
+</section>
+<section id="regex-hack" class="slide level1">
+<h1>regex hack</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>match <span class="op">=</span> re.match(</span>
+<span id="cb7-2"><a href="#cb7-2"></a>    <span class="vs">r&quot;\b(what\s+(is|are)\s*(not|n&#39;t)?\s+(a|an|the))\b([^\?]*)(\?*)&quot;</span>,</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    statement.lower())</span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="cf">if</span> match:</span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="cf">try</span>:</span>
+<span id="cb7-6"><a href="#cb7-6"></a>        responses.append((<span class="dv">1</span>,</span>
+<span id="cb7-7"><a href="#cb7-7"></a>            <span class="va">self</span>.glossary[<span class="st">&#39;definition&#39;</span>][match.groups()[<span class="op">-</span><span class="dv">2</span>].strip().lower()]))</span>
+<span id="cb7-8"><a href="#cb7-8"></a>    <span class="cf">except</span> <span class="pp">KeyError</span>:</span>
+<span id="cb7-9"><a href="#cb7-9"></a>        responses.append((<span class="dv">1</span>,</span>
+<span id="cb7-10"><a href="#cb7-10"></a>            <span class="bu">str</span>(match.groups())))</span></code></pre></div>
+</section>
+<section id="glossary_bots-works" class="slide level1">
+<h1><code>glossary_bots</code> works!</h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="op">&gt;&gt;&gt;</span> bot <span class="op">=</span> Bot()</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="op">&gt;&gt;&gt;</span> bot.reply(<span class="st">&#39;allele&#39;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a>[(<span class="fl">1.0</span>, <span class="st">&quot;I don&#39;t understand&quot;</span>)]</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="op">&gt;&gt;&gt;</span> bot.reply(<span class="st">&#39;What is a nucleotide?&#39;</span>)</span>
+<span id="cb8-5"><a href="#cb8-5"></a>[(<span class="dv">1</span>,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="st">&#39;The basic building blocks of DNA and ... Guanine (G), Cytosine ... &#39;</span>)]</span></code></pre></div>
+</section>
+    </div>
+  </div>
+
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

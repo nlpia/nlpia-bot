@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import pytest  # noqa
 
-from nlpia_bot.spacy_language_model import nlp
+from qary.spacy_language_model import nlp
 
 __author__ = "See AUTHORS.md"
 __copyright__ = "Hobson Lane"

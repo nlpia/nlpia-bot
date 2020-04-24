@@ -1,24 +1,49 @@
-[![Build Status](https://api.travis-ci.com/nlpia/nlpia-bot.svg?branch=master)](https://travis-ci.com/nlpia/nlpia-bot)
-[![Coverage](https://codecov.io/gh/nlpia/nlpia-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/nlpia/nlpia-bot)
-[![GitHub release](https://img.shields.io/github/release/nlpia/nlpia-bot.svg)](https://github.com/nlpia/nlpia-bot/releases/latest)
-[![PyPI version](https://img.shields.io/pypi/pyversions/nlpia-bot.svg)](https://pypi.org/project/nlpia-bot/)
-[![License](https://img.shields.io/pypi/l/nlpia-bot.svg)](https://pypi.python.org/pypi/nlpia-bot/)
+[![Build Status](https://api.travis-ci.com/totalgood/nlpia-bot.svg?branch=master)](https://travis-ci.com/totalgood/nlpia-bot)
+[![Buy Us Tea](https://github.com/nlpia/nlpia-bot/raw/develop/docs/media/small-leaf-and-name-screenshot-31x80.png)](https://buymeacoffee.com/hobs)
+[![PyPI version](https://img.shields.io/pypi/pyversions/qary.svg)](https://pypi.org/project/qary/)
+[![License](https://img.shields.io/pypi/l/qary.svg)](https://pypi.python.org/pypi/qary/)
 
-# `nlpia_bot`
+# `qary`
 
-The `nlpia_bot` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your intelligence.
+The `qary` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. Your bot can help protect you and amplify your intelligence.
 
 The presentations for San Diego Python User Group are at [totalgood.org/midata/talks/](http://totalgood.org/midata/talks/) and in `docs/`.
 
 
 ## Skills
 
-The current version of `nlpia-bot` can answer basic questions about data science for healthcare and chatbots themselves.
-It can also imitate the classic therapist bot "Eliza" and carry on a relatively entertaining conversation based on lines it's read from movie scripts.
-You can select any or all of these skills with command line args and the configuration file `~/nlpia-bot.ini` in your user directory.
+The `-b glossary` skill enables `qary` to answer basic "what is" questions about data science for healthcare terms and concepts.
 
-You can expand the questions that nlpia-bot can answer by adding Q/A pairs to yaml text files in  `data/faq`.
-And soon `nlpia_bot` will be able to detect your mood and carry on more meaningful conversations, to give you encouragement and emotional support.
+### `bot -b QA`
+
+It can even answer general factual questions like "What is Barak Obama's Birthday?".
+But if the answer isn't explicitly stated on Wikipedia somewhere it will make something up:
+
+```
+YOU: When was Barak Obama born?
+qary: August 4, 1961
+YOU: Who invented the perceptron?
+qary: Everett Rogers
+YOU: -1 #shouldbe Frank Rosenblatt
+YOU: Who invented the first perceptron neural network?
+qary: Gustav Kirchhoff
+YOU: -1 #shouldbe Frank Rosenblatt
+YOU: Where do babies come from?
+qary: industrialized countries
+YOU: #goodone
+```
+
+### Others
+
+The current version of `qary` can imitate the classic therapist bot "Eliza" and carry on a relatively entertaining conversation based on lines it's read from movie scripts.
+You can select any or all of these skills with command line args and the configuration file `~/qary.ini` in your user directory.
+
+You can also expand the complicated questions that qary can answer by adding Q/A pairs to yaml text files in  `data/faq`.
+We'll use that to train deep learning networks as well as actual answers if the questions are close enough to your wording in that training file.
+
+### `bot -b your_name_here`
+
+And soon `qary` will be able to detect your mood and carry on more meaningful conversations, to give you encouragement and emotional support.
 We'll have something like this online in a couple months:
 
 ```
@@ -35,13 +60,13 @@ bot: So what are you feeling right now? How does your body feel?
 
 ## Install
 
-You'll want to install and use the conda package manager within Anaconda3, especially if your development environment is not a open standard operating system like Linux.
+You'll want to install and use the conda package manager within Anaconda3, especially if your development environment is not an open standard operating system like Linux.
 
 ```bash
-git clone git@github.com:nlpia/nlpia-bot
-cd nlpia-bot
-conda env create -n nlpia -f environment.yml  # or environment-windoze.yml
-conda activate nlpia
+git clone git@gitlab.com:tangibleai/qary
+cd qary
+conda env create -n qaryenv -f environment.yml  # or environment-windoze.yml
+conda activate qaryenv
 pip install --editable .
 ```
 
@@ -59,20 +84,22 @@ $ bot what is an allele
 bot: A variant form of a given gene, a version of a known mutation at the same place as the original unmodified gene within a chromosome.
 ```
 
-And if you want quicker turnaround on your bot you can just run it in peristent mode (without any positional arguments for your statement or words).
+Travis's probabilistic conversation manager is working nicely to chose a reply from the possiblities generated by the bots:
 
-Travis's probabilistic reply selector is working nicely to chose a reply from multiple sources (default settings):
-
+- `qa_bots.py`: BERT and ALBERT Wikipedia Question Answering (WikiQA reading comprehension tests)
 - `pattern_bots.py`: regex patterns and greeting templates
 - `fuzzy_search_bots.py`: movie dialog fuzzy matching
-- `parul_bots.py`: Wikipedia searches using conventional TFIDF like a search engine
+- `parul_bots.py`: Wikipedia searches using conventional TFIDFs, like a search engine
 - `eliza_bots.py`: A python port of the ELIZA therapist bot
 - `time_bots.py`: A time and productivity tracker that parses your git logs and bash history
+- `elastic_bots.py`: Semantic search with elasticsearch and `nboost` to find better pages for WikiQA
 
+
+Here's how those bots work together:
 
 ```bash
 $ bot
-(nlpia) hobs@Hobsons-MacBook-Air:~/code/chatbot/nlpia-bot$ bot
+(nlpia) hobs@Hobsons-MacBook-Air:~/code/chatbot/qary$ bot
 # 2019-11-21 12:59:05,854 WARNING:nlpia.constants:107:            <module> Starting logger in nlpia.constants...
 # 100%|█████████████████████████████████████████████████████████████████████████████████████████████| 64350/64350 [00:00<00:00, 495935.48it/s]
 YOU: Hi
@@ -95,9 +122,11 @@ YOU: bye
 $
 ```
 
+Check out the config file in `qary.ini` or `$ bot -h` to change the default bot personalities loaded for your own personalized bot.
+
 ## Approach
 
-This hybrid chatbot combines 4 approaches to give you state-of-the-art capability to answer questions and carry on a conversation:
+This hybrid chatbot framework allows you to combine 4 approaches to give you state-of-the-art capability to answer questions and carry on a conversation:
 
     1. search: [chatterbot](https://github.com/gunthercox/ChatterBot), [will](https://github.com/skoczen/will)
     2. pattern matching and response templates: Alexa, [AIML](https://github.com/keiffster/program-y)
@@ -108,19 +137,25 @@ It's all explained in detail at [NLP in Action](https://www.manning.com/books/na
 
 Presentations for San Diego Python User Group are in [docs/](/docs/2019-08-22--San Diego Python User Group -- How to Build a Chatbot.odp) and on the web at [http://totalgood.org/midata/talks](http://totalgood.org/midata/talks/)
 
-## Contributors
+## Contributors (alphabetically)
 
-- Travis (@travis-harper): markhov chain reply selection and other data science enhancements
-- Maria Dyshell (tangibleai.com): student and career coaching
-- Nima (@hulkgeek): question answering bot based on his state of the art question classifier
-- Xavier (@spirovanni): employment counselor for workforce.org and the city of San Diego
-- Hobson (@hobson): infrastructure (CI, webapp) and framework features (nltk->spacy, USE vectors)
+DM @hobson if youwould like to participate in the weekly Zoom collaborative-programming sessions.
+
 - Erturgrul: Turkish wikipedia QA bot (parul bot)
-- You: What big chatbot idea would you like to make a reality?
+- Hobson (@hobson): infrastructure (CI, webapp) and framework features (nltk->spacy, USE vectors)
+- Kendra (@kchalk): semantic search
+- Maria Dyshell (tangibleai.com): student and career coaching
+- Mohammed Dala (@dala85): django web application
+- Nima (@hulkgeek): question answering bot based on his state of the art question classifier
+- Olesya: `ElasticSearch` and `nboost`
+- Prarit (@praritlamba): BERT
+- Travis (@travis-harper): markhov chain reply selection and other data science enhancements
+- Xavier (@spirovanni): employment counselor for workforce.org and the city of San Diego
+- **YOU:** What AI idea would you like to make a reality?
 
 ## Crazy Ideas
 
-Please submit your feature ideas [github issues](https://github.com/nlpia/nlpia-bot/issues/). Here are a few ideas to get you started.
+Please submit your feature ideas [GitLab issues](https://gitlab.com/tangibleai/qary/issues/). Here are a few ideas to get you started.
 
 1. movie dialog in django database to hold the statement->response pairs
     1. graph schema compatible with MxGraph (draw.io) and other js libraries for editing graphs/flow   charts.
@@ -143,7 +178,7 @@ Please submit your feature ideas [github issues](https://github.com/nlpia/nlpia-
 7. create a UX for dialog graph creation/design:
     1. install [mxgraph](https://github.com/totalgood/mxgraph) in the django app
     2. create a basic page based on this mxgraph example so the user can build and save dialog to the db as a graph: [tutorial](https://jgraph.github.io/mxgraph/docs/tutorial.html#1), [example app](https://jgraph.github.io/mxgraph/javascript/examples/grapheditor/www/index.html)
-    3. convert the dialog graph into a set of records/rows in the nlpia-bot db so it acts
+    3. convert the dialog graph into a set of records/rows in the qary db so it acts
 8. tag different dialog graphs in the db so the user can turn them on/off for their bot
     1. allow the user to prioritize some dialogs/models over others
     2. allow the user to create their own weighting function to prioritize individual statements produced by the api
