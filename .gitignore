@@ -13,6 +13,7 @@ __pycache__/*
 .cache/*
 .*.swp
 */.ipynb_checkpoints/*
+.coverage*
 data/*.swp
 data/history.json
 
@@ -24,6 +25,7 @@ data/history.json
 .idea
 .vscode
 tags
+*.code-workspace
 
 # Package files
 *.egg
@@ -55,8 +57,12 @@ __MACOSX
 # KDE
 .directory
 
-# Data
+# BigData and Models
 db.sqlite3
+*.bz2
+*.zip
+qary/data/qa-models/*
+qary/data/simple-transformer/
 
 # Per-project virtualenvs
 .venv*/
@@ -65,3 +71,4 @@ db.sqlite3
 .bash_env
 **/*secret*
 **/*private*
+qary/data/*.json
