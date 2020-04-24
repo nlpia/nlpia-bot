@@ -25,5 +25,7 @@ urlpatterns = [
     url(r'^first_app/', include('first_app.urls', namespace='first_app')),
     url(r'question/', views.home_view, name='question'),
     url(r'answer/', views.reply, name='answer'),
+    url(r'^team/$', views.team, name='team'),
+    url(r'^nlpia/$', views.nlpia, name='nlpia'),
 
 ]

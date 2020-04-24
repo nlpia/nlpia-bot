@@ -9,6 +9,14 @@ from django.utils import timezone
 bot = CLIBot()
 
 
+def team(request):
+    return render(request, "team.html")
+
+
+def nlpia(request):
+    return render(request, "nlpia.html")
+
+
 def home_view(request):
 
     obj = Chat.objects.all().order_by('-create_date')

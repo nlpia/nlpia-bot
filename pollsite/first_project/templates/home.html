@@ -22,10 +22,11 @@
 <div class="navbar navbar-dark bg-dark">
     <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="{% url 'first_app:list'%}">Posts</a>
-    <a class="navbar-brand "href="{% url 'question'%}">Bot</a>
+    <a class="navbar-brand "href="{% url 'question'%}">BOT</a>
      <a class="navbar-brand "href="https://github.com/nlpia/nlpia-bot">Github</a>
-     <a class="navbar-brand "href="{% url 'admin:index'%}">Admin</a>
-      <form class="form-inline my-2 my-lg-0">
+     <a class="navbar-brand" href="{% url 'team'%}">Team</a>
+      <a class="navbar-brand" href="{% url 'nlpia'%}">NLPIA</a>
+      <form class="form-inline my-2 my-lg-0 " >
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
@@ -40,7 +41,6 @@
         {% block body_block%}
         {% endblock %}
 </div>
-
 
 
 
@@ -72,14 +72,12 @@
           <h5>Resources</h5>
           <ul class="list-unstyled text-small">
             <li><a class="text-muted" href="#">Business</a></li>
-            <li><a class="text-muted" href="#">Education</a></li>
           </ul>
         </div>
         <div class="col-6 col-md">
           <h5>About</h5>
           <ul class="list-unstyled text-small">
-            <li><a class="text-muted" href="#">Team</a></li>
-            <li><a class="text-muted" href="#">Locations</a></li>
+            <li><a class="text-muted" href="{% url 'team'%}">Team</a></li>
           </ul>
         </div>
       </div>
