@@ -75,3 +75,9 @@
 -
   Q: Is it OK for me to use external resources like stack overflow and google to complete the SQL exercises?
   A: Yes. But make sure you know how to change the query to do something different and still have a working SQL query. For instance try limiting the SELECT to fewer rows or a different set of rows within the same query. Or try joining a different pair of tables. Or try different aggregation functions like MIN and MAX. Or try different WHERE clauses like ">", "<", "<=" and LIKE queries.
+-
+  Q: I am unable to import pymc3 in my jupyter notebook. I installed it with pip from the command line.
+  A: Try installing it withing the Jupyter notebook using `!pip install pymc3`.
+-
+  Q: How do I decide between all the different approaches to filling missing values, like `df = df.fillna(df.mean())` vs `df = df.fillna(0)`.
+  A: This is a quesiton about choosing the best "hyperparameter" for you pipeline. The fillna method is a hyperparameter that should be recorded in your hyperparameter table or research notebook. The answer to these hyperparameter tuning questions is almost always that you must try each approach and compare the performance of each one to decide which is better. Each problem is different. Some methods work better in some situations than in others.
