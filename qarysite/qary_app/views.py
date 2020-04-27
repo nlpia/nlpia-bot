@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
 from . import models
 from . models import Post, Chat
-from qary.clibot import CLIBot
+# from qary.clibot import CLIBot
 from qary_app import models
 # Import all skills
 from qary.skills import parul_bots, basebots, glossary_bots
@@ -17,6 +17,7 @@ glossary_bot = glossary_bots.Bot()
 # git commit
 # git push
 
+# bot_type = None
 # bot = CLIBot(bots=('glossary',))
 
 
@@ -38,9 +39,22 @@ def home_view(request):
 
 
 def reply(request):
+
     my_question = request.POST.get('question_req')
-    print(my_question)
-    bot_reply = parul_bot.reply(request.POST.get('question_req'))
+    # radio button condition
+    if request.POST.get('parul_bot'):
+        bot_reply = parul_bot.reply(request.POST.get('question_req'))
+        print('parul_bot')
+    elif request.POST.get('basebot'):
+        bot_reply = basebot.reply(request.POST.get('question_req'))
+        print('basebot')
+    elif request.POST.get('glossary_bot'):
+        bot_reply = glossary_bot.reply(request.POST.get('question_req'))
+        print('glossary_bot')
+    else:
+        bot_reply = parul_bot.reply(request.POST.get('question_req'))
+        print('else parul_bot')
+
     obj = Chat.objects.all().order_by('-create_date')
     print(bot_reply)
 
