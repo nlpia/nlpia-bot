@@ -1,7 +1,8 @@
 {% extends 'home.html'%}
 {% block body_block%}
 
-   
+ 
+
 
 
 <!--  Question the bot-->            
@@ -11,6 +12,10 @@
                 <h5><strong >BOT: {{insert}}</strong></h5>
               
                 <form action = "{% url 'answer'%}" method = "POST"> {% csrf_token %}
+
+
+
+
 
 <!--                  radio button    -->
                 
@@ -24,9 +29,21 @@
                   <label class="btn btn-outline-secondary">
                     <input type="radio" name="glossary_bot" id="glossary_bot" autocomplete="off" value="glossary_bot" > glossary_bot
                   </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="pattern_bot" id="pattern_bot" autocomplete="off" value="pattern_bot" > pattern_bot
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="search_fuzzy_bot" id="search_fuzzy_bot" autocomplete="off" value="search_fuzzy_bot" > search_fuzzy_bot
+                  </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="eliza_bot" id="eliza_bot" autocomplete="off" value="eliza_bot" > eliza_bot
+                  </label>
+                  
                 </div>
                 <br>
                 <br>
+
+           
 
 <!-- -------------------------- -->
 

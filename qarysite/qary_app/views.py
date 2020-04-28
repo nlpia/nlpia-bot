@@ -5,20 +5,16 @@ from . models import Post, Chat
 # from qary.clibot import CLIBot
 from qary_app import models
 # Import all skills
-from qary.skills import parul_bots, basebots, glossary_bots
-# , elastic_bots, eliza_bots, faq_bots, juan_bots, nima_bots, pattern_bots,)
+from qary.skills import (parul_bots, basebots, glossary_bots,
+                         pattern_bots, search_fuzzy_bots, eliza_bots)
 
 
 parul_bot = parul_bots.Bot()
 basebot = basebots.HiBot()
 glossary_bot = glossary_bots.Bot()
-# make branch of master / git checkout master -b radio_button
-# git push -u orgin radio_button
-# git commit
-# git push
-
-# bot_type = None
-# bot = CLIBot(bots=('glossary',))
+pattern_bot = pattern_bots.Bot()
+search_fuzzy_bot = search_fuzzy_bots.Bot()
+eliza_bot = eliza_bots.Bot()
 
 
 def team(request):
@@ -44,16 +40,24 @@ def reply(request):
     # radio button condition
     if request.POST.get('parul_bot'):
         bot_reply = parul_bot.reply(request.POST.get('question_req'))
-        print('parul_bot')
+
     elif request.POST.get('basebot'):
         bot_reply = basebot.reply(request.POST.get('question_req'))
-        print('basebot')
+
     elif request.POST.get('glossary_bot'):
         bot_reply = glossary_bot.reply(request.POST.get('question_req'))
-        print('glossary_bot')
+
+    elif request.POST.get('pattern_bot'):
+        bot_reply = pattern_bot.reply(request.POST.get('question_req'))
+
+    elif request.POST.get('search_fuzzy_bot'):
+        bot_reply = search_fuzzy_bot.reply(request.POST.get('question_req'))
+
+    elif request.POST.get('eliza_bot'):
+        bot_reply = eliza_bot.reply(request.POST.get('question_req'))
+
     else:
         bot_reply = parul_bot.reply(request.POST.get('question_req'))
-        print('else parul_bot')
 
     obj = Chat.objects.all().order_by('-create_date')
     print(bot_reply)
