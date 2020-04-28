@@ -81,3 +81,15 @@
 -
   Q: How do I decide between all the different approaches to filling missing values, like `df = df.fillna(df.mean())` vs `df = df.fillna(0)`.
   A: This is a quesiton about choosing the best "hyperparameter" for you pipeline. The fillna method is a hyperparameter that should be recorded in your hyperparameter table or research notebook. The answer to these hyperparameter tuning questions is almost always that you must try each approach and compare the performance of each one to decide which is better. Each problem is different. Some methods work better in some situations than in others.
+-
+  Q: How can I experiment with different feature extraction approaches without recleaning my data with each new feature extraction approach that I experiment with in my hyperparameter tuning table?
+  A: Try creating a data cleaning jupyter notebook or python script that is run only once. It's purpose is to save a csv with `df.to_csv('clean_data.csv', index=False)` at the end of the cleaning pipeline. All your subsequent hyperparameter tuning experiments should load that exact same file and use the exact same random seed to `train_test_split` the data.
+-
+  Q: How can I try different feature extraction approaches without rerunning my data cleaning with each new feature extraction approach that I attempt in my hyperparameter tuning table?
+  A: Try creating a data cleaning jupyter notebook or python script that is run only once. It's purpose is to save a csv with `df.to_csv('clean_data.csv', index=False)` at the end of the cleaning pipeline. All your subsequent hyperparameter tuning experiments should load that exact same file and use the exact same random seed to `train_test_split` the data.
+-
+  Q: How do I know what features to extract from a natural language feature in my dataset?
+  A: A TFIDFVectorizer object in scikit-learn can automatically extract a TFIDF vecto representation of your docouments (natural language strings). You can adjust the `min_df` and `max_df` arguments to filter out words that are likely to be less useful as model features based on their document frequency. Start with a min_df of 32 and max_df of 0.5, decrease min_df gradually while monitoring your RAM usage after the `.transform().to_dense().to_csv()` on your documents. You would like to use about 50% of your RAM when you load your entire TFIDF table (each row is a TFIDF vector) into RAM.
+-
+  Q: My models are getting the exact same accuracy whether I use an SVM or LogisticRegression. What can I do?
+  A: First examine your training and test sets to ensure they have a sufficient number of diverse samples. You should plot the data on scatterplots, whenever possible, so you can see the individual records as dots and ensure you are covering the space of parameters you expect the model to deal with.
