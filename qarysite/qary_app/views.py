@@ -4,9 +4,12 @@ from . import models
 from . models import Post, Chat
 # from qary.clibot import CLIBot
 from qary_app import models
-# Import all skills
+# Import  skills
 from qary.skills import (parul_bots, basebots, glossary_bots,
                          pattern_bots, search_fuzzy_bots, eliza_bots)
+
+
+# elastic search didn't work ?
 
 
 parul_bot = parul_bots.Bot()
@@ -37,7 +40,7 @@ def home_view(request):
 def reply(request):
 
     my_question = request.POST.get('question_req')
-    # radio button condition
+    # radio button logic
     if request.POST.get('parul_bot'):
         bot_reply = parul_bot.reply(request.POST.get('question_req'))
 
@@ -59,12 +62,14 @@ def reply(request):
     else:
         bot_reply = parul_bot.reply(request.POST.get('question_req'))
 
+    # chat history
     obj = Chat.objects.all().order_by('-create_date')
     print(bot_reply)
 
     dict_1 = {'insert': bot_reply, 'Question': my_question,
               'c': obj}
 
+    # Save data in the database
     if my_question and bot_reply:
         Chat.objects.create(question=my_question,
                             answer=bot_reply)

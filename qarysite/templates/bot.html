@@ -1,19 +1,6 @@
 {% extends 'home.html'%}
 {% block body_block%}
 
- 
-
-
-
-<!--  Question the bot-->            
-        <div >
-            <div class="list-group-item">
-                <h5><strong class="d-inline-block mb-2 text-success">YOU: {{Question}}</strong></h5>
-                <h5><strong >BOT: {{insert}}</strong></h5>
-              
-                <form action = "{% url 'answer'%}" method = "POST"> {% csrf_token %}
-
-
 
 
 
@@ -22,6 +9,7 @@
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-outline-secondary">
                     <input type="radio" name="parul_bot" id="parul_bot" autocomplete="off" value="parul_bot"> parul_bot
+
                   </label>
                   <label class="btn btn-outline-secondary">
                     <input type="radio" name="basebot" id="basebot" autocomplete="off" value="basebot"> basebot
@@ -43,6 +31,20 @@
                 <br>
                 <br>
 
+
+
+
+<!--  Question the bot-->            
+        <div >
+            <div class="list-group-item">
+                <h5><strong class="d-inline-block mb-2 text-success">YOU: {{Question}}</strong></h5>
+                <h5><strong >BOT: {{insert}}</strong></h5>
+              
+                <form action = "{% url 'answer'%}" method = "POST"> {% csrf_token %}
+
+
+
+
            
 
 <!-- -------------------------- -->
@@ -55,8 +57,8 @@
 <!--           Chat history-->            
             <div >
                {%for i in c%}
-            <h5><strong class="d-inline-block mb-2 text-success">{{i.question}}?</strong>
-             <strong >{{i.answer}}  <small>{{i.create_date}}</small></strong></h5><br>
+            <p><strong class="d-inline-block mb-2 text-success">{{i.question}}?</strong>
+             <strong >{{i.answer}}  <small>{{i.create_date}}</small></strong></p><br>
             {%endfor%}
             </div>
   
