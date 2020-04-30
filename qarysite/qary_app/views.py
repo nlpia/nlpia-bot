@@ -6,10 +6,12 @@ from . models import Post, Chat
 from qary_app import models
 # Import  skills
 from qary.skills import (parul_bots, basebots, glossary_bots,
-                         pattern_bots, search_fuzzy_bots, eliza_bots)
+                         pattern_bots, search_fuzzy_bots,
+                         eliza_bots, qa_bots)
 
 
 # elastic search didn't work ?
+# urllib.request.urlretrieve(url_str, filename=zip_local_path, reporthook=t.update_to)
 
 
 parul_bot = parul_bots.Bot()
@@ -18,6 +20,8 @@ glossary_bot = glossary_bots.Bot()
 pattern_bot = pattern_bots.Bot()
 search_fuzzy_bot = search_fuzzy_bots.Bot()
 eliza_bot = eliza_bots.Bot()
+# elastic_bot = elastic_bots.Bot()
+qa_bot = qa_bots.Bot()
 
 
 def team(request):
@@ -59,8 +63,11 @@ def reply(request):
     elif request.POST.get('eliza_bot'):
         bot_reply = eliza_bot.reply(request.POST.get('question_req'))
 
-    else:
-        bot_reply = parul_bot.reply(request.POST.get('question_req'))
+    elif request.POST.get('qa_bot'):
+        bot_reply = qa_bot.reply(request.POST.get('question_req'))
+        print('qa_bot')
+    # else:
+    #     bot_reply = parul_bot.reply(request.POST.get('question_req'))
 
     # chat history
     obj = Chat.objects.all().order_by('-create_date')

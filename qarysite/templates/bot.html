@@ -4,11 +4,28 @@
 
 
 
+
+
+                <!-- details explaining Bot skills -->
+                 
+                    
+
+
+
+
+<!--  Question the bot-->            
+        <div >
+            <div class="list-group-item">
+                <h5><strong class="d-inline-block mb-2 text-success">YOU: {{Question}}</strong></h5>
+                <h5><strong >BOT: {{insert}}</strong></h5>
+              
+                <form action = "{% url 'answer'%}" method = "POST"> {% csrf_token %}
+
 <!--                  radio button    -->
                 
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-outline-secondary">
-                    <input type="radio" name="parul_bot" id="parul_bot" autocomplete="off" value="parul_bot"> parul_bot
+                    <input type="radio" name="parul_bot" id="parul_bot" autocomplete="off" value="parul_bot" > parul_bot
 
                   </label>
                   <label class="btn btn-outline-secondary">
@@ -26,23 +43,13 @@
                   <label class="btn btn-outline-secondary">
                     <input type="radio" name="eliza_bot" id="eliza_bot" autocomplete="off" value="eliza_bot" > eliza_bot
                   </label>
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="qa_bot" id="qa_bot" autocomplete="off" value="qa_bot" > qa_bot
+                  </label>
                   
                 </div>
                 <br>
                 <br>
-
-
-
-
-<!--  Question the bot-->            
-        <div >
-            <div class="list-group-item">
-                <h5><strong class="d-inline-block mb-2 text-success">YOU: {{Question}}</strong></h5>
-                <h5><strong >BOT: {{insert}}</strong></h5>
-              
-                <form action = "{% url 'answer'%}" method = "POST"> {% csrf_token %}
-
-
 
 
            

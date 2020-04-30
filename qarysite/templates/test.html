@@ -1,0 +1,24 @@
+
+
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-secondary active">
+    <input type="radio" name="parul_bot" id="option1" autocomplete="off" checked> parul_bot
+  </label>
+  <label class="btn btn-secondary">
+    <input type="radio" name="basebot" id="option2" autocomplete="off"> basebot
+  </label>
+</div>
+
+
+
+
+<form class="" action="." method="POST">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="Submit" name="parul_bot" value="parul_bot"/>
+</form>
+<form class="" action="." method="POST">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="Submit" name="basebot" value="basebot"/>
+</form>
