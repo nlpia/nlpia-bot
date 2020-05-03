@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
 from . import models
-from . models import Post, Chat
+from . models import Post, Chat, Document
 # from qary.clibot import CLIBot
 from qary_app import models
 # Import  skills
@@ -10,17 +10,12 @@ from qary.skills import (parul_bots, basebots, glossary_bots,
                          eliza_bots, qa_bots)
 
 
-# elastic search didn't work ?
-# urllib.request.urlretrieve(url_str, filename=zip_local_path, reporthook=t.update_to)
-
-
 parul_bot = parul_bots.Bot()
 basebot = basebots.HiBot()
 glossary_bot = glossary_bots.Bot()
 pattern_bot = pattern_bots.Bot()
 search_fuzzy_bot = search_fuzzy_bots.Bot()
 eliza_bot = eliza_bots.Bot()
-# elastic_bot = elastic_bots.Bot()
 qa_bot = qa_bots.Bot()
 
 
@@ -65,13 +60,12 @@ def reply(request):
 
     elif request.POST.get('qa_bot'):
         bot_reply = qa_bot.reply(request.POST.get('question_req'))
-        print('qa_bot')
-    # else:
-    #     bot_reply = parul_bot.reply(request.POST.get('question_req'))
+
+    else:
+        bot_reply = parul_bot.reply(request.POST.get('question_req'))
 
     # chat history
     obj = Chat.objects.all().order_by('-create_date')
-    print(bot_reply)
 
     dict_1 = {'insert': bot_reply, 'Question': my_question,
               'c': obj}

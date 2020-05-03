@@ -11,12 +11,15 @@ from wikipediaapi import Wikipedia
 from .. import constants
 from ..spacy_language_model import load
 from .vectors import phrase_to_vec
+from qary.etl import doc_cache
+
 
 import logging
 log = logging.getLogger(locals().get('__name__', ''))
 
 nlp = load('en_core_web_md')
-TITLES = ['Chatbot', 'ELIZA', 'Turing_test', 'AIML', 'Chatterbot', 'Loebner_prize', 'Chinese_room']
+TITLES = ['Chatbot', 'ELIZA', 'Turing_test', 'AIML',
+          'Chatterbot', 'Loebner_prize', 'Chinese_room']
 EXCLUDE_HEADINGS = ['See also', 'References', 'Bibliography', 'External links']
 
 
@@ -29,13 +32,15 @@ class WikiIndex():
         # self.title_slug = self.df_titles.to_dict()
         # self.df_vectors = pd.DataFrame(nlp(s).vector for s in self.df_titles.index.values)
         # self.vectors = dict(zip(range(len(self.df_titles)), ))
-        self.title_row = dict(zip(self.df_titles.index.values, range(len(self.df_titles))))
+        self.title_row = dict(
+            zip(self.df_titles.index.values, range(len(self.df_titles))))
         # AttributeError: 'tuple' object has no attribute 'lower
         # self.title_row.update({k.lower(): v for (k, v) in tqdm(self.title_row.items()) if k.lower() not in self.title_row})
         # self.df_vectors = self.compute_vectors()
 
     def compute_vectors(self, filename='wikipedia-title-vectors.csv.gz'):
-        log.warning(f'Computing title vectors for {len(self.df_titles)} titles. This will take a while.')
+        log.warning(
+            f'Computing title vectors for {len(self.df_titles)} titles. This will take a while.')
         filepath = os.path.join(constants.DATA_DIR, filename)
         start = sum((1 for line in gzip.open(filepath, 'rb')))
         total = len(self.df_titles) - start
@@ -44,13 +49,15 @@ class WikiIndex():
             csv_writer = csv.writer(fout)
             csv_writer.writerow(['page_title'] + [f'x{i}' for i in range(300)])
             for i, s in tqdm(enumerate(self.df_titles.index.values[start:]), total=total):
-                vec = [s] + phrase_to_vec(str(s))  # s can sometimes (rarely) be a float because of pd.read_csv (df_titles)
+                # s can sometimes (rarely) be a float because of pd.read_csv (df_titles)
+                vec = [s] + phrase_to_vec(str(s))
                 vec_batch.append(vec)
                 if not (i % 1000) or i == total - 1:
                     csv_writer.writerows(vec_batch)
                     print(f"wrote {len(vec_batch)} rows")
                     try:
-                        print(f'wrote {len(vec_batch), len(vec_batch[0])} values')
+                        print(
+                            f'wrote {len(vec_batch), len(vec_batch[0])} values')
                     except IndexError:
                         pass
                     vec_batch = []
@@ -72,18 +79,23 @@ class WikiIndex():
             try:
                 df = pd.read_csv(filepath, dtype=str)
             except (IOError, FileNotFoundError):
-                log.info(f'No local copy of Wikipedia titles file was found at {filepath}')
+                log.info(
+                    f'No local copy of Wikipedia titles file was found at {filepath}')
         if not len(df):
-            log.warning(f'Starting download of entire list of Wikipedia titles at {url}...')
-            df = pd.read_table(url, dtype=str)  # , sep=None, delimiter=None, quoting=3, engine='python')
-            log.info(f'Finished downloading {len(df)} Wikipedia titles from {url}.')
+            log.warning(
+                f'Starting download of entire list of Wikipedia titles at {url}...')
+            # , sep=None, delimiter=None, quoting=3, engine='python')
+            df = pd.read_table(url, dtype=str)
+            log.info(
+                f'Finished downloading {len(df)} Wikipedia titles from {url}.')
 
         df.columns = ['page_title']
         if df.index.name != 'natural_title':
             df.index = list(df['page_title'].str.replace('_', ' ').str.strip())
             df.index.name == 'natural_title'
             df.to_csv(filepath, index=False, compression='gzip')
-            log.info(f'Finished saving {len(df)} Wikipedia titles to {filepath}.')
+            log.info(
+                f'Finished saving {len(df)} Wikipedia titles to {filepath}.')
         self.df_titles = df
         return self.df_titles
 
@@ -113,7 +125,8 @@ def scrape_articles_dataframe(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     Index(['depth', 'title', 'section', 'sentence'], dtype='object')
     """
     titles = list([titles] if isinstance(titles, str) else titles)
-    exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
+    exclude_headings = set([eh.lower().strip()
+                            for eh in (exclude_headings or [])])
     depths = list([0] * len(titles))
     title_depths = list(zip(titles, depths))
     sentences = []
@@ -141,7 +154,8 @@ def scrape_articles_dataframe(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
             titles_scraped.add(title)
             page = wiki.article(title)
             if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
-                log.error(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
+                log.error(
+                    f"Unable to retrieve _{title}_ because article text and summary len are 0.")
                 time.sleep(2.17)
                 continue
             num_articles += 1
@@ -156,12 +170,14 @@ def scrape_articles_dataframe(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                     if t in page.links:
                         log.info(f'    yep, found it in page.links')
                         title_depths.append((t, d + 1))
-                log.info(f'  extended title_depths at depth {d}: {title_depths}')
+                log.info(
+                    f'  extended title_depths at depth {d}: {title_depths}')
             for section in page.sections:
                 if section.title.lower().strip() in exclude_headings:
                     continue
                 # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
-                text = section.text.replace('’', "'")  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
+                # spacy doesn't handle "latin" (extended ascii) apostrophes well.
+                text = section.text.replace('’', "'")
                 # FIXME: need to rejoin short names before colons, like 'ELIZA:' 'Tell me...', and 'Human:' 'What...'
                 # FIXME: need to split on question marks without white space but where next word is capitalized: ...to be unhappy?Though designed strictly...
                 sentences.extend([
@@ -190,6 +206,19 @@ class WikiNotFound:
     summary = ''
 
 
+class WikiPage:
+    """ store wikipediaapi documents """
+
+    def __init__(self, text='', title='', summary=''):
+
+        self.text = text
+        self.title = title
+        self.summary = summary
+
+    def __str__(self):
+        return f'text is :{wiki_page_document.text} \n title is :{wiki_page_document.title} \n summary is:{wiki_page_document.summary}'
+
+
 def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                          see_also=True, max_articles=10000, max_depth=1,
                          heading_text=True, title_text=True):
@@ -206,9 +235,11 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     10
     """
     if isinstance(titles, str):
-        log.error(f'DEPRECATED `titles` should be a list of strs, not titles="{titles}"')
+        log.error(
+            f'DEPRECATED `titles` should be a list of strs, not titles="{titles}"')
         titles = find_titles(titles)
-    exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
+    exclude_headings = set([eh.lower().strip()
+                            for eh in (exclude_headings or [])])
     # depth starts at zero here, but as additional titles are appended the depth will increase
     title_depths = list(zip(titles, [0] * len(titles)))
     text_lens = []
@@ -217,6 +248,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
     titles_scraped = set([''])
     d, num_articles = 0, 0
     wiki = Wikipedia()
+
     # TODO: should be able to use depth rather than d:
     for depth in range(max_depth):
         while num_articles < max_articles and d <= depth and len(title_depths) > 0:
@@ -236,39 +268,55 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 continue
             titles_scraped.add(title)
             log.info(f'len(title_depths): {len(title_depths)}Looking')
-            page = wiki.article(title)
-            if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
-                log.warning(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
-                time.sleep(2.17)
-                continue
-            # FIXME: this postprocessing of Article objects to compost a text string should be in separate funcition
-            # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
-            if see_also and d + 1 < max_depth:
-                # .full_text() includes the section heading ("See also"). .text does not
-                section = page.section_by_title('See also')
-                if not section:
+            ##############################
+
+            found_title = doc_cache.find_in_cache(title)
+            if found_title:
+                pass
+            else:
+                page = wiki.article(title)
+
+                wiki_page_document = WikiPage(
+                    text=page.text, title=title, summary=page.summary)
+
+                if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
+                    log.warning(
+                        f"Unable to retrieve _{title}_ because article text and summary len are 0.")
+                    time.sleep(2.17)
                     continue
-                for t in section.text.split('\n')[1:]:
-                    log.info(f"  Checking _SEE ALSO_ link: {t}")
-                    if t in page.links:
-                        log.info(f'     Found title "{t}" in page.links at depth {d}, so adding it to titles to scrape...')
-                        title_depths.append((t, d + 1))
-                log.info(f'  extended title_depths at depth {d}: {title_depths}')
-            text = f'{page.title}\n\n' if title_text else ''
-            # page.text
-            for section in page.sections:
-                if section.title.lower().strip() in exclude_headings:
-                    continue
-                # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
-                text += f'\n{section.title}\n' if heading_text else '\n'
-                text += section.text.replace('’', "'") + '\n'  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
-            yield text
+                # FIXME: this postprocessing of Article objects to compost a text string should be in separate funcition
+                # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
+                if see_also and d + 1 < max_depth:
+                    # .full_text() includes the section heading ("See also"). .text does not
+                    section = page.section_by_title('See also')
+                    if not section:
+                        continue
+                    for t in section.text.split('\n')[1:]:
+                        log.info(f"  Checking _SEE ALSO_ link: {t}")
+                        if t in page.links:
+                            log.info(
+                                f'     Found title "{t}" in page.links at depth {d}, so adding it to titles to scrape...')
+                            title_depths.append((t, d + 1))
+                    log.info(
+                        f'  extended title_depths at depth {d}: {title_depths}')
+                text = f'{page.title}\n\n' if title_text else ''
+                # page.text
+                for section in page.sections:
+                    if section.title.lower().strip() in exclude_headings:
+                        continue
+                    # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
+                    text += f'\n{section.title}\n' if heading_text else '\n'
+                    # spacy doesn't handle "latin" (extended ascii) apostrophes well.
+                    text += section.text.replace('’', "'") + '\n'
+                yield text
             text_lens.append(len(text))
-            log.warning(f'Added article "{page.title}" with {len(text)} chars.')
+            log.warning(
+                f'Added article "{page.title}" with {len(text)} chars.')
             log.info(f'  Total scraped {sum(text_lens)} chars')
             log.warning(str([depth, d, num_articles, title]))
             if len(text_lens) >= max_articles:
-                log.warning(f"num_articles={num_articles} ==> len(text_lens)={len(text_lens)} > max_depth={max_depth}")
+                log.warning(
+                    f"num_articles={num_articles} ==> len(text_lens)={len(text_lens)} > max_depth={max_depth}")
                 break
             if d > depth:
                 log.warning(f"{d} > {depth}")
@@ -289,7 +337,8 @@ def count_nonzero_vector_dims(self, strings, nominal_dims=1):
     """
     tot = 0
     for s in strings:
-        tot += (pd.DataFrame([t.vector for t in nlp(s)]).abs() > 0).T.sum().sum()
+        tot += (pd.DataFrame([t.vector for t in nlp(s)]
+                             ).abs() > 0).T.sum().sum()
     return tot
 
 
@@ -373,7 +422,7 @@ def find_article_texts(query=None, max_depth=3,
                        max_ignorable_pct=.5,
                        ignore=True, reverse=True, score=len,
                        **scrape_kwargs):
-    r""" Retrieve Wikipedia article texts relevant to the query text
+    """ Retrieve Wikipedia article texts relevant to the query text
 
     >>> texts = list(find_article_texts(''))
     >>> len(texts) > 5

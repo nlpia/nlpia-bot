@@ -27,3 +27,17 @@ class Chat(models.Model):
 
     def get_absolute_url(self):
         return reverse('chat', kwargs={pk: self.pk})
+
+# this class to save data from scrape wikipedia
+
+
+class Document(models.Model):
+
+    title = models.TextField()
+    text = models.TextField(null=True,
+                            blank=True)
+    url = models.URLField(max_length=250, null=True,
+                          blank=True)  # change the kind
+
+    def __str__(self):
+        return self.title
