@@ -276,8 +276,8 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
             else:
                 page = wiki.article(title)
 
-                wiki_page_document = WikiPage(
-                    text=page.text, title=title, summary=page.summary)
+                # wiki_page_document = WikiPage(
+                #     text=page.text, title=title, summary=page.summary)
 
                 if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
                     log.warning(

@@ -20,6 +20,7 @@ qa_bot = qa_bots.Bot()
 
 
 def team(request):
+
     return render(request, "team.html")
 
 
