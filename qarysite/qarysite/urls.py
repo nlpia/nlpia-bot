@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'answer/', views.reply, name='answer'),
     url(r'^team/$', views.team, name='team'),
     url(r'^nlpia/$', views.nlpia, name='nlpia'),
+    url('', include('qary_app.urls')),
 
 ]
 

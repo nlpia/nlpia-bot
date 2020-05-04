@@ -1,6 +1,9 @@
 # from django.contrib import admin
 # from django.urls import path
-from django.conf.urls import url  # , include
+from django.conf.urls import url
+from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
+
 
 from qary_app import views
 
@@ -16,7 +19,12 @@ urlpatterns = [
     url(r'answer/', views.reply, name='answer'),
     url(r'^(?P<pk>[-\w]+)/$', views.home_view, name='question'),
 
+    # Rest_framework
+    url('basic/', views.API_objects.as_view()),
+    url('basic/<int:pk>/', views.API_objects_details.as_view()),
+
 
 
 
 ]
+urlpatterns = format_suffix_patterns(urlpatterns)

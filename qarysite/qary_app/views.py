@@ -4,12 +4,15 @@ from . import models
 from . models import Post, Chat, Document
 # from qary.clibot import CLIBot
 from qary_app import models
-# Import  skills
+from rest_framework import generics
+from qary_app.serializers import ChatSerializer
+
 from qary.skills import (parul_bots, basebots, glossary_bots,
                          pattern_bots, search_fuzzy_bots,
                          eliza_bots, qa_bots)
 
 
+# import bot skills
 parul_bot = parul_bots.Bot()
 basebot = basebots.HiBot()
 glossary_bot = glossary_bots.Bot()
@@ -17,6 +20,18 @@ pattern_bot = pattern_bots.Bot()
 search_fuzzy_bot = search_fuzzy_bots.Bot()
 eliza_bot = eliza_bots.Bot()
 qa_bot = qa_bots.Bot()
+
+
+# rest_api
+
+class API_objects(generics.ListCreateAPIView):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+
+
+class API_objects_details(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
 
 
 def team(request):
