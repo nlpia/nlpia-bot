@@ -1,21 +1,24 @@
 """ Question Answering dataset loaders """
 import re
-# import os
+import os
 import logging
+import json
 
 import numpy as np
 import pandas as pd
 import requests
-# from tqdm import tqdm
+from editdistance import distance
 
-# from nlpia.futil import expand_filepath, mkdir_p
+from qary.spacy_language_model import nlp
+from qary.constants import DATA_DIR
+
 
 log = logging.getLogger(__name__)
 
-PRIMARY_WORD_LIST_NAMES = ('religion|lang|loca|name|substance|instrument|peop|perc|plant|prof|sport|state' +
+PRIMARY_WORD_LIST_NAMES = ('religion|lang|loca|name|substance|instrument|peop|perc|plant|prof|sport|state'
                            '|temp|title|unit|univ|money|vessel|job|group'
                            ).split('|')
-SECONDARY_WORD_LIST_NAMES = ('other|currency|code|num|ord|speed|time|weight|body|def|desc|quot|tech|letter|symbol|word|color' +
+SECONDARY_WORD_LIST_NAMES = ('other|currency|code|num|ord|speed|time|weight|body|def|desc|quot|tech|letter|symbol|word|color'
                              '|abb|act|anim|art|cause|city|comp|country|date|dimen|dise|dist|eff|event|food|mount|popu|prod|term'
                              ).split('|')
 
@@ -99,3 +102,92 @@ def load_trec_trainset(url='http://cogcomp.org/Data/QA/QC/train_5500.label'):
     df['label'] = df['label'].astype('category')
     df['sublabel'] = df['sublabel'].astype('category')
     return df
+
+
+def load_qa_dataset(filepath=os.path.join('qa_pairs', 'qa-2020-04-25.json')):
+    """ Load a json file containing desired responses, scored for truthfulness
+
+    >>> d = load_qa_dataset()
+    >>> d
+    >>> d[0]
+    {'score': 1.0, 'question': "Who was Jimmy Carter's wife?", 'answer': 'Rosalynn Carter', 'topic': 'US Presidents'}
+    >>> d[-1]
+    {'score': 0.9,
+     'question': 'Who is Tony Robbins?',
+     'answer': 'Tony Robbins is known for his infomercials, seminars, and self-help books ...',
+     'topic': 'Famous People'}
+    """
+
+    filepath = os.path.join(DATA_DIR, filepath) if not os.path.exists(filepath) else filepath
+    with open(filepath) as fp:
+        pairs = json.load(fp)
+    scored_qa_pairs = []
+    for topic, qa_pairs in pairs.items():
+        log.debug(topic, qa_pairs)
+        for question, scored_answers in qa_pairs.items():
+            log.debug(question, len(scored_answers))
+            if isinstance(scored_answers, str):
+                scored_answers = qa_pairs[scored_answers]
+            for score, ans in scored_answers:
+                scored_qa_pairs.append(dict(zip(
+                    'score question answer topic'.split(),
+                    (score, question, ans, topic))))
+    return scored_qa_pairs
+
+
+def fold_characters(s):
+    """ Like stemming but for single characters and punctuation rather than multi-char tokens
+
+    >>> s = "Hello -- world's-class\t.\n?"
+    >>> fold_characters(s)
+    'hello;world;sclass;;'
+    """
+    s = s.lower().strip()
+    s = re.sub(r'\s', '', s)
+    s = re.sub(r'-[-]+', ';', s)
+    s = s.replace('-', '')
+    s = re.sub(r'\W', ';', s)
+    return s
+
+
+def get_bot_accuracies(bot, scored_qa_pairs=None):
+    """ Compare answers from bot to answers in test set
+
+    >>> from qary.skills import glossary_bots
+    >>> bot = glossary_bots.Bot()
+    >>> scored_qa_pairs = [dict(question='What is RMSE?', answer='Root Mean Square Error', score=.9, topic='ds')]
+    >>> get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs)[0]['bot_accuracy']
+    1.0
+    >>> scored_qa_pairs = [dict(question='What is RMSE?', answer='root-mean-sqr-error', score=.9, topic='ds')]
+    >>> get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs)[0]
+    {'question': 'What is RMSE?',
+     'answer': 'root-mean-sqr-error',
+     'score': 0.9,
+     'topic': 'ds',
+     'bot_answer': 'Root Mean Square Error',
+     'bot_w2v_similarity': 0.64...,
+     'bot_ed_distance': 0.52...,
+     'bot_ed_distance_low': 0.31...,
+     'bot_ed_distance_folded': 0.15...,
+     'bot_accuracy': 0.65...}
+    """
+    scored_qa_pairs = load_qa_dataset() if scored_qa_pairs is None else scored_qa_pairs
+    scored_qa_pairs = load_qa_dataset(scored_qa_pairs) if isinstance(scored_qa_pairs, str) else scored_qa_pairs
+    validated_qa_pairs = []
+    for truth in scored_qa_pairs:
+        truth['bot_answer'] = sorted(bot.reply(truth['question']))[-1][1]
+        truth['bot_w2v_similarity'] = nlp(truth['bot_answer']).similarity(nlp(truth['answer']))
+        truth['bot_ed_distance'] = distance(truth['answer'], truth['bot_answer']) / len(truth['answer'])
+        truth['bot_ed_distance_low'] = distance(
+            truth['answer'].lower().strip(),
+            truth['bot_answer'].lower().strip()
+        ) / len(truth['answer'].strip())
+        truth['bot_ed_distance_folded'] = distance(
+            fold_characters(truth['answer']),
+            fold_characters(truth['bot_answer'])
+        ) / len(truth['answer'].strip())
+        truth['bot_accuracy'] = .5 * truth['bot_w2v_similarity'] + .5 * (
+            1 - (truth['bot_ed_distance'] + truth['bot_ed_distance_low'] + truth['bot_ed_distance_folded']) / 3)
+        validated_qa_pairs.append(dict(truth))
+
+    return validated_qa_pairs
