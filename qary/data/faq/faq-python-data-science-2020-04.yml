@@ -112,12 +112,12 @@
   Q: How is the pymc3 package used in the real world?
   A: "It's rarely used by developers or machine learning engineers in business, though it may be used by data scientists in academics or possibly finance. It has some helpful PDF plotting functions, but it's interface (API) is not pythonic: it relies on side effects, implicit behavior, and hidden functionality. Most python developers prefer to explicitly compute the statistics like p-value and confidence intervals that pymc3 provides."
 -
-  Q: How important is it to understand the formulas used to perform a T-test and calculate P-value?
-  A: It's very important to understand what a T-test is used for in the real world and how to interpret a low or high P-value. But it is not important at all to understand the formulas used to compute P-value or the assumptions about the data that were used to derive those formulas. I will make sure you understand the statistics principles you need to do well in an interview and at work in a Data Science roll.
+  Q: "How important is it to understand the formulas used to perform a T-test and calculate P-value?"
+  A: "It's very important to understand what a T-test is used for in the real world and how to interpret a low or high P-value. But it is not important at all to understand the formulas used to compute P-value or the assumptions about the data that were used to derive those formulas. I will make sure you understand the statistics principles you need to do well in an interview and at work in a Data Science roll."
 -
-  Q: How can I visualize two tables of time series data on the same plot?
-  A: `ax = sns.scatterplot(x='datetime', y='any_numerical_column_name', data=df1); ax = sns.scatterplot(x='datetime', y='any_numerical_column_name', data=df2, ax=ax)`
+  Q: "How can I visualize two tables of time series data on the same plot?"
+  A: "`ax = sns.scatterplot(x='datetime', y='any_numerical_column_name', data=df1); ax = sns.scatterplot(x='datetime', y='any_numerical_column_name', data=df2, ax=ax)`"
 -
-  Q: What does it mean for python code that claims not to use any 3rd party libraries?
-  A: It meanst that the script does not import anything that had to be pip installed. Build in libraries like  `requests`, `collections`, `re`, and `itertools` are built into python and can be run on any python interpreter anywhere. Python scripts that import 3rd party libraries like `pandas`, `numpy`, `sklearn`, or `sqlalchemy` must install those packages before they can run the script.
+  Q: "What does it mean for python code that claims not to use any 3rd party libraries?"
+  A: "It means that the script does not import anything that had to be pip installed. Build in libraries like  `requests`, `collections`, `re`, and `itertools` are built into python and can be run on any python interpreter anywhere. Python scripts that import 3rd party libraries like `pandas`, `numpy`, `sklearn`, or `sqlalchemy` must install those packages before they can run the script."
 
