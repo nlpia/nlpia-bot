@@ -55,7 +55,7 @@ def test_glossaries():
 
 
 def test_qa_datasets():
-    results = doctest.testmod(qary.etl.test_qa_datasets, **DOCTEST_KWARGS)
+    results = doctest.testmod(qary.etl.qa_datasets, **DOCTEST_KWARGS)
     assert results.failed < 1
     assert results.attempted > 0
 
