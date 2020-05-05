@@ -136,7 +136,7 @@ def load_qa_dataset(filepath=os.path.join('qa_pairs', 'qa-2020-04-25.json')):
 
 
 def fold_characters(s):
-    """ Like stemming but for single characters and punctuation rather than multi-char tokens
+    r""" Like stemming but for single characters and punctuation rather than multi-char tokens
 
     >>> s = "Hello -- world's-class\t.\n?"
     >>> fold_characters(s)
@@ -150,7 +150,7 @@ def fold_characters(s):
     return s
 
 
-def get_bot_accuracies(bot, scored_qa_pairs=None):
+def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2):
     """ Compare answers from bot to answers in test set
 
     >>> from qary.skills import glossary_bots
@@ -175,7 +175,14 @@ def get_bot_accuracies(bot, scored_qa_pairs=None):
     scored_qa_pairs = load_qa_dataset(scored_qa_pairs) if isinstance(scored_qa_pairs, str) else scored_qa_pairs
     validated_qa_pairs = []
     for truth in scored_qa_pairs:
-        truth['bot_answer'] = sorted(bot.reply(truth['question']))[-1][1]
+        texts = scrape_wikipedia.find_document_texts(topic=truth['topic'], max_results=10)
+        for context in texts:
+            bot.reset_context(context)
+            replies = sorted(bot.reply(truth['question']))
+            if len(replies) and sorted(replies)[-1][0] > min_qa_bot_confidence:
+                break
+        replies = replies or [(0, "Sorry, I don't know.")]
+        truth['bot_answer'] = replies[-1][1]
         truth['bot_w2v_similarity'] = nlp(truth['bot_answer']).similarity(nlp(truth['answer']))
         truth['bot_ed_distance'] = distance(truth['answer'], truth['bot_answer']) / len(truth['answer'])
         truth['bot_ed_distance_low'] = distance(
