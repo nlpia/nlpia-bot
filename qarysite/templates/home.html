@@ -26,8 +26,8 @@
      <a class="navbar-brand "href="https://github.com/nlpia/nlpia-bot">Github</a>
      <a class="navbar-brand" href="{% url 'team'%}">Team</a>
       <a class="navbar-brand" href="{% url 'nlpia'%}">NLPIA</a>
-      <form class="form-inline my-2 my-lg-0 " >
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <form class="form-inline my-2 my-lg-0 " action="http://www.google.com/search" method="GET">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" >
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
     </nav>
@@ -39,6 +39,8 @@
         {% block body_block%}
         {% endblock %}
 </div>
+
+
 
 
 
