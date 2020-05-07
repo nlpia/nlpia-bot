@@ -33,7 +33,8 @@ class Chat(models.Model):
 
 class Document(models.Model):
 
-    title = models.TextField()
+    title = models.TextField(null=True,
+                             blank=True)
     text = models.TextField(null=True,
                             blank=True)
     url = models.URLField(max_length=250, null=True,

@@ -12,6 +12,9 @@ from .. import constants
 from ..spacy_language_model import load
 from .vectors import phrase_to_vec
 from qary.etl import doc_cache
+#################################
+from qary_app.models import Document
+
 
 
 import logging
@@ -275,9 +278,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 pass
             else:
                 page = wiki.article(title)
-
-                # wiki_page_document = WikiPage(
-                #     text=page.text, title=title, summary=page.summary)
+                Document.objects.create(text=page.text,title=page.title)
 
                 if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
                     log.warning(
