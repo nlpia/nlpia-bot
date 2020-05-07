@@ -33,12 +33,12 @@ class Chat(models.Model):
 
 class Document(models.Model):
 
-    title = models.TextField(null=True,
+    title = models.CharField(max_length=200, null=True,
                              blank=True)
     text = models.TextField(null=True,
                             blank=True)
-    url = models.URLField(max_length=250, null=True,
-                          blank=True)  # change the kind
+    summary = models.TextField(null=True,
+                               blank=True)
 
     def __str__(self):
         return self.title

@@ -16,7 +16,6 @@ from qary.etl import doc_cache
 from qary_app.models import Document
 
 
-
 import logging
 log = logging.getLogger(locals().get('__name__', ''))
 
@@ -209,19 +208,6 @@ class WikiNotFound:
     summary = ''
 
 
-class WikiPage:
-    """ store wikipediaapi documents """
-
-    def __init__(self, text='', title='', summary=''):
-
-        self.text = text
-        self.title = title
-        self.summary = summary
-
-    def __str__(self):
-        return f'text is :{wiki_page_document.text} \n title is :{wiki_page_document.title} \n summary is:{wiki_page_document.summary}'
-
-
 def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                          see_also=True, max_articles=10000, max_depth=1,
                          heading_text=True, title_text=True):
@@ -278,7 +264,8 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
                 pass
             else:
                 page = wiki.article(title)
-                Document.objects.create(text=page.text,title=page.title)
+                Document.objects.create(
+                    text=page.text, title=page.title, summary=page.summary)
 
                 if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
                     log.warning(
