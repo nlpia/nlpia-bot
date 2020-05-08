@@ -411,7 +411,7 @@ def find_article_texts(query=None, max_depth=3,
                        max_ignorable_pct=.5,
                        ignore=True, reverse=True, score=len,
                        **scrape_kwargs):
-    """ Retrieve Wikipedia article texts relevant to the query text
+    r""" Retrieve Wikipedia article texts relevant to the query text
 
     >>> texts = list(find_article_texts(''))
     >>> len(texts) > 5
