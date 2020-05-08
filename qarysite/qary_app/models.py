@@ -20,6 +20,7 @@ class Chat(models.Model):
     question = models.TextField()
     answer = models.TextField()
     create_date = models.DateTimeField(default=timezone.now())
+    # bot_skill = models.CharField(max_length=200)
 
     def __str__(self):
 

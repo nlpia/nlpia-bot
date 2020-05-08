@@ -72,42 +72,27 @@
 
 
 <!--           Chat history-->            
-        <!-- <div >
-          <table>
-               {%for i in c%}
-            <p><tr>
-              <strong class="d-inline-block mb-2 text-success">{{i.question}}?</strong>
-             <strong >{{i.answer}}  <small>{{i.create_date}}</small></strong>
-              </tr>
-            </p>
-                {%endfor%}
-            </table>
-        </div>
-         -->
-
-        
-
         <table class="table table-striped">
-  <caption>List of Bot Q&A history</caption>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Your question</th>
-      <th scope="col">Bot answer</th>
-      <th scope="col">Created date</th>
-    </tr>
-  </thead>
-  <tbody>
-    {%for i in c%}
-    <tr>
-      <td><strong class="d-inline-block mb-2 text-success">{{i.question}}?</strong></td>
-      <td>{{i.answer}} </td> 
-      <td>{{i.create_date}}</td>
-    </tr>
-    {%endfor%}
+                <caption>List of Bot Q&A history</caption>
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Your question</th>
+                    <th scope="col">Bot answer</th>
+                    <th scope="col">Created date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%for i in c%}
+                  <tr>
+                    <td><strong class="d-inline-block mb-2 text-success">{{i.question}}?</strong></td>
+                    <td>{{i.answer}} </td> 
+                    <td>{{i.create_date}}</td>
+                  </tr>
+                  {%endfor%}
 
-    </tr>
-  </tbody>
-</table>
+                  </tr>
+                </tbody>
+        </table>
 
 
 </div>

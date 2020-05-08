@@ -260,6 +260,7 @@ def scrape_article_texts(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
             ##############################
 
             found_title = doc_cache.find_in_cache(title)
+
             if found_title:
                 pass
             else:
