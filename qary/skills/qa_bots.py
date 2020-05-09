@@ -101,15 +101,18 @@ class Bot(ContextBot):
 
     def reply(self, statement, context=None, **kwargs):
         """ Use context document + BERT to answer question in statement """
-        log.warning(f"qa_bot.reply(statement={statement}, context={context})")
+        log.warning(f"ContextBot.reply(statement={statement}, context={context})")
         responses = super().reply(statement=statement, context=context, **kwargs) or []
-        docs = [self.context['doc']['text']]
-        # docs = docs or ['']
-        # if not docs or not any(len(d.strip()) for d in docs):
-        #     docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=1, max_depth=1, ngrams=3,
-        #                                                ignore='who what when where why'.split())
+        log.warning(f"responses: {responses}")
+        if context is None:
+            docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=1, max_depth=1, ngrams=3,
+                                                       ignore='who what when where why'.split())
+        else:
+            docs = [self.context['doc']['text']]
+        responses = []
         for text in docs:
             log.info(f"text from context['doc']['text'] or wikipedia scrape: {text}")
+            super().reset_context(context=context)
             if len(text.strip()) < 2:
                 log.warning(f'Context document text was too short: "{text}"')
                 continue
