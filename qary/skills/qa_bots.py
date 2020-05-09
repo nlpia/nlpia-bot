@@ -8,7 +8,7 @@ import zipfile
 from multiprocessing import cpu_count
 
 from qary.skills.qa_models import QuestionAnsweringModel
-from qary.constants import DATA_DIR, USE_CUDA, args
+from qary.constants import DATA_DIR, USE_CUDA, MIDATA_URL, MIDATA_QA_MODEL_DIR, args
 from qary.skills.basebots import ContextBot
 from qary.etl.netutils import DownloadProgressBar
 from qary.etl import scrape_wikipedia
@@ -32,7 +32,8 @@ class Bot(ContextBot):
                 self.transformer_loggers[-1].setLevel(logging.ERROR)
 
         qa_model = args.qa_model
-        url_str = f"http://totalgood.org/midata/models/qa/{qa_model}.zip"
+        url_str = f"{MIDATA_URL}/{MIDATA_QA_MODEL_DIR}/{qa_model}.zip"
+        log.warning(f"Attempting to download url: {url_str}")
         model_dir = os.path.join(DATA_DIR, 'qa-models', f"{qa_model}")
         model_type = qa_model.split('-')[0].lower()
         if not os.path.isdir(model_dir):
