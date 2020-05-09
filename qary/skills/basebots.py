@@ -174,6 +174,7 @@ class TransformerBot(HistoryBot, ContextBot):
 
         qa_model = args.qa_model
         url_str = f"{MIDATA_URL}/{MIDATA_QA_MODEL_DIR}/{qa_model}.zip"
+        log.warning(f"Attempting to download url: {url_str}")
         model_dir = os.path.join(DATA_DIR, 'qa-models', f"{qa_model}")
         model_type = qa_model.split('-')[0].lower()
         if not os.path.isdir(model_dir):
