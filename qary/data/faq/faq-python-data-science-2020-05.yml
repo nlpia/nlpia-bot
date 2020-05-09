@@ -1,0 +1,60 @@
+-
+  Q: "What should a good presentation of a data science results look like?"
+  A: "5-10 slides with one plot or diagram or picture per slide and 5-10 words per slide, with notes on the insight or purpose that you'd like to convey with each slide."
+-
+  Q: I have a table of song titles, genre, year-released, ratings, and numerical values like beats per minute, and song duration. What are some statistical inferences and statistical tests I can do to tell a data story?
+  A: Any categorical variable, like year or genre can be used to create two different sets of data whose statistics can be compared. For example the mean `beats_per_minute` for 2010 might be compared to the mean `beats_per_minute` in 2000. You could then calculate confidence intervals using the Z-score for each of those distributions. You could even calculate a P-value using a T-test. It's almost certainly going to be very low if you have more than 100 songs or samples for each category.
+-
+  Q: Should I talk about the technical details of my work in my resume or linked in profile.
+  A: Only when it contains words or concepts that are in job descriptions you plan to apply for. For example neuroscience or nuerons or "neur"anything because it's associated with neural nets and AI and data science by resume filters. However talking at length about "mitocondria calcium transport mechanisms" is probably not a good idea.
+-
+  Q: How do I deal with high dimensional one-hot encoded categorical variables from `pd.get_dummies()`?
+  A: Use the same techniques you use with natural language tokens. There may be good word embeddings that will work for each of your categories (if they are natural language words). You can also do PCA on the one-hot vectors, as long as you combine multiple one hot vectors (for different categories) into the high dimensional data you are passing into PCA or TSNE.
+-
+  Q: What's a good problem for doing time series forecasting that employers will be interested in.
+  A: Financial forecasting of time series like stock prices or Bitcoin prices based on Tweets is a popular project with Financial firms. And predicting web traffic like the Wikipedia traffic prediction project on Kaggle would be useful to almost any business with a website.
+-
+  Q: What are some good industries to learn about for data science jobs?
+  A: Domain knowledge about an industryis not nearly as important as learning about the different datatypes that are common in the real world. Tabular data is the most common. Natural language data is everywhere and usually businesses have a lot of it that they don't know how to use. time series and geolocation data is also very common and requires a specific set of skills to get good at.
+-
+  Q: Is it important to select a machine learning or data science model based on the distribution plots and histograms of the data?
+  A: No. For example, textbooks explaining Linear Regression will explain that it assumes your data is normally distributed. But Linear regressions work as well or better than many other models on skewed or non-normally distributed data. The onloy way to know whether a model will work well or not is to try it and do good cross validation or testing.
+-
+  Q: How can I record my hyperparameter tuning experiments in a machine learning pipeline without manually typing the results into a spreadsheet?
+  A: "Create an empty list at the beginning of the script. Create a `for` loop that is iterating through a list of hyperparameters, like `for a in [.1, 1, 10]:`. Within the loop create a dictionary with all your hyperparameters and results, like `results = dict(alpha=a, test_acc=test_acc, train_acc=train_acc)`. Then you can append that `dict` to the list within the loop like: `results_list.append(results)`. After the loop that list can be converted to a DataFrame for plotting, sorting, and analysis: `df = pd.DataFrame(results_list)`."
+-
+  Q: I have a building dataset going back to 1970 with information like elevation of first floor and flood plane elevation combined with insurance claims data for flood events. How can I normalize for severity of flooding and value of the undamaged building before the flood?
+  A: If you include all the variables you can measure in your model, the regression will automatically allocate the appropriate weight to each variable.
+-
+  Q: "What are the main questions I should ask about a dataset when chosing a good dataset for a project?"
+  A: "1. How many rows (examples or samples) are there? 2. How many columns of data are there? 3. How much missing data is there in each of the columns? 4. What kind of data is in each column (numeric, categorical, natural language, datetime, geospatial, image, or sequence)?"
+-
+  Q: "Why would stop words be important in financial statements when predicting financial performance metrics like revenue."
+  A: "Imagine the title of the CEO is listed as 'CEO and Chairman of the Board'. The word 'and' might be important to estimating any governance or misaligned incentives that could affect financial performance. It's better to let the statistics of the data drive the model performance rather than your own intuition, no matter how obvious you think a particular choice is, like filtering stopwords."
+-
+  Q: "When I calculate a 95% confidence interval with 1.96 * standard_error I get a smaller range than if I use norm.ppf(.95) * standard_error. Why?"
+  A: "Because `norm.ppf(.95)` is calculating the one-sided z-score. The `norm.ppf` function is computing a probability using the inverse of the CDF (continuous probability distribition function) which starts at negative infinity when calculating a one-sided propbability. If you use `norm.ppf(0.975)` you will get a z-score much closer to 1.96 because it's computing the 2-sided distribution. You know that the normal distribution is symmetrical. It has the same on the left and right side."
+-
+  Q: "When will I be done with my capstone project?"
+  A: "Once you have a hyperparameter table that experiments with all the models and parameters you want to learn about, you are done."
+-
+  Q: "Should a hypothesis be a statement or a question?"
+  A: "Usually a hypothesis is a quantitative statement of a prediction about a relationship between two variables (quantities). The statement should be provable with data. For example for da, such as 'Homes in LA cost more than homes in San Diego.'"
+-
+  Q: "I am fitting a logistic regression on two different datasets and getting the exact same test set accuracy for both models. What can cause this?"
+  A: "The data must not be exactly the same or it must be correlated in such a way that the model is converging to the exact same solution. Do `df.describe()` on both datasets to confirm that they are indeed different. Then try `df.corr()` to confirm that the new columns you added in the second dataset aren't highly correlated with the original dataset columns. Finally, try normalizing both datasets with the sklearn MinMaxScaler or StandardScaler to ensure that both models are finding the best solution to your data."
+-
+  Q: "When I try `df.dtype` it returns an AttributeError. How can I find the data type within a DataFrame?"
+  A: "Try: `df.values.dtype`."
+-
+ Q: What data cleaning should I do when I suspect erroneous values in a dataset?
+ A: First you should flag them as potentially erroneous in a new column with True's and False's aligned with the values you find suspect. You should then "correct" them, only if you are absolutely certain of what the correct value should be, otherwise you should leave them as is.
+-
+  Q: What is a polynomial regression?
+  A: You can perform a polynomial regression in scikit-learn by training a linear regression on features that have been squared or raised to some exponent. You should also include the unsquared original features. This kind of model is useful when the relationship between your features and your target variable is nonlinear.
+-
+  Q: What does the F-value mean for an ordinary least squares multivariate linear regression?
+  A: It is the ratio of the explained variance (variance of the predictions) divided by the unexplained variance (the variance in the residuals) for a linear regression. An F-value larger than 2 means that the model is statistically significant and is comparable to a P-value of less than 0.05.
+-
+  Q: What is F-value?
+  A: "A measure of how statistically significant and reliable a multivariate linear regression model will be in the future. It is computed by dividing the explained variance (variance of the predictions) by the unexplained variance (variance of the residuals or errors). It is often used in conjunction with the R-squared correlation coefficient which measures the strength of the model in predicting the outcome or response variable."
