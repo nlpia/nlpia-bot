@@ -100,19 +100,29 @@ class Bot(ContextBot):
         return output[0]['probability'], output[0]['answer']
 
     def reply(self, statement, context=None, **kwargs):
-        """ Use context document + BERT to answer question in statement """
+        """ Use context document + BERT to answer question in statement
+
+        context is a nested dictionary with two ways to specify the documents for a BERT context:
+        {docs: ['doc text 1', '...', ...]}
+        or
+        {doc: {text: 'document text ...'}}
+        """
         log.warning(f"ContextBot.reply(statement={statement}, context={context})")
-        responses = super().reply(statement=statement, context=context, **kwargs) or []
-        log.warning(f"responses: {responses}")
+        # this should call self.update_context(context=context) internally:
         if context is None:
-            docs = scrape_wikipedia.find_article_texts(query=statement, max_articles=1, max_depth=1, ngrams=3,
-                                                       ignore='who what when where why'.split())
-        else:
-            docs = [self.context['doc']['text']]
-        responses = []
+            context = dict(
+                doc=dict(text=scrape_wikipedia.find_article_texts(
+                    query=statement, max_articles=1, max_depth=1, ngrams=3,
+                    ignore='who what when where why'.split())
+                )
+            )
+        responses = super().reply(statement=statement, context=context, **kwargs) or []
+        log.warning(f"super() responses: {responses}")
+        docs = self.context.get('docs') or [self.context['doc']['text']]
         for text in docs:
             log.info(f"text from context['doc']['text'] or wikipedia scrape: {text}")
-            super().reset_context(context=context)
+
+            super().update_context(context=dict(doc=dict(text=text)))
             if len(text.strip()) < 2:
                 log.warning(f'Context document text was too short: "{text}"')
                 continue
