@@ -21,6 +21,9 @@ HISTORY_PATH = os.path.join(DATA_DIR, 'history.json')
 os.makedirs(LOG_DIR, exist_ok=True)
 # with open(HISTORY_PATH, 'a') as fap:
 #     pass
+MIDATA_DOMAINNAME = 'tan.sfo2.digitaloceanspaces.com'
+MIDATA_URL = 'https://tan.sfo2.digitaloceanspaces.com'
+MIDATA_QA_MODEL_DIR = 'midata/public/models/qa'
 
 USE_CUDA = False
 MAX_TURNS = 10000
