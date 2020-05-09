@@ -22,8 +22,9 @@ os.makedirs(LOG_DIR, exist_ok=True)
 # with open(HISTORY_PATH, 'a') as fap:
 #     pass
 MIDATA_DOMAINNAME = 'tan.sfo2.digitaloceanspaces.com'
-MIDATA_URL = 'https://tan.sfo2.digitaloceanspaces.com'
+MIDATA_URL = 'https://{MIDATA_DOMAINNAME}'
 MIDATA_QA_MODEL_DIR = 'midata/public/models/qa'
+MIDATA_QA_MODEL_DIR_URL = f'{MIDATA_URL}{MIDATA_QA_MODEL_DIR}'
 
 USE_CUDA = False
 MAX_TURNS = 10000
