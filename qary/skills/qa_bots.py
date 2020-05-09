@@ -110,12 +110,12 @@ class Bot(ContextBot):
         log.warning(f"ContextBot.reply(statement={statement}, context={context})")
         # this should call self.update_context(context=context) internally:
         if context is None:
-            context = dict(
-                doc=dict(text=scrape_wikipedia.find_article_texts(
-                    query=statement, max_articles=1, max_depth=1, ngrams=3,
-                    ignore='who what when where why'.split())
-                )
-            )
+            gendocs = scrape_wikipedia.find_article_texts(
+                query=statement,
+                max_articles=1, max_depth=1,
+                ngrams=3,
+                ignore='who what when where why'.split()) or []
+            context = dict(doc=dict(text=next(gendocs)))
         responses = super().reply(statement=statement, context=context, **kwargs) or []
         log.warning(f"super() responses: {responses}")
         docs = self.context.get('docs') or [self.context['doc']['text']]
