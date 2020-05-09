@@ -291,7 +291,7 @@ scrape_article_texts = wikiscraper.scrape_article_texts
 
 
 def count_nonzero_vector_dims(self, strings, nominal_dims=1):
-    """ Count the number of nonzero values in a sequence of vectors
+    r""" Count the number of nonzero values in a sequence of vectors
 
     Used to compare the doc vectors normalized as Marie_Curie vs "Marie Curie" vs "marie curie",
     and found that the spaced version was more complete (almost twice as many title words had valid vectors).
@@ -309,7 +309,7 @@ def count_nonzero_vector_dims(self, strings, nominal_dims=1):
 
 
 def list_ngrams(token_list, n=3, sep=' '):
-    """ Return list of n-grams from a list of tokens (words)
+    r""" Return list of n-grams from a list of tokens (words)
 
     >>> ','.join(list_ngrams('Hello big blue marble'.split(), n=3))
     'Hello,Hello big,Hello big blue,big,big blue,big blue marble,blue,blue marble,marble'
@@ -329,7 +329,7 @@ def list_ngrams(token_list, n=3, sep=' '):
 
 
 def count_ignorable_words(text, ignore=constants.QUESTION_STOPWORDS, min_len=2):
-    """ Count the number of words in a space-delimitted string that are not in set(words)
+    r""" Count the number of words in a space-delimitted string that are not in set(words)
 
     >>> count_ignorable_words('what a hello world in')
     3
@@ -342,7 +342,7 @@ def count_ignorable_words(text, ignore=constants.QUESTION_STOPWORDS, min_len=2):
 
 
 def find_titles(query='What is a chatbot?', max_titles=30, ngrams=5, min_len=2, max_ignorable_pct=.5, ignore=True):
-    """ Search db of wikipedia titles for articles relevant to a statement or questions
+    r""" Search db of wikipedia titles for articles relevant to a statement or questions
 
     >>> set(find_titles('What is a chatbot?')) == set(TITLES)
     True
@@ -368,7 +368,7 @@ def find_titles_sorted(query='What is a chatbot?',
                        max_titles=50, ngrams=5, min_len=2,
                        max_ignorable_pct=.5,
                        ignore=True, reverse=True, score=len):
-    """ Use find_ngrams and ignore stopwords then sort the resulting list of titles with longest first
+    r""" Use find_ngrams and ignore stopwords then sort the resulting list of titles with longest first
 
     >>> find_titles_sorted('What is a ELIZA?', max_titles=30, ngrams=3, min_len=2, ignore=False)
     ['ELIZA', 'What']
