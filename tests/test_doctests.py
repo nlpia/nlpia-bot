@@ -15,6 +15,7 @@ import qary.etl.scrape_wikipedia
 import qary.etl.yml
 import qary.etl.elastic
 import qary.etl.knowledge_extraction
+import qary.etl.qa_datasets
 
 import qary.scores.semantics_score
 # import qary.template_generators
@@ -53,6 +54,12 @@ def test_glossaries():
     assert results.attempted > 4
 
 
+def test_qa_datasets():
+    results = doctest.testmod(qary.etl.qa_datasets, **DOCTEST_KWARGS)
+    assert results.failed < 1
+    assert results.attempted > 0
+
+
 def test_qa_bots():
     results = doctest.testmod(qary.skills.qa_bots, **DOCTEST_KWARGS)
     assert results.failed < 1
@@ -69,6 +76,7 @@ def test_faq_bots():
     results = doctest.testmod(qary.skills.faq_bots, **DOCTEST_KWARGS)
     assert results.failed < 1
     assert results.attempted > 0
+
 
 # def test_yml():
 #     results = doctest.testmod(qary.etl.yml, optionflags=doctest.ELLIPSIS |
