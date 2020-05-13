@@ -58,3 +58,21 @@
 -
   Q: What is F-value?
   A: "A measure of how statistically significant and reliable a multivariate linear regression model will be in the future. It is computed by dividing the explained variance (variance of the predictions) by the unexplained variance (variance of the residuals or errors). It is often used in conjunction with the R-squared correlation coefficient which measures the strength of the model in predicting the outcome or response variable."
+-
+  Q: How do I decide what kind of machine learning model to use for a particular application or dataset?
+  A: The Scikit Learn documentation on ["Choosing the Right Estimator"](https://scikit-learn.org/stable/tutorial/machine_learning_map/index.html) is a great place to start. But in the end you will want to try as many models as you can, to gain experience and build up your own intuition about them.
+-
+  Q: What is a spacy `Doc.vector`?
+  A: Spacy `Doc.vector` represents the average of the word2vec vectors for all the words in a document.
+-
+  Q: Difference between TFIDFVectorizer and TFIDFTransformer?
+  A: A Transformer takes an input vector of continuous numerical data and transforms it. A TFIDFTransformer is used for a vector of word counts to transform that into TFIDF vectors by dividing by document frequency. Vectorizer takes string input and tokenizes it to count up the occurrences of words. A TFIDFVectorizer is a Vectorizer and a TFIDFTransformer combined, so it computes TFIDF vectors from strings.
+-
+  Q: I'm creating a time series forecasting model to predict whether Bitcoin price goes up or down using historical daily prices. What is the appropriate target variable value when there is no change in the price?
+  A: It is very rare that a price will not change at all, so you can just put it in either category (up or down) using a `>=` or `<=` comparison to compute your target variable.
+-
+  Q: What is a good dataset that contains both datetime and geographic information so I can get experience with building spatiotemporal models?
+  A: The Melbourne housing market dataset has latitude and longitude, postal code, address, datetime, and price information, along with many other parameters. And it has about 50k records, so it would be a great one to start with.
+-
+  Q: What is a good dataset for getting started in Data Science.
+  A: The [Melbourne housing dataset](https://www.kaggle.com/anthonypino/melbourne-housing-market?select=Melbourne_housing_FULL.csv) is a good one to start with. It has spatiotemporal data with latitude and longitude in addition to dates and prices. There are 34 columns of house characteristics to use to predict price.
