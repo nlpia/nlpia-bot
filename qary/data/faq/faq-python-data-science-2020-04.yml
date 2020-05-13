@@ -93,3 +93,31 @@
 -
   Q: My models are getting the exact same accuracy whether I use an SVM or LogisticRegression. What can I do?
   A: First examine your training and test sets to ensure they have a sufficient number of diverse samples. You should plot the data on scatterplots, whenever possible, so you can see the individual records as dots and ensure you are covering the space of parameters you expect the model to deal with.
+-
+  Q: What is a good machine learning project dataset for someone interested in robotics?
+  A: UC Irvine has a dataset for predicting sobriety from `(x, y, z)` position data. Any image segmentation or computer vision dataset would be applicable to robotics projects like self-driving cars.
+-
+  Q: What should I include in my data wrangling report the the song title and genre dataset?
+  A: "Every data wrangling report should include the output of df.describe(include='all') for all tables you plan to use and an estimate for the counts of each kind of variable in your dataset: numeric, categorical, binary, ordinal, natural language, datetime, geographic, image, or audio."
+-
+  Q: How much text description should I include in my data storytelling report the the song title and genre dataset?
+  A: Describe any interesting statistics you observed in the length of titles or most frequent words in the natural language fields. Your code and plots in a jupyter notebook will usually tell the story for you.
+-
+  Q: How can I reduce overfitting and improve test set accuracy of a LogisticRegression model in scikitlearn?
+  A: Decrese the C value, this increases the regularization strength.
+-
+  Q: Imagine you had a dataset with number of bedrooms, bathrooms, square footage, roof type, exterior color, price, average monthly energy bill, and average monthly property tax. What would be some good hypotheses to test or machine learning target variables?
+  A: You could predict home price from the structural information like bedrooms and bathrooms. You could predict the energy bill from the structural information in order to identify features that could be adjusted to reduce the energy consumption. You could even predict the exterior color in order to help people chose their paint that is most popular in their neighborhood for homes like theirs.
+-
+  Q: How is the pymc3 package used in the real world?
+  A: "It's rarely used by developers or machine learning engineers in business, though it may be used by data scientists in academics or possibly finance. It has some helpful PDF plotting functions, but it's interface (API) is not pythonic: it relies on side effects, implicit behavior, and hidden functionality. Most python developers prefer to explicitly compute the statistics like p-value and confidence intervals that pymc3 provides."
+-
+  Q: "How important is it to understand the formulas used to perform a T-test and calculate P-value?"
+  A: "It's very important to understand what a T-test is used for in the real world and how to interpret a low or high P-value. But it is not important at all to understand the formulas used to compute P-value or the assumptions about the data that were used to derive those formulas. I will make sure you understand the statistics principles you need to do well in an interview and at work in a Data Science roll."
+-
+  Q: "How can I visualize two tables of time series data on the same plot?"
+  A: "`ax = sns.scatterplot(x='datetime', y='any_numerical_column_name', data=df1); ax = sns.scatterplot(x='datetime', y='any_numerical_column_name', data=df2, ax=ax)`"
+-
+  Q: "What does it mean for python code that claims not to use any 3rd party libraries?"
+  A: "It means that the script does not import anything that had to be pip installed. Build in libraries like  `requests`, `collections`, `re`, and `itertools` are built into python and can be run on any python interpreter anywhere. Python scripts that import 3rd party libraries like `pandas`, `numpy`, `sklearn`, or `sqlalchemy` must install those packages before they can run the script."
+
