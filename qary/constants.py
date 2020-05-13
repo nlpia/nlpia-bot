@@ -11,6 +11,7 @@ from environment import Environment
 
 from . import __version__
 
+# DO ACCESS KEY and SECRET need to be integrated into env
 env = Environment(spacy_lang=str, loglevel=int, name=str)
 
 SRC_DIR = os.path.dirname(__file__)
@@ -22,7 +23,7 @@ os.makedirs(LOG_DIR, exist_ok=True)
 # with open(HISTORY_PATH, 'a') as fap:
 #     pass
 MIDATA_DOMAINNAME = 'tan.sfo2.digitaloceanspaces.com'
-MIDATA_URL = 'https://{MIDATA_DOMAINNAME}'
+MIDATA_URL = f'https://{MIDATA_DOMAINNAME}'
 MIDATA_QA_MODEL_DIR = 'midata/public/models/qa'
 MIDATA_QA_MODEL_DIR_URL = f'{MIDATA_URL}{MIDATA_QA_MODEL_DIR}'
 

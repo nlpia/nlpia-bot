@@ -7,8 +7,11 @@ import os
 
 import boto3
 
-
-from qary.contansts import DO_ACCESS_KEY, DO_ACCESS_SECRET
+try:
+    from qary.contansts import DO_ACCESS_KEY, DO_ACCESS_SECRET
+except ImportError:
+    DO_ACCESS_KEY = os.environ.get('DO_ACCESS_KEY')
+    DO_ACCESS_SECRET = os.environ.get('DO_ACCESS_SECRET')
 
 
 def gen_buckets():
@@ -32,6 +35,7 @@ def connect(
                             endpoint_url=url,
                             aws_access_key_id=access_key_id,
                             aws_secret_access_key=secret_access_key)
+    connect.client = client
     return client
 
 
