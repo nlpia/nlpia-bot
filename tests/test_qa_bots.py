@@ -1,7 +1,14 @@
 # test_qa_bots.py
 import pytest  # noqa
+import pandas as pd
 
 from qary.skills.qa_bots import Bot
+from qary.etl.qa_datasets import get_bot_accuracies
+
+import logging
+
+log = logging.getLogger(__name__)
+
 
 __author__ = "SEE AUTHORS.md"
 __copyright__ = "Hobson Lane"
@@ -27,3 +34,12 @@ def test_qa_bots():
     obama_replies = sorted(obama_replies)
     assert obama_replies[-1][0] > .3
     assert obama_replies[-1][1].lower().startswith('hawaii')
+
+
+def test_qa_bot_accuracy():
+    bot = Bot()
+    df = pd.DataFrame(get_bot_accuracies(bot))
+    q_accuracies = df.groupby('question')['bot_accuracy'].max()
+    mean_acc = q_accuracies.mean()
+    log.warn(f'Mean bot accuracy: {mean_acc}')
+    assert mean_acc > .5
