@@ -76,3 +76,23 @@
 -
   Q: What is a good dataset for getting started in Data Science.
   A: The [Melbourne housing dataset](https://www.kaggle.com/anthonypino/melbourne-housing-market?select=Melbourne_housing_FULL.csv) is a good one to start with. It has spatiotemporal data with latitude and longitude in addition to dates and prices. There are 34 columns of house characteristics to use to predict price.
+-
+  Q: Help me select a good dataset for my next project. I want to work on a problem that is not as difficult so that I can have a model that has some use in the real world.
+  A: Looking at the accuracy as a measure of a model's usefulness in the real world is not helpful. It's possible to make billions of dollars off a model that can achieve 50.1% accuracy at predicting weather the financial markets are going to be up or down. And a model that predicts car accident severity with even modest accuracy can save 100s or even thousands of lives per year if you interpret the coefficients of the model and legistlatures acted on them.
+-
+  Q: I have a dataset that contains ski resort names, lift ticket prices, number of lifts of the various types, and the opening and closing dates for the resorts. Another resort wants to know whether they should install a new lift and whether their revenue will make up for the added expense. What's a good problem statement?
+  A: Choose a _target variable_ from your dataset. This is a variable that would be interesting to management if they could predict it based on the other _feature variables_ in your dataset. Then you can propose a problem statement that predicts that variable and suggests actions to affect it based on the model coefficients for each of the feature variables. So your problem statement might be adding an additional lift may increase lift ticket prices and increase the number of days a resort stays open. You could test this hypothesis with a multivariate regression on ticket price vs the other variables in your dataset.
+-
+  Q: Can I combine the IMDB dataset with the Netflix dataset?
+  A: What column or combination of columns could you use as the key in each table to join on? what about the movie title plus the year? How can you resolve ambiguous titles? How can you deal with different spellings and capitalizations of titles in each database?
+-
+  Q: What is a good plot to include in my final report?
+  A: Scatter plots are always helpful. Residual plots are very important. Hyper parameters and their affect on training and testset accuracy are often revealing.
+-
+  Q: What is a good place to find state of the art benchmark datasets?
+  A: The site [paperswithcode.com](http://paperswithcode.com) has a button at the top where you can explore "State of the Art" papers in various areas of deep learning. Look for github links where there are often instructions for downloading the associated datasets.
+-
+  Q: What is QSAR data?
+  A: QSAR is (Quantitative structure–activity relationship) chemistry and biology data typically used in a regression analysis to predict chemical compounds and their biological effects.
+
+
