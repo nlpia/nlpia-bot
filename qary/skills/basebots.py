@@ -4,6 +4,7 @@ import os
 import uuid
 import urllib.request
 import zipfile
+import copy
 # from multiprocessing import cpu_count
 
 from qary.etl.netutils import DownloadProgressBar
@@ -114,7 +115,7 @@ class ContextBot:
         self.context = {'args': self.args}
         if isinstance(context, str):
             context = {'doc': {'text': context}}
-        dict_merge(self.context, context)
+        self.context = copy.deepcopy(context)
         logging.warning(f"Reset self.context: {self.context}")
         return self.context
 
