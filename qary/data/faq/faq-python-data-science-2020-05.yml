@@ -89,10 +89,24 @@
   Q: What is a good plot to include in my final report?
   A: Scatter plots are always helpful. Residual plots are very important. Hyper parameters and their affect on training and testset accuracy are often revealing.
 -
-  Q: What is a good place to find state of the art benchmark datasets?
+  Q: What is a good place to find state of the art (SoTA) benchmark datasets?
   A: The site [paperswithcode.com](http://paperswithcode.com) has a button at the top where you can explore "State of the Art" papers in various areas of deep learning. Look for github links where there are often instructions for downloading the associated datasets.
 -
   Q: What is QSAR data?
-  A: QSAR is (Quantitative structure–activity relationship) chemistry and biology data typically used in a regression analysis to predict chemical compounds and their biological effects.
-
+  A: QSAR is (Quantitative Structure–Activity Relationship) chemistry and biology data typically used in a regression analysis to predict chemical compounds and their biological effects.
+-
+  Q: What is a good plot to use in place of a stacked bar chart for a binary categorical variable (the colors of the bars) and an ordinal variable with 5 possible values (the height of the bars).
+  A: Two overlapping normalized histograms or bar charts with the ordinal variable as the horizontal axis and the normalized count of the ordinal as the height of the bars. There should be two independent set of bars in the chart, both rising up from the bottom for both of the 2 values (colors) in the categorical variable. Either the two colors should be side by side or should be transparent (have an `alpha` color value of around .5).
+-
+  Q: Is a `LogisticRegression` more likely or less likely to overfit to your data when compared to a `DecisionTree`?
+  A: A `LogisticRegression` will be less likely to overfit than a `DecisionTree` in most situations.
+-
+  Q: Is a `RandomForest` with `num_trees=3` more likely or less likely to overfit to your data when compared to a `DecisionTree` model?
+  A: A `RandomForest` will be less likely to overfit than a `DecisionTree`.
+-
+  Q: What advantages might a human have over a system like AutoML or DataRobot?
+  A: Human intuition and domain understanding is required to understand the results and their implication for business decisions in the real world. In addition a Data Scientist's intuition can help guide the hyperparameter search as well as the feature selection process.
+-
+  Q: A Lasso linear regression doesn't seem to perform as well as some other models on most problems. What is it good for?
+  A: A Lasso model is good for helping to identify the most important features for a linear model. It is mostly used for feature selection, when there are many independent features with a linear influence on the target variable.
 
