@@ -123,34 +123,22 @@ class CLIBot:
         log.info(f'statement={statement}')
         replies = []
         # Collect replies from each bot.
-        for replier in self.repliers:
+        for bot in self.bots:
             bot_replies = []
-            log.info(f'Running bot {replier}')
+            log.info(f'Running bot {bot}')
             # FIXME: create set_context() method on those bots that need it and do away with context try/except
             try:
-                bot_replies = replier(statement, context=context)
-                log.info("{replier.__name__} replies: {bot_replies}")
+                bot_replies = bot.reply(statement, context=context)
+                log.info("{bot.__name__} replies: {bot_replies}")
             except TypeError as e:
-                log.warning(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
-                log.warning(str(e))
+                log.warn(f"TypeError: bot.reply probably got an unexpected keyword argument 'context': {e}")
+                bot_replies = bot.reply(statement)
             except Exception as e:
-                log.info(str(e))
-            if not len(bot_replies):
-                try:
-                    bot_replies = replier(statement)
-                    log.debug("{replier.__name__} replies: {bot_replies}")
-                except Exception as e:
-                    if constants.args.debug:
-                        raise
-                    log.error(f'Error trying to run {replier.__self__.__class__}.{replier.__name__}("{statement}")')
-                    log.error(str(e))
-                try:
-                    log.debug(repr(replier))
-                    bot_replies = normalize_replies(replier.reply(statement))
-                except AttributeError as e:
-                    log.warning(str(e))
-                except Exception as e:
-                    log.error(str(e))
+                log.error(f'Error trying to run {bot.__self__.__class__}.reply("{statement}", context={context})')
+                log.error(str(e))
+                if constants.args.debug:
+                    raise e
+            log.debug(repr(bot))
             bot_replies = normalize_replies(bot_replies)
             replies.extend(bot_replies)
 

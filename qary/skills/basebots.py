@@ -7,7 +7,7 @@ import zipfile
 # from multiprocessing import cpu_count
 
 from qary.etl.netutils import download_if_necessary
-from qary.constants import DATA_DIR, MIDATA_URL, MIDATA_QA_MODEL_DIR, args, LARGE_FILES  # , USE_CUDA
+from qary.constants import MIDATA_URL, MIDATA_QA_MODEL_DIR, args, LARGE_FILES  # , USE_CUDA
 from qary.etl.nesting import dict_merge
 
 

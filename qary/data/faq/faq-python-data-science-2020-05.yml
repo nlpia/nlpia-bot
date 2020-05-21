@@ -196,4 +196,3 @@
 -
   Q: What are the pros and cons of having 5-folds for cross-validation vs 1-fold?
   A: 5-folds will run 5-times slower but it will create a better estimate of the accuracy of the model in the real world. It will also give you a confidence interval on your accuracy number. 1-fold is usually better for most problems because it allows you to explore 5-times more hyperparameters, increasing the speed with which you can find the most accurate model.
-
