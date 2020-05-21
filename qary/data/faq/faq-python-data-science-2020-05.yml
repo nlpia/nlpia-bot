@@ -109,4 +109,25 @@
 -
   Q: A Lasso linear regression doesn't seem to perform as well as some other models on most problems. What is it good for?
   A: A Lasso model is good for helping to identify the most important features for a linear model. It is mostly used for feature selection, when there are many independent features with a linear influence on the target variable.
+-
+  Q: In my Lasso and SGDRegressor models, increasing `max_iter` doesn't help. Why?
+  A: Perhaps the actual number of iterations is below the max_iter limit that you have set. For instance, if your fitted `Lasso` model is called `lasso`  you can see how many iterations it ran to achieve the fit with `lasso.n_iter`. Any value of `max_iter` above this number is unlikely to affect your model fit at all.
+-
+  Q: What does the F-statistic mean?
+  A: It gives you the T-statistic of your model relative to an intercept-only (mean) model. It's almost always extremely large if you have a large number of samples. It is rarely useful in non-academic settings.
+-
+  Q: How can I manually set the y-axis scale?
+  A: Use `plt.ylim((y_min, y_max))`. For example if you want your plot to range from 0 to 5 on the vertical axis you'd use `plt.ylim((0, 5))`
+-
+  Q: What's a good label for my vertical axis when I've taken the home prices in dollars and divided them by 1000000?
+  A: I'd suggest 'Home Price ($M)'.
+-
+  Q: Is it necessary to know command line `git`?
+  A: It helps when you're interacting with developers on a shared software project.
+-
+  Q: Data coming from my Android users seems to be different from my iPhone users. Should I build two different models for each user set?
+  A: No. A better approach is to create a new binary feature variable called "is_android" or "is_iphone" and add it to your model. This will allow your model to generalize some features between the two platforms while specializing the model on those features where an Android and iPhone differ.
+-
+  Q: The Melbourne real estate price dataset on Kaggle mentions that we should try to predict the downturn in the market from the provided dataset, but the only date information is the "YearBuilt". There is no "YearSold" or "DateSold" information.
+  A: This dataset is not sufficient for answering that time series problem statement posed on the Kaggle website. But you can use it to create a predictive model on price.
 
