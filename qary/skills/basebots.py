@@ -14,6 +14,23 @@ from qary.etl.nesting import dict_merge
 log = logging.getLogger(__name__)
 
 
+def normalize_replies(replies=''):
+    """ Make sure a list of replies includes score and text
+
+    >>> normalize_replies(['hello world'])
+    [(1e-10, 'hello world')]
+    """
+    if isinstance(replies, str):
+        replies = [(1e-10, replies)]
+    elif isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
+        replies = [(replies[0], str(replies[1]))]
+    # TODO: this sorting is likely unnecessary, redundant with sort happening within CLIBot.reply()
+    return sorted([
+        ((1e-10, r) if isinstance(r, str) else tuple(r))
+        for r in replies
+    ], reverse=True)
+
+
 class Replies(list):
     """ WIP: Container for 2-tuples of scored replies (strings)
 
@@ -131,7 +148,7 @@ class ContextBot:
         return []
 
 
-class HistoryBot(EmptyRepliesBot):
+class HistoryBot:
     """ Remembers the history of every user statement and bot response string
 
     >>> histbot = HistoryBot()
@@ -145,7 +162,7 @@ class HistoryBot(EmptyRepliesBot):
         super().__init__(**kwargs)
         self.history = history or []
 
-    def reply(self, statement):
+    def log(self, statement=None, possible_statements=None, agent=None):
         """ Chatbot "main" function to respond to a user command or statement
 
         >>> bot = HistoryBot()
