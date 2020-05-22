@@ -4,7 +4,6 @@ import os
 import uuid
 import urllib.request
 import zipfile
-import copy
 # from multiprocessing import cpu_count
 
 from qary.etl.netutils import DownloadProgressBar
@@ -103,20 +102,18 @@ class ContextBot:
             self.update_context(context)
 
     def update_context(self, context=None):
-        logging.warning(f"Reseting self.context using context: {context}")
+        logging.warning(f"Updating self.context using context: {context}")
         if isinstance(context, str):
             context = {'doc': {'text': context}}
-        context = {} if context is None else context
+        context = {} if context is None else dict(context)
         dict_merge(self.context, context)
         logging.warning(f"Updated self.context: {self.context}")
         return self.context
 
     def reset_context(self, context=None):
         self.context = {'args': self.args}
-        if isinstance(context, str):
-            context = {'doc': {'text': context}}
-        self.context = copy.deepcopy(context)
-        logging.warning(f"Reset self.context: {self.context}")
+        logging.warning(f"Reset self.context to self.context={self.context} before updating with {context}")
+        self.update_context(context=context)
         return self.context
 
     def reply(self, statement, context=None):
