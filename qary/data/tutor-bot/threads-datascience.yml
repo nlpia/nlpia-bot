@@ -12,4 +12,6 @@
 -
   - What kind of file is a `.DAT` file or `.SPS` file? #student
   - A `.DAT` file contains the raw data output from an SPSS statistical analysis program. An `.SPS` file probably contains the project settings for the SPSS program. SPSS is used by governments and Banks and other organizations that are hesitant to upgrade to more modern tools like Python and Pandas.
+  - How do I convert it to json or CSV?
+  - You want to find a data dictionary. For SPSS you can usually find it in a human-readable file with the extension ".DCT". The data dicitonary is stored in "INI" or "CFG" format so it can be read with python's built-in `configparser` module. The `.DCF` also contains the information you need to parse the `.DAT` file. It contains data type and the character position (column number) for the text associated with each field (column) or variable mentioned in the ".DCT" file.
 
