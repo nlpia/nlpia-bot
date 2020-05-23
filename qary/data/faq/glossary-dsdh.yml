@@ -1,12 +1,12 @@
 # ---
 # title: Data Science for Digital Health -- Glossary
 # filename: glossary-dsdh.yml
+# note:
+#   - To make room for new concepts we compress complex concepts into words.
+#   - And then we can compress several words into acronyms to consolidate multiple complex concepts under one "umbrella" concept.
+#   - Smart people can think analogously across domains, sharing words and concepts and brain neurons between domains.
 # ---
-# # Data Science for Digital Health Glossary
-# To make room for new concepts we compress complex concepts into words.
-# And then we can compress several words into acronyms to consolidate multiple complex concepts under one "umbrella" concept.
-# Smart people can think analogously across domains, sharing words and concepts and brain neurons between domains.
-F-value: "A measure of how statistically significant and reliable a multivariate linear regression model will be in the future. It is computed by dividing the explained variance (variance of the predictions) by the unexplained variance (variance of the residuals or errors). It is often used in conjunction with the R-squared correlation coefficient which measures the strength of the model in predicting the outcome or response variable."
+"F-value": "A measure of how statistically significant and reliable a multivariate linear regression model will be in the future. It is computed by dividing the explained variance (variance of the predictions) by the unexplained variance (variance of the residuals or errors). It is often used in conjunction with the R-squared correlation coefficient which measures the strength of the model in predicting the outcome or response variable."
 Residuals: "The error in a prediction. It is computed by subtracting the true value from the predicted value. #data-science"
 Endogenous variable: "A variable is said to be endogenous within a causal model if its value is determined or influenced by one or more of the independent variables driving the model predictions. This may also sometimes be referred to as the outcome variable or the output of a causal model. See Also: *target variable*, *predicted variable*, *dependent variable* #data-science"
 Exogenous variable: "A variable is said to be exogenous for a causal model if its value influences or determines the independent or endogenous variables. These exogenous variables may or may not be measured or controlled for and if they are not they are call confounding variables or confounders.  #data-science"
@@ -22,8 +22,7 @@ Metabolism: "Metabolism is the process by which the cells of an organism produce
 Metabolite: "An intermediate product of metabolism, usually small molecules. Metabolism is the process by which the cells of an organism produce and consume fuel for energy, signaling compounds, catalysts in other chemical reactions, or structural molecules for building the cells and organs of the organism. Some waste products of metabolism include nitrogen compounds, water, CO2 (carbon dioxide), phosphates, and sulphates. #biology #healthcare #microbiology"
 Goodness of fit: "How well a model's predictions match the true values. In the scikit-learn package this is usually implemented as a `.score()` method on a model that returns the coefficient of determination (R^2 or the square of the Pierson correlation coefficient) between the model predictions and the true values."
 phenome: "The sequence of phenomena or chemical reactions and bodily functions and structures that are triggered or built by a sequence of proteins in a biological system."
-phoneme: "A phoneme is a unit of sound that audibly distinguishes one word from another in a particular language. For example, in English, the words "sign" and "sine" are homonyms and share all the same phonemes in the same sequence. However, "sin" is pronounced differently because of the short "O" phoneme between the "S" and hard "N" phonemes.
-
+phoneme: "A phoneme is a unit of sound that audibly distinguishes one word from another in a particular language. For example, in English, the words \"sign\" and \"sine\" are homonyms and share all the same phonemes in the same sequence. However, \"sin\" is pronounced differently because of the short \"O\" phoneme between the \"S\" and hard \"N\" phonemes."
 AllMed: "An independent review and utilization management organization responsible for dispositioning health insurance claims for health insurers."
 Autism Spectrum Disorder (ASD): "A developmental disorder that affects communication and behavior. It is called a *developmental disorder* because symptoms generally appear in the first two years of life. It is called a *spectrum disorder* because a wide range of behaviors are associated with the condition and these behaviors a often ranked on a linear scale from less severe to more sever. #medicine #neuroscience #clinical #healthcare #psychology"
 Adeno-Associated Virus (AAV): "An genetic therapy delivery vector that preferentially integrate into coding regions of the host gene and can care up to 8 kb genes (e.g. beta globin genes). Safety was demonstrated in late 1990s for hemophilia B gene therapy. #biology #healthcare #microbiology"
