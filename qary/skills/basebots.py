@@ -119,17 +119,17 @@ class ContextBot:
             self.update_context(context)
 
     def update_context(self, context=None):
-        logging.warning(f"Updating self.context using context: {context}")
+        log.debug(f"Updating self.context using context: {repr(context)[:60]}")
         if isinstance(context, str):
             context = {'doc': {'text': context}}
         context = {} if context is None else dict(context)
         dict_merge(self.context, context)
-        logging.warning(f"Updated self.context: {self.context}")
+        log.debug(f"Updated self.context: {repr(self.context)[:60]}")
         return self.context
 
     def reset_context(self, context=None):
         self.context = {'args': self.args}
-        logging.warning(f"Reset self.context to self.context={self.context} before updating with {context}")
+        log.info(f"Reset self.context to self.context={repr(self.context)[:60]} before updating with {repr(context)[:60]}")
         self.update_context(context=context)
         return self.context
 
@@ -196,10 +196,10 @@ class TransformerBot(HistoryBot, ContextBot):
 
     def load_model(self, args):
         self.transformer_loggers = []
-        for name in logging.root.manager.loggerDict:
+        for name in log.root.manager.loggerDict:
             if (len(name) >= 12 and name[:12] == 'transformers') or name == 'qary.skills.qa_utils':
-                self.transformer_loggers.append(logging.getLogger(name))
-                self.transformer_loggers[-1].setLevel(logging.ERROR)
+                self.transformer_loggers.append(log.getLogger(name))
+                self.transformer_loggers[-1].setLevel(log.ERROR)
 
         qa_model = args.qa_model
         url_str = f"{MIDATA_URL}/{MIDATA_QA_MODEL_DIR}/{qa_model}.zip"
