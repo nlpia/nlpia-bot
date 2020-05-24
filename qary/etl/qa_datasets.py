@@ -9,7 +9,6 @@ import numpy as np
 import pandas as pd
 import requests
 from editdistance import distance
-from tqdm import tqdm
 
 from qary.spacy_language_model import nlp
 from qary.constants import DATA_DIR
@@ -177,11 +176,10 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2, num_
         scored_qa_pairs = load_qa_dataset()
     elif isinstance(scored_qa_pairs, str):
         scored_qa_pairs = load_qa_dataset(scored_qa_pairs)
-    validated_qa_pairs = []
     if shuffle_seed:
         np.random.seed(shuffle_seed)
         np.random.shuffle(scored_qa_pairs)
-    for i, truth in tqdm(enumerate(scored_qa_pairs)):
+    for i, truth in enumerate(scored_qa_pairs):
         if num_questions and i >= num_questions:
             break
         topic = truth.get('topic')
@@ -209,7 +207,5 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2, num_
         ) / len(truth['answer'].strip())
         truth['bot_accuracy'] = .5 * truth['bot_w2v_similarity'] + .5 * (
             1 - (truth['bot_ed_distance'] + truth['bot_ed_distance_low'] + truth['bot_ed_distance_folded']) / 3)
-        validated_qa_pairs.append(dict(truth))
         log.warning(f"q: accuracy: {truth['question']}: {truth['bot_accuracy']}")
-
-    return validated_qa_pairs
+        yield dict(truth)
