@@ -11,6 +11,7 @@ from editdistance import distance
 
 from qary.spacy_language_model import nlp
 from qary.constants import DATA_DIR
+from qary.etl import scrape_wikipedia
 
 
 log = logging.getLogger(__name__)
@@ -108,7 +109,6 @@ def load_qa_dataset(filepath=os.path.join('qa_pairs', 'qa-2020-04-25.json')):
     """ Load a json file containing desired responses, scored for truthfulness
 
     >>> d = load_qa_dataset()
-    >>> d
     >>> d[0]
     {'score': 1.0, 'question': "Who was Jimmy Carter's wife?", 'answer': 'Rosalynn Carter', 'topic': 'US Presidents'}
     >>> d[-1]
@@ -175,7 +175,7 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2):
     scored_qa_pairs = load_qa_dataset(scored_qa_pairs) if isinstance(scored_qa_pairs, str) else scored_qa_pairs
     validated_qa_pairs = []
     for truth in scored_qa_pairs:
-        texts = scrape_wikipedia.find_document_texts(topic=truth['topic'], max_results=10)
+        texts = scrape_wikipedia.find_article_texts(topic=truth['topic'], max_results=10)
         for context in texts:
             bot.reset_context(context)
             replies = sorted(bot.reply(truth['question']))
