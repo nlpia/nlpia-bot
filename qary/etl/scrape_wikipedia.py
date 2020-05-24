@@ -445,7 +445,7 @@ def find_titles_sorted(query='What is a chatbot?',
     titles = find_titles(query, max_titles=max_titles, ngrams=ngrams, min_len=min_len, ignore=ignore,
                          max_ignorable_pct=max_ignorable_pct)
     titles = sorted(((score(t), t) for t in titles), reverse=reverse)
-    log.info('sorted titles ({ngrams}-grams): \n' + str(pd.DataFrame(titles)))
+    log.debug(f"sorted titles ({ngrams}-grams): \n" + str(pd.DataFrame(titles)))
     return [t for (n, t) in titles]
 
 
