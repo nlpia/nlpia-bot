@@ -417,7 +417,7 @@ def find_titles(query='What is a chatbot?', max_titles=30, ngrams=5, min_len=2, 
         return TITLES[:max_titles]
     ignore = constants.QUESTION_STOPWORDS if ignore is True else ignore
     ignore = ignore if ignore is not None and ignore is not False else []
-    log.info(f"stopwords_to_ignore: {ignore}")
+    log.info(f"ignoring {len(ignore)}")
     toks = list_ngrams(query, n=ngrams)
     ans = []
     for t in toks:
