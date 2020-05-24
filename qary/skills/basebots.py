@@ -152,26 +152,40 @@ class HistoryBot:
     """ Remembers the history of every user statement and bot response string
 
     >>> histbot = HistoryBot()
-    >>> responses1 = histbot.reply('Hi')
-    >>> responses2 = histbot.reply('Hello')
     >>> histbot.history
-    [('Hi', ()), ('Hello', ())]
+    []
+    >>> histbot.update_history('Hi')
+    1
+    >>> histbot.history
+    [{'statement': 'Hi', 'possible_statements': (), 'agent': None}]
+    >>> histbot.update_history('Hello', agent='human')
+    2
+    >>> histbot.history
+    [{'statement': 'Hi', 'possible_statements': (), 'agent': None},
+     {'statement': 'Hello', 'possible_statements': (), 'agent': 'human'}]
     """
 
     def __init__(self, history=None, **kwargs):
         super().__init__(**kwargs)
         self.history = history or []
 
-    def log(self, statement=None, possible_statements=None, agent=None):
-        """ Chatbot "main" function to respond to a user command or statement
+    def update_history(self, statement=None, possible_statements=None, agent=None):
+        """ Append convo history with a statement/reply, the possibilities it was chosen from, and an agent (bot/user) name """
+        self.history.append(dict(
+            statement=statement,
+            possible_statements=tuple(possible_statements or []),
+            agent=agent))
+        return len(self.history)
 
-        >>> bot = HistoryBot()
-        >>> bot.reply('Hi')
-        []
-        """
-        responses = super().reply(statement) or []
-        self.history.append((statement, tuple(responses)))
-        return responses
+    def reset_history(self, statement=None, possible_statements=None, agent=None):
+        """ Reset convo history to a single statement/reply, the possibilities it was chosen from, and an agent (bot/user) name """
+        self.history = []
+        if statement or possible_statements or agent:
+            self.update_history(
+                statement=statement,
+                possible_statements=possible_statements,
+                agent=agent)
+        return len(self.history)
 
 
 class TransformerBot(HistoryBot, ContextBot):
@@ -245,7 +259,3 @@ class TransformerBot(HistoryBot, ContextBot):
         (0.75, 'response')
         """
         return output[0]['probability'], output[0]['answer']
-
-    def reply(self, statement, context=None):
-        responses = []
-        return responses
