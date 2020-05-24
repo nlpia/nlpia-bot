@@ -3,6 +3,7 @@ import os
 import time
 import csv
 import gzip
+import copy
 
 from tqdm import tqdm
 import pandas as pd
@@ -209,9 +210,9 @@ class WikiScraper:
                          prepend_title_text=True,
                          ):
         """ same as scrape_article_texts but for single article, and checks cache first """
-        text, see_also_links = self.cache.get(title, None)
-        if text:
-            return dict(text=text, see_also_links=see_also_links)
+        page_dict = self.cache.get(title)
+        if page_dict and page_dict.get('text') and page_dict.get('summary'):
+            return copy.copy(page_dict)
         page = self.wiki.article(title)
 
         text, summary, see_also_links = '', '', []
@@ -243,6 +244,7 @@ class WikiScraper:
             text += section.text.replace('’', "'") + '\n'
         page_dict = dict(text=text, summary=summary, see_also_links=see_also_links)
         self.cache[title] = page_dict
+        return page_dict
 
     def scrape_article_pages(self,
                              titles=TITLES,
@@ -257,13 +259,13 @@ class WikiScraper:
         TODO: add exclude_title_regexes to exclude page titles like "ELIZA (disambiguation)" with '.*\(disambiguation\)'
         >>> nlp('hello')  # to eager-load spacy model
         hello
-        >>> pages = scrape_article_texts(['ELIZA'], see_also=False)
+        >>> pages = scrape_article_pages(['ELIZA'], see_also=False)
         >>> hasattr(pages, '__next__')
         True
         >>> pages = list(texts)
         >>> len(pages)
         1
-        >>> texts = list(p['text'] for p in scrape_article_texts(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
+        >>> texts = list(p['text'] for p in scrape_article_pages(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
         >>> len(texts)
         10
         """
@@ -302,7 +304,7 @@ class WikiScraper:
                     see_also=see_also,
                     exclude_headings=exclude_headings,
                     prepend_section_headings=prepend_section_headings,
-                    prepend_title_text=prepend_title_text)
+                    prepend_title_text=prepend_title_text) or dict(text='', summary='', see_also_links=[])
                 if not len(page_dict['text'] + page_dict['summary']):
                     log.warning(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
                     time.sleep(self.sleep_empty_page)
