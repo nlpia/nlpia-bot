@@ -191,22 +191,79 @@ class WikiNotFound:
 
 
 class WikiScraper:
-    def __init__(self):
+    def __init__(self,
+                 sleep_empty_page=2.17,
+                 sleep_downloaded_page=0.01,
+                 sleep_nonexistent_page=0.02):
+        self.sleep_empty_page = sleep_empty_page
+        self.sleep_nonexistent_page = sleep_nonexistent_page
+        self.sleep_downloaded_page = sleep_downloaded_page
         self.cache = {}
+        self.wiki = Wikipedia()
 
-    def scrape_article_texts(self,
-                             titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
-                             see_also=True, max_articles=10000, max_depth=1,
-                             heading_text=True, title_text=True):
-        """ Download text for an article and parse into sections and sentences
+    def get_article_text(self,
+                         title: str,
+                         exclude_headings=EXCLUDE_HEADINGS,
+                         see_also=True,
+                         prepend_section_headings=True,
+                         prepend_title_text=True,
+                         ):
+        """ same as scrape_article_texts but for single article, and checks cache first """
+        text, see_also_links = self.cache.get(title, None)
+        if text:
+            return dict(text=text, see_also_links=see_also_links)
+        page = self.wiki.article(title)
 
+        text, summary, see_also_links = '', '', []
+        if page.exists():
+            text = getattr(page, 'text', '')
+            summary = getattr(page, 'summary', '')
+        else:
+            time.sleep(self.sleep_nonexistent_page)
+
+        # FIXME: this postprocessing of Article objects to compost a text string should be in separate funcition
+        # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
+        if see_also:
+            # .full_text() includes the section heading ("See also"). .text does not
+            section = page.section_by_title('See also')
+            if section:
+                for t in section.text.split('\n'):
+                    log.info(f"  Checking _SEE ALSO_ link: {t}")
+                    if t in page.links:
+                        see_also_links.append(t)
+
+        text = f'{page.title}\n\n' if prepend_title_text else ''
+        # page.text
+        for section in page.sections:
+            if section.title.lower().strip() in exclude_headings:
+                continue
+            # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
+            text += f'\n{section.title}\n' if prepend_section_headings else '\n'
+            # spacy doesn't handle "latin" (extended ascii) apostrophes well.
+            text += section.text.replace('’', "'") + '\n'
+        page_dict = dict(text=text, summary=summary, see_also_links=see_also_links)
+        self.cache[title] = page_dict
+
+    def scrape_article_pages(self,
+                             titles=TITLES,
+                             exclude_headings=EXCLUDE_HEADINGS,
+                             see_also=True,
+                             prepend_section_headings=True,
+                             prepend_title_text=True,
+                             max_articles=10000,
+                             max_depth=1):
+        r""" Download text for an article and parse into sections and sentences
+
+        TODO: add exclude_title_regexes to exclude page titles like "ELIZA (disambiguation)" with '.*\(disambiguation\)'
         >>> nlp('hello')  # to eager-load spacy model
         hello
-        >>> texts = scrape_article_texts(['ELIZA'], see_also=False)
-        >>> texts = list(texts)
-        >>> len(texts)
+        >>> pages = scrape_article_texts(['ELIZA'], see_also=False)
+        >>> hasattr(pages, '__next__')
+        True
+        >>> pages = list(texts)
+        >>> len(pages)
         1
-        >>> texts = list(scrape_article_texts(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
+        >>> texts = list(p['text'] for p in scrape_article_texts(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
         >>> len(texts)
         10
         """
@@ -221,7 +278,6 @@ class WikiScraper:
         # FIXME: record title tree (see also) so that .2*title1+.3*title2+.5*title3 can be semantically appended to sentences
         titles_scraped = set([''])
         d, num_articles = 0, 0
-        wiki = Wikipedia()
         # TODO: should be able to use depth rather than d:
         for depth in range(max_depth):
             while num_articles < max_articles and d <= depth and len(title_depths) > 0:
@@ -241,48 +297,54 @@ class WikiScraper:
                     continue
                 titles_scraped.add(title)
                 log.info(f'len(title_depths): {len(title_depths)}')
-                text = self.cache.get(title, None)
-                if text:
-                    yield text
-                page = wiki.article(title)
-                if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
+                page_dict = self.get_article_text(
+                    title,
+                    see_also=see_also,
+                    exclude_headings=exclude_headings,
+                    prepend_section_headings=prepend_section_headings,
+                    prepend_title_text=prepend_title_text)
+                if not len(page_dict['text'] + page_dict['summary']):
                     log.warning(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
-                    time.sleep(2.17)
+                    time.sleep(self.sleep_empty_page)
                     continue
-                # FIXME: this postprocessing of Article objects to compost a text string should be in separate funcition
-                # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
-                if see_also and d + 1 < max_depth:
-                    # .full_text() includes the section heading ("See also"). .text does not
-                    section = page.section_by_title('See also')
-                    if not section:
-                        continue
-                    for t in section.text.split('\n')[1:]:
-                        log.info(f"  Checking _SEE ALSO_ link: {t}")
-                        if t in page.links:
-                            log.info(f'     Found title "{t}" in page.links at depth {d}, so adding it to titles to scrape...')
-                            title_depths.append((t, d + 1))
-                    log.info(f'  extended title_depths at depth {d}: {title_depths}')
-                text = f'{page.title}\n\n' if title_text else ''
-                # page.text
-                for section in page.sections:
-                    if section.title.lower().strip() in exclude_headings:
-                        continue
-                    # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
-                    text += f'\n{section.title}\n' if heading_text else '\n'
-                    # spacy doesn't handle "latin" (extended ascii) apostrophes well.
-                    text += section.text.replace('’', "'") + '\n'
-                self.cache[title] = text
-                yield text
-                text_lens.append(len(text))
-                log.warning(f'Added article "{page.title}" with {len(text)} chars.')
-                log.info(f'  Total scraped {sum(text_lens)} chars')
+                title_depths.extend([(t, d + 1) for t in page_dict['see_also_links']])
+                text_lens.append(len(page_dict['text']))
+                num_articles += 1
+
+                log.warning(f'Added article "{title}" with {len(page_dict["text"])} chars.')
+                log.info(f'  Total scraped {sum(text_lens)} chars')  # TODO: separate scraped from cache-retrieval counts
                 log.warning(str([depth, d, num_articles, title]))
-                if len(text_lens) >= max_articles:
-                    log.warning(f"num_articles={num_articles} ==> len(text_lens)={len(text_lens)} > max_depth={max_depth}")
-                    break
-                if d > depth:
-                    log.warning(f"{d} > {depth}")
-                    break
+                yield page_dict
+
+    def scrape_article_texts(self,
+                             titles=TITLES,
+                             exclude_headings=EXCLUDE_HEADINGS,
+                             see_also=True,
+                             prepend_section_headings=True,
+                             prepend_title_text=True,
+                             max_articles=10000,
+                             max_depth=1):
+        r""" Download text for an article and parse into sections and sentences
+
+        TODO: add exclude_title_regexes to exclude page titles like "ELIZA (disambiguation)" with '.*\(disambiguation\)'
+        >>> nlp('hello')  # to eager-load spacy model
+        hello
+        >>> texts = scrape_article_texts(['ELIZA'], see_also=False)
+        >>> texts = list(texts)
+        >>> len(texts)
+        1
+        >>> texts = list(scrape_article_texts(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
+        >>> len(texts)
+        10
+        """
+        for page_dict in self.scrape_article_pages(titles=titles,
+                                                   exclude_headings=exclude_headings,
+                                                   see_also=see_also,
+                                                   prepend_section_headings=prepend_section_headings,
+                                                   prepend_title_text=prepend_title_text,
+                                                   max_articles=max_articles,
+                                                   max_depth=max_depth):
+            yield page_dict['text']
 
 
 wikiscraper = WikiScraper()
