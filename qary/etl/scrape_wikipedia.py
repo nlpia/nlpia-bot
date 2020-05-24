@@ -297,6 +297,8 @@ class WikiScraper:
                 if d > max_depth or not title:
                     log.info(f"{d} > {max_depth} or title ('{title}') is empty")
                     continue
+                if title in titles_scraped:
+                    continue
                 titles_scraped.add(title)
                 log.info(f'len(title_depths): {len(title_depths)}')
                 page_dict = self.get_article_text(
@@ -417,7 +419,7 @@ def find_titles(query='What is a chatbot?', max_titles=30, ngrams=5, min_len=2, 
         return TITLES[:max_titles]
     ignore = constants.QUESTION_STOPWORDS if ignore is True else ignore
     ignore = ignore if ignore is not None and ignore is not False else []
-    log.info(f"ignoring {len(ignore)}")
+    log.info(f"ignoring {len(ignore)} stopwords")
     toks = list_ngrams(query, n=ngrams)
     ans = []
     for t in toks:
