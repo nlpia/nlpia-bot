@@ -179,6 +179,7 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2, num_
     if shuffle_seed:
         np.random.seed(shuffle_seed)
         np.random.shuffle(scored_qa_pairs)
+    bot_answers = {}
     for i, truth in enumerate(scored_qa_pairs):
         if num_questions and i >= num_questions:
             break
@@ -188,13 +189,20 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2, num_
         log.warning(f"topic: {truth['topic']}, question: {truth['question']}")
         textgen = scrape_wikipedia.find_article_texts(query=[topic], max_articles=5)
         texts = chain(textgen, scrape_wikipedia.find_article_texts(query=truth['question'], max_articles=10))
-        for context in texts:
-            bot.reset_context(context)
-            replies = sorted(bot.reply(truth['question']))
-            if len(replies) and sorted(replies)[-1][0] > min_qa_bot_confidence:
-                break
-        replies = replies or [(0, "Sorry, I don't know.")]
-        truth['bot_answer'] = replies[-1][1]
+
+        # TODO: def get_best_bot_answer(bot, question, texts)
+        bot_answer = bot_answers.get(truth['question'], None)
+        if not bot_answer:
+            for context in texts:
+                bot.reset_context(context)
+                replies = sorted(bot.reply(truth['question']))
+                if len(replies) and sorted(replies)[-1][0] > min_qa_bot_confidence:
+                    break
+            replies = replies or [(0, "Sorry, I don't know.")]
+            bot_answer = replies[-1][1]
+        truth['bot_answer'] = bot_answer
+        # END TODO: def get_best_bot_answer(bot, question, texts)
+
         truth['bot_w2v_similarity'] = nlp(truth['bot_answer']).similarity(nlp(truth['answer']))
         truth['bot_ed_distance'] = distance(truth['answer'], truth['bot_answer']) / len(truth['answer'])
         truth['bot_ed_distance_low'] = distance(
