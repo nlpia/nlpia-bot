@@ -201,19 +201,19 @@ class WikiScraper:
         self.sleep_downloaded_page = sleep_downloaded_page
         self.cache = {}
 
-    def get_article_text(self,
-                         title: str,
-                         exclude_headings=EXCLUDE_HEADINGS,
-                         see_also=True,
-                         prepend_section_headings=True,
-                         prepend_title_text=True,
-                         ):
+    def get_article(self,
+                    title: str,
+                    exclude_headings=EXCLUDE_HEADINGS,
+                    see_also=True,
+                    prepend_section_headings=True,
+                    prepend_title_text=True,
+                    ):
         """ same as scrape_article_texts but for single article, and checks cache first """
         page_dict = self.cache.get(title)
         if page_dict and page_dict.get('text') and page_dict.get('summary'):
             return copy.copy(page_dict)
-        with Wikipedia() as wiki:
-            page = wiki.article(title)
+        self.wiki = Wikipedia()
+        page = self.wiki.article(title)
 
         text, summary, see_also_links = '', '', []
         if page.exists():
@@ -302,7 +302,7 @@ class WikiScraper:
                     continue
                 titles_scraped.add(title)
                 log.info(f'len(title_depths): {len(title_depths)}')
-                page_dict = self.get_article_text(
+                page_dict = self.get_article(
                     title,
                     see_also=see_also,
                     exclude_headings=exclude_headings,
