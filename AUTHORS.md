@@ -8,4 +8,5 @@
 - Nima (@hulkgeek): question answering bot based on his state of the art question classifier
 - Xavier (@spirovanni): employment counselor for workforce.org and the city of San Diego
 - Hobson (@hobson): infrastructure (CI, webapp) and framework features (nltk->spacy, USE vectors)
+- Alex (@alxrsngrtn): will submit a CL from time to time.
 - You: What big chatbot idea would you like to make a reality?
