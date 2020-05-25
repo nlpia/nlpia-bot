@@ -200,7 +200,6 @@ class WikiScraper:
         self.sleep_nonexistent_page = sleep_nonexistent_page
         self.sleep_downloaded_page = sleep_downloaded_page
         self.cache = {}
-        self.wiki = Wikipedia()
 
     def get_article_text(self,
                          title: str,
@@ -213,7 +212,8 @@ class WikiScraper:
         page_dict = self.cache.get(title)
         if page_dict and page_dict.get('text') and page_dict.get('summary'):
             return copy.copy(page_dict)
-        page = self.wiki.article(title)
+        with Wikipedia() as wiki:
+            page = wiki.article(title)
 
         text, summary, see_also_links = '', '', []
         if page.exists():
@@ -259,13 +259,14 @@ class WikiScraper:
         TODO: add exclude_title_regexes to exclude page titles like "ELIZA (disambiguation)" with '.*\(disambiguation\)'
         >>> nlp('hello')  # to eager-load spacy model
         hello
-        >>> pages = scrape_article_pages(['ELIZA'], see_also=False)
+        >>> scraper = WikiScraper()
+        >>> pages = scraper.scrape_article_pages(['ELIZA'], see_also=False)
         >>> hasattr(pages, '__next__')
         True
         >>> pages = list(texts)
         >>> len(pages)
         1
-        >>> texts = list(p['text'] for p in scrape_article_pages(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
+        >>> texts = list(p['text'] for p in scraper.scrape_article_pages(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
         >>> len(texts)
         10
         """
@@ -333,11 +334,12 @@ class WikiScraper:
         TODO: add exclude_title_regexes to exclude page titles like "ELIZA (disambiguation)" with '.*\(disambiguation\)'
         >>> nlp('hello')  # to eager-load spacy model
         hello
-        >>> texts = scrape_article_texts(['ELIZA'], see_also=False)
+        >>> scraper = WikiScraper()
+        >>> texts = scraper.scrape_article_texts(['ELIZA'], see_also=False)
         >>> texts = list(texts)
         >>> len(texts)
         1
-        >>> texts = list(scrape_article_texts(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
+        >>> texts = list(scraper.scrape_article_texts(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
         >>> len(texts)
         10
         """
