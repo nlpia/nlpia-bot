@@ -113,10 +113,7 @@ def load_qa_dataset(filepath=os.path.join('qa_pairs', 'qa-tiny-2020-05-24.json')
     >>> d[0]
     {'score': 1.0, 'question': "Who was Jimmy Carter's wife?", 'answer': 'Rosalynn Carter', 'topic': 'US Presidents'}
     >>> d[-1]
-    {'score': 0.9,
-     'question': 'Who is Tony Robbins?',
-     'answer': 'Tony Robbins is known for his infomercials, seminars, and self-help books ...',
-     'topic': 'Famous People'}
+    {'score': 0.99, 'question': 'When was Barack Obama born?', 'answer': 'August 4, 1961)', 'topic': 'US Presidents'}
     """
 
     filepath = os.path.join(DATA_DIR, filepath) if not os.path.exists(filepath) else filepath
@@ -157,10 +154,10 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2, num_
     >>> from qary.skills import glossary_bots
     >>> bot = glossary_bots.Bot()
     >>> scored_qa_pairs = [dict(question='What is RMSE?', answer='Root Mean Square Error', score=.9, topic='ds')]
-    >>> get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs)[0]['bot_accuracy']
+    >>> next(get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs))['bot_accuracy']
     1.0
     >>> scored_qa_pairs = [dict(question='What is RMSE?', answer='root-mean-sqr-error', score=.9, topic='ds')]
-    >>> get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs)[0]
+    >>> next(get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs))
     {'question': 'What is RMSE?',
      'answer': 'root-mean-sqr-error',
      'score': 0.9,
@@ -190,7 +187,7 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2, num_
         textgen = scrape_wikipedia.find_article_texts(query=[topic], max_articles=5)
         texts = chain(textgen, scrape_wikipedia.find_article_texts(query=truth['question'], max_articles=10))
 
-        # TODO: def get_best_bot_answer(bot, question, texts)
+        # TODO: def get_best_bot_answer(bot, question, texts)  # memoize
         bot_answer = bot_answers.get(truth['question'], None)
         if not bot_answer:
             for context in texts:
@@ -200,6 +197,7 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2, num_
                     break
             replies = replies or [(0, "Sorry, I don't know.")]
             bot_answer = replies[-1][1]
+            bot_answers[truth['question']] = bot_answer
         truth['bot_answer'] = bot_answer
         # END TODO: def get_best_bot_answer(bot, question, texts)
 
