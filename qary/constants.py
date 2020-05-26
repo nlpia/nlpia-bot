@@ -261,10 +261,11 @@ def setup_logging(loglevel=LOGLEVEL):
     Args:
       loglevel (int): minimum loglevel for emitting messages
     """
-    global LOGLEVEL, log
+    global LOGLEVEL, log, root_logger
 
     logformat = '%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s'
     logdatefmt = "%Y-%m-%d%H:%M:%S"
+    root_logger.setLevel(loglevel)
     log.setLevel(loglevel)
     # FIXME: this doesn't seem to change things, the original format and level set at top of file rules
     logging.basicConfig(level=loglevel, stream=sys.stdout, format=logformat, datefmt=logdatefmt)
