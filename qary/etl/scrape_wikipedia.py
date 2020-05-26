@@ -206,12 +206,12 @@ class WikiScraper:
         d, num_articles, queue_pos = 0, 0, 0
         # TODO: make this a while loop to consolidate d = depth should be able to use depth rather than d:
         for depth in range(max_depth):
-            while num_articles < max_articles and d <= depth and len(title_depths) > 0:
+            while num_articles < max_articles and d <= depth and queue_pos < len(title_depths):
                 title = ''
                 log.debug("title_depths:\n" + '\n'.join(f"{td[1]}: {td[0]}" for td in title_depths))
 
                 # pop another title and keep popping until it's not a title already scraped
-                while len(title_depths) and (not title.strip() or title in titles_scraped):
+                while queue_pos < len(title_depths) and (not title.strip() or title in titles_scraped):
                     log.info(f"Skipping '{title}' (already scraped)")
                     try:
                         title, d = title_depths[queue_pos]
@@ -226,7 +226,7 @@ class WikiScraper:
                 if title in titles_scraped:
                     continue
                 log.info(f'title: {title}')
-                log.info(f'remaining len(title_depths): {len(title_depths)}')
+                log.info(f'remaining len(title_depths): {len(title_depths)}, queue_pos: {queue_pos}')
                 page_dict = self.get_article(
                     title,
                     see_also=see_also,
@@ -291,13 +291,11 @@ class WikiScraper:
                                  max_depth=1):
         """ Download text for an article and parse into sections and sentences
 
-        >>> nlp('hello')  # to eager-load spacy model
-        hello
         >>> df = scrape_article_sentences(['ELIZA'], see_also=False)
-        >>> df.shape[0] > 80
+        >>> df.shape[0] > 50
         True
         >>> df.columns
-        Index(['depth', 'title', 'section', 'sentence'], dtype='object')
+        Index(['title', 'see_also_links', 'depth', 'sentence', 'section_title', 'section_num'], dtype='object')
         """
         df = []
         for page_dict in self.scrape_article_pages(titles=titles,
@@ -308,15 +306,19 @@ class WikiScraper:
                                                    max_articles=max_articles,
                                                    max_depth=max_depth):
             section_title, section_num = '', 0
-            for sentence in nlp(page_dict['text']).sentences:
-                sentence_dict = dict([kv for kv in page_dict.items() if kv[0] not in ('text', 'summary')])
-                sentence_dict['sentence'] = sentence.text
-                if self.section_titles.get(str(sentence.text).strip()):
-                    section_title = str(sentence.text).strip()
-                    section_num += 1
-                sentence_dict['section_title'] = section_title
-                sentence_dict['section_num'] = section_num
-                df.append(sentence_dict)
+            for sentence in nlp(page_dict['text']).sents:
+                for s in sentence.text.split('\n'):
+                    stripped = s.strip()
+                    if not stripped:
+                        continue
+                    sentence_dict = dict([kv for kv in page_dict.items() if kv[0] not in ('text', 'summary')])
+                    sentence_dict['sentence'] = s
+                    if self.section_titles.get(stripped):
+                        section_title = stripped
+                        section_num += 1
+                    sentence_dict['section_title'] = section_title
+                    sentence_dict['section_num'] = section_num
+                    df.append(sentence_dict)
 
         return pd.DataFrame(df)
 

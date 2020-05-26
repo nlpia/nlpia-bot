@@ -145,3 +145,18 @@
 -
   Q: What is the purpose of `train_test_split`? Why is it good to separate your data into two different random samples of data?
   A: The model is fit to the training set and the test set is reserved for testing only and is not ever "seen" by the model during the training phase. The test set accuracy score is an estimate of how well your model will work in the real world. The training set accuracy is an estimate of how good the model could possibly be if you were able to find the best hyperparameters for your pipeline.
+-
+  Q: "My Jupyter notebook for training an RNN seems to hang after 10 minutes or so."
+  A: "Check your memory usage using a tool like the Linux application `htop`. If your SWAP is being used or most of your RAM is used up then close all Chrome tabs that you don't need, and halt all Jupyter notebooks.  Restart the Jupyter notebook before trying again. Keep an eye on your RAM and use training set data generator parameters like BUFFER_SIZE and BATCH_SIZE to reduce the memory footprint of your model."
+-
+  Q: How do I calculate precision from the confusion matrix?
+  A: Calculate the true positives with `tp = ((y_pred == y_true) & y_pred).sum()`. Calculate the true negatives with `tp = ((y_pred == y_true) & ~y_pred).sum()` and the false positives with `tp = ((y_pred != y_true) & y_pred).sum()`. Finally, calculate precision with `precision = tp / (tp + fp)`.
+-
+  Q: "How can I delete security credentials and large data files from my git repository history?"
+  A: "Check out the `bfg` package: `conda install bfg`."
+-
+  Q: "My model for the Melbourne housing dataset is getting poor accuracy predicting price from the the continuous variables like square footage and number of bedrooms and lat/lon. What can I do?"
+  A: "You can try some feature engineering on the latitude and longitude data by calculating the distance to the mean latitude and longitude and adding that as a new feature. You can also calculate the distance to any other landmarks that seem like them might be useful for predicting the home price."
+-
+  Q: "I'd like to do sentiment analysis on Amazon reviews by scraping the reviews from Amazon.com."
+  A: "That's a bad idea. I'd suggest you first learn data science before learning how to scrape data from websites. Amazon reviews are available in several large database dumps online. There's no need to learn how to scrape. Scraping is difficult and scraping an Amazon.com page is probably one of the most difficult scraping problems."
