@@ -4,6 +4,7 @@ import time
 import csv
 import gzip
 import copy
+# from queue import Queue
 
 from tqdm import tqdm
 import pandas as pd
@@ -22,6 +23,7 @@ EXCLUDE_HEADINGS = ['See also', 'References', 'Bibliography', 'External links']
 
 
 class WikiIndex():
+    """ Semantic and trigram index for wikipedia page titles  """
     _url = 'https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-all-titles-in-ns0.gz'
 
     def __init__(self, url=None, refresh=False, **pd_kwargs):
@@ -101,97 +103,17 @@ class WikiIndex():
         sorted(dot_products, reverse=True)
 
 
-def scrape_articles_dataframe(titles=TITLES, exclude_headings=EXCLUDE_HEADINGS,
-                              see_also=True, max_articles=10000, max_depth=1):
-    """ Download text for an article and parse into sections and sentences
-
-    >>> nlp('hello')  # to eager-load spacy model
-    hello
-    >>> df = scrape_articles_dataframe(['ELIZA'], see_also=False)
-    >>> df.shape[0] > 80
-    True
-    >>> df.columns
-    Index(['depth', 'title', 'section', 'sentence'], dtype='object')
-    """
-    titles = list([titles] if isinstance(titles, str) else titles)
-    exclude_headings = set([eh.lower().strip() for eh in (exclude_headings or [])])
-    depths = list([0] * len(titles))
-    title_depths = list(zip(titles, depths))
-    sentences = []
-    num_articles = 0
-    # FIXME: breadth-first search so you can do a tqdm progress bar for each depth
-    # FIXME: record title tree (see also) so that .2*title1+.3*title2+.5*title3 can be semantically appended to sentences
-    titles_scraped = set([''])
-    title, d = '', 0
-    wiki = Wikipedia()
-    for depth in range(max_depth):
-        while num_articles < max_articles and d <= depth and len(title_depths):
-            title = None
-            # skip None titles and titles already scraped
-            while len(title_depths) and len(titles_scraped) and (not title or title in titles_scraped):
-                # log.warning(f"Skipping {title} (already scraped)")
-                try:
-                    title, d = title_depths.pop()
-                except IndexError:
-                    log.warning(f'Out of titles: {title_depths}')
-                    break
-                title = title.strip()
-            if d > max_depth or not title:
-                log.info(f"{d} > {max_depth} or title ('{title}') is empty")
-                continue
-            titles_scraped.add(title)
-            page = wiki.article(title)
-            if not (len(getattr(page, 'text', '')) + len(getattr(page, 'summary', ''))):
-                log.error(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
-                time.sleep(2.17)
-                continue
-            num_articles += 1
-            # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
-            if see_also and d + 1 < max_depth:
-                # .full_text() includes the section heading ("See also"). .text does not
-                section = page.section_by_title('See also')
-                if not section:
-                    continue
-                for t in section.text.split('\n')[1:]:
-                    log.info(f'  Checking see also link: {t}')
-                    if t in page.links:
-                        log.info(f'    yep, found it in page.links')
-                        title_depths.append((t, d + 1))
-                log.info(f'  extended title_depths at depth {d}: {title_depths}')
-            for section in page.sections:
-                if section.title.lower().strip() in exclude_headings:
-                    continue
-                # TODO: use pugnlp.to_ascii() or nlpia.to_ascii()
-                text = section.text.replace('’', "'")  # spacy doesn't handle "latin" (extended ascii) apostrophes well.
-                # FIXME: need to rejoin short names before colons, like 'ELIZA:' 'Tell me...', and 'Human:' 'What...'
-                # FIXME: need to split on question marks without white space but where next word is capitalized: ...to be unhappy?Though designed strictly...
-                sentences.extend([
-                    (d, title, section.title, s.text) for s in nlp(text).sents if (
-                        len(s.text.strip().strip('"').strip("'").strip()) > 1)
-                ])
-            log.debug(f'Parsed {len(sentences)} sentences.')
-
-            # retval = parse_sentences(
-            #     title=title, sentences=sentences, title_depths=title_depths, see_also=see_also,
-            #     exclude_headings=exclude_headings, d=d, depth=depth, max_depth=max_depth)
-            # if retval is None:
-            #     continue
-            # else:
-            #     sentences, title_depths = retval
-            log.info(str([depth, d, num_articles, title]))
-            if d > depth:
-                log.warning(f"{d} > {depth}")
-                break
-
-    return pd.DataFrame(sentences, columns='depth title section sentence'.split())
-
-
 class WikiNotFound:
     text = ''
     summary = ''
 
 
 class WikiScraper:
+    """ RAM caching of scraped wikipedia pages
+
+    TODO: preserve cache between runs in a sqlite database or flatfile or h5 (hdf) file
+    """
+
     def __init__(self,
                  sleep_empty_page=2.17,
                  sleep_downloaded_page=0.01,
@@ -252,7 +174,7 @@ class WikiScraper:
                              see_also=True,
                              prepend_section_headings=True,
                              prepend_title_text=True,
-                             max_articles=10000,
+                             max_articles=10_000,
                              max_depth=1):
         r""" Download text for an article and parse into sections and sentences
 
@@ -277,22 +199,23 @@ class WikiScraper:
         # depth starts at zero here, but as additional titles are appended the depth will increase
         title_depths = list(zip(titles, [0] * len(titles)))
         text_lens = []
-        # FIXME: breadth-first search so you can do a tqdm progress bar for each depth
         # FIXME: record title tree (see also) so that .2*title1+.3*title2+.5*title3 can be semantically appended to sentences
         titles_scraped = set([''])
-        d, num_articles = 0, 0
-        # TODO: should be able to use depth rather than d:
+        d, num_articles, queue_pos = 0, 0, 0
+        # TODO: make this a while loop to consolidate d = depth should be able to use depth rather than d:
         for depth in range(max_depth):
             while num_articles < max_articles and d <= depth and len(title_depths) > 0:
                 title = ''
+                log.debug("title_depths:\n" + '\n'.join(f"{td[1]}: {td[0]}" for td in title_depths))
 
-                # skip titles already scraped
-                while len(title_depths) and len(titles_scraped) and (not title or title in titles_scraped):
-                    # log.warning(f"Skipping {title} (already scraped)")
+                # pop another title and keep popping until it's not a title already scraped
+                while len(title_depths) and (not title.strip() or title in titles_scraped):
+                    log.info(f"Skipping '{title}' (already scraped)")
                     try:
-                        title, d = title_depths.pop()
+                        title, d = title_depths[queue_pos]
+                        queue_pos += 1
                     except IndexError:
-                        log.info(f'Out of titles: {title_depths}')
+                        log.debug(f'Out of titles: {title_depths}')
                         break
                     title = title.strip()
                 if d > max_depth or not title:
@@ -300,14 +223,18 @@ class WikiScraper:
                     continue
                 if title in titles_scraped:
                     continue
-                titles_scraped.add(title)
-                log.info(f'len(title_depths): {len(title_depths)}')
+                log.info(f'title: {title}')
+                log.info(f'remaining len(title_depths): {len(title_depths)}')
                 page_dict = self.get_article(
                     title,
                     see_also=see_also,
                     exclude_headings=exclude_headings,
                     prepend_section_headings=prepend_section_headings,
                     prepend_title_text=prepend_title_text) or dict(text='', summary='', see_also_links=[])
+                titles_scraped.add(title)
+                page_dict['title'] = title
+                page_dict['depth'] = d
+                log.info(f'len(titles_scraped): {len(titles_scraped)}')
                 if not len(page_dict['text'] + page_dict['summary']):
                     log.warning(f"Unable to retrieve _{title}_ because article text and summary len are 0.")
                     time.sleep(self.sleep_empty_page)
@@ -316,7 +243,7 @@ class WikiScraper:
                 text_lens.append(len(page_dict['text']))
                 num_articles += 1
 
-                log.warning(f'Added article "{title}" with {len(page_dict["text"])} chars.')
+                log.warning(f'Added article #{num_articles} "{title}" with {len(page_dict["text"])} chars.')
                 log.info(f'  Total scraped {sum(text_lens)} chars')  # TODO: separate scraped from cache-retrieval counts
                 log.warning(str([depth, d, num_articles, title]))
                 yield page_dict
@@ -327,7 +254,7 @@ class WikiScraper:
                              see_also=True,
                              prepend_section_headings=True,
                              prepend_title_text=True,
-                             max_articles=10000,
+                             max_articles=10_000,
                              max_depth=1):
         r""" Download text for an article and parse into sections and sentences
 
@@ -351,6 +278,39 @@ class WikiScraper:
                                                    max_articles=max_articles,
                                                    max_depth=max_depth):
             yield page_dict['text']
+
+    def scrape_article_sentences(self,
+                                 titles=TITLES,
+                                 exclude_headings=EXCLUDE_HEADINGS,
+                                 see_also=True,
+                                 prepend_section_headings=True,
+                                 prepend_title_text=True,
+                                 max_articles=10_000,
+                                 max_depth=1):
+        """ Download text for an article and parse into sections and sentences
+
+        >>> nlp('hello')  # to eager-load spacy model
+        hello
+        >>> df = scrape_articles_dataframe(['ELIZA'], see_also=False)
+        >>> df.shape[0] > 80
+        True
+        >>> df.columns
+        Index(['depth', 'title', 'section', 'sentence'], dtype='object')
+        """
+        df = []
+        for page_dict in self.scrape_article_pages(titles=titles,
+                                                   exclude_headings=exclude_headings,
+                                                   see_also=see_also,
+                                                   prepend_section_headings=prepend_section_headings,
+                                                   prepend_title_text=prepend_title_text,
+                                                   max_articles=max_articles,
+                                                   max_depth=max_depth):
+            for sentence in nlp(page_dict['text']).sentences:
+                sentence_dict = dict([kv for kv in page_dict.items() if kv[0] not in ('text',)])
+                sentence_dict['sentence'] = sentence.text
+                df.append(sentence_dict)
+
+        return pd.DataFrame(df)
 
 
 wikiscraper = WikiScraper()
