@@ -122,6 +122,7 @@ class WikiScraper:
         self.sleep_nonexistent_page = sleep_nonexistent_page
         self.sleep_downloaded_page = sleep_downloaded_page
         self.cache = {}
+        self.section_titles = {}
 
     def get_article(self,
                     title: str,
@@ -164,7 +165,8 @@ class WikiScraper:
             text += f'\n{section.title}\n' if prepend_section_headings else '\n'
             # spacy doesn't handle "latin" (extended ascii) apostrophes well.
             text += section.text.replace('’', "'") + '\n'
-        page_dict = dict(text=text, summary=summary, see_also_links=see_also_links)
+            self.section_titles[str(section.title).strip()] = str(section.title).lower().strip().replace('’', "'")
+        page_dict = dict(title=page.title, text=text, summary=summary, see_also_links=see_also_links)
         self.cache[title] = page_dict
         return page_dict
 
@@ -291,7 +293,7 @@ class WikiScraper:
 
         >>> nlp('hello')  # to eager-load spacy model
         hello
-        >>> df = scrape_articles_dataframe(['ELIZA'], see_also=False)
+        >>> df = scrape_article_sentences(['ELIZA'], see_also=False)
         >>> df.shape[0] > 80
         True
         >>> df.columns
@@ -305,9 +307,15 @@ class WikiScraper:
                                                    prepend_title_text=prepend_title_text,
                                                    max_articles=max_articles,
                                                    max_depth=max_depth):
+            section_title, section_num = '', 0
             for sentence in nlp(page_dict['text']).sentences:
-                sentence_dict = dict([kv for kv in page_dict.items() if kv[0] not in ('text',)])
+                sentence_dict = dict([kv for kv in page_dict.items() if kv[0] not in ('text', 'summary')])
                 sentence_dict['sentence'] = sentence.text
+                if self.section_titles.get(str(sentence.text).strip()):
+                    section_title = str(sentence.text).strip()
+                    section_num += 1
+                sentence_dict['section_title'] = section_title
+                sentence_dict['section_num'] = section_num
                 df.append(sentence_dict)
 
         return pd.DataFrame(df)
