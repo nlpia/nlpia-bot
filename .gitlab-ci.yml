@@ -61,6 +61,7 @@ py37:
   before_script:
   - conda env create -n qary -f environment.yml
   - source activate qary
+  - pip install -e .
 
   script:
   - pytest
