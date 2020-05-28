@@ -48,6 +48,7 @@ if __name__ == "__main__":
     setup(
         use_pyscaffold=True,
         package_data=package_data,
+        long_description_content_type="text/markdown"
         # data_files=data_files,
     )
     # data_files=data_files)
