@@ -59,6 +59,7 @@ py37:
   image: continuumio/miniconda3:latest
 
   before_script:
+  - conda update -n base -c defaults conda
   - conda env create -n qary -f environment.yml
   - source activate qary
   - pip install -e .
