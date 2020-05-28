@@ -8,4 +8,4 @@ git tag -a "$1" -m "$2"
 python setup.py sdist
 python setup.py bdist_wheel
 twine check dist/*
-twine uplaod dist/"qary-$1"*
+twine upload dist/"qary-$1"*
