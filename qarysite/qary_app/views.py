@@ -1,8 +1,11 @@
+# import re  # noqa
+
+from qary.clibot import CLIBot
+
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
+
 from qary_app import models
-from qary.clibot import CLIBot
-# import re  # noqa
 
 
 bot = CLIBot(bots=('glossary',))
