@@ -1,4 +1,4 @@
-name: nlpia
+name: qary
 
 channels:
   - conda-forge  # conda-forge is higher priority than defaults in nlpia package
@@ -6,39 +6,40 @@ channels:
   # - anaconda  # bad idea: https://github.com/conda/conda/issues/9462
 
 dependencies:
-  - ConfigArgParse
-  - django
-  - django-environ
-  - django-extensions
+  - ConfigArgParse==1.2.2
   # - elasticsearch
   - html5lib
   # - hunspell
   # - hunspell-en
   - jupyter
-  - lxml
-  - nltk
-  - pandas
+  - lxml==4.5.0
+  - pandas==1.0.3
   - pip
-  - pre-commit
-  - psycopg2
+  - pre_commit==2.3.0
   - pyscaffold
   - pytest-cov
   - python>=3.7.6
-  - pytorch
-  - regex  # ==2018.1.10
-  - seaborn
-  - scipy
-  - spacy>=2.2.2,<2.3.0
-  - tqdm
+  - regex==2020.4.4
+  - seaborn==0.10.0
+  - scipy==1.4.1
+  - spacy==2.2.4
+  - tqdm>=4.38.0,<5.0.0
   - watchdog
 
   - pip:
-    - environment
-    - fuzzywuzzy
-    - nboost
-    - simpletransformers
-    - python-slugify
-    - tensorboardX
+    - boto3==1.12.44
+    - editdistance==0.5.3
+    - elasticsearch==7.6.0
+    - environment==1.0.0
+    - fuzzywuzzy==0.18.0
+    - gitpython==3.1.1
+    - nltk==3.5
+    - scikit-learn==0.22.2
+    - tensorboardX==2.0
+    - tensorflow==2.1.0
+    - torch==1.4.0
     - transformers>=2.4.1,<2.5.0
-    - wikipedia-api
-    # - hunspell
+    - Sphinx==3.0.3
+    - recommonmark==0.6.0
+    - m2r==0.2.1
+    - wikipedia-api==0.5.4
