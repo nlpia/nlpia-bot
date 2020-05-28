@@ -1,0 +1,9 @@
+- launch qary with glossary bot
+- turn down verbosity in settings file
+- demo glossary bot again
+- show the reply method in glossary_bots
+- show the data/faq/glossary-dsdh.yml file
+- demo faq bot
+- demo glossary,faq,eliza bot
+- demo qa bot
+- create a doctest
