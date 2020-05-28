@@ -160,3 +160,36 @@
 -
   Q: "I'd like to do sentiment analysis on Amazon reviews by scraping the reviews from Amazon.com."
   A: "That's a bad idea. I'd suggest you first learn data science before learning how to scrape data from websites. Amazon reviews are available in several large database dumps online. There's no need to learn how to scrape. Scraping is difficult and scraping an Amazon.com page is probably one of the most difficult scraping problems."
+-
+  Q: Is it a problem if all my flood damage prediciton dataset was collected from buildings that had claims over the past 100 years?
+  A: Yes, your dataset has significant sample bias. You may want to join it with a dataset that contains buildings that have not ever experienced a flood.
+-
+  Q: The data science process sounds like you are treating data the same way a Deep Learning algorithm would. You don't need to know what the variables mean.
+  A: Exactly, you just need to extract a wide variety of features from your dataset and let the machine find patterns between your extracted features and the target variable.
+-
+  Q: What's a good way to explore the json string returned by a web API?
+  A: Use `json.load` or `json.loads` to convert the string to a python object like a list of nested dictionaries. Then examine that python object like you would examine another other list or dictionary. Look at a few "records" in the list. Checkout the keys and values for one of the records in a list of dictionaries. And visualize in your mind or on paper the nested structure of any nested dictionaries.
+-
+  Q: I'd like to do a classification problem for my next data science project.
+  A: Every regression problem can be turned into a classification problem by selecting thresholds to divide the dataset into classes.
+-
+  Q: I'd like to do an image recognition problem for my next data science project.
+  A: I'd recommend the MNIST dataset. It's a handwritten digit recognition problem with a lot of good tutorials online. And it doesn't necessarily require deep learning.
+-
+  Q: What does gradient boasting accomplish? What is it's loss function?
+  A: Gradient boosting attempts to normalize and randomize the residual statistics. So that's the loss function, the magnitude of the residual error and the mismatch between the residual PDF or histogram relative to the normal distribution.
+-
+  Q: Can SVM model a nonlinear relationship between the features and the target or do I need to generate polynomial features for that?
+  A: The kernel trick should take care of the nonlinearities in your features to help create a model.
+-
+  Q: What is a good problem to work on for the IMDB dataset? I don't want to build a recommendation engine.
+  A: What about predicting box office receipts divided by budget? Or just predicting budget and box office receipts individually. This would allow you to provide insights to producers, investors, and even actors that they'd be very interested in.
+-
+  Q: What is a target variable?
+  A: It is the variable you are trying to predict. It's usually called `y` because it is often plotted on the vertical y-axis. The feature variables are often called `x` or `x1, x2, x3, ...` because they are often plotted on the horizontal x-axis of a plot. So a 1 variable linear regression will often be visualized as a line passing through a scatter plot with the target variable on the y-axis and the feature variable on the x-axis.
+-
+  Q: What is the Agile process applied to Data Science?
+  A: It requires you to be ruthless with your time and focus 100% on getting bare minimum possible product that has some small value to you in the minimum amount of time. For Data Science this means a model and a report about the data that provides some increased understanding of it. For example if your dataset has a lot of missing values but has a few columns of data that are complete, then train your model on only those few features. Get a training and testset accuracy number to create a single row in your hyperparameter tuning table. Then put that table into a report (preferably a Jupyter notebook) with some short description of what you learned from that model.
+-
+  Q: Plotting the number of reviews along the y axis and the product price on the vertical axis it seems that price is inversely proporational to the log of the number of reviews. So I transformed my `num_reviews` with the log function to create a `log_num_reviews` feature, but this contains `-inf` values and fillna does not remove them. what should I do?
+  A: First try to figure out what might be causing the `np.log` function to output `-inf` values. Try rely large values and really small values as well as really large and small negative values; such as `np.log(1e10), np.log(1e-10), np.log(0), np.log(1), np.log(-1), np.log(-1e10)`. From that you should see that for products that have zero reviews you are getting a `-inf` for your `log_num_reviews` feature. You can find these in your dataset with `mask = df['log_num_reviews'] < 0`. And then you can fill those entries with a value that makes sense, like 0 or -1 or perhaps even `df['log_num_reviews'][mask] = -np.log(1)`.
