@@ -3,9 +3,10 @@ import logging
 
 # import pandas as pd
 
-from ..etl import glossaries
-from .. import spacy_language_model
-from ..etl import knowledge_extraction as extract
+from qary.etl import glossaries
+from qary import spacy_language_model
+from qary.etl import knowledge_extraction as extract
+from qary.skills.basebots import ContextBot
 
 log = logging.getLogger(__name__)
 nlp = spacy_language_model.load('en_core_web_md')
@@ -15,7 +16,7 @@ def capitalizations(s):
     return (s, s.lower(), s.upper(), s.title())
 
 
-class Bot:
+class Bot(ContextBot):
     """ Bot that can reply with definitions from glossary yml files in data/faq/glossary-*.yml
 
     >>> bot = Bot()
@@ -30,6 +31,7 @@ class Bot:
     def __init__(self, domains=('dsdh',)):
         """ Load glossary from yaml file indicated by list of domain names """
         global nlp
+        super().__init__(self)
         self.nlp = nlp
         self.glossary = glossaries.load(domains=domains)['cleaned']
         self.vector = dict()

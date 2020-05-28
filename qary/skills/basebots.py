@@ -115,7 +115,7 @@ class ContextBot:
         if isinstance(context, str):
             log.warning("Deprecated API: `context` should be a nested dictionary. Texts belong at `context['doc']['text']`).")
             self.update_context({'doc': {'text': context}})
-        else:
+        elif isinstance(context, dict):
             self.update_context(context)
 
     def update_context(self, context=None):
