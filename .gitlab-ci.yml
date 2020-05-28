@@ -60,7 +60,7 @@ py37:
 
   before_script:
   - conda env create -n qary -f environment.yml
-  - conda activate qary
+  - source activate qary
 
   script:
   - pytest
