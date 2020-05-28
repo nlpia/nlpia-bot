@@ -77,7 +77,6 @@ py37:
 #  - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_PRODUCTION_KEY
 
 pages:
-  stage: deploy
   script:
     - pip install -U sphinx simpletransformers
     - python setup.py docs -b html
