@@ -181,13 +181,12 @@ class WikiScraper:
         r""" Download text for an article and parse into sections and sentences
 
         TODO: add exclude_title_regexes to exclude page titles like "ELIZA (disambiguation)" with '.*\(disambiguation\)'
-        >>> nlp('hello')  # to eager-load spacy model
-        hello
+
         >>> scraper = WikiScraper()
         >>> pages = scraper.scrape_article_pages(['ELIZA'], see_also=False)
         >>> hasattr(pages, '__next__')
         True
-        >>> pages = list(texts)
+        >>> pages = list(pages)
         >>> len(pages)
         1
         >>> texts = list(p['text'] for p in scraper.scrape_article_pages(['Chatbot', 'ELIZA'], max_articles=10, max_depth=3))
@@ -291,7 +290,8 @@ class WikiScraper:
                                  max_depth=1):
         """ Download text for an article and parse into sections and sentences
 
-        >>> df = scrape_article_sentences(['ELIZA'], see_also=False)
+        >>> scraper = WikiScraper()
+        >>> df = scraper.scrape_article_sentences(['ELIZA'], see_also=False)
         >>> df.shape[0] > 50
         True
         >>> df.columns
