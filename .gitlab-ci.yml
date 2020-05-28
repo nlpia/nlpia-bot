@@ -14,12 +14,11 @@ image: python:3.7
 #  POSTGRES_DB: database_name
 
 # Cache packages in between builds
-cache:
-  paths:
-    - vendor/python
+# cache:
+#   paths:
+#     - vendor/python
 
-# This is a basic example for a packages or script which doesn't use
-# services such as redis or postgres
+# This is a basic example for a package or script which doesn't use services such as redis or postgres
 before_script:
   - python -v                                   # Print out Python version for debugging
   # Setup git
@@ -57,10 +56,14 @@ before_script:
 #   - python setup.py test
 
 py37:
-  image: "python:3.7"
+  image: continuumio/miniconda3:latest
+
+  before_script:
+  - conda env create -n qary -f environment.yml
+  - conda activate qary
+
   script:
   - pytest
-  # - python setup.py test
 
 # This deploy job uses a simple deploy flow to Heroku, other providers, e.g. AWS Elastic Beanstalk
 # are supported too: https://github.com/travis-ci/dpl
