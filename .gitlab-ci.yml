@@ -51,15 +51,16 @@ before_script:
 #   script:
 #   - python setup.py test
 
-py36:
-  image: "python:3.6"
-  script:
-  - python setup.py test
+# py36:
+#   image: "python:3.6"
+#   script:
+#   - python setup.py test
 
 py37:
   image: "python:3.7"
   script:
-  - python setup.py test
+  - pytest
+  # - python setup.py test
 
 # This deploy job uses a simple deploy flow to Heroku, other providers, e.g. AWS Elastic Beanstalk
 # are supported too: https://github.com/travis-ci/dpl
