@@ -144,6 +144,8 @@ class WikiScraper:
             summary = getattr(page, 'summary', '')
         else:
             time.sleep(self.sleep_nonexistent_page)
+            self.cache[title] = {}
+            return {}
 
         # FIXME: this postprocessing of Article objects to compost a text string should be in separate funcition
         # TODO: see_also is unnecessary until we add another way to walk deeper, e.g. links within the article
@@ -233,6 +235,8 @@ class WikiScraper:
                     prepend_section_headings=prepend_section_headings,
                     prepend_title_text=prepend_title_text) or dict(text='', summary='', see_also_links=[])
                 titles_scraped.add(title)
+                if not page_dict:
+                    continue
                 page_dict['title'] = title
                 page_dict['depth'] = d
                 log.info(f'len(titles_scraped): {len(titles_scraped)}')
