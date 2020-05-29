@@ -57,6 +57,9 @@ Machine Learning:
       - [0.95, "Jacob Devlin"]
       - [0.95, "BERT was created and published in 2018 by Jacob Devlin and his colleagues from Google."]
 Famous People:
+    Who invented the Telegraph?:
+      - [1.00, "Claude Chappe"]
+      - [0.99, "Claude Chappe,"]
     Famous motivational speaker from Atlanta?:
       - [1.0, "Tony Robbins"]
       - [0.9, "Jairek Robbins"]
