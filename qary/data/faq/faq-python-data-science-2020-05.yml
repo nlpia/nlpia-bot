@@ -193,3 +193,7 @@
 -
   Q: Plotting the number of reviews along the y axis and the product price on the vertical axis it seems that price is inversely proporational to the log of the number of reviews. So I transformed my `num_reviews` with the log function to create a `log_num_reviews` feature, but this contains `-inf` values and fillna does not remove them. what should I do?
   A: First try to figure out what might be causing the `np.log` function to output `-inf` values. Try rely large values and really small values as well as really large and small negative values; such as `np.log(1e10), np.log(1e-10), np.log(0), np.log(1), np.log(-1), np.log(-1e10)`. From that you should see that for products that have zero reviews you are getting a `-inf` for your `log_num_reviews` feature. You can find these in your dataset with `mask = df['log_num_reviews'] < 0`. And then you can fill those entries with a value that makes sense, like 0 or -1 or perhaps even `df['log_num_reviews'][mask] = -np.log(1)`.
+-
+  Q: What are the pros and cons of having 5-folds for cross-validation vs 1-fold?
+  A: 5-folds will run 5-times slower but it will create a better estimate of the accuracy of the model in the real world. It will also give you a confidence interval on your accuracy number. 1-fold is usually better for most problems because it allows you to explore 5-times more hyperparameters, increasing the speed with which you can find the most accurate model.
+
