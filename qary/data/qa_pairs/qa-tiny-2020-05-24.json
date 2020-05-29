@@ -1,5 +1,5 @@
 {
-    "US Presidents": {
+    "Famous People": {
         "Who was Jimmy Carter's wife?": [
             [1.0, "Rosalynn Carter"],
             [0.99, "Rosalynn Carter (wife)"],
@@ -7,6 +7,10 @@
             [0.4, "Mary Prince (an African American woman wrongly convicted of murder, and later pardoned) was their daughter Amy's nanny for most of the period from 1971 until Jimmy Carter's presidency ended."],
             [0.05, "Jack Carter was Jimmy Carter's son"],
             [0.1, "Lillian Gordy Carter (mother)"]
+            ],
+        "Who invented the telegraph?": [
+            [1.00, "Claude Chappe"],
+            [0.99, "Claude Chappe,"]
             ],
         "When was Barack Obama born?": [
             [1.00, "August 4, 1961"],
@@ -17,5 +21,5 @@
             [0.99, "August 4, 1961)"]
             ]
      }
-} 
+}
 
