@@ -23,6 +23,11 @@ def normalize_docvectors(docvectors):
     log.info(f'norms.shape: {norms.shape}')
     norms_reshaped = norms.reshape(-1, 1).dot(np.ones((1, docvectors.shape[1])))
     log.info(f'norms_reshaped.shape: {norms_reshaped.shape}')
+    iszero = norms_reshaped <= 0
+    if np.any(iszero):
+        log.warning(
+            f'some doc vectors are zero like this first one: docvectors[{iszero.argmax()}] = {docvectors[iszero.argmax()]}')
+    norms_reshaped[iszero] = 1
     normalized_docvectors = docvectors / norms_reshaped
     log.info(f'normalized_docvectors.shape: {normalized_docvectors.shape}')
     assert normalized_docvectors.shape == docvectors.shape
@@ -56,7 +61,7 @@ def load(domains=FAQ_DOMAINS):
             with filepointer:
                 log.info(f"loading: {filepath.name}\n    with file pointer: {filepointer}")
                 try:
-                    qa_list = yaml.load(filepointer)
+                    qa_list = yaml.safe_load(filepointer)
                 except ScannerError as e:
                     log.error(f"{e}\n    yaml.load unable to read {filepointer.name}")
                     continue
