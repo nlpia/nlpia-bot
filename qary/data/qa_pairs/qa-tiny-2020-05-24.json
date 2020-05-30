@@ -10,7 +10,8 @@
             ],
         "Who invented the telegraph?": [
             [1.00, "Claude Chappe"],
-            [0.99, "Claude Chappe,"]
+            [0.99, "Claude Chappe,"],
+            [1.00, "Claude Chappe invented the visual semaphore telegraph in 1794. Samuel Morse invented the electric telegraph sounder in 1838."]
             ],
         "When was Barack Obama born?": [
             [1.00, "August 4, 1961"],
