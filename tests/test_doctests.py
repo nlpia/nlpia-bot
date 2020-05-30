@@ -13,7 +13,7 @@ import qary.skills.faq_bots
 import qary.etl.glossaries
 import qary.etl.scrape_wikipedia
 import qary.etl.yml
-import qary.etl.faq
+import qary.etl.faqs
 import qary.etl.elastic
 import qary.etl.knowledge_extraction
 import qary.etl.qa_datasets
@@ -46,14 +46,14 @@ def test_etl_qa_datasets():
     assert results.attempted > 0
 
 
-def test_scrape_wikipedia():
+def test_etl_scrape_wikipedia():
     results = doctest.testmod(qary.etl.scrape_wikipedia, **DOCTEST_KWARGS)
     assert results.failed < 1
     assert results.attempted > 2
 
 
-def test_etl_faq():
-    results = doctest.testmod(qary.etl.faq, **DOCTEST_KWARGS)
+def test_etl_faqs():
+    results = doctest.testmod(qary.etl.faqs, **DOCTEST_KWARGS)
     assert results.failed < 1
     assert results.attempted > 0
 
