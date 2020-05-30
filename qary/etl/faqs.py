@@ -26,7 +26,7 @@ def normalize_docvectors(docvectors):
     iszero = norms_reshaped <= 0
     if np.any(iszero):
         log.warning(
-            f'some doc vectors are zero like this first one: docvectors[{iszero.argmax()}] = {docvectors[iszero.argmax()]}')
+            f'Some doc vectors are zero like this first one: docvectors[{iszero}] = {docvectors[iszero]}')
     norms_reshaped[iszero] = 1
     normalized_docvectors = docvectors / norms_reshaped
     log.info(f'normalized_docvectors.shape: {normalized_docvectors.shape}')
