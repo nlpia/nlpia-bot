@@ -16,17 +16,24 @@ log = logging.getLogger(locals().get('__name__'))
 
 
 def normalize_docvectors(docvectors):
-    """ Convert a table (2D matrix) of row-vectors into a table of normalized row-vectors """
+    """ Convert a table (2D matrix) of row-vectors into a table of normalized row-vectors
+
+    >>> vecs = normalize_docvectors([[1, 2, 3], [4, 5, 6], [0, 0, 0], [-1, 0, +2]])
+    >>> vecs.shape
+    (4, 3)
+    >>> np.linalg.norm(v, axis1)
+    [1, 1, 1, 1]
+    """
     docvectors = np.array(docvectors)
     log.info(f'docvectors.shape: {docvectors.shape}')
     norms = np.linalg.norm(docvectors, axis=1)
+    iszero = norms <= 0
     log.info(f'norms.shape: {norms.shape}')
     norms_reshaped = norms.reshape(-1, 1).dot(np.ones((1, docvectors.shape[1])))
     log.info(f'norms_reshaped.shape: {norms_reshaped.shape}')
-    iszero = norms_reshaped <= 0
     if np.any(iszero):
         log.warning(
-            f'Some doc vectors are zero like this first one: docvectors[{iszero}] = {docvectors[iszero]}')
+            f'Some doc vectors are zero like this first one: docvectors[{iszero},:] = {docvectors[iszero,:]}')
     norms_reshaped[iszero] = 1
     normalized_docvectors = docvectors / norms_reshaped
     log.info(f'normalized_docvectors.shape: {normalized_docvectors.shape}')
