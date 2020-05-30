@@ -54,11 +54,11 @@ py37:
   image: continuumio/miniconda3:latest
 
   before_script:
-  - conda update -n base -c defaults conda
-  - conda create -n qary37 python=3.7.6
-  - conda env update -n qary37 -f environment.yml
-  - source activate qary37
-  - pip install -e .
+    - conda update -n base -c defaults conda
+    - conda create -n qary37 python=3.7.6
+    - conda env update -n qary37 -f environment.yml
+    - source activate qary37
+    - pip install -e .
 
   script:
   - pytest
@@ -74,9 +74,15 @@ py37:
 #  - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_PRODUCTION_KEY
 
 pages:
+  before_script:
+    # - conda update -n base -c defaults conda
+    - conda create -n qarydocs37 python=3.7.6
+    - conda env update -n qary37 -f environment.yml
+    - source activate qarydocs37
+    - pip install -e .
+    - pip install Sphinx
   script:
-    - pip install -U sphinx simpletransformers
-    - python setup.py docs -b html
+    - python setup.py install docs -b html
     - cp -r build/sphinx/html public
   artifacts:
     paths:
