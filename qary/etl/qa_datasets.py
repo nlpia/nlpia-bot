@@ -111,9 +111,9 @@ def load_qa_dataset(filepath=os.path.join('qa_pairs', 'qa-tiny-2020-05-24.json')
 
     >>> d = load_qa_dataset()
     >>> d[0]
-    {'score': 1.0, 'question': "Who was Jimmy Carter's wife?", 'answer': 'Rosalynn Carter', 'topic': 'US Presidents'}
+    {'score': 1.0, 'question': "Who was Jimmy Carter's wife?", 'answer': 'Rosalynn Carter', 'topic': 'Famous People'}
     >>> d[-1]
-    {'score': 0.99, 'question': 'When was Barack Obama born?', 'answer': 'August 4, 1961)', 'topic': 'US Presidents'}
+    {'score': 0.99, 'question': 'When was Barack Obama born?', 'answer': 'August 4, 1961)', 'topic': 'Famous People'}
     """
 
     filepath = os.path.join(DATA_DIR, filepath) if not os.path.exists(filepath) else filepath
