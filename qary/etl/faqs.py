@@ -46,14 +46,10 @@ def load(domains=FAQ_DOMAINS):
 
     Load faq*.yml into dictionary: question: answer
 
-    >>> g = load(domains='dsdh'.split(','))
-    >>> len(g['raw']) <= len(g['cleaned']) > 30
+    >>> g = load()
+    >>> len(g['questions']) == len(g['answers']) > 30
     True
-    >>> sorted(g['cleaned']['Allele'])
-    ['acronym', 'definition', 'hashtags', 'parenthetical']
     """
-    # faq_raw = {}
-    # q_vectors = pd.DataFrame()
     questions, answers, question_vectors = [], [], []
 
     faqdirpath = os.path.join(DATA_DIR, 'faq')
