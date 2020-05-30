@@ -17,6 +17,7 @@
   Q: "I was wondering what is/are your data wrangling methods of choice? I find myself using `df.groupby()` just because it makes sense to me and goes with my way of thinking. I think it will take some experience to get used to melding and joining tabos or creating pivot tables and reindexing a table."
   A: "
   Yea, `groupby` is a powerful method. Stick with it. But there's one other tool you probably want to have in your bag of tricks and that's just the ability to iterate through the rows of a table and compute anything you want using if statements and math on all the columns. The pattern is:
+
   ```python
   new_feature = []
   for rownum, row in df.iterrows():
