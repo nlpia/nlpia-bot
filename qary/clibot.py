@@ -22,7 +22,7 @@ bot: Hello!
 YOU: Looking good!
 ```
 """
-import collections.abc
+from collections import abc
 import importlib
 import json
 import logging
@@ -68,7 +68,7 @@ class CLIBot:
             bots=constants.DEFAULT_BOTS,
             num_top_replies=None,
             **quality_kwargs):
-        if not isinstance(bots, collections.Mapping):
+        if not isinstance(bots, abc.Mapping):
             bots = dict(zip(bots, [None] * len(bots)))
         for bot_name, bot_kwargs in bots.items():
             bot_kwargs = {} if bot_kwargs is None else dict(bot_kwargs)
