@@ -21,8 +21,8 @@ def normalize_docvectors(docvectors):
     >>> vecs = normalize_docvectors([[1, 2, 3], [4, 5, 6], [0, 0, 0], [-1, 0, +2]])
     >>> vecs.shape
     (4, 3)
-    >>> np.linalg.norm(v, axis1)
-    [1, 1, 1, 1]
+    >>> np.linalg.norm(vecs, axis=1).round()
+    array([1., 1., 0., 1.])
     """
     docvectors = np.array(docvectors)
     log.info(f'docvectors.shape: {docvectors.shape}')
@@ -34,7 +34,7 @@ def normalize_docvectors(docvectors):
     if np.any(iszero):
         log.warning(
             f'Some doc vectors are zero like this first one: docvectors[{iszero},:] = {docvectors[iszero,:]}')
-    norms_reshaped[iszero] = 1
+    norms_reshaped[iszero, :] = 1
     normalized_docvectors = docvectors / norms_reshaped
     log.info(f'normalized_docvectors.shape: {normalized_docvectors.shape}')
     assert normalized_docvectors.shape == docvectors.shape
