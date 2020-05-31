@@ -76,9 +76,9 @@ py37:
 pages:
   before_script:
     # - conda update -n base -c defaults conda
-    - conda create -n qarydocs37 python=3.7.6
-    - conda env update -n qary37 -f environment.yml
-    - source activate qarydocs37
+    # - conda create -n qarydocs37 python=3.7.6
+    # - conda env update -n qary37 -f environment.yml
+    # - source activate qarydocs37
     - pip install -e .
     - pip install Sphinx
   script:
