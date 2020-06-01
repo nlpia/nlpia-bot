@@ -40,14 +40,14 @@ py36:
   image: continuumio/miniconda3:latest
 
   before_script:
-  - conda update -n base -c defaults conda
-  - conda create -n qary36 python=3.6.9
-  - conda env update -n qary36 -f environment.yml
-  - source activate qary36
-  - pip install -e .
+    - conda update -n base -c defaults conda
+    - conda create -n qary36 'python>=3.6.0,<3.7'
+    - conda env update -n qary36 -f environment.yml
+    - source activate qary36
+    - pip install -e .
 
   script:
-  - pytest
+    - pytest
 
 
 py37:
@@ -55,13 +55,23 @@ py37:
 
   before_script:
     - conda update -n base -c defaults conda
-    - conda create -n qary37 python=3.7.6
+    - conda create -n qary37 'python>=3.7.0,<3.8'
     - conda env update -n qary37 -f environment.yml
     - source activate qary37
     - pip install -e .
 
   script:
-  - pytest
+    - pytest
+
+
+# windows:
+#   image: philippheuer/docker-gitlab-powershell
+
+#   before_script:
+#     - pip install qary
+
+#   script:
+#     - python -c 'import qary; print(qary.__version__)'
 
 
 # This deploy job uses a simple deploy flow to Heroku, other providers, e.g. AWS Elastic Beanstalk
