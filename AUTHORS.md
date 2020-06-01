@@ -1,6 +1,6 @@
 # Contributors
 
-- Olesya (@ovbondarenko): elastic search and and BERT transformer for QA (winner of Duchess's Joan of Arc award May 2020)
+- Olesya (@ovbondarenko): ElasticSearch & ALBERT-based DL transformers for QA (winner of Duchess's Joan of Arc award May 2020)
 - Kendra: semantic search of article titles
 - Mohammed: web application
 - Maria: product development
