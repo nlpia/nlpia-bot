@@ -64,16 +64,6 @@ py37:
     - pytest
 
 
-windows:
-  image: philippheuer/docker-gitlab-powershell
-
-  before_script:
-    - pip install qary
-
-  script:
-    - python -c 'import qary; print(qary.__version__)'
-
-
 # This deploy job uses a simple deploy flow to Heroku, other providers, e.g. AWS Elastic Beanstalk
 # are supported too: https://github.com/travis-ci/dpl
 #deploy:
