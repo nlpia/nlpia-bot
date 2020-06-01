@@ -7,7 +7,7 @@
 
 The `qary` package is both a chatbot framework and a working "reference implementation" virtual assistant that actually assists! Most bots manipulate you to make money for their corporate masters. With qary, you can build **your bot** to protect you and amplify your intelligence and prosocial instincts.
 
-`qary` was conceived as part of [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action) book, is maintained by a [active developer community](/docs/wiki/contributors.md) and is supported by San Diego Python User Group (see talk presentations [here](http://totalgood.org/midata/talks/) and in `docs/`.
+`qary` was conceived as part of [NLP in Action](https://www.manning.com/books/natural-language-processing-in-action) book, is maintained by an [active developer community](/docs/wiki/contributors.md) and is supported by San Diego Python User Group (see talk presentations [here](http://totalgood.org/midata/talks/) and in `docs/`.
 
 
 ## Install
@@ -21,13 +21,21 @@ pip install qary
 
 ### Developer install
 
-You'll want to install and use the conda package manager within Anaconda3, especially if your development environment is not an open standard operating system like Linux.
+First retrieve a copy of the source code for `qary`:
 
 ```bash
 git clone git@gitlab.com:tangibleai/qary
 cd qary
-conda env create -n qaryenv -f environment.yml
-conda activate qaryenv
+```
+
+Then, install and use the `conda` package manager built into the [Anaconda](https://www.anaconda.com/products/individual#Downloads) suite of tools.
+A cross-platform package and python environment manager like `conda` is especially important if your operating system is not an open standard like Linux.
+
+```bash
+conda update -n base -c defaults conda
+conda create -n qaryenv 'python>=3.6.0,<3.7'
+conda env update -n qaryenv -f environment.yml
+source activate qaryenv
 pip install --editable .
 ```
 
