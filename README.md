@@ -28,7 +28,7 @@ git clone git@gitlab.com:tangibleai/qary
 cd qary
 ```
 
-Then, install and use the `conda` package manager built into the [Anaconda](https://www.anaconda.com/products/individual#Downloads) suite of tools.
+Then, install and use the `conda` python package manager within the [Anaconda](https://www.anaconda.com/products/individual#Downloads) software package.
 A cross-platform package and python environment manager like `conda` is especially important if your operating system is not an open standard like Linux.
 
 ```bash
