@@ -9,6 +9,13 @@ git tag -l | cat
 git tag -a "$1" -m "$2"
 python setup.py sdist
 python setup.py bdist_wheel
+
+if [ -z "$(which twine)" ] ; then
+    echo 'Unable to find `twine` so installing it with pip.'
+    pip install --upgrade pip
+    pip install --upgrade twine
+fi
+
 twine check dist/*
 twine upload dist/"qary-$1"*
 git push --tag
