@@ -31,6 +31,17 @@ USE_CUDA = False
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
+LARGE_FILES = {
+    'wikipedia_articles': dict(
+        url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/articles_with_keywords.pkl',
+        path=os.path.join(DATA_DIR, 'wikipedia', 'articles_with_keywords.pkl')),
+    'albert-large-v2': dict(
+        url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/models/qa/articles_with_keywords.pkl',
+        path=os.path.join(DATA_DIR, 'models', 'qa', 'albert-large-v2-0.2.0.zip')),
+}
+
+LARGE_FILES['articles_with_keywords'] = LARGE_FILES['wikipedia_articles']
+
 DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'False',  # Yes, yes, 1, Y, y, T, t
@@ -44,7 +55,7 @@ DEFAULT_CONFIG = {
     'debug': True,
     'wiki_title_max_words': 4,
     'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}',
-    'qa_model': 'albert-large-v2-0.2.0'
+    'qa_model': 'albert-large-v2-0.2.0',
 }
 DEFAULT_CONFIG.update(env.parsed)
 
