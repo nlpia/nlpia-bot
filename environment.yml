@@ -33,10 +33,10 @@ dependencies:
     - editdistance==0.5.3
     - elasticsearch==7.6.0
     - environment==1.0.0
-    - fuzzywuzzy==0.18.0
     - gitpython==3.1.1
     - nltk==3.5
     - python-slugify==4.0.0
+    - rapidfuzz==0.9.1
     - scikit-learn==0.22.2
     - tensorboardX==2.0
     - tensorflow==2.2.0
