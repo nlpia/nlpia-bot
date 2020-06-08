@@ -1,0 +1,89 @@
+# Example translations English->First-Order Logic
+
+# order of prescendence (from highest to lowest): ¬(NOT),∧(AND),∨(OR),⇒ (IMPLIES),⇔ (EQUIV).
+
+-
+    - All students are smart.
+    - ∀ x ( Student(x)⇒ Smart(x) )
+-
+    - There exists a student.
+    - ∃ x Student(x).
+-
+    - There exists a smart student.
+    - ∃ x ( Student(x)∧ Smart(x) )
+-
+    - Every student loves some student.
+    - ∀ x ( Student(x)⇒∃ y ( Student(y)∧ Loves(x,y) ))
+-
+    - Every student loves some other student.
+    - ∀ x ( Student(x)⇒∃ y ( Student(y)∧¬ (x = y)∧ Loves(x,y) ))
+-
+    - There is a student who is loved by every other student.
+    - ∃ x ( Student(x)∧∀ y ( Student(y)∧¬(x = y)⇒ Loves(y,x) ))
+-
+    - Bill is a student.
+    - Student(Bill)
+-
+    - Bill takes either Analysis or Geometry (but not both)
+    - Takes(Bill, Analysis)⇔¬ Takes(Bill, Geometry)
+-
+    - Bill takes Analysis or Geometry (or both).
+    - Takes(Bill, Analysis)∨ Takes(Bill, Geometry)
+-
+    - Bill takes Analysis and Geometry.
+    - Takes(Bill, Analysis)∧ Takes(Bill, Geometry)
+-
+    - Bill does not take Analysis.
+    - ¬Takes(Bill, Analysis)
+-
+    - No student loves Bill.
+    - ¬∃ x ( Student(x)∧ Loves(x, Bill) )
+-
+    - Bill has at least one sister.
+    - ∃ x SisterOf(x,Bill)
+-
+    - Bill has no sister.
+    - ¬∃ x SisterOf(x,Bill)
+-
+    - Bill has at most one sister.
+    - ∀ x, y ( SisterOf(x, Bill)∧ SisterOf(y, Bill)⇒ x = y )
+-
+    - Bill has exactly one sister.
+    - ∃ x ( SisterOf(x, Bill)∧∀y ( SisterOf(y, Bill)⇒ x = y ))
+-
+    - Bill has at least two sisters.
+    - ∃ x, y ( SisterOf(x, Bill)∧ SisterOf(y, Bill)∧¬ (x = y) )
+-
+    - Every student takes at least one course.
+    - ∀ x ( Student(x)⇒∃ y ( Course(y)∧ Takes(x,y) ))
+-
+    - Only one student failed History.
+    - ∃ x ( Student(x)∧ Failed(x, History)∧∀y ( Student(y)∧ Failed(y, History)⇒ x = y ))
+-
+    - No student failed Chemistry but at least one student failed History.
+    - ¬∃ x ( Student(x)∧ Failed(x, Chemistry) )∧∃ x ( Student(x)∧ Failed(x, History) )
+-
+    - Every student who takes Analysis also takes Geometry.
+    - ∀ x ( Student(x)∧ Takes(x, Analysis)⇒ Takes(x, Geometry) )
+-
+    - No student can fool all the other students.
+    - ¬∃ x ( Student(x)∧∀ y ( Student(y)∧¬ (x = y)⇒ Fools(x,y) ))
+-
+    - Every gardener likes the sun.
+    - (Ax) gardener(x) => likes(x,Sun)
+-
+    - You can fool some of the people all of the time.
+    - (Ex)(At) (person(x) ^ time(t)) => can-fool(x,t)
+-
+    - You can fool all of the people some of the time.
+    - (Ax)(Et) (person(x) ^ time(t) => can-fool(x,t)
+-
+    - All purple mushrooms are poisonous.
+    - (Ax) (mushroom(x) ^ purple(x)) => poisonous(x)
+-
+    - No purple mushroom is poisonous.
+    - ~(Ex) purple(x) ^ mushroom(x) ^ poisonous(x)
+    - (Ax) (mushroom(x) ^ purple(x)) => ~poisonous(x)
+-
+    - There are exactly two purple mushrooms.
+    - (Ex)(Ey) mushroom(x) ^ purple(x) ^ mushroom(y) ^ purple(y) ^ ~(x=y) ^ (Az) (mushroom(z) ^ purple(z)) => ((x=z) v (y=z))
