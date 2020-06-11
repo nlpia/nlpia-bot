@@ -1,0 +1,53 @@
+# Book Smarts - Artificial Intelligence a Modern Approach by Stuart Russel and Peter Norvig
+# section is fully qualified like 1.2.3 for chapter 1, section 2, subsection 3
+# section num is just 2 in that example
+# line and paragraph is relative to the start of the section (both starting at 0 for the section heading)
+-
+  - We call ourselves Homo sapiens--man the wise--because our **intelligence** is so
+    important to us.
+  - chapter: 1
+    endline: 8
+    line: 7
+    page: 1
+    paragraph: 2
+    section: 1.0
+    section_num: 0
+    facts:
+      - "\"Homo sapiens\" means \"man the wise.\""
+      - "The scientific name for \"human\" is \"Homo sapiens.\""
+      - Intelligence is very important to humans.
+      - Humans study their own intelligence.
+    fol:
+      - Synonym(Homo, Wise)
+-
+  - "We have claimed that AI is interesting, but we have not said what it is. Historically, researchers have pursued several different versions of AI. Some have defined intelligence in terms of fidelity to *human* performance, while others prefer an abstract, formal definition of intelligence called **rationality**--loosely speaking, doing the \"right thing.\" The subject matter itself also varies: some consider intelligence to be a property of internal *thought processes* and *reasoning*, while others focus on intelligent *behavior*, an external characterization."
+  - chapter: 1
+    endline: 27
+    line: 24
+    page: 1
+    paragraph: 1
+    section: 1.1
+    section_num: 1
+    paraphrase:
+      - "Researchers define intelligence one of two ways: 1) how human a system thinks or behaves or 2) how correct (rational) it thinks or behaves."
+      - Intelligence is thought of as either 1) a property of internal thought processes, or 2) a property of external behaviors and actions.
+      - Intelligence is either meausred and studied subjectively based on internal processes, or objectively based on behavior.
+    facts:
+      - "Rationality roughly means \"doing the right thing.\""
+  - "In the public eye, there is some confusion between the terms \"artificial intelligence\" and \"machine learning.\" Machine learning is a subfield of AI that studies the ability to improve performance based on experience. Some AI systems use machine learning methods to achieve competence, but some do not."
+  - chapter: 1
+    endline: 6
+    line: 1
+    page: 1
+    paragraph: 1
+    section: 1.1
+    section_num: 1
+    footnote: 1.1
+    footnote_num: 1
+    paraphrase:
+      - "Researchers define intelligence one of two ways: 1) how human a system thinks or behaves or 2) how correct (rational) it thinks or behaves."
+      - "Intelligence is thought of as either 1) a property of internal thought processes, or 2) a property of external behaviors and actions."
+      - "Intelligence is either meausred and studied subjectively based on internal processes, or objectively based on behavior."
+    facts:
+      - "Rationality roughly means \"doing the right thing.\""
+
