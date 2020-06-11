@@ -16,6 +16,6 @@ if [ -z "$(which twine)" ] ; then
     pip install --upgrade twine
 fi
 
-twine check dist/* --verbose
+twine check dist/*
 twine upload dist/"qary-$1"* --verbose
 git push --tag
