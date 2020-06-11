@@ -63,6 +63,7 @@ db.sqlite3
 *.zip
 qary/data/qa-models/*
 qary/data/simple-transformer/
+**/albert-large*
 
 # Per-project virtualenvs
 .venv*/
