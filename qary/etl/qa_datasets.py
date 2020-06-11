@@ -106,7 +106,7 @@ def load_trec_trainset(url='http://cogcomp.org/Data/QA/QC/train_5500.label'):
     return df
 
 
-def load_qa_dataset(filepath=os.path.join('qa_pairs', 'qa-tiny-2020-05-24.json')):
+def load_qa_dataset(filepath=os.path.join('testsets', 'dialog', 'qa-tiny-2020-05-24.json')):
     """ Load a json file containing desired responses, scored for truthfulness
 
     >>> d = load_qa_dataset()
