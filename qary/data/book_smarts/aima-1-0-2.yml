@@ -13,8 +13,8 @@
     section: 1.0
     section_num: 0
     facts:
-      - "Homo sapiens" means "man the wise."
-      - The scientific name for "human" is "Homo sapiens"
+      - "\"Homo sapiens\" means \"man the wise.\""
+      - "The scientific name for \"human\" is \"Homo sapiens.\""
       - Intelligence is very important to humans.
       - Humans study their own intelligence.
     fol:
@@ -46,8 +46,8 @@
     footnote_num: 1
     paraphrase:
       - "Researchers define intelligence one of two ways: 1) how human a system thinks or behaves or 2) how correct (rational) it thinks or behaves."
-      - Intelligence is thought of as either 1) a property of internal thought processes, or 2) a property of external behaviors and actions.
-      - Intelligence is either meausred and studied subjectively based on internal processes, or objectively based on behavior.
+      - "Intelligence is thought of as either 1) a property of internal thought processes, or 2) a property of external behaviors and actions."
+      - "Intelligence is either meausred and studied subjectively based on internal processes, or objectively based on behavior."
     facts:
-      - Rationality roughly means "doing the right thing."
+      - "Rationality roughly means \"doing the right thing.\""
 
