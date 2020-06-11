@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # release.sh
 
+# set -e
 # pip install -U twine wheel setuptools
-
 git commit -am "$2"
 git push
 git tag -l | cat
@@ -16,6 +16,6 @@ if [ -z "$(which twine)" ] ; then
     pip install --upgrade twine
 fi
 
-twine check dist/*
-twine upload dist/"qary-$1"*
+twine check dist/* --verbose
+twine upload dist/"qary-$1"* --verbose
 git push --tag
