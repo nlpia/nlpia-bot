@@ -2,7 +2,7 @@ from qary.skills.glossary_bots import Bot as GlossaryBot
 from qary.skills.faq_bots import Bot as FaqBot
 
 
-class GlossaryCortextPredictor:
+class PythonPredictor:
     def __init__(self, config):
         self.model = GlossaryBot()
 
