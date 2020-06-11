@@ -29,10 +29,12 @@ dependencies:
   - pip:
     - boto3==1.13.19
     - botocore==1.16.19
+    - django==3.0.7
     - docutils==0.15.2
     - editdistance==0.5.3
     - elasticsearch==7.6.0
     - environment==1.0.0
+    - https://github.com/explosion/spacy-models/releases/download/en_core_web_md-2.2.5/en_core_web_md-2.2.5.tar.gz
     - gitpython==3.1.1
     - nltk==3.5
     - python-slugify==4.0.0
@@ -46,4 +48,4 @@ dependencies:
     - recommonmark==0.6.0
     - m2r==0.2.1
     - wikipedia-api==0.5.4
-    - https://github.com/explosion/spacy-models/releases/download/en_core_web_md-2.2.5/en_core_web_md-2.2.5.tar.gz
+
