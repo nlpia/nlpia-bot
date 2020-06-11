@@ -2,12 +2,12 @@
 import logging
 import os
 import uuid
-import urllib.request
+# import urllib.request
 import zipfile
 # from multiprocessing import cpu_count
 
 from qary.etl.netutils import download_if_necessary
-from qary.constants import DATA_DIR, MIDATA_URL, MIDATA_QA_MODEL_DIR, args  # , USE_CUDA
+from qary.constants import DATA_DIR, MIDATA_URL, MIDATA_QA_MODEL_DIR, args, LARGE_FILES  # , USE_CUDA
 from qary.etl.nesting import dict_merge
 
 
@@ -204,7 +204,7 @@ class TransformerBot(HistoryBot, ContextBot):
         qa_model = args.qa_model
         url_str = f"{MIDATA_URL}/{MIDATA_QA_MODEL_DIR}/{qa_model}.zip"
         log.warning(f"Attempting to download url: {url_str}")
-        model_dir = os.path.join(DATA_DIR, 'qa-models', f"{qa_model}")
+        model_dir = os.path.dirname(LARGE_FILES['albert-large-v2']['path'])
         model_type = qa_model.split('-')[0].lower()
         if not os.path.isdir(model_dir):
             os.makedirs(model_dir)
@@ -217,9 +217,11 @@ class TransformerBot(HistoryBot, ContextBot):
             any((model_type == 'bert' and os.path.exists(os.path.join(model_dir, 'vocab.txt'))),
                 (model_type == 'albert' and os.path.exists(os.path.join(model_dir, 'spiece.model')))),
         )):
-            zip_local_path = download_if_necessary(url=, path=os.path.join(DATA_DIR, 'qa-models', f"{qa_model}.zip"))
+            zip_local_path = download_if_necessary(
+                url=LARGE_FILES['albert-large-v2']['url'],
+                path=LARGE_FILES['albert-large-v2']['path'])
             with zipfile.ZipFile(zip_local_path, 'r') as zip_file:
-                zip_file.extractall(os.path.join(DATA_DIR, 'qa-models'))
+                zip_file.extractall(os.path.dirname(LARGE_FILES['albert-large-v2']['path']))
             os.remove(zip_local_path)
 
     def encode_transformer_input(self, statement, context=None):
