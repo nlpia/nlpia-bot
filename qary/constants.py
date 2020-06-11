@@ -8,6 +8,7 @@ import nltk.corpus
 import spacy  # noqa
 import configargparse
 from environment import Environment
+from django.conf import settings
 
 from . import __version__
 
@@ -397,13 +398,22 @@ TFHUB_USE_MODULE_URL = "https://tfhub.dev/google/universal-sentence-encoder-larg
 # Universal Sentence Encoder's TF Hub module for creating USE Embeddings from
 USE = None
 
+DATABASES = {
+    'sqlite': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    'postgres': {
+        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.environ.get('SQL_DATABASE', os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': os.environ.get('SQL_USER', 'user'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD', 'password'),
+        'HOST': os.environ.get('SQL_HOST', 'localhost'),
+        'PORT': os.environ.get('SQL_PORT', '5432'),
+    }
+}
+DATABASES['default'] = DATABASES['sqlite']
+DEFAULT_DATABASE_CONFIG = {'DATABASE_' + k: v for (k, v) in DATABASES['default'].items()}
+DEFAULT_DATABASE_CONFIG['TIME_ZONE'] = 'America/Los_Angeles'
 
-class passthroughSpaCyPipe:
-    """ Callable pass-through SpaCy Pipeline Component class (callable) for fallback if spacy_hunspell.spaCyHunSpell fails"""
-
-    def __init__(self, *args, **kwargs):
-        pass
-
-    def __call__(self, doc):
-        log.info(f"This passthroughSpaCyPipe component only logs the token count: {len(doc)}")
-        return doc
+settings.configure(**DEFAULT_DATABASE_CONFIG)
