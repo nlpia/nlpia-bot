@@ -1,0 +1,7 @@
+- name: qary-glossary-bot
+  predictor:
+    type: python
+    path: cortex.py
+  compute:
+    gpu: 1
+    mem: 4G
