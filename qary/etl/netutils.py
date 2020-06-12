@@ -1,5 +1,6 @@
 """ Transformer based chatbot dialog engine for answering questions """
 import logging
+import os
 
 import urllib
 from tqdm import tqdm
@@ -22,11 +23,13 @@ class DownloadProgressBar(tqdm):
 def download_if_necessary(
         url_or_name,
         dest_path=None):
-    url = LARGE_FILES.get(url_or_name, url_or_name)
-    filename = url.split('/')[-1]
-    if dest_path is None:
-        dest_path = LARGE_FILES.get(url_or_name,
-            LARGE_FILES.get(url, os.path.join(DATA_DIR, filename))
+    file_meta = LARGE_FILES.get(url_or_name) or {}
+    url = url_or_name if not file_meta else file_meta['url']
+    dest_path = dest_path or file_meta.get('path')
+    if not dest_path:
+        file_meta = LARGE_FILES.get(url_or_name, LARGE_FILES.get(url, {}))
+        dest_path = file_meta.get('path', os.path.join(DATA_DIR, filename))
+    filename = file_meta.get('filename', dest_path)
 
     with DownloadProgressBar(unit='B', unit_scale=True, miniters=1, desc=filename) as dpb:
         urllib.request.urlretrieve(url, filename=dest_path, reporthook=dpb.update_to)
