@@ -46,10 +46,10 @@
   Q: Rather than dropping rows (records) for outliers, is there a better way to deal with outliers?  #student #202006091630 #ElHo
   A: Plot the residuals (error) against each of your features, looking for some curvature or nonlinear shape that you recognize from algebra class, like `exp`, `x^2`, `1/x`. If you find a nonlinear pattern you can apply that transform to that feature variable and improve the accuracy of your model on both the outlier and the bulk of the data where the residual is already low.
 -
-  Q: How do I find and deal with spurious correlations?   #student #202006091800 #YeHe
+  Q: How do I find and deal with spurious correlations? #student #202006091800 #YeHe
   A: Without deep domain knowledge and experience a Data Scientist cannot detect spurious correlations. Only a scientist that performs experiments in the real world can detect causal relationships and spurrious correlations. Data Science performs experiments on data. Real science performs experiments on the real world, like randomized controled trials (RCTs). RCTs are the gold standard for identifying cause and effect relationships and spurious correlations. To  learn more, check out _The Book of Why_ by Judea Pearl.
 -
-  Q: How can I compose a hyperparameter table that includes both classifier F1-scores and regressor RMSE?
+  Q: How can I compose a hyperparameter table that includes both classifier F1-scores and regressor RMSE? #SaSa #202006100900 #student
   A: Create a dictionary for each row in your hyper parameter table. You should have one row for every time you call a `model.fit()` method. Then you want to append that hyperparameter dictionary to a hyper parameter list. That list of dictionaries can be converted to a nicely formatted dataframe with `pd.DataFrame(hyperparameter_list_of_dicts)`. And for each model type it will contain different metrics (like RMSE or F1-score) and different hyperparameters as key value pairs. The DataFrame will just contain NaNs in the appropriate positions in your table where no key-value pair was present for a particular model.
 -
   Q: How can I decide the right `min_df` for a `TFIDFVectorizer`? #student #GaLi
@@ -66,6 +66,11 @@
   A: The JSON REST API is located at [](https://data.cityofnewyork.us/resource/erm2-nwe9.json)
   Q1: When I try to download data from the Socrata REST API at data.cityofnewyork.us/resource/erm2-nwe9.json it only returns 1000 records. I'd like to download the entire dataset.
   A1: You'll need to add GET parameters like `?create_date=20200610` to the end of the url to download subsets of the dataset one at a time.
-
+-
+  Q: Why did you recommend I start with `n_components=10` in my PCA dimension reduction for a TFIDF vector? Why didn't you set a threshold on explained variance like 95%? #student #KeLa #202006111800
+  A: Because explained variance often doesn't measure what you care about. You care about test set accuracy or test set score. So try many different n_components values to search for the best hyperparameter value for your problem.
+-
+  Q: What are some good transformations to use during feature engineering? #NiSa #202006111830 #student
+  A: Some transformations to try would be `X**2`, `X**3`, `X**.5`, `X**-1`, `np.log(X)`, `np.exp(X)`, `X[:,0] * X[:,1]`, etc. There are an infinite number of transformations you could try. So do not search blindly. Instead, pay attention to the test set and training set accuracy after each transformation. This will help you make an informed guesses about each transformation you decide to try.
 
 
