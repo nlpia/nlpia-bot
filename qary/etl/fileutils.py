@@ -1,1 +1,22 @@
-.Œ%z÷¥~)^³+-zk­ŠX­‰ë-…«bšš+¶‰åÊ‹Û2²z¢{-j{l§+«•ø¥zv¦zm§ÿð…«^½êÜ¢oÚnÏÝŠ¿çjg¿©žm«©ž†Ûiÿ÷±jjeyÊ&ý¦ìýØ«þv¦{ùÚ™æÚ±éÚ™èm¶ŸÿÃÅ©©•ç(›öÚ±éÚ™ë(™æâ‚Ö«ƒ6Ú±éÚ™è¦¦Ší¢Ç^~êå~)^©žº¹kzÛ«žêå®ËkŠŸì¦X­ÿW^}¶¬zv¦yø¥zv¦y¶¬zêå~)^©ž~)^©ž{
+""" Low level file system utilities that import only `os` and `sys` (no constants.py)
+
+>>> url_filename('http://whatever.com/abs/dir/name/')
+'name'
+>>> basename('http://example.com/abs/dir/name/')
+'name'
+>>> basename('http://www.example.com/basename.some.big.tar.gz')
+'basename'
+"""
+import os
+
+
+def url_filename(url):
+    return url.rstrip('/').split('/')[-1]
+
+
+def basename(filename):
+    base = url_filename(filename)
+    ext = True
+    while ext and base:
+        base, ext = os.path.splitext(filename)
+    return base
