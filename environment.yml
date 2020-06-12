@@ -1,4 +1,4 @@
-name: nlpia
+name: qary
 
 channels:
   - conda-forge  # conda-forge is higher priority than defaults in nlpia package
@@ -6,38 +6,45 @@ channels:
   # - anaconda  # bad idea: https://github.com/conda/conda/issues/9462
 
 dependencies:
-  - ConfigArgParse
-  - django
-  - django-environ
-  - django-extensions
+  - ConfigArgParse==1.2.2
   # - elasticsearch
   - html5lib
   # - hunspell
   # - hunspell-en
-  - jupyter
-  - lxml
-  - nltk
-  - pandas
+  - jupyter==1.0.0
+  - lxml==4.5.0
+  - pandas==1.0.3
   - pip
-  - pre-commit
-  - psycopg2
+  - pre_commit==2.3.0
   - pyscaffold
   - pytest-cov
   - python>=3.7.6
-  - pytorch
-  - regex  # ==2018.1.10
-  - seaborn
-  - scipy
-  - spacy>=2.2.2,<2.3.0
-  - tqdm
+  - regex==2020.4.4
+  - seaborn==0.10.0
+  - scipy==1.4.1
+  - spacy==2.2.4
+  - tqdm>=4.38.0,<5.0.0
   - watchdog
 
   - pip:
-    - environment
-    - fuzzywuzzy
-    - nboost
-    - simpletransformers
-    - python-slugify
-    - tensorboardX
-    - transformers
-    # - hunspell
+    - boto3==1.13.19
+    - botocore==1.16.19
+    - django==3.0.7
+    - docutils==0.15.2
+    - editdistance==0.5.3
+    - elasticsearch==7.6.0
+    - environment==1.0.0
+    - https://github.com/explosion/spacy-models/releases/download/en_core_web_md-2.2.5/en_core_web_md-2.2.5.tar.gz
+    - gitpython==3.1.1
+    - nltk==3.5
+    - python-slugify==4.0.0
+    - rapidfuzz==0.9.1
+    - scikit-learn==0.22.2
+    - tensorboardX==2.0
+    - tensorflow==2.2.0
+    - torch==1.4.0
+    - transformers>=2.4.1,<2.5.0
+    - Sphinx==3.0.3
+    - recommonmark==0.6.0
+    - m2r==0.2.1
+    - wikipedia-api==0.5.4
