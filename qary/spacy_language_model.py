@@ -4,18 +4,31 @@ import logging
 import numpy as np
 import spacy
 
-from .constants import LANG, LANGS, passthroughSpaCyPipe
+from .constants import LANG, LANGS
 
 
 log = logging.getLogger(__name__)
 nlp = None
 UNKNOWN_WORDVEC = np.array([])
 
+
+class passthroughSpaCyPipe:
+    """ Callable pass-through SpaCy Pipeline Component class (callable) for fallback if spacy_hunspell.spaCyHunSpell fails"""
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __call__(self, doc):
+        log.info(f"This passthroughSpaCyPipe component only logs the token count: {len(doc)}")
+        return doc
+
+
 try:
-    from spacy_hunspell import spaCyHunSpell
+    import spacy_hunspell
 except ImportError:
     log.warning('Failed to import spaCyHunSpell. Substituting with fake . . .')
-    spaCyHunSpell = passthroughSpaCyPipe
+    spacy_hunspell = None
+spaCyHunSpell = spacy_hunspell.spaCyHunSpell if spacy_hunspell else passthroughSpaCyPipe
 
 
 def add_hunspell_pipe(model):

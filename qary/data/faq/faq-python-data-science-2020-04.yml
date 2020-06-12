@@ -17,6 +17,7 @@
   Q: "I was wondering what is/are your data wrangling methods of choice? I find myself using `df.groupby()` just because it makes sense to me and goes with my way of thinking. I think it will take some experience to get used to melding and joining tabos or creating pivot tables and reindexing a table."
   A: "
   Yea, `groupby` is a powerful method. Stick with it. But there's one other tool you probably want to have in your bag of tricks and that's just the ability to iterate through the rows of a table and compute anything you want using if statements and math on all the columns. The pattern is:
+
   ```python
   new_feature = []
   for rownum, row in df.iterrows():
@@ -32,7 +33,7 @@
   A: "If you have a strong computer science background or teach yourself web development you can often learn how to avoid using SQL at all, by using ORM (Object Relation Mappings) in python or your preferred language. The advantage of that approach is that your brain can learn one programming language syntax very well. But as a beginning data scientist, without significant python and web development experience, you will probably have to use some SQL to retrieve the data you need to do Data Scientist. And even as an experienced Data Scientist who uses ORMs to retrieve and manipulate data, you will often need to use SQL to improve the efficiency of your queries. And some queries and database operations are not possible at all without an understanding of SQL."
 -
   Q: "As a Data Scientist in industry what query language do you use to query a NoSQL database, such as a graph database or document store? I'm thinking of databases like Hadoop, ElasticSearch, MongoDB, Reddis, and Neo4J."
-  A: "Neo4J uses Gremlin. NetworkX has a python API. Neo4J uses Cypher. ElasticSearch uses their own custom DSL (domain-specific langauge) based on JSON. You can find many other languages for NoSQL listed on the Wikipedia [NoSQL article](https://en.wikipedia.org/wiki/NoSQL)."
+  A: "Neo4J uses Gremlin. NetworkX has a python API. Neo4J uses Cypher. ElasticSearch uses their own custom DSL (domain-specific language) based on JSON. You can find many other languages for NoSQL listed on the Wikipedia [NoSQL article](https://en.wikipedia.org/wiki/NoSQL)."
 -
   Q: What is the best practice for selecting an index for my data in a DataFrame or database? Should I use the company name concatenated with the year as the index for financial data, or should I create a MultiIndex with company and year as the two levels of the index?
   A: In most cases its best to let pandas or your database management system create the index for you by simply leaving it empty and adding independent columns for all the variables in your dataset, like company name and year. This will allow you to join on any combination of the variables that you like. The one exception to this in Pandas is that if you often need to look up (retrieve) records by company name or year or both, it would be best to use them as a MultiIndex in addition to maintaining them as columns in your DataFrame of feature variables.
