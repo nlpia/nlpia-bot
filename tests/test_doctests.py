@@ -17,6 +17,7 @@ import qary.etl.faqs
 import qary.etl.elastic
 import qary.etl.knowledge_extraction
 import qary.etl.qa_datasets
+import qary.etl.fileutils
 
 import qary.scores.semantics_score
 # import qary.template_generators
@@ -32,7 +33,7 @@ DOCTEST_KWARGS = dict(
 
 
 ################################################
-# etl/*
+# etl
 
 def test_etl_glossaries():
     results = doctest.testmod(qary.etl.glossaries, **DOCTEST_KWARGS)
@@ -42,6 +43,12 @@ def test_etl_glossaries():
 
 def test_etl_qa_datasets():
     results = doctest.testmod(qary.etl.qa_datasets, **DOCTEST_KWARGS)
+    assert results.failed < 1
+    assert results.attempted > 0
+
+
+def test_etl_fileutils():
+    results = doctest.testmod(qary.etl.fileutils, **DOCTEST_KWARGS)
     assert results.failed < 1
     assert results.attempted > 0
 
