@@ -3,6 +3,7 @@ import re
 import os
 import logging
 import json
+from itertools import chain
 
 import numpy as np
 import pandas as pd
@@ -11,6 +12,7 @@ from editdistance import distance
 
 from qary.spacy_language_model import nlp
 from qary.constants import DATA_DIR
+from qary.etl import scrape_wikipedia
 
 
 log = logging.getLogger(__name__)
@@ -104,25 +106,21 @@ def load_trec_trainset(url='http://cogcomp.org/Data/QA/QC/train_5500.label'):
     return df
 
 
-def load_qa_dataset(filepath=os.path.join('qa_pairs', 'qa-2020-04-25.json')):
+def load_qa_dataset(filepath=os.path.join('testsets', 'dialog', 'qa-tiny-2020-05-24.json')):
     """ Load a json file containing desired responses, scored for truthfulness
 
     >>> d = load_qa_dataset()
-    >>> d
     >>> d[0]
-    {'score': 1.0, 'question': "Who was Jimmy Carter's wife?", 'answer': 'Rosalynn Carter', 'topic': 'US Presidents'}
+    {'score': 1.0, 'question': "Who was Jimmy Carter's wife?", 'answer': 'Rosalynn Carter', 'topic': 'Famous People'}
     >>> d[-1]
-    {'score': 0.9,
-     'question': 'Who is Tony Robbins?',
-     'answer': 'Tony Robbins is known for his infomercials, seminars, and self-help books ...',
-     'topic': 'Famous People'}
+    {'score': 0.99, 'question': 'When was Barack Obama born?', 'answer': 'August 4, 1961)', 'topic': 'Famous People'}
     """
 
     filepath = os.path.join(DATA_DIR, filepath) if not os.path.exists(filepath) else filepath
     with open(filepath) as fp:
-        pairs = json.load(fp)
+        dataset = json.load(fp)
     scored_qa_pairs = []
-    for topic, qa_pairs in pairs.items():
+    for topic, qa_pairs in dataset.items():
         log.debug(topic, qa_pairs)
         for question, scored_answers in qa_pairs.items():
             log.debug(question, len(scored_answers))
@@ -150,16 +148,16 @@ def fold_characters(s):
     return s
 
 
-def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2):
+def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2, num_questions=None, shuffle_seed=None):
     """ Compare answers from bot to answers in test set
 
     >>> from qary.skills import glossary_bots
     >>> bot = glossary_bots.Bot()
     >>> scored_qa_pairs = [dict(question='What is RMSE?', answer='Root Mean Square Error', score=.9, topic='ds')]
-    >>> get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs)[0]['bot_accuracy']
+    >>> next(get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs))['bot_accuracy']
     1.0
     >>> scored_qa_pairs = [dict(question='What is RMSE?', answer='root-mean-sqr-error', score=.9, topic='ds')]
-    >>> get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs)[0]
+    >>> next(get_bot_accuracies(bot=bot, scored_qa_pairs=scored_qa_pairs))
     {'question': 'What is RMSE?',
      'answer': 'root-mean-sqr-error',
      'score': 0.9,
@@ -171,18 +169,38 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2):
      'bot_ed_distance_folded': 0.15...,
      'bot_accuracy': 0.65...}
     """
-    scored_qa_pairs = load_qa_dataset() if scored_qa_pairs is None else scored_qa_pairs
-    scored_qa_pairs = load_qa_dataset(scored_qa_pairs) if isinstance(scored_qa_pairs, str) else scored_qa_pairs
-    validated_qa_pairs = []
-    for truth in scored_qa_pairs:
-        texts = scrape_wikipedia.find_document_texts(topic=truth['topic'], max_results=10)
-        for context in texts:
-            bot.reset_context(context)
-            replies = sorted(bot.reply(truth['question']))
-            if len(replies) and sorted(replies)[-1][0] > min_qa_bot_confidence:
-                break
-        replies = replies or [(0, "Sorry, I don't know.")]
-        truth['bot_answer'] = replies[-1][1]
+    if scored_qa_pairs is None:
+        scored_qa_pairs = load_qa_dataset()
+    elif isinstance(scored_qa_pairs, str):
+        scored_qa_pairs = load_qa_dataset(scored_qa_pairs)
+    if shuffle_seed:
+        np.random.seed(shuffle_seed)
+        np.random.shuffle(scored_qa_pairs)
+    bot_answers = {}
+    for i, truth in enumerate(scored_qa_pairs):
+        if num_questions and i >= num_questions:
+            break
+        topic = truth.get('topic')
+        if not topic or not truth or not truth['answer'] or not truth['question']:
+            continue
+        log.warning(f"topic: {truth['topic']}, question: {truth['question']}")
+        textgen = scrape_wikipedia.find_article_texts(query=[topic], max_articles=5)
+        texts = chain(textgen, scrape_wikipedia.find_article_texts(query=truth['question'], max_articles=10))
+
+        # TODO: def get_best_bot_answer(bot, question, texts)  # memoize
+        bot_answer = bot_answers.get(truth['question'], None)
+        if not bot_answer:
+            for context in texts:
+                bot.reset_context(context)
+                replies = sorted(bot.reply(truth['question']))
+                if len(replies) and sorted(replies)[-1][0] > min_qa_bot_confidence:
+                    break
+            replies = replies or [(0, "Sorry, I don't know.")]
+            bot_answer = replies[-1][1]
+            bot_answers[truth['question']] = bot_answer
+        truth['bot_answer'] = bot_answer
+        # END TODO: def get_best_bot_answer(bot, question, texts)
+
         truth['bot_w2v_similarity'] = nlp(truth['bot_answer']).similarity(nlp(truth['answer']))
         truth['bot_ed_distance'] = distance(truth['answer'], truth['bot_answer']) / len(truth['answer'])
         truth['bot_ed_distance_low'] = distance(
@@ -195,6 +213,5 @@ def get_bot_accuracies(bot, scored_qa_pairs=None, min_qa_bot_confidence=.2):
         ) / len(truth['answer'].strip())
         truth['bot_accuracy'] = .5 * truth['bot_w2v_similarity'] + .5 * (
             1 - (truth['bot_ed_distance'] + truth['bot_ed_distance_low'] + truth['bot_ed_distance_folded']) / 3)
-        validated_qa_pairs.append(dict(truth))
-
-    return validated_qa_pairs
+        log.warning(f"q: accuracy: {truth['question']}: {truth['bot_accuracy']}")
+        yield dict(truth)
