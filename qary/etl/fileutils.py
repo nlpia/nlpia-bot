@@ -15,8 +15,9 @@ def url_filename(url):
 
 
 def basename(filename):
-    base = url_filename(filename)
-    ext = True
-    while ext and base:
-        base, ext = os.path.splitext(filename)
-    return base
+    filename = url_filename(filename)
+    for i in range(256):
+        filename, ext = os.path.splitext(filename)
+        if not ext or not filename:
+            return filename
+    return filename
