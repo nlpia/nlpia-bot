@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+# from pathlib import Path
 from collections import Counter
 
 import nltk
@@ -12,8 +13,7 @@ from django.conf import settings
 
 from . import __version__
 
-from qary.etl.fileutils import basename, url_filename
-import copy
+from qary.etl.fileutils import basename, url_filename, path_filename
 
 # DO ACCESS KEY and SECRET need to be integrated into env
 env = Environment(spacy_lang=str, loglevel=int, name=str)
@@ -51,7 +51,7 @@ for name, meta in LARGE_FILES.items():
     m.update(meta)
     # add redundant keys for the url and the filenames in the url
     m['url_filename'] = url_filename(m['url'])
-    m['filename'] = url_filename(m['path']) or m['url_filename']
+    m['filename'] = path_filename(m['path']) or m['url_filename']
     for k in m['url'], m['filename'], m['url_filename'], basename(m['url_filename']):
         tmp_large_files[k] = m
 LARGE_FILES.update(tmp_large_files)
