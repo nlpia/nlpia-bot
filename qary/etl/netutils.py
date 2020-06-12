@@ -20,8 +20,14 @@ class DownloadProgressBar(tqdm):
 
 
 def download_if_necessary(
-        url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/articles_with_keywords.pkl',
-        dest_path=LARGE_FILES['albert-large-v2']['path']):
-    with DownloadProgressBar(unit='B', unit_scale=True, miniters=1, desc=url.split('/')[-1]) as dpb:
+        url_or_name,
+        dest_path=None):
+    url = LARGE_FILES.get(url_or_name, url_or_name)
+    filename = url.split('/')[-1]
+    if dest_path is None:
+        dest_path = LARGE_FILES.get(url_or_name,
+            LARGE_FILES.get(url, os.path.join(DATA_DIR, filename))
+
+    with DownloadProgressBar(unit='B', unit_scale=True, miniters=1, desc=filename) as dpb:
         urllib.request.urlretrieve(url, filename=dest_path, reporthook=dpb.update_to)
     return dest_path
