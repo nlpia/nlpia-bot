@@ -55,6 +55,7 @@ for name, meta in LARGE_FILES.items():
     for k in m['url'], m['filename'], m['url_filename'], basename(m['url_filename']):
         tmp_large_files[k] = m
 LARGE_FILES.update(tmp_large_files)
+del tmp_large_files, m, k
 LARGE_FILES['wikipedia'] = LARGE_FILES['wikipedia_articles']
 LARGE_FILES['albert'] = LARGE_FILES['albert-large-v2']
 LARGE_FILES['albert_large'] = LARGE_FILES['albert-large-v2']
