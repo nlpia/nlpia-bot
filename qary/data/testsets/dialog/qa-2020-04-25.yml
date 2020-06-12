@@ -1,0 +1,87 @@
+US Presidents:
+    Who was Jimmy Carter's wife?:
+      - [1.0, "Rosalynn Carter"]
+      - [0.99, "Rosalynn Carter (wife)"]
+      - [0.8, "Rosalynn Carter (wife) Jack Carter (son) Amy Carter (daughter) James Earl Carter Sr. (father) Lillian Gordy Carter (mother) Gloria Carter Spann (sister) Ruth Carter Stapleton (sister) Billy Carter (brother) Jason Carter (grandson) Emily Dolvin (aunt) Hugh Carter (cousin)"]
+      - [0.5, "Mary Prince"]
+      - [0.7, "Mary Prince (an African American woman wrongly convicted of murder, and later pardoned) was their daughter Amy's nanny for most of the period from 1971 until Jimmy Carter's presidency ended."]
+      - [0.05, "Jack Carter was Jimmy Carter's son"]
+      - [0.1, "Lillian Gordy Carter (mother)"]
+    When was Barack Obama born?:
+      - [1.00, "August 4, 1961"]
+      - [0.99, "Barack Hussein Obama II was born August 4, 1961."]
+      - [1.00, "1961-08-04"]
+      - [1.00, "8/4/1961"]
+      - [0.99, "August 4, 1961,"]
+      - [0.99, "August 4, 1961)"]
+    Who was Barack Obama's wife?: []
+    Where was Barack Obama born?:
+      - [1.0, "Honolulu, Hawaii"]
+      - [1.0, "Honolulu, Hawaii, United States"]
+      - [0.95, "Honolulu"]
+      - [0.5, "Krypton, because of artistic portrait of Obama as Superman by Alex Ross"]
+    When was Barack Obama President?:
+      - [1.0, "Barack Hussein Obama II was the 44th President of the United States from 2009 to 2017."]
+      - [1.0, "Obama was the 44th President of the United States from 2009 to 2017."]
+      - [1.0, "44th President of the United States from 2009 to 2017"]
+      - [1.0, "2009 to 2017"]
+      - [1.0, "2009-2017"]
+      - [0.99, "(2009-2017)"]
+      - [1.0, "Barack Hussein Obama II served as the 44th President of the United States (2009–2017) and as a United States Senator from Illinois (2005–2008)."]
+      - [0.75, "44th"]
+      - [0.5, "Obama was a member of the Illinois Senate from 1997 to 2004."]
+    When was Nixon President?:
+      - [1.0, "Richard Milhous Nixon (January 9, 1913 – April 22, 1994) was the 37th president of the United States, serving from 1969 until 1974 when he resigned."]
+      - [1.0, "Nixon was elected president in 1968 and served from 1969 until 1974 when he resigned."]
+      - [1.0, "Nixon was the 37th president of the United States, serving from 1969 until 1974 when he resigned."]
+      - [1.0, "Nixon was the 37th president of the United States, serving from 1969 until 1974."]
+      - [1.0, "Nixon was president from 1969 until 1974."]
+      - [1.0, "1969 to 1974"]
+      - [1.0, "1969-1974"]
+      - [0.99, "(1969-1974)"]
+      - [0.75, "37th"]
+    When was Barack Obama married?:
+      -  [0.99, "Barack and Michelle married in 1992."]
+Machine Learning:
+    What is BERT?:
+      - [0.95, "BERT is a deeply bidirectional, unsupervised language representation, pre-trained using only a plain text corpus."]
+      - [0.90, "unsupervised language representation"]
+      - [1.00, "Bidirectional Encoder Representations from Transformers (BERT) is a technique for NLP (Natural Language Processing) pre-training developed by Google."]
+      - [0.80, "BERT was created and published in 2018 by Jacob Devlin and his colleagues from Google. Google uses BERT to better understand user searches. "]
+    When was BERT published?:
+      - [1.0, "2018"]
+    When was BERT released?: "When was BERT published?"
+    When was BERT invented?: "When was BERT published?"
+    When was BERT invented by Jacob Devlin?: "When was BERT published?"
+    Who invented BERT?:
+      - [1.0, "Jacob Devlin and his colleagues from Google"]
+      - [0.95, "Jacob Devlin"]
+      - [0.95, "BERT was created and published in 2018 by Jacob Devlin and his colleagues from Google."]
+Famous People:
+    Who invented the Telegraph?:
+      - [1.00, "Claude Chappe"]
+      - [0.99, "Claude Chappe,"]
+    Famous motivational speaker from Atlanta?:
+      - [1.0, "Tony Robbins"]
+      - [0.9, "Jairek Robbins"]
+      - [1.0, "Anthony (Tony) Jay Robbins"]
+    Who is the Famous motivational speaker from Atlanta?:
+        Famous motivational speaker from Atlanta?
+    Who is the famous motivational speaker that lives in Atlanta and holds workshops?:
+        Famous motivational speaker from Atlanta?
+    Who is the famous inspirational speaker and life coach that lives in Atlanta and gives TED Talks?":
+        Famous motivational speaker from Atlanta?
+    Who is the American motivational speaker that lives in Atlanta where he runs expensive conferences and workshops and training?":
+        Famous motivational speaker from Atlanta?
+    Who directed the movie Titanic?:
+      - [0.9, "In 1943, Werner Klingler and Herbert Selpin (overseen by Joseph Goebbels) directed the propaganda film _Titanic_ where they cast a fictitious German First Officer on the Titanic as the hero and the British as villains."]
+      - [1.0, "In 1997, James Cameron directed _Titanic_, a blockbuster movie starring Leonardo DiCaprio and Kate Winslet."]
+    Who is Tony Robbins?:
+      - [1.0, "Anthony (Tony) Jay Robbins (born Anthony J. Mahavoric; February 29, 1960) is an American author, public speaker, life coach, and philanthropist."]
+      - [0.9, "Tony Robbins is known for his infomercials, seminars, and self-help books including the books Unlimited Power (published in 1987) and Awaken the Giant Within (published in 1993)."]
+Marvel Comics:
+    Who are the Masters of the Universe?: []
+    What is Lana Wachowskis' gender?: []
+    When was the Star Wars comic published?: []
+    Who are the Marvel Comics Avengers?: []
+

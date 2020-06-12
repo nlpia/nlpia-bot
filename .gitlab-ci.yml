@@ -14,12 +14,11 @@ image: python:3.7
 #  POSTGRES_DB: database_name
 
 # Cache packages in between builds
-cache:
-  paths:
-    - vendor/python
+# cache:
+#   paths:
+#     - vendor/python
 
-# This is a basic example for a packages or script which doesn't use
-# services such as redis or postgres
+# This is a basic example for a package or script which doesn't use services such as redis or postgres
 before_script:
   - python -v                                   # Print out Python version for debugging
   # Setup git
@@ -27,8 +26,9 @@ before_script:
   - git config --global user.email "gitlabci@totalgood.com"
   - git config --global user.name "GitLab CI"
   # Install dependencies of your package and the testing environment
-  # - pip install -r requirements.txt
-  # - pip install -r test-requirements.txt
+  # - apt-get install miniconda
+  # - conda env create -n qary f scripts/environment.yml
+  # - pip install .
 
 # Run in different environments
 # py27:
@@ -36,36 +36,33 @@ before_script:
 #   script:
 #   - python setup.py test
 
-# py33:
-#   image: "python:3.3"
-#   script:
-#   - python setup.py test
-
-# py34:
-#   image: "python:3.4"
-#   script:
-#   - python setup.py test
-
-# py35:
-#   image: "python:3.5"
-#   script:
-#   - python setup.py test
-
 py36:
-  image: "python:3.6"
+  image: continuumio/miniconda3:latest
+
+  before_script:
+    - conda update -n base -c defaults conda
+    - conda create -n qary36 'python>=3.6.0,<3.7'
+    - conda env update -n qary36 -f environment.yml
+    - source activate qary36
+    - pip install -e .
+
   script:
-  - python setup.py test
+    - pytest
+
 
 py37:
-  image: "python:3.7"
-  script:
-  - python setup.py test
+  image: continuumio/miniconda3:latest
 
-docs:
   before_script:
-  - pip install Sphinx
+    - conda update -n base -c defaults conda
+    - conda create -n qary37 'python>=3.7.0,<3.8'
+    - conda env update -n qary37 -f environment.yml
+    - source activate qary37
+    - pip install -e .
+
   script:
-  - python setup.py docs
+    - pytest
+
 
 # This deploy job uses a simple deploy flow to Heroku, other providers, e.g. AWS Elastic Beanstalk
 # are supported too: https://github.com/travis-ci/dpl
@@ -75,3 +72,21 @@ docs:
 #  script:
 #  - python setup.py
 #  - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_PRODUCTION_KEY
+
+pages:
+  before_script:
+    # - conda update -n base -c defaults conda
+    # - conda create -n qarydocs37 python=3.7.6
+    # - conda env update -n qary37 -f environment.yml
+    # - source activate qarydocs37
+    - pip install -e .
+    - pip install Sphinx
+  script:
+    - python setup.py install docs -b html
+    - cp -r build/sphinx/html public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+
