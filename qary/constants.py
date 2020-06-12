@@ -12,6 +12,8 @@ from django.conf import settings
 
 from . import __version__
 
+from qary.etl.fileutils import basename, url_filename
+
 # DO ACCESS KEY and SECRET need to be integrated into env
 env = Environment(spacy_lang=str, loglevel=int, name=str)
 
@@ -32,6 +34,8 @@ USE_CUDA = False
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
+
+# TODO: put this in etl/models.py or data/models.py for storage in Django ORM database
 LARGE_FILES = {
     'wikipedia_articles': dict(
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/articles_with_keywords.pkl',
@@ -40,8 +44,17 @@ LARGE_FILES = {
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/models/qa/articles_with_keywords.pkl',
         path=os.path.join(DATA_DIR, 'models', 'qa', 'albert-large-v2-0.2.0.zip')),
 }
+for name, meta in LARGE_FILES.items():
+    # add redundant keys for the url and the filenames in the url
+    meta['url_filename'] = url_filename(meta['url'])
+    meta['filename'] = url_filename(meta['path']) or meta['url_filename']
+    for k in meta['url'], meta['filename'], meta['url_filename'], basename(meta['url_filename']):
+        LARGE_FILES[k] = meta
+LARGE_FILES['wikipedia'] = LARGE_FILES['wikipedia_articles']
+LARGE_FILES['albert'] = LARGE_FILES['albert-large-v2']
+LARGE_FILES['albert_large'] = LARGE_FILES['albert-large-v2']
+LARGE_FILES['albert_large_v2'] = LARGE_FILES['albert-large-v2']
 
-LARGE_FILES['articles_with_keywords'] = LARGE_FILES['wikipedia_articles']
 
 DEFAULT_CONFIG = {
     'name': 'bot',
