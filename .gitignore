@@ -16,6 +16,7 @@ __pycache__/*
 .coverage*
 data/*.swp
 data/history.json
+cache_dir/
 
 # Project files
 .ropeproject
