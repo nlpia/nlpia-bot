@@ -47,11 +47,12 @@ LARGE_FILES = {
 }
 tmp_large_files = {}
 for name, meta in LARGE_FILES.items():
-    m = copy.copy(meta)
+    m = dict()
+    m.update(meta)
     # add redundant keys for the url and the filenames in the url
     m['url_filename'] = url_filename(m['url'])
     m['filename'] = url_filename(m['path']) or m['url_filename']
-    for k in m['url'], m['filename'], m['url_filename'], basename(meta['url_filename']):
+    for k in m['url'], m['filename'], m['url_filename'], basename(m['url_filename']):
         tmp_large_files[k] = m
 LARGE_FILES.update(tmp_large_files)
 LARGE_FILES['wikipedia'] = LARGE_FILES['wikipedia_articles']
