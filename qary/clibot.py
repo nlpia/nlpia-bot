@@ -44,7 +44,6 @@ log = logging.getLogger(__name__)
 
 log.info(f'sys.path: {sys.path}')
 log.info(f'constants: {dir(constants)}')
-log.info(constants.append_sys_path())
 log.info(f'BASE_DIR: {constants.BASE_DIR}')
 log.info(f'SRC_DIR: {constants.SRC_DIR}')
 log.info(f'sys.path (after append): {sys.path}')
