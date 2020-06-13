@@ -23,3 +23,15 @@ pip install --upgrade pip
 
 ### Solution
 
+[Stack Overflow to the rescue](https://stackoverflow.com/a/49328725/623735)
+
+```bash
+conda install python-dotenv
+# OR
+pip install python-dotenv
+```
+
+Fixed in version 0.5.8
+
+
+
