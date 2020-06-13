@@ -38,6 +38,9 @@ EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
 # TODO: put this in etl/models.py or data/models.py for storage in Django ORM database
 LARGE_FILES = {
+    'floyd': dict(
+        url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/floyd.pkl',
+        path=os.path.join(DATA_DIR, 'wikipedia', 'floyd.pkl')),
     'wikipedia_articles': dict(
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/articles_with_keywords.pkl',
         path=os.path.join(DATA_DIR, 'wikipedia', 'articles_with_keywords.pkl')),
