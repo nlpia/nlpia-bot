@@ -9,7 +9,7 @@ import nltk.corpus
 import spacy  # noqa
 import configargparse
 from environment import Environment
-from django.conf import settings
+import django.conf
 
 from . import __version__
 
@@ -95,31 +95,6 @@ logging.basicConfig(
     level=LOGLEVEL)
 root_logger = logging.getLogger()
 log = logging.getLogger(__name__)
-
-
-# FIXME: to avoid PYTHONPATH hack, use relative imports: `from .constants` not `from qary.constants`
-def append_sys_path():
-    pass
-    # if BASE_DIR not in sys.path:
-    #     log.warning(f'Package BASE_DIR ({BASE_DIR}) not in sys.path: {sys.path}')
-    #     sys.path.append(BASE_DIR)
-    # if SRC_DIR not in sys.path:
-    #     log.warning(f'Package SRC_DIR ({SRC_DIR}) not in sys.path: {sys.path}')
-    #     sys.path.append(SRC_DIR)
-
-# append_sys_path()
-# def parse_config(filepath='qary.ini'):
-#     config = ConfigParser()
-#     config['DEFAULT'] = config_defaults
-#     config['bitbucket.org'] = {}
-#     config['bitbucket.org']['User'] = 'hg'
-#     config['topsecret.server.com'] = {}
-#     topsecret = config['topsecret.server.com']
-#     topsecret['Port'] = '50022'     # mutates the parser
-#     topsecret['ForwardX11'] = 'no'  # same here
-#     config['DEFAULT']['ForwardX11'] = 'yes'
-#     with open('example.ini', 'w') as configfile:
-#         config.write(configfile)
 
 
 def parse_args(args):
@@ -417,22 +392,30 @@ TFHUB_USE_MODULE_URL = "https://tfhub.dev/google/universal-sentence-encoder-larg
 # Universal Sentence Encoder's TF Hub module for creating USE Embeddings from
 USE = None
 
-DATABASES = {
-    'sqlite': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-    'postgres': {
-        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('SQL_DATABASE', os.path.join(BASE_DIR, 'db.sqlite3')),
-        'USER': os.environ.get('SQL_USER', 'user'),
-        'PASSWORD': os.environ.get('SQL_PASSWORD', 'password'),
-        'HOST': os.environ.get('SQL_HOST', 'localhost'),
-        'PORT': os.environ.get('SQL_PORT', '5432'),
-    }
-}
-DATABASES['default'] = DATABASES['sqlite']
-DEFAULT_DATABASE_CONFIG = {'DATABASE_' + k: v for (k, v) in DATABASES['default'].items()}
-DEFAULT_DATABASE_CONFIG['TIME_ZONE'] = 'America/Los_Angeles'
 
-settings.configure(**DEFAULT_DATABASE_CONFIG)
+def set_django_settings(settings=None):
+    DATABASES = {
+        'sqlite': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
+        'postgres': {
+            'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
+            'NAME': os.environ.get('SQL_DATABASE', os.path.join(BASE_DIR, 'db.sqlite3')),
+            'USER': os.environ.get('SQL_USER', 'user'),
+            'PASSWORD': os.environ.get('SQL_PASSWORD', 'password'),
+            'HOST': os.environ.get('SQL_HOST', 'localhost'),
+            'PORT': os.environ.get('SQL_PORT', '5432'),
+        }
+    }
+    DATABASES['default'] = DATABASES['sqlite']
+    settings = {'DATABASE_' + k: v for (k, v) in DATABASES['default'].items()}
+    settings['TIME_ZONE'] = 'America/Los_Angeles'
+    try:
+        django.conf.settings.configure(**settings)
+    except RuntimeError:  # RuntimeError('Settings already configured.')
+        pass
+    return django.conf.settings
+
+
+django_settings = set_django_settings()
