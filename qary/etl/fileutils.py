@@ -14,6 +14,7 @@ FIXME: Use builtin pathlib.Path and URL classes
 'basename'
 """
 import os
+from pathlib import Path
 
 
 def url_filename(url):
@@ -24,10 +25,10 @@ def url_filename(url):
     >>> url_filename('whatever.com/abs/dir/name.txt')
     'name.txt'
     """
-    return url.rstrip('/').split('/')[-1]
+    return Path(url).name
 
 
-def path_filename(url):
+def path_filename(path):
     """ Extract filename.ext from a path
 
     >>> path_filename('/whatever.com/abs/dir/name/')
@@ -35,7 +36,7 @@ def path_filename(url):
     >>> path_filename('/whatever.com/abs/dir/name.txt')
     'name.txt'
     """
-    return url.rstrip(os.path.sep).split(os.path.sep)[-1]
+    return url_filename(path)
 
 
 def basename(filename):
@@ -48,7 +49,7 @@ def basename(filename):
     >>> basename('http://example.com/abs/dir/name/')
     'name'
     """
-    filename = url_filename(filename)
+    filename = str(url_filename(filename))
     for i in range(256):
         filename, ext = os.path.splitext(filename)
         if not ext or not filename:
