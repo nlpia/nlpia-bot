@@ -1,7 +1,7 @@
 import os
 import sys
 import logging
-# from pathlib import Path
+from pathlib import Path
 from collections import Counter
 
 import nltk
@@ -40,13 +40,13 @@ EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 LARGE_FILES = {
     'floyd': dict(
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/floyd.pkl',
-        path=os.path.join(DATA_DIR, 'wikipedia', 'floyd.pkl')),
+        path=Path(DATA_DIR, 'corpora', 'wikipedia', 'floyd.pkl')),
     'wikipedia_articles': dict(
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/articles_with_keywords.pkl',
-        path=os.path.join(DATA_DIR, 'wikipedia', 'articles_with_keywords.pkl')),
+        path=Path(DATA_DIR, 'corpora', 'wikipedia', 'articles_with_keywords.pkl')),
     'albert-large-v2': dict(
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/models/qa/articles_with_keywords.pkl',
-        path=os.path.join(DATA_DIR, 'models', 'qa', 'albert-large-v2-0.2.0.zip')),
+        path=Path(DATA_DIR, 'models', 'qa', 'albert-large-v2-0.2.0.zip')),
 }
 tmp_large_files = {}
 for name, meta in LARGE_FILES.items():
