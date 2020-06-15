@@ -14,7 +14,7 @@ from qary.constants import DATA_DIR, BASE_DIR
 log = logging.getLogger(__name__)
 HOME = os.path.expanduser('~')
 
-for p in (Path('.env', 'digitalocean-nlpia.org', '.env.prod'), Path('.env')):
+for p in (Path('.envs', 'digitalocean-nlpia.org', '.env.prod'), Path('.env')):
     for base_dir in (os.path.curdir, '~', BASE_DIR, DATA_DIR):
         Path(base_dir, p)
         if os.path.isfile(p):
