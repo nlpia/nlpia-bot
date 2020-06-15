@@ -72,5 +72,6 @@
 -
   Q: What are some good transformations to use during feature engineering? #NiSa #202006111830 #student
   A: Some transformations to try would be `X**2`, `X**3`, `X**.5`, `X**-1`, `np.log(X)`, `np.exp(X)`, `X[:,0] * X[:,1]`, etc. There are an infinite number of transformations you could try. So do not search blindly. Instead, pay attention to the test set and training set accuracy after each transformation. This will help you make an informed guesses about each transformation you decide to try.
-
+Q: Is there a good way to filter out unimportant words like `the` or `of` when creating a Data Science model? #KeLa #student #202006141800
+A: Yes, but you should not do it based on your human judgement and domain knowledge. Instead rely on the `TfidfVectorizer` to weight words according to their importance. If you cannot load all possible words or n-grams into memory for processing then you can set `min_df` and `max_df` to values like `min_df=10` and `max_df=.5`. Keep reducing `max_df` and increasing `min_df` until your pipeline runs quickly and you get an accuracy score. Then continue to tune the other hyperparameters of your pipeline to try to improve accuracy.
 
