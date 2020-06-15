@@ -17,7 +17,8 @@ pandas==1.0.3
 pip
 pre_commit==2.3.0
 pytest-cov
-python>=3.7.6
+python>=3.7.6,<3.8.0
+python-dotenv>=0.13.0,<0.14.0
 regex==2020.4.4
 seaborn==0.10.0
 scipy==1.4.1
