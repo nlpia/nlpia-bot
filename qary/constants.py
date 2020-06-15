@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+# from pathlib import Path
 from collections import Counter
 
 import nltk
@@ -11,6 +12,8 @@ from environment import Environment
 import django.conf
 
 from . import __version__
+
+from qary.etl.fileutils import basename, url_filename, path_filename
 
 # DO ACCESS KEY and SECRET need to be integrated into env
 env = Environment(spacy_lang=str, loglevel=int, name=str)
@@ -32,7 +35,12 @@ USE_CUDA = False
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
+
+# TODO: put this in etl/models.py or data/models.py for storage in Django ORM database
 LARGE_FILES = {
+    'floyd': dict(
+        url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/floyd.pkl',
+        path=os.path.join(DATA_DIR, 'wikipedia', 'floyd.pkl')),
     'wikipedia_articles': dict(
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/articles_with_keywords.pkl',
         path=os.path.join(DATA_DIR, 'wikipedia', 'articles_with_keywords.pkl')),
@@ -40,8 +48,22 @@ LARGE_FILES = {
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/models/qa/articles_with_keywords.pkl',
         path=os.path.join(DATA_DIR, 'models', 'qa', 'albert-large-v2-0.2.0.zip')),
 }
+tmp_large_files = {}
+for name, meta in LARGE_FILES.items():
+    m = dict()
+    m.update(meta)
+    # add redundant keys for the url and the filenames in the url
+    m['url_filename'] = url_filename(m['url'])
+    m['filename'] = path_filename(m['path']) or m['url_filename']
+    for k in m['url'], m['filename'], m['url_filename'], basename(m['url_filename']):
+        tmp_large_files[k] = m
+LARGE_FILES.update(tmp_large_files)
+del tmp_large_files, m, k
+LARGE_FILES['wikipedia'] = LARGE_FILES['wikipedia_articles']
+LARGE_FILES['albert'] = LARGE_FILES['albert-large-v2']
+LARGE_FILES['albert_large'] = LARGE_FILES['albert-large-v2']
+LARGE_FILES['albert_large_v2'] = LARGE_FILES['albert-large-v2']
 
-LARGE_FILES['articles_with_keywords'] = LARGE_FILES['wikipedia_articles']
 
 DEFAULT_CONFIG = {
     'name': 'bot',
