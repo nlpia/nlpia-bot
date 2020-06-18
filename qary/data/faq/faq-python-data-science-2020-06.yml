@@ -75,4 +75,27 @@
 -
   Q: Is there a good way to filter out unimportant words like `the` or `of` when creating a Data Science model? #KeLa #student #202006141800
   A: Yes, but you should not do it based on your human judgement and domain knowledge. Instead rely on the `TfidfVectorizer` to weight words according to their importance. If you cannot load all possible words or n-grams into memory for processing then you can set `min_df` and `max_df` to values like `min_df=10` and `max_df=.5`. Keep reducing `max_df` and increasing `min_df` until your pipeline runs quickly and you get an accuracy score. Then continue to tune the other hyperparameters of your pipeline to try to improve accuracy.
-
+-
+  Q: "My friends who work at large corporations, banks, and consulting firms find that they are mostly required to do software development and debugging of existing Data Science pipelines. Where can I find employers that provide more creative work developing new approaches to Data Science?" #202006160930 #MaJu #student
+  A: "Startups require employees to perform many roles. Data Scientists at startups often have architect databases and software while also designing and building data science pipelines. You can find startup job postings by following startups in your region and reading blogs and news sites that investors read, like Y-Combinator, AngelList, and TechCrunch. There's a good list of startup blogs on feedspot.com: https://blog.feedspot.com/startup_blogs/."
+-
+  Q: What kind of data science variable is a Amazon store star-rating for products like 5-stars and 2-stars?  #EdLe #20200616 #student
+  A: Ordinal, because it's a categorical variable with a natural order to it.
+-
+  Q: How do I decide what numerical value to associate with an ordinal variable?   #EdLe #20200616 #student
+  A: Easiest way is to assign consecutive integers to the sorted (ordered) categories and then apply a MinMaxScaler if you want the values to be within a particular range, like 0 to 1. Alternatively, if you have some idea of a nonlinear scale you want to apply then you can manually create a mapping from category names to numerical value that represents your understanding of that nonlinearity.
+-
+  Q: LinearRegression almost always produces lower accuracy than any other model, like KNN or RandomForest. What is the use of a LinearRegression in the real world? #student #SeOk #20200616
+  A: The results of a LinearRegression are very easy to explain and interpret, even for people without Data Science experience. Examine the coefficients of your model in the `.coeff_` attribute of a SciKit-Learn model to see if you can glean some useful insights from them.
+-
+  Q: Why do I get negative correlation score for the guided capstone 2 when I filter our NaNs and outliers?  #student #YeHe #20200616
+  A: If your testset contains all the records for a particular state (or any other categorical variable), then the coefficients in your model for that value of the categorical variable will be counterproductive. Since there are quite a few states with only 1 or 2 records, that can cause your model to fit poorly and give a negative score.
+-
+  Q: What is a good data science project that would impress employers? #student #202006170900
+  A: Reputation tracking on Twitter and other social media networks is something most businesses are interested in. So a sentiment analysis pipeline applied to Twitter feeds or public youtube comments would be a good project.
+-
+  Q: What goes on the x and y axis of a residual plot?
+  A: The x-axis should be the feature value that you are working on (doing feature engineering for). The vertical (y) axis should be the residual which equals y_pred - y_true.
+-
+  Q: My dataset contains a count of deaths by State, cause, and week of the year for the past few years. How should I process the dataset to create a testset to verify accuracy. #student #202006171000
+  A: In your training set, remove the last 4 weeks (records) for each state then use those records (50 states x 4 weeks = 200 records) as your test set.
