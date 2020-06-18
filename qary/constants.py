@@ -11,7 +11,7 @@ import configargparse
 from environment import Environment
 import django.conf
 
-from . import __version__
+from qary import __version__
 
 from qary.etl.fileutils import basename, url_filename, path_filename
 
