@@ -5,7 +5,7 @@ import logging
 
 from tqdm import tqdm
 
-from .constants import DATA_DIR
+from qary.constants import DATA_DIR
 log = logging.getLogger(__name__)
 
 
