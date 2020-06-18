@@ -41,7 +41,26 @@ US Presidents:
       - [0.99, "(1969-1974)"]
       - [0.75, "37th"]
     When was Barack Obama married?:
-      -  [0.99, "Barack and Michelle married in 1992."]
+      - [0.99, "Barack and Michelle married in 1992."]
+Black Lives Matter:
+    Where was George Floyd born?:
+      - [1.0, "Fayetteville, North Carolina"]
+      - [1.0, "Fayetteville, North Carolina, USA"]
+      - [0.9, "Fayetteville"]
+    Where did George Floyd grow up?:
+      - [1.0, "Cuney Homes in Houston, Texas"]
+      - [1.0, "Cuney Homes in Houston, Texas, USA"]
+      - [1.0, "Cuney Homes, Third Ward in Houston, Texas"]
+      - [0.9, "Cuney Homes"]
+    "When was the first use of the #BlackLivesMatter hashtag on Twitter?":
+      - [1.0, "7/13/13"]
+      - [1.0, "7/13/2013"]
+      - [1.0, "2013-07-13"]
+      - [1.0, "July 13, 2013"]
+      - [1.0, "in the summer of 2013"]
+      - [1.0, "Summer, 2013"]
+      - [1.0, "July, 2013"]
+      - [0.99, "2013"]
 Machine Learning:
     What is BERT?:
       - [0.95, "BERT is a deeply bidirectional, unsupervised language representation, pre-trained using only a plain text corpus."]
