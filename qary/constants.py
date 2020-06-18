@@ -38,12 +38,18 @@ EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
 # TODO: put this in etl/models.py or data/models.py for storage in Django ORM database
 LARGE_FILES = {
+    'squad_dev': dict(
+        url='https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v2.0.json',
+        path=os.path.join(DATA_DIR, 'training_sets', 'squad', 'dev-v2.0.json')),
+    'squad': dict(
+        url='https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v2.0.json',
+        path=os.path.join(DATA_DIR, 'training_sets', 'squad', 'train-v2.0.json')),
     'floyd': dict(
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/floyd.pkl',
-        path=os.path.join(DATA_DIR, 'wikipedia', 'floyd.pkl')),
+        path=os.path.join(DATA_DIR, 'corpora', 'wikipedia', 'floyd.pkl')),
     'wikipedia_articles': dict(
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/articles_with_keywords.pkl',
-        path=os.path.join(DATA_DIR, 'wikipedia', 'articles_with_keywords.pkl')),
+        path=os.path.join(DATA_DIR, 'corpora', 'wikipedia', 'articles_with_keywords.pkl')),
     'albert-large-v2': dict(
         url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/models/qa/articles_with_keywords.pkl',
         path=os.path.join(DATA_DIR, 'models', 'qa', 'albert-large-v2-0.2.0.zip')),
