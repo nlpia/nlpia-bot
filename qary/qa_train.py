@@ -5,7 +5,7 @@ import logging
 
 from tqdm import tqdm
 
-from .constants import DATA_DIR
+from qary.constants import DATA_DIR
 log = logging.getLogger(__name__)
 
 SQUAD_TRAINING_JSON = os.path.join(DATA_DIR, 'simple-transformers', 'train-v2.0.json')
@@ -47,7 +47,7 @@ def train_squad(train_path=ST_TRAINING_JSON, squad_path=SQUAD_TRAINING_JSON, mod
     return model
 
 
-def evaluate(model, test_path=ST_TRAINIG_JSON, model_path=MODEL_DIR):
+def evaluate(model, test_path=ST_TRAINING_JSON, model_path=MODEL_DIR):
     # Evaluate the model. (Being lazy and evaluating on the train data itself)
     trainset = load_trainset(test_path)
 
