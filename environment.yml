@@ -35,16 +35,18 @@ dependencies:
     - editdistance==0.5.3
     - elasticsearch==7.6.0
     - environment==1.0.0
+    - filelock==3.0.12
     - https://github.com/explosion/spacy-models/releases/download/en_core_web_md-2.2.5/en_core_web_md-2.2.5.tar.gz
     - gitpython==3.1.1
     - nltk==3.5
     - python-slugify==4.0.0
     - rapidfuzz==0.9.1
     - scikit-learn==0.22.2
+    - simpletransformers==0.34.4
     - tensorboardX==2.0
     - tensorflow==2.2.0
-    - torch==1.4.0
-    - transformers>=2.4.1,<2.5.0
+    - torch==1.5.1
+    - transformers==2.11.0
     - Sphinx==3.0.3
     - recommonmark==0.6.0
     - m2r==0.2.1

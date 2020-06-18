@@ -8,9 +8,10 @@ from tqdm import tqdm
 from .constants import DATA_DIR
 log = logging.getLogger(__name__)
 
-
 SQUAD_TRAINING_JSON = os.path.join(DATA_DIR, 'simple-transformers', 'train-v2.0.json')
+SQUAD_DEVSET_JSON = os.path.join(DATA_DIR, 'simple-transformers', 'dev-v2.0.json')
 ST_TRAINING_JSON = os.path.join(DATA_DIR, 'simple-transformers', 'squad-train.json')
+MODEL_DIR = os.path.join(DATA_DIR, 'qa-models', 'squad')
 
 
 def preprocess_squad(squad_path=SQUAD_TRAINING_JSON):
@@ -37,26 +38,27 @@ def load_trainset(train_path=ST_TRAINING_JSON, squad_path=SQUAD_TRAINING_JSON):
     return trainset
 
 
-def train_squad(train_path=ST_TRAINING_JSON, squad_path=SQUAD_TRAINING_JSON):
+def train_squad(train_path=ST_TRAINING_JSON, squad_path=SQUAD_TRAINING_JSON, model_path=MODEL_DIR):
     trainset = load_trainset(train_path, squad_path=squad_path)
     model = QuestionAnsweringModel('distilbert', 'distilbert-base-uncased-distilled-squad',
                                    args={'reprocess_input_data': True, 'overwrite_output_dir': True})
-    model.train_model(trainset)
+    model.train_model(trainset, output_dir=model_path)
 
     return model
 
 
-def evaluate(model, test_path=ST_TRAINING_JSON):
+def evaluate(model, test_path=ST_TRAINIG_JSON, model_path=MODEL_DIR):
     # Evaluate the model. (Being lazy and evaluating on the train data itself)
     trainset = load_trainset(test_path)
 
     result, text = model.eval_model(trainset)
 
     log.info(result)
-    log.info(text)
+    log.info(text, output_dir=model_path)
     return result, text
 
 
 if __name__ == '__main__':
     model = train_squad()
-    result, text = evaluate(model)
+    result_train, text_train = evaluate(model)
+    result_dev, text_dev = evaluate(model, test_path=SQUAD_DEVSET_JSON)

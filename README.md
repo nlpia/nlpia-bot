@@ -33,7 +33,7 @@ A cross-platform package and python environment manager like `conda` is especial
 
 ```bash
 conda update -n base -c defaults conda
-conda create -n qaryenv 'python>=3.6.0,<3.7'
+conda create -n qaryenv 'python>=3.7.7,<3.8'
 conda env update -n qaryenv -f environment.yml
 source activate qaryenv
 pip install --editable .
