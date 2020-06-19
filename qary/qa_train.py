@@ -58,7 +58,12 @@ def evaluate(model, test_path=ST_TRAINING_JSON, model_path=MODEL_DIR):
     return result, text
 
 
-if __name__ == '__main__':
+def main():
     model = train_squad()
     result_train, text_train = evaluate(model)
     result_dev, text_dev = evaluate(model, test_path=SQUAD_DEVSET_JSON)
+    return result_dev, text_dev
+
+
+if __name__ == '__main__':
+    result_dev, text_dev = main()
