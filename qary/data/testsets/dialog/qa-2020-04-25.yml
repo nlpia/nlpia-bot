@@ -14,7 +14,19 @@ US Presidents:
       - [1.00, "8/4/1961"]
       - [0.99, "August 4, 1961,"]
       - [0.99, "August 4, 1961)"]
-    Who was Barack Obama's wife?: []
+    Who is Barack Obama's wife?:
+      - [1.0, "Michelle LaVaughn Robinson Obama (née Robinson; born January 17, 1964)"]
+      - [1.0, "Michelle LaVaughn Robinson Obama (née Robinson)"]
+      - [1.0, "Michelle LaVaughn Robinson"]
+      - [1.0, "Michelle LaVaughn Robinson Obama (born January 17, 1964)"]
+    Who was the Fist Lady in the US in 2015?: "Who is Barack Obama's wife?"
+    Who was the Fist Lady in the US in 2016?: "Who is Barack Obama's wife?"
+    Who was the Fist Lady in the US in 2014?: "Who is Barack Obama's wife?"
+    Who was the Fist Lady in the US in 2013?: "Who is Barack Obama's wife?"
+    Who was the Fist Lady in the US in 2012?: "Who is Barack Obama's wife?"
+    Who was the Fist Lady in the US in 2011?: "Who is Barack Obama's wife?"
+    Who was the Fist Lady in the US in 2010?: "Who is Barack Obama's wife?"
+    Who was the Fist Lady in the US in 2009?: "Who is Barack Obama's wife?"
     Where was Barack Obama born?:
       - [1.0, "Honolulu, Hawaii"]
       - [1.0, "Honolulu, Hawaii, United States"]
@@ -31,17 +43,18 @@ US Presidents:
       - [0.75, "44th"]
       - [0.5, "Obama was a member of the Illinois Senate from 1997 to 2004."]
     When was Nixon President?:
-      - [1.0, "Richard Milhous Nixon (January 9, 1913 – April 22, 1994) was the 37th president of the United States, serving from 1969 until 1974 when he resigned."]
-      - [1.0, "Nixon was elected president in 1968 and served from 1969 until 1974 when he resigned."]
-      - [1.0, "Nixon was the 37th president of the United States, serving from 1969 until 1974 when he resigned."]
-      - [1.0, "Nixon was the 37th president of the United States, serving from 1969 until 1974."]
-      - [1.0, "Nixon was president from 1969 until 1974."]
+      - [0.99, "Richard Milhous Nixon (January 9, 1913 – April 22, 1994) was the 37th president of the United States, serving from 1969 until 1974 when he resigned."]
+      - [1.0, "Richard Nixon was elected president in 1968 and served from 1969 until 1974 when he resigned."]
+      - [1.0, "Richard Nixon was the 37th president of the United States, serving from 1969 until 1974 when he resigned."]
+      - [1.0, "Richard Nixon was the 37th president of the United States, serving from 1969 until 1974."]
+      - [1.0, "Richard Nixon was president from 1969 until he resigned in 1974."]
+      - [1.0, "Richard Nixon was president from 1969 to 1974."]
       - [1.0, "1969 to 1974"]
       - [1.0, "1969-1974"]
       - [0.99, "(1969-1974)"]
       - [0.75, "37th"]
     When was Barack Obama married?:
-      - [0.99, "Barack and Michelle married in 1992."]
+      - [0.99, "Barack and Michelle Obama married in 1992."]
 Black Lives Matter:
     Where was George Floyd born?:
       - [1.0, "Fayetteville, North Carolina"]
