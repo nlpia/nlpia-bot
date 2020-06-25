@@ -49,6 +49,10 @@ def basename(filename):
     >>> basename('http://example.com/abs/dir/name/')
     'name'
     """
+<<<<<<< HEAD
+=======
+
+>>>>>>> f43a690... lots of merge conflicts with master
     filename = str(url_filename(filename))
     for i in range(256):
         filename, ext = os.path.splitext(filename)
