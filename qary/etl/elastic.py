@@ -46,7 +46,7 @@ def save_articles(
             log.error(f"Error writing document {page.title}: {error}")
 
 
-def index_dir(path=Path(constants.DATA_DIR, 'coppora', 'wikipedia')):
+def index_dir(path=Path(constants.DATA_DIR, 'corpora', 'wikipedia')):
     paths = []
     # r=root, d=directories, f = files
     for r, d, f in os.walk(path):
