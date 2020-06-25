@@ -26,6 +26,7 @@ def print_categorymembers(categorymembers, level=0, max_level=1):
 
 # Save articles in separate .txt files
 
+
 def save_articles(
         path=Path(constants.DATA_DIR, 'corpora', 'wikipedia'),
         category='Natural_language_processing'):
@@ -48,7 +49,6 @@ def save_articles(
 
 
 def index_dir(path=Path(constants.DATA_DIR, 'coppora', 'wikipedia')):
-
     paths = []
     # r=root, d=directories, f = files
     for r, d, f in os.walk(path):

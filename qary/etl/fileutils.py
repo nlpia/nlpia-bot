@@ -28,7 +28,7 @@ def url_filename(url):
     return Path(url).name
 
 
-def path_filename(path):
+def path_filename(url):
     """ Extract filename.ext from a path
 
     >>> path_filename('/whatever.com/abs/dir/name/')
@@ -36,7 +36,7 @@ def path_filename(path):
     >>> path_filename('/whatever.com/abs/dir/name.txt')
     'name.txt'
     """
-    return url_filename(path)
+    return url_filename(url)
 
 
 def basename(filename):
