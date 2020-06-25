@@ -148,7 +148,7 @@ class CLIBot:
                     log.debug(repr(replier))
                     bot_replies = normalize_replies(replier.reply(statement))
                 except AttributeError as e:
-                    log.warning(str(e))
+                    log.debug(str(e))
                 except Exception as e:
                     log.error(str(e))
             bot_replies = normalize_replies(bot_replies)
