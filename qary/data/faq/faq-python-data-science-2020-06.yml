@@ -136,6 +136,29 @@
   Q: What is one of the reasons people are dissatisfied with chatbots?
   A: When someone needs help from a healthcare or mental healthcare bot, they want it to be able to interact with them quickly, anywhere, on demand. Also they expect chatbots to personalize the conversation with them in the same way a nurse would. They expect context-aware bots.
 -
+  Q: Why are chatbots useful in Healthcare? How can they be used effectively?
+  A: They are good for short, high value interactions with patients by automating parts of the workflow like patient intake. They help your providers and patients avoid time-consuming low-value interactions between humans. #JuneCho #pluralsight #2019 #talk #conference
+-
   Q: Where should I deploy my first chatbot?
   A: Within a messaging platform or forum where people are already interacting with you or your team or each other. Ideally this should be an internal system that isn't exposed to customers or beneficiaries until it is deemed useful. For example use it on Slack internally with your team before you deploy it to Twitter, Reddit, Facebook, or SMS.
+-
+  Q: What is a CDG (clinical decision guidelines)?
+  A: An example is the _Schmitt-Thompson Nurse Triage Guidelines_ a manual for
+
+-
+  Q: I don't have enough RAM to use `read_csv` on a large CSV file.
+  A: Create a skip_rows list of integers that skips 99% of the rows. `skip_rows = np.random.sample(range(1, n + 1))`  #student #springboard #LjHe #202006241030
+-
+  Q: What's a good way to sample a large CSV file for machine learning?  #student #springboard #LjHe #202006241030
+  A: Create a skip_rows list of integers that skips 99% of the rows. `skip_rows = np.random.sample(range(1, n + 1))`
+-
+  Q: How can I count the number of rows in a CSV file without loading it all into RAM.  #student #springboard #LjHe #202006241030
+  A: "You can count the lines by opening the file and iterating through it like this: `num_lines = sum(1 for line in open('filename.csv'))`. You may need to subtrace 1 from the total number of lines if there's a header row that you don't want to include in your count."
+-
+  Q: Where should I deploy my first chatbot?
+  A: Within a messaging platform or forum where people are already interacting with you or your team or each other. Ideally this should be an internal system that isn't exposed to customers or beneficiaries until it is deemed useful. For example use it on Slack internally with your team before you deploy it to Twitter, Reddit, Facebook, or SMS.
+-
+  Q: How can I use the `scipy.t.ppf()` function to calculate the critical value for a one-sided 95% confidence interval so that I could be 95% confident that a random draw would be above this value? #student #springboard #JuCh #202006241800
+  A: `scipy.t.ppf(0.05, len(samples)-1)` will give you the t-score for the critical value. You can then multiply that by the standard deviation and add the mean to get the minimum expected value for your 1-sided 95% confidence interval.
+
 
