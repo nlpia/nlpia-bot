@@ -1,14 +1,12 @@
-from ..constants import DATA_DIR
+from nlpia_bot.constants import DATA_DIR
 import os
-import logging
-
 import pandas as pd
 import numpy as np
-
-from sklearn.cluster import AgglomerativeClustering  # noqa
+# from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics.pairwise import cosine_similarity
-from ..spacy_language_model import load
 
+from nlpia_bot.spacy_language_model import load
+import logging
 log = logging.getLogger(locals().get('__name__', ''))
 
 nlp = load('en_core_web_md')
