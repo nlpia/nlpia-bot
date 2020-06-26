@@ -39,7 +39,7 @@ def load_trainset(train_path=ST_TRAINING_JSON, squad_path=SQUAD_TRAINING_JSON):
 
 def train_squad(train_path=ST_TRAINING_JSON, squad_path=SQUAD_TRAINING_JSON):
     trainset = load_trainset(train_path, squad_path=squad_path)
-    model = QuestionAnsweringModel('distilbert', 'distilbert-base-uncased-distilled-squad',
+    model = QuestionAnsweringModel('distilbert', 'distilbert-base-uncased-distilled-squad', use_cuda=False,
                                    args={'reprocess_input_data': True, 'overwrite_output_dir': True})
     model.train_model(trainset)
 
