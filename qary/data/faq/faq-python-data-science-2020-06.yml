@@ -75,4 +75,112 @@
 -
   Q: Is there a good way to filter out unimportant words like `the` or `of` when creating a Data Science model? #KeLa #student #202006141800
   A: Yes, but you should not do it based on your human judgement and domain knowledge. Instead rely on the `TfidfVectorizer` to weight words according to their importance. If you cannot load all possible words or n-grams into memory for processing then you can set `min_df` and `max_df` to values like `min_df=10` and `max_df=.5`. Keep reducing `max_df` and increasing `min_df` until your pipeline runs quickly and you get an accuracy score. Then continue to tune the other hyperparameters of your pipeline to try to improve accuracy.
+-
+  Q: "My friends who work at large corporations, banks, and consulting firms find that they are mostly required to do software development and debugging of existing Data Science pipelines. Where can I find employers that provide more creative work developing new approaches to Data Science?" #202006160930 #MaJu #student
+  A: "Startups require employees to perform many roles. Data Scientists at startups often have architect databases and software while also designing and building data science pipelines. You can find startup job postings by following startups in your region and reading blogs and news sites that investors read, like Y-Combinator, AngelList, and TechCrunch. There's a good list of startup blogs on feedspot.com: https://blog.feedspot.com/startup_blogs/."
+-
+  Q: What kind of data science variable is a Amazon store star-rating for products like 5-stars and 2-stars?  #EdLe #20200616 #student
+  A: Ordinal, because it's a categorical variable with a natural order to it.
+-
+  Q: How do I decide what numerical value to associate with an ordinal variable?   #EdLe #20200616 #student
+  A: Easiest way is to assign consecutive integers to the sorted (ordered) categories and then apply a MinMaxScaler if you want the values to be within a particular range, like 0 to 1. Alternatively, if you have some idea of a nonlinear scale you want to apply then you can manually create a mapping from category names to numerical value that represents your understanding of that nonlinearity.
+-
+  Q: LinearRegression almost always produces lower accuracy than any other model, like KNN or RandomForest. What is the use of a LinearRegression in the real world? #student #SeOk #20200616
+  A: The results of a LinearRegression are very easy to explain and interpret, even for people without Data Science experience. Examine the coefficients of your model in the `.coeff_` attribute of a SciKit-Learn model to see if you can glean some useful insights from them.
+-
+  Q: Why do I get negative correlation score for the guided capstone 2 when I filter our NaNs and outliers?  #student #YeHe #20200616
+  A: If your testset contains all the records for a particular state (or any other categorical variable), then the coefficients in your model for that value of the categorical variable will be counterproductive. Since there are quite a few states with only 1 or 2 records, that can cause your model to fit poorly and give a negative score.
+-
+  Q: What is a good data science project that would impress employers? #student #202006170900
+  A: Reputation tracking on Twitter and other social media networks is something most businesses are interested in. So a sentiment analysis pipeline applied to Twitter feeds or public youtube comments would be a good project.
+-
+  Q: What goes on the x and y axis of a residual plot?
+  A: The x-axis should be the feature value that you are working on (doing feature engineering for). The vertical (y) axis should be the residual which equals y_pred - y_true.
+-
+  Q: My dataset contains a count of deaths by State, cause, and week of the year for the past few years. How should I process the dataset to create a testset to verify accuracy. #student #202006171000
+  A: In your training set, remove the last 4 weeks (records) for each state then use those records (50 states x 4 weeks = 200 records) as your test set.
+-
+  Q: What is target encoding?  #202006
+  A: When you have high cardinality categorical features you can use target encoding to create a single numerical feature for each categorical feature. You just replace the category ID with the mean of your target variable for that category. In a Pandas DataFrame this is `df['target_encoding'] = df.groupby('category_column_name').mean()`.
+-
+  Q: What are the advantages of target encoding vs. get_dummies (one-hot encoding)?
+  A: Target encoding only requires one continuous numerical column to store information about a categorical variable. One-hot encoding (`pd.get_dummies`) creates a binary variable for each possible categorical value in each categorical variable.
+-
+  Q: I'm trying to complete the statistical data analysis portion of my project. Do you have any tips for me? #student
+  A: Try choosing a target variable then choose one or two features that you think might be interesting, then calculate some statistics on those features. For example, if your target variable is continuous (like price) and one of the features you'd like to examine is categorical (like US state), then you might plot histograms of your target variable (price) within each of the categories (states) for that variable. You could also calculate the mean price for each US state and see if you seen anything interesting in those 50 mean prices. If your target is categorical and the interesting feature you want to examine is continuous, then you just flip the analysis around and calculate the mean on your feature for each category in your target.
+-
+  Q: What makes a good data science problem?
+  A: A good dataset that is much taller than it is wide. It should have a variety of variable types for features and target variables and have many more examples (rows) than it has features (columns).
+-
+  Q: What kinds of variables should I look for in a good machine learning dataset for learning?
+  A: "You want a variety of column types (variable types): continuous numeric variables, ordinal, categorical, NLP, date/time, and geographic (address, zip, city, lat/lon) variables."
+-
+  Q: I have categorical variables with a lot of NaNs or missing values. I filled them with the most frequent value within each category. Is this the right approach?
+  A: Usually that will make your model less accurate. You want to avoid using domain knowledge or intuition as much as possible when cleaning up your data. You want to extract information rather than add or change information in your table. So the best thing to do with NaNs in a categorical variable is to create a new category called "missing" or "unknown" or "NaN". You should create a different category for each kind of missing value ("", "unknown", "N/A", np.nan, "None") because these may represent different ways that missing values are created in your data.
+-
+  Q: How can I give weight to important words in my NLP pipeline?
+  A: Use a TFIDFVectorizer to create a vector for each document that automatically divides the counts for documents (term frequency that CountVectorizer computes) by the number of documents that word occurs in (inverse document fequency).
+-
+  Q: When I try to clone a repository from gitlab with a URL like this `git@gitlab.com:/tangibleai/qary` I get a permission denied error. Do I need to ask for permission to get access to this repository?
+  A: First, try visiting the repository [directly in your browser](gitlab.com/tangibleai/qary). Gitlab will give you helpful messages and popups if you do not have permission to access the repository, or your account hasn't been set up correctly.
+-
+  Q: How do I extract features from geographic data like latitude and longitude?  #student #springboard #SaSi #202006240900
+  A: "Typically you calculate the distance to landmarks or POIs (Points of Interest). This tutorial explains how to compute real distances in meters, but that's not necessary. Distances in degrees (latitude and longitude are in degrees) are fine: https://towardsdatascience.com/going-dutch-part-2-improving-a-machine-learning-model-using-geographical-data-a8492b67b885"
+-
+  Q: I've trained an NLP sentiment analysis model on financial reports that can predict SLOAN ratios and financial performance metrics a bit better than random chance. Is this good enough for a final report?  #student #springboard #GaLi #202006240930
+  A: "Yes. Summarize all the models you've trained with their accuracies in a single table. Then start on some explanations for why a particular model works best and why some features (words or LDA topics) are correlated with your target variable."
+-
+  Q: Why are chatbots useful in Healthcare? How can they be used effectively?
+  A: They are good for short, high value interactions with patients by automating parts of the workflow like patient intake. They help your providers and patients avoid time-consuming low-value interactions between humans. #JuneCho #pluralsight #2019 #talk #conference
+-
+  Q: What is one of the reasons people are dissatisfied with chatbots?
+  A: When someone needs help from a healthcare or mental healthcare bot, they want it to be able to interact with them quickly, anywhere, on demand. Also they expect chatbots to personalize the conversation with them in the same way a nurse would. They expect context-aware bots.
+-
+  Q: Why are chatbots useful in Healthcare? How can they be used effectively?
+  A: They are good for short, high value interactions with patients by automating parts of the workflow like patient intake. They help your providers and patients avoid time-consuming low-value interactions between humans. #JuneCho #pluralsight #2019 #talk #conference
+-
+  Q: Where should I deploy my first chatbot?
+  A: Within a messaging platform or forum where people are already interacting with you or your team or each other. Ideally this should be an internal system that isn't exposed to customers or beneficiaries until it is deemed useful. For example use it on Slack internally with your team before you deploy it to Twitter, Reddit, Facebook, or SMS.
+-
+  Q: What is a CDG (clinical decision guidelines)?
+  A: An example is the _Schmitt-Thompson Nurse Triage Guidelines_ a manual for
 
+-
+  Q: I don't have enough RAM to use `read_csv` on a large CSV file.
+  A: Create a skip_rows list of integers that skips 99% of the rows. `skip_rows = np.random.sample(range(1, n + 1))`  #student #springboard #LjHe #202006241030
+-
+  Q: What's a good way to sample a large CSV file for machine learning?  #student #springboard #LjHe #202006241030
+  A: "Create a skip_rows list of integers that skips 99% of the rows. `skip_rows = np.random.sample(range(1, n + 1))`"
+-
+  Q: How can I count the number of rows in a CSV file without loading it all into RAM.  #student #springboard #LjHe #202006241030
+  A: "You can count the lines by opening the file and iterating through it like this: `num_lines = sum(1 for line in open('filename.csv'))`. You may need to subtrace 1 from the total number of lines if there's a header row that you don't want to include in your count."
+-
+  Q: Why are chatbots useful in Healthcare? How can they be used effectively?
+  A: "They are good for short, high value interactions with patients by automating parts of the workflow like patient intake. They help your providers and patients avoid time-consuming low-value interactions between humans. #JuneCho #pluralsight #2019 #talk #conference"
+-
+  Q: Where should I deploy my first chatbot?
+  A: "Within a messaging platform or forum where people are already interacting with you or your team or each other. Ideally this should be an internal system that isn't exposed to customers or beneficiaries until it is deemed useful. For example use it on Slack internally with your team before you deploy it to Twitter, Reddit, Facebook, or SMS."
+-
+  Q: What is a CDG (clinical decision guidelines)?
+  A: An example is the _Schmitt-Thompson Nurse Triage Guidelines_ a manual for nurse triage decisions.
+-
+  Q: Where should I deploy my first chatbot?
+  A: "Within a messaging platform or forum where people are already interacting with you or your team or each other. Ideally this should be an internal system that isn't exposed to customers or beneficiaries until it is deemed useful. For example use it on Slack internally with your team before you deploy it to Twitter, Reddit, Facebook, or SMS."
+-
+  Q: I don't have enough RAM to use `read_csv` on a large CSV file.
+  A: "Create a skip_rows list of integers that skips 99% of the rows. `skip_rows = np.random.sample(range(1, n + 1))`  #student #springboard #LjHe #202006241030"
+-
+  Q: "What's a good way to sample a large CSV file for machine learning?  #student #springboard #LjHe #202006241030"
+  A: "Create a skip_rows list of integers that skips 99% of the rows. `skip_rows = np.random.sample(range(1, n + 1))`"
+-
+  Q: How can I count the number of rows in a CSV file without loading it all into RAM.  #student #springboard #LjHe #202006241030
+  A: "You can count the lines by opening the file and iterating through it like this: `num_lines = sum(1 for line in open('filename.csv'))`. You may need to subtrace 1 from the total number of lines if there's a header row that you don't want to include in your count."
+-
+  Q: "Where should I deploy my first chatbot?"
+  A: "Within a messaging platform or forum where people are already interacting with you or your team or each other. Ideally this should be an internal system that isn't exposed to customers or beneficiaries until it is deemed useful. For example use it on Slack internally with your team before you deploy it to Twitter, Reddit, Facebook, or SMS."
+-
+  Q: "How can I use the `scipy.t.ppf()` function to calculate the critical value for a one-sided 95% confidence interval so that I could be 95% confident that a random draw would be above this value? #student #springboard #JuCh #202006241800"
+  A: "`scipy.t.ppf(0.05, len(samples)-1)` will give you the t-score for the critical value. You can then multiply that by the standard deviation and add the mean to get the minimum expected value for your 1-sided 95% confidence interval."
+-
+  Q: How can I use the `scipy.t.ppf()` function to calculate the critical value for a one-sided 95% confidence interval so that I could be 95% confident that a random draw would be above this value? #student #springboard #JuCh #202006241800
+  A: "`scipy.t.ppf(0.05, len(samples)-1)` will give you the t-score for the critical value. You can then multiply that by the standard deviation and add the mean to get the minimum expected value for your 1-sided 95% confidence interval."

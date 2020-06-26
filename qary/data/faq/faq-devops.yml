@@ -1,0 +1,17 @@
+-
+  Q: What does a large monolithic webapp like Ticketsweb look like?
+  A: "Stack: Gitlab, Gilab-ci, Nginx, Django, Redis, Postgres, Flask, JQuery+React, Terraform, Kubernetes, EKS (AWS Kubernotes), Docker.
+      Dockerfiles (multistage build): Dockerfile.base, Dockerfile.solr, Dockerfile.postgres, Dockerfile.backoffice, Dockerfile.builder (~50 MB), Dockerfile.tiqetsweb (~1.5GB)
+      Multistage build: Builder-Backoffice, Builder-javascript, Builder-python"
+-
+  Q: Are there linters for Dockerfiles.
+  A: "The `hadolint` can clean up and optimize your Dockerfils: `docker run --rm -i hadolint/hadolint < Dockerfile`"
+-
+  Q: What is Makisu?
+  A: Uber's Kubernetes-compatible tool for compressing docker images and improves reuse of cached layers. It speeds up your Docker buidls.
+-
+  Q: What are bitnami charts?
+-
+  A:
+-
+  Q: Kubernetes and
