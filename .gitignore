@@ -50,6 +50,7 @@ docs/api/*
 docs/_rst/*
 docs/_build/*
 cover/*
+runs/*
 MANIFEST
 
 # Mac
