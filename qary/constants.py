@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+# from pathlib import Path
 from collections import Counter
 
 import nltk
@@ -8,8 +9,11 @@ import nltk.corpus
 import spacy  # noqa
 import configargparse
 from environment import Environment
+import django.conf
 
 from . import __version__
+
+from qary.etl.fileutils import basename, url_filename, path_filename
 
 # DO ACCESS KEY and SECRET need to be integrated into env
 env = Environment(spacy_lang=str, loglevel=int, name=str)
@@ -31,6 +35,42 @@ USE_CUDA = False
 MAX_TURNS = 10000
 EXIT_COMMANDS = set('exit quit bye goodbye cya'.split())
 
+
+# TODO: put this in etl/models.py or data/models.py for storage in Django ORM database
+LARGE_FILES = {
+    'squad_dev': dict(
+        url='https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v2.0.json',
+        path=os.path.join(DATA_DIR, 'training_sets', 'squad', 'dev-v2.0.json')),
+    'squad': dict(
+        url='https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v2.0.json',
+        path=os.path.join(DATA_DIR, 'training_sets', 'squad', 'train-v2.0.json')),
+    'floyd': dict(
+        url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/floyd.pkl',
+        path=os.path.join(DATA_DIR, 'corpora', 'wikipedia', 'floyd.pkl')),
+    'wikipedia_articles': dict(
+        url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/corpora/articles_with_keywords.pkl',
+        path=os.path.join(DATA_DIR, 'corpora', 'wikipedia', 'articles_with_keywords.pkl')),
+    'albert-large-v2': dict(
+        url='https://tan.sfo2.cdn.digitaloceanspaces.com/midata/public/models/qa/articles_with_keywords.pkl',
+        path=os.path.join(DATA_DIR, 'models', 'qa', 'albert-large-v2-0.2.0.zip')),
+}
+tmp_large_files = {}
+for name, meta in LARGE_FILES.items():
+    m = dict()
+    m.update(meta)
+    # add redundant keys for the url and the filenames in the url
+    m['url_filename'] = url_filename(m['url'])
+    m['filename'] = path_filename(m['path']) or m['url_filename']
+    for k in m['url'], m['filename'], m['url_filename'], basename(m['url_filename']):
+        tmp_large_files[k] = m
+LARGE_FILES.update(tmp_large_files)
+del tmp_large_files, m, k
+LARGE_FILES['wikipedia'] = LARGE_FILES['wikipedia_articles']
+LARGE_FILES['albert'] = LARGE_FILES['albert-large-v2']
+LARGE_FILES['albert_large'] = LARGE_FILES['albert-large-v2']
+LARGE_FILES['albert_large_v2'] = LARGE_FILES['albert-large-v2']
+
+
 DEFAULT_CONFIG = {
     'name': 'bot',
     'persist': 'False',  # Yes, yes, 1, Y, y, T, t
@@ -44,7 +84,7 @@ DEFAULT_CONFIG = {
     'debug': True,
     'wiki_title_max_words': 4,
     'score_weights': '{"spell": .25, "sentiment": .25, "semantics": .5}',
-    'qa_model': 'albert-large-v2-0.2.0'
+    'qa_model': 'albert-large-v2-0.2.0',
 }
 DEFAULT_CONFIG.update(env.parsed)
 
@@ -64,31 +104,6 @@ logging.basicConfig(
     level=LOGLEVEL)
 root_logger = logging.getLogger()
 log = logging.getLogger(__name__)
-
-
-# FIXME: to avoid PYTHONPATH hack, use relative imports: `from .constants` not `from qary.constants`
-def append_sys_path():
-    pass
-    # if BASE_DIR not in sys.path:
-    #     log.warning(f'Package BASE_DIR ({BASE_DIR}) not in sys.path: {sys.path}')
-    #     sys.path.append(BASE_DIR)
-    # if SRC_DIR not in sys.path:
-    #     log.warning(f'Package SRC_DIR ({SRC_DIR}) not in sys.path: {sys.path}')
-    #     sys.path.append(SRC_DIR)
-
-# append_sys_path()
-# def parse_config(filepath='qary.ini'):
-#     config = ConfigParser()
-#     config['DEFAULT'] = config_defaults
-#     config['bitbucket.org'] = {}
-#     config['bitbucket.org']['User'] = 'hg'
-#     config['topsecret.server.com'] = {}
-#     topsecret = config['topsecret.server.com']
-#     topsecret['Port'] = '50022'     # mutates the parser
-#     topsecret['ForwardX11'] = 'no'  # same here
-#     config['DEFAULT']['ForwardX11'] = 'yes'
-#     with open('example.ini', 'w') as configfile:
-#         config.write(configfile)
 
 
 def parse_args(args):
@@ -261,10 +276,11 @@ def setup_logging(loglevel=LOGLEVEL):
     Args:
       loglevel (int): minimum loglevel for emitting messages
     """
-    global LOGLEVEL, log
+    global LOGLEVEL, log, root_logger
 
     logformat = '%(asctime)s.%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s'
     logdatefmt = "%Y-%m-%d%H:%M:%S"
+    root_logger.setLevel(loglevel)
     log.setLevel(loglevel)
     # FIXME: this doesn't seem to change things, the original format and level set at top of file rules
     logging.basicConfig(level=loglevel, stream=sys.stdout, format=logformat, datefmt=logdatefmt)
@@ -386,12 +402,29 @@ TFHUB_USE_MODULE_URL = "https://tfhub.dev/google/universal-sentence-encoder-larg
 USE = None
 
 
-class passthroughSpaCyPipe:
-    """ Callable pass-through SpaCy Pipeline Component class (callable) for fallback if spacy_hunspell.spaCyHunSpell fails"""
-
-    def __init__(self, *args, **kwargs):
+def set_django_settings(settings=None):
+    DATABASES = {
+        'sqlite': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
+        'postgres': {
+            'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
+            'NAME': os.environ.get('SQL_DATABASE', os.path.join(BASE_DIR, 'db.sqlite3')),
+            'USER': os.environ.get('SQL_USER', 'user'),
+            'PASSWORD': os.environ.get('SQL_PASSWORD', 'password'),
+            'HOST': os.environ.get('SQL_HOST', 'localhost'),
+            'PORT': os.environ.get('SQL_PORT', '5432'),
+        }
+    }
+    DATABASES['default'] = DATABASES['sqlite']
+    settings = {'DATABASE_' + k: v for (k, v) in DATABASES['default'].items()}
+    settings['TIME_ZONE'] = 'America/Los_Angeles'
+    try:
+        django.conf.settings.configure(**settings)
+    except RuntimeError:  # RuntimeError('Settings already configured.')
         pass
+    return django.conf.settings
 
-    def __call__(self, doc):
-        log.info(f"This passthroughSpaCyPipe component only logs the token count: {len(doc)}")
-        return doc
+
+django_settings = set_django_settings()

@@ -81,7 +81,7 @@ def load(domains=DEFAULT_GLOSSARY_DOMAINS):
     """
     glossary_raw = {}
     for domain in tqdm(domains):
-        glossary_raw.update(yaml.load(open(os.path.join(DATA_DIR, 'faq', f'glossary-{domain}.yml'))))
+        glossary_raw.update(yaml.safe_load(open(os.path.join(DATA_DIR, 'faq', f'glossary-{domain}.yml'))))
     glossary = {}
     for term_raw, definition_raw in glossary_raw.items():
         match = re.match(r'(?P<term>[^(]*)\s*(\((?P<parenthetical>[^)]*)\))?\s*$', term_raw)

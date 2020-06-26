@@ -16,13 +16,25 @@ log = logging.getLogger(locals().get('__name__'))
 
 
 def normalize_docvectors(docvectors):
-    """ Convert a table (2D matrix) of row-vectors into a table of normalized row-vectors """
+    """ Convert a table (2D matrix) of row-vectors into a table of normalized row-vectors
+
+    >>> vecs = normalize_docvectors([[1, 2, 3], [4, 5, 6], [0, 0, 0], [-1, 0, +2]])
+    >>> vecs.shape
+    (4, 3)
+    >>> np.linalg.norm(vecs, axis=1).round()
+    array([1., 1., 0., 1.])
+    """
     docvectors = np.array(docvectors)
     log.info(f'docvectors.shape: {docvectors.shape}')
     norms = np.linalg.norm(docvectors, axis=1)
+    iszero = norms <= 0
     log.info(f'norms.shape: {norms.shape}')
     norms_reshaped = norms.reshape(-1, 1).dot(np.ones((1, docvectors.shape[1])))
     log.info(f'norms_reshaped.shape: {norms_reshaped.shape}')
+    if np.any(iszero):
+        log.warning(
+            f'Some doc vectors are zero like this first one: docvectors[{iszero},:] = {docvectors[iszero,:]}')
+    norms_reshaped[iszero, :] = 1
     normalized_docvectors = docvectors / norms_reshaped
     log.info(f'normalized_docvectors.shape: {normalized_docvectors.shape}')
     assert normalized_docvectors.shape == docvectors.shape
@@ -34,14 +46,10 @@ def load(domains=FAQ_DOMAINS):
 
     Load faq*.yml into dictionary: question: answer
 
-    >>> g = load(domains='dsdh'.split(','))
-    >>> len(g['raw']) <= len(g['cleaned']) > 30
+    >>> g = load()
+    >>> len(g['questions']) == len(g['answers']) > 30
     True
-    >>> sorted(g['cleaned']['Allele'])
-    ['acronym', 'definition', 'hashtags', 'parenthetical']
     """
-    # faq_raw = {}
-    # q_vectors = pd.DataFrame()
     questions, answers, question_vectors = [], [], []
 
     faqdirpath = os.path.join(DATA_DIR, 'faq')
@@ -56,7 +64,7 @@ def load(domains=FAQ_DOMAINS):
             with filepointer:
                 log.info(f"loading: {filepath.name}\n    with file pointer: {filepointer}")
                 try:
-                    qa_list = yaml.load(filepointer)
+                    qa_list = yaml.safe_load(filepointer)
                 except ScannerError as e:
                     log.error(f"{e}\n    yaml.load unable to read {filepointer.name}")
                     continue

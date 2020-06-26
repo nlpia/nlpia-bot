@@ -1,0 +1,8 @@
+cookiecutter==1.7.2
+django>=3.0.7,<3.1.0
+django-celery==3.3.1
+django-channels==0.7.0
+django-elasticsearch-dsl==7.1.1
+django-elasticsearch-dsl-drf==0.20.8
+django-extensions==2.2.9
+djangorestframework==3.11.0

@@ -121,7 +121,8 @@ class Bot(ContextBot):
         log.warning(f"super() responses: {responses}")
         docs = self.context.get('docs') or [self.context['doc']['text']]
         for text in docs:
-            log.info(f"text from context['doc']['text'] or wikipedia scrape: {text}")
+            log.info(
+                f"text from context['doc']['text'] or wikipedia scrape: {repr(text)[:40]}...{repr(text)[-40:]} ({len(text)} chars)")
 
             super().update_context(context=dict(doc=dict(text=text)))
             if len(text.strip()) < 2:

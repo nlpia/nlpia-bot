@@ -1,0 +1,78 @@
+-
+  Q: What is a good way to productize and deploy a machine learning model, especially for NLP. #student #springboard #GuSu #20200602130000
+  A: For NLP the entire pipeline should be provided to the development team to integrate into a production app and deploy. Sciki-Learn Pipeline objects can be pickled after you have a trained model and then this can be depickled within any other python application by your development team.
+-
+  Q: Is it important to normalize or standardize your feature and target variables before performing a fit? #student #springboard #EdLe #20200602150000
+  A: Normalizing your dataset would have **NO** effect for an Ordinary Least Squares linear regression (`sklearn.LinearRegression`). For linear regression normalizing your data can make it more difficult to interpret and verify your results. However for many models, such as `LogisticRegression` or any other model performing regularization or feature selection internally, it is extremely important. For these models it can be critical to improving the accuracy of your model. Just remember to store the fitted `Scaler` object in a variable so you can later use it to inverse_transform the coefficients of your model to help you interpret and explain your results.
+-
+  Q: How should I deal with nan's in a datetime? #student #springboard #ElHo #20200602163000
+  A: First clean up all the categorical and numerical variables in your dataset and build a model to predict your target variable.  Next, create a datetime_isna column to record the presence/absence of NaNs in your datetime column. Then you can try different `.fillna()` methods like `"mean"` or 0 and compare the accuracy of these models to the baseline and fill the nans with zeros and This gives you a baseline accuracy that you can compare your accuracy to after you've cleaned up the datetime columns. Then create a regression model that predicts datetime as a continuous value (such as seconds since 1970) using the rows where you have nonnan values. Do not use the target variable when you are predicting datetime. Finally, use that regression model to predict the NaN datetime values. Finally, train and validate a model trained on all your features including the datetime column and confirm that accuracy on your test set is no worse than before the fill method. You should also convirm that it is no worse than if you just fill the datetime with zeros or a mean.
+-
+  Q: When should I train my first model on my dataset? #student #springboard #YeHe #20200602170000
+  A: As soon as you have at least one target variable and one feature variable cleaned up. A cleaned variable is one that has all numerical or boolean values without any NaNs or strings or object dtypes.
+-
+  Q: How can I consolidate my code for training models and tuning hyperparameters?  #student #springboard #SaSi #20200603090000
+  A: "Try something like this at the beginning of your notebook: `hypertable = []`. Then for every model you train create a dictionary to contain the hyperparameters and the accuracy metrics: `hyperrow['model'] = model.__class__.__name__` and `hyperrow['testset_score'] = model.score(X_test, y_test)`."
+-
+  Q: What's a good dataset for contributing to governmental reform to combat racism. #student #springboard #GaLi #20200603093000
+  A: This [collection of datasets](https://www.policedatainitiative.org/datasets/) contains police reports from various cities in the US.
+-
+  Q: Should I clean up all my data first or train a model. #student #springboard #AlDe #20200603100000
+  A: I like to first train a model on the features that are already clean, such as all the numerical features that do not have missing or NaN values. That gives you a benchmark accuracy for a simple model. Then you can add more features as you clean them to see how your accuracy improves.
+-
+  Q: Should I filter outliers from my dataset before training a model? #student #springboard #HaSe #20200603103000
+  A: Only if your stakeholders, the ones using your model in the real world, do not need to use that model to make predictions on data similar to that for your outliers.
+-
+  Q: Should I include double integrated (cumsum) accelerometer data in my model as a feature to predict sobriety? #student #springboard #MaDu #20200603113000
+  A: Always include all feature variables, even if you are not sure whether they are relevant to your target variable. And position information derived from accelation is an especially good representation of data that often says a lot about the world, including whether people on a pub crawl are sober or not.
+-
+  Q: What is the residual for a machine learning model? #student #springboard #DaLo #20200603120000
+  A: The signed error or the difference between the model predictions and the truth. For example `residual = y_test_pred - y_train_pred`. If you see any pattern like a U shape or curvature in the plots of residual vs any of your features, that's an indication that you could generate a new feature by squaring or taking the square root of that feature variable. #teacher #springboard #DaLo #20200603113000
+-
+  Q: Besides identifying which model was the best and what it's accuracy is what else should I include in my final report.  #student #springboard #JuCh ##202006031800
+  A: You should also answer "why" questions rather than just "what" questions. Consider questions that two different audiences would ask, data scientists and business managers. Why should each of them care about your results. How can business managers use your results to improve their businesses. How can data scientists learn from your approach and apply it to future data science problems.
+-
+  Q: I have a categorical variable like gender or business segment as a feature in my model. Would it improve the accuracy of my model to build separate models for each category or class?
+  A: No. It would be much better to engineer additional features from those categorical variables that multiply those categorical variables by some of the other features.
+-
+  Q: How would you improve a model that seems to do really well on the training data but poorly in the real world.  #teacher #202006091500
+  A: You likely need to generalize or regularize the model. I would also do a hyper-parameter search to optimize the hyperparameters so that the model maximizes the performance that you care about. #student #202006091500 #EdLe
+-
+  Q: You see a column that contains city and sometimes state or county, what kind of variable is this in Data Science?   #202006091800 #SeOk
+  A: It's a categorical variable.
+  Q: Yes, but won't it contain a lot of unique values, kind of like the name of a person, you can treat it as a categorical variable but you can also treat a name like a special natural language variable. What kind of special variable is city, county, and state?
+  A: It's a geographic or location variable. It can be transformed to latitude and longitude and other useful information can be extracted like the distance from the centroid (mean) or distance to the nearest state capital.
+-
+  Q: Rather than dropping rows (records) for outliers, is there a better way to deal with outliers?  #student #202006091630 #ElHo
+  A: Plot the residuals (error) against each of your features, looking for some curvature or nonlinear shape that you recognize from algebra class, like `exp`, `x^2`, `1/x`. If you find a nonlinear pattern you can apply that transform to that feature variable and improve the accuracy of your model on both the outlier and the bulk of the data where the residual is already low.
+-
+  Q: How do I find and deal with spurious correlations? #student #202006091800 #YeHe
+  A: Without deep domain knowledge and experience a Data Scientist cannot detect spurious correlations. Only a scientist that performs experiments in the real world can detect causal relationships and spurrious correlations. Data Science performs experiments on data. Real science performs experiments on the real world, like randomized controled trials (RCTs). RCTs are the gold standard for identifying cause and effect relationships and spurious correlations. To  learn more, check out _The Book of Why_ by Judea Pearl.
+-
+  Q: How can I compose a hyperparameter table that includes both classifier F1-scores and regressor RMSE? #SaSa #202006100900 #student
+  A: Create a dictionary for each row in your hyper parameter table. You should have one row for every time you call a `model.fit()` method. Then you want to append that hyperparameter dictionary to a hyper parameter list. That list of dictionaries can be converted to a nicely formatted dataframe with `pd.DataFrame(hyperparameter_list_of_dicts)`. And for each model type it will contain different metrics (like RMSE or F1-score) and different hyperparameters as key value pairs. The DataFrame will just contain NaNs in the appropriate positions in your table where no key-value pair was present for a particular model.
+-
+  Q: How can I decide the right `min_df` for a `TFIDFVectorizer`? #student #GaLi
+  A: The `min_df` argument is a hyperparameter. Even the choice of a preprocessor, like `TFIDFVectorizer` is a hyperparameter. Any value, that when changed, affects the performance of your ML pipeline, that's a hyperparameter. It's your challenge to parameterize as much of your pipeline as possible so you can optimize your choices for each of those hyperparameter. In Data Science and Machine Learning, how do you decide which choice for a hyperparameter value is best? #teacher
+  A1: Since `min_df` can be parameterized and treated as a hyperparameter, you can use random or directed search or your intuition to try different values for `min_df`. You then compare the test set accuracy for each value for that hyperparameter. #student
+-
+  Q: When do I do `train_test_split()`? #AlDr #student #202006101000
+  A: After data cleaning and before spliting your columns into `X` and `y` to fit a model.
+-
+  Q: I'm training a model to predict home prices in Boston and my dataset has some homes with a price of $0. Should I drop rows for home prices with $0? #202006101030 #HaSe #student
+  A: Only if you think they are erroneous prices or some of the other features are errors.
+-
+  Q: Where can I find 311 call logs for New York City? #202006101100 #LjHe #student
+  A: The JSON REST API is located at [](https://data.cityofnewyork.us/resource/erm2-nwe9.json)
+  Q1: When I try to download data from the Socrata REST API at data.cityofnewyork.us/resource/erm2-nwe9.json it only returns 1000 records. I'd like to download the entire dataset.
+  A1: You'll need to add GET parameters like `?create_date=20200610` to the end of the url to download subsets of the dataset one at a time.
+-
+  Q: Why did you recommend I start with `n_components=10` in my PCA dimension reduction for a TFIDF vector? Why didn't you set a threshold on explained variance like 95%? #student #KeLa #202006111800
+  A: Because explained variance often doesn't measure what you care about. You care about test set accuracy or test set score. So try many different n_components values to search for the best hyperparameter value for your problem.
+-
+  Q: What are some good transformations to use during feature engineering? #NiSa #202006111830 #student
+  A: Some transformations to try would be `X**2`, `X**3`, `X**.5`, `X**-1`, `np.log(X)`, `np.exp(X)`, `X[:,0] * X[:,1]`, etc. There are an infinite number of transformations you could try. So do not search blindly. Instead, pay attention to the test set and training set accuracy after each transformation. This will help you make an informed guesses about each transformation you decide to try.
+-
+  Q: Is there a good way to filter out unimportant words like `the` or `of` when creating a Data Science model? #KeLa #student #202006141800
+  A: Yes, but you should not do it based on your human judgement and domain knowledge. Instead rely on the `TfidfVectorizer` to weight words according to their importance. If you cannot load all possible words or n-grams into memory for processing then you can set `min_df` and `max_df` to values like `min_df=10` and `max_df=.5`. Keep reducing `max_df` and increasing `min_df` until your pipeline runs quickly and you get an accuracy score. Then continue to tune the other hyperparameters of your pipeline to try to improve accuracy.
+

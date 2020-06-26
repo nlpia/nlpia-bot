@@ -16,6 +16,7 @@ __pycache__/*
 .coverage*
 data/*.swp
 data/history.json
+cache_dir/
 
 # Project files
 .ropeproject
@@ -63,6 +64,7 @@ db.sqlite3
 *.zip
 qary/data/qa-models/*
 qary/data/simple-transformer/
+**/albert-large*
 
 # Per-project virtualenvs
 .venv*/
@@ -72,3 +74,6 @@ qary/data/simple-transformer/
 **/*secret*
 **/*private*
 qary/data/*.json
+**/simple-transformers
+**/albert-large-*
+**/wikipedia/articles_with_keywords.pkl
