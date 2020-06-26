@@ -24,12 +24,10 @@ def print_categorymembers(categorymembers, level=0, max_level=1):
             print_categorymembers(c.categorymembers, level=level + 1, max_level=max_level)
 
 
-# Save articles in separate .txt files
-
-
 def save_articles(
-        path=Path(constants.DATA_DIR, 'corpora', 'wikipedia'),
+        path=os.path.join(constants.DATA_DIR, "wikipedia"),
         category='Natural_language_processing'):
+    """ Save articles in separate .txt files """
     os.makedirs(path, exist_ok=True)
     wiki_wiki = wikipediaapi.Wikipedia('en')
     cat = wiki_wiki.page(f"Category:{category}")
