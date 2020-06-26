@@ -52,4 +52,3 @@ dependencies:
     - recommonmark==0.6.0
     - m2r==0.2.1
     - wikipedia-api==0.5.4
-

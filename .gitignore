@@ -16,6 +16,7 @@ __pycache__/*
 .coverage*
 data/*.swp
 data/history.json
+cache_dir/
 
 # Project files
 .ropeproject
@@ -73,3 +74,6 @@ qary/data/simple-transformer/
 **/*secret*
 **/*private*
 qary/data/*.json
+**/simple-transformers
+**/albert-large-*
+**/wikipedia/articles_with_keywords.pkl
