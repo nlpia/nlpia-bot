@@ -1,0 +1,3 @@
+# https://cse.sc.edu/~mgv/csce798F06/Laskey_FOBL.pdf
+Multi-entity Bayesian Networks (MEBN): A syntax for defining bayesean networks that connect first order logic facts to each other with probabilities or likelihoods between them.
+First Order Baysean Logic (FOBL): A formal syntax for expressing graphs of first order logic statements and their probabilities.

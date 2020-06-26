@@ -1,0 +1,17 @@
+-
+  - I have completed step 5 of the guided capstone - data modeling and have submitted by Jupyter Notebook through the Springboard curriculum website. While I did complete all the steps and intuitively I understand that the last model should be the best, I can't really follow through and explain why that is based on the results that I have shown in the notebook by following the steps that were suggested. #teacher
+  - I agree. All the metrics you show say the last model is not the best in terms of accuracy. Can you think of any other things that might be important for a model to be "good at"? Is a model with fewer features ever more accurate than a model that has more features? If not, why would we ever want to drop features?
+-
+  - I've trained a binary classifier based on 3 different models, logistic regression, K-means, and K-nearest neighbor model. I used Bitcoin data from Quandl.com to try to predict whether future prices will go up or down. All of my models all achieve about 50% accuracy and about 50% F1 score. What should I do next? #student
+  - Do you expect to ever be able to achieve accuracy much better than 50%?
+  - No.
+  - Exactly. So what can you do to scale your data so that your target accuracy and your baseline accuracy are on opposite ends of the scale? What value can you divide into your ac curacy number to "normalize" it so that your accuracy score represents how much better you're doing than the market average? What is the market average performance or accuracy for your problem? In Fintech this scaled accuracy or your model's performance divided by the average market performance is called _alpha_.
+  - I don't know.
+  - What does scikit-learn's `MinMaxScaler()` do to your data?
+  - It subtracts the min value and divides by the min max range. Min-max range is the maximum value divided by the minimum value.
+-
+  - What kind of file is a `.DAT` file or `.SPS` file? #student
+  - A `.DAT` file contains the raw data output from an SPSS statistical analysis program. An `.SPS` file probably contains the project settings for the SPSS program. SPSS is used by governments and Banks and other organizations that are hesitant to upgrade to more modern tools like Python and Pandas.
+  - How do I convert it to json or CSV?
+  - You want to find a data dictionary. For SPSS you can usually find it in a human-readable file with the extension ".DCT". The data dicitonary is stored in "INI" or "CFG" format so it can be read with python's built-in `configparser` module. The `.DCF` also contains the information you need to parse the `.DAT` file. It contains data type and the character position (column number) for the text associated with each field (column) or variable mentioned in the ".DCT" file.
+

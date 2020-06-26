@@ -22,7 +22,7 @@ bot: Hello!
 YOU: Looking good!
 ```
 """
-import collections.abc
+from collections import abc
 import importlib
 import json
 import logging
@@ -33,6 +33,7 @@ import numpy as np
 import pandas as pd
 
 from qary import constants
+from qary.skills.basebots import normalize_replies
 
 __author__ = "see AUTHORS.md and README.md: Travis, Nima, Erturgrul, Aliya, Xavier, Maria, Hobson, ..."
 __copyright__ = "Hobson Lane"
@@ -43,31 +44,12 @@ log = logging.getLogger(__name__)
 
 log.info(f'sys.path: {sys.path}')
 log.info(f'constants: {dir(constants)}')
-log.info(constants.append_sys_path())
 log.info(f'BASE_DIR: {constants.BASE_DIR}')
 log.info(f'SRC_DIR: {constants.SRC_DIR}')
 log.info(f'sys.path (after append): {sys.path}')
-from .scores.quality_score import QualityScore  # noqa
-
+from qary.scores.quality_score import QualityScore  # noqa
 
 BOT = None
-
-
-def normalize_replies(replies=''):
-    """ Make sure a list of replies includes score and text
-
-    >>> normalize_replies(['hello world'])
-    [(1e-10, 'hello world')]
-    """
-    if isinstance(replies, str):
-        replies = [(1e-10, replies)]
-    elif isinstance(replies, tuple) and len(replies, 2) and isinstance(replies[0], float):
-        replies = [(replies[0], str(replies[1]))]
-    # TODO: this sorting is likely unnecessary, redundant with sort happening within CLIBot.reply()
-    return sorted([
-        ((1e-10, r) if isinstance(r, str) else tuple(r))
-        for r in replies
-    ], reverse=True)
 
 
 class CLIBot:
@@ -85,7 +67,7 @@ class CLIBot:
             bots=constants.DEFAULT_BOTS,
             num_top_replies=None,
             **quality_kwargs):
-        if not isinstance(bots, collections.Mapping):
+        if not isinstance(bots, abc.Mapping):
             bots = dict(zip(bots, [None] * len(bots)))
         for bot_name, bot_kwargs in bots.items():
             bot_kwargs = {} if bot_kwargs is None else dict(bot_kwargs)

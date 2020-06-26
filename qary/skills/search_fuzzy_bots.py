@@ -5,7 +5,7 @@ import os
 
 import yaml
 import pandas as pd
-from fuzzywuzzy import process
+from rapidfuzz import process
 from ..constants import DATA_DIR
 
 log = logging.getLogger(__name__)
@@ -83,7 +83,7 @@ class Bot:
         return db
 
     def reply(self, statement, db=None):
-        """ Use fuzzywuzzy to find the closest key in the dictionary then return the value for that key
+        """ Use rapidfuzz to find the closest key in the dictionary then return the value for that key
 
         >>> bot = MovieBot()
         >>> reply = bot.reply
