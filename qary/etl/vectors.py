@@ -52,7 +52,6 @@ class vector_collection():
 #     self.factor=factor
 #     self.root_vec = [0*size]
 #     self.children = []
-
 #     def add_vectors(self, vectors):
 #         n = len(vectors[0])
 #         n_clusters= n//self.factor

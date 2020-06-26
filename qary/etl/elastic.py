@@ -1,7 +1,8 @@
 
 """ Search and scrape wikipedia articles from a chosen category """
 import os
-# import json
+from pathlib import Path
+
 from elasticsearch import Elasticsearch
 import wikipediaapi
 from slugify import slugify
@@ -23,9 +24,10 @@ def print_categorymembers(categorymembers, level=0, max_level=1):
             print_categorymembers(c.categorymembers, level=level + 1, max_level=max_level)
 
 
-# Save articles in separate .txt files
-
-def save_articles(path=os.path.join(constants.DATA_DIR, "wikipedia"), category='Natural_language_processing'):
+def save_articles(
+        path=os.path.join(constants.DATA_DIR, "wikipedia"),
+        category='Natural_language_processing'):
+    """ Save articles in separate .txt files """
     os.makedirs(path, exist_ok=True)
     wiki_wiki = wikipediaapi.Wikipedia('en')
     cat = wiki_wiki.page(f"Category:{category}")
@@ -44,8 +46,7 @@ def save_articles(path=os.path.join(constants.DATA_DIR, "wikipedia"), category='
             log.error(f"Error writing document {page.title}: {error}")
 
 
-def index_dir(path=os.path.join(constants.DATA_DIR, "wikipedia")):
-
+def index_dir(path=Path(constants.DATA_DIR, 'corpora', 'wikipedia')):
     paths = []
     # r=root, d=directories, f = files
     for r, d, f in os.walk(path):
