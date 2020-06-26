@@ -29,7 +29,7 @@
   Q: What is the residual for a machine learning model? #student #springboard #DaLo #20200603120000
   A: The signed error or the difference between the model predictions and the truth. For example `residual = y_test_pred - y_train_pred`. If you see any pattern like a U shape or curvature in the plots of residual vs any of your features, that's an indication that you could generate a new feature by squaring or taking the square root of that feature variable. #teacher #springboard #DaLo #20200603113000
 -
-  Q: Besides identifying which model was the best and what it's accuracy is what else should I include in my final report.  #student #springboard #JuCh ##202006031800
+  Q: Besides identifying which model was the best and what it's accuracy is what else should I include in my final report.  #student #springboard #JuCh #202006031800
   A: You should also answer "why" questions rather than just "what" questions. Consider questions that two different audiences would ask, data scientists and business managers. Why should each of them care about your results. How can business managers use your results to improve their businesses. How can data scientists learn from your approach and apply it to future data science problems.
 -
   Q: I have a categorical variable like gender or business segment as a feature in my model. Would it improve the accuracy of my model to build separate models for each category or class?
@@ -99,3 +99,43 @@
 -
   Q: My dataset contains a count of deaths by State, cause, and week of the year for the past few years. How should I process the dataset to create a testset to verify accuracy. #student #202006171000
   A: In your training set, remove the last 4 weeks (records) for each state then use those records (50 states x 4 weeks = 200 records) as your test set.
+-
+  Q: What is target encoding?  #202006
+  A: When you have high cardinality categorical features you can use target encoding to create a single numerical feature for each categorical feature. You just replace the category ID with the mean of your target variable for that category. In a Pandas DataFrame this is `df['target_encoding'] = df.groupby('category_column_name').mean()`.
+-
+  Q: What are the advantages of target encoding vs. get_dummies (one-hot encoding)?
+  A: Target encoding only requires one continuous numerical column to store information about a categorical variable. One-hot encoding (`pd.get_dummies`) creates a binary variable for each possible categorical value in each categorical variable.
+-
+  Q: I'm trying to complete the statistical data analysis portion of my project. Do you have any tips for me? #student
+  A: Try choosing a target variable then choose one or two features that you think might be interesting, then calculate some statistics on those features. For example, if your target variable is continuous (like price) and one of the features you'd like to examine is categorical (like US state), then you might plot histograms of your target variable (price) within each of the categories (states) for that variable. You could also calculate the mean price for each US state and see if you seen anything interesting in those 50 mean prices. If your target is categorical and the interesting feature you want to examine is continuous, then you just flip the analysis around and calculate the mean on your feature for each category in your target.
+-
+  Q: What makes a good data science problem?
+  A: A good dataset that is much taller than it is wide. It should have a variety of variable types for features and target variables and have many more examples (rows) than it has features (columns).
+-
+  Q: What kinds of variables should I look for in a good machine learning dataset for learning?
+  A: "You want a variety of column types (variable types): continuous numeric variables, ordinal, categorical, NLP, date/time, and geographic (address, zip, city, lat/lon) variables."
+-
+  Q: I have categorical variables with a lot of NaNs or missing values. I filled them with the most frequent value within each category. Is this the right approach?
+  A: Usually that will make your model less accurate. You want to avoid using domain knowledge or intuition as much as possible when cleaning up your data. You want to extract information rather than add or change information in your table. So the best thing to do with NaNs in a categorical variable is to create a new category called "missing" or "unknown" or "NaN". You should create a different category for each kind of missing value ("", "unknown", "N/A", np.nan, "None") because these may represent different ways that missing values are created in your data.
+-
+  Q: How can I give weight to important words in my NLP pipeline?
+  A: Use a TFIDFVectorizer to create a vector for each document that automatically divides the counts for documents (term frequency that CountVectorizer computes) by the number of documents that word occurs in (inverse document fequency).
+-
+  Q: When I try to clone a repository from gitlab with a URL like this `git@gitlab.com:/tangibleai/qary` I get a permission denied error. Do I need to ask for permission to get access to this repository?
+  A: First, try visiting the repository [directly in your browser](gitlab.com/tangibleai/qary). Gitlab will give you helpful messages and popups if you do not have permission to access the repository, or your account hasn't been set up correctly.
+-
+  Q: How do I extract features from geographic data like latitude and longitude?  #student #springboard #SaSi #202006240900
+  A: "Typically you calculate the distance to landmarks or POIs (Points of Interest). This tutorial explains how to compute real distances in meters, but that's not necessary. Distances in degrees (latitude and longitude are in degrees) are fine: https://towardsdatascience.com/going-dutch-part-2-improving-a-machine-learning-model-using-geographical-data-a8492b67b885"
+-
+  Q: I've trained an NLP sentiment analysis model on financial reports that can predict SLOAN ratios and financial performance metrics a bit better than random chance. Is this good enough for a final report?  #student #springboard #GaLi #202006240930
+  A: "Yes. Summarize all the models you've trained with their accuracies in a single table. Then start on some explanations for why a particular model works best and why some features (words or LDA topics) are correlated with your target variable."
+-
+  Q: Why are chatbots useful in Healthcare? How can they be used effectively?
+  A: They are good for short, high value interactions with patients by automating parts of the workflow like patient intake. They help your providers and patients avoid time-consuming low-value interactions between humans. #JuneCho #pluralsight #2019 #talk #conference
+-
+  Q: What is one of the reasons people are dissatisfied with chatbots?
+  A: When someone needs help from a healthcare or mental healthcare bot, they want it to be able to interact with them quickly, anywhere, on demand. Also they expect chatbots to personalize the conversation with them in the same way a nurse would. They expect context-aware bots.
+-
+  Q: Where should I deploy my first chatbot?
+  A: Within a messaging platform or forum where people are already interacting with you or your team or each other. Ideally this should be an internal system that isn't exposed to customers or beneficiaries until it is deemed useful. For example use it on Slack internally with your team before you deploy it to Twitter, Reddit, Facebook, or SMS.
+
