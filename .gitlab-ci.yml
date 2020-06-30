@@ -23,6 +23,7 @@ before_script:
   - python -v                                   # Print out Python version for debugging
   # Setup git
   - apt-get install git
+  - apt-get install -y curl
   - git config --global user.email "gitlabci@totalgood.com"
   - git config --global user.name "GitLab CI"
   # Install dependencies of your package and the testing environment
@@ -40,6 +41,7 @@ py36:
   image: continuumio/miniconda3:latest
 
   before_script:
+    - conda install -c anaconda curl
     - conda update -n base -c defaults conda
     - conda create -n qary36 'python>=3.6.0,<3.7'
     - conda env update -n qary36 -f environment.yml
@@ -47,13 +49,17 @@ py36:
     - pip install -e .
 
   script:
-    - pytest
+    - pytest --cov-report=xml --cov=./
+
+  after_script:
+    - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
 
 
 py37:
   image: continuumio/miniconda3:latest
 
   before_script:
+    - conda install -c anaconda curl
     - conda update -n base -c defaults conda
     - conda create -n qary37 'python>=3.7.0,<3.8'
     - conda env update -n qary37 -f environment.yml
@@ -61,7 +67,10 @@ py37:
     - pip install -e .
 
   script:
-    - pytest
+    - pytest --cov-report=xml --cov=./
+
+  after_script:
+    - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
 
 
 # This deploy job uses a simple deploy flow to Heroku, other providers, e.g. AWS Elastic Beanstalk
