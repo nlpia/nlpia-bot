@@ -131,7 +131,7 @@ class CLIBot:
                 bot_replies = bot.reply(statement, context=context)
                 log.info("{bot.__name__} replies: {bot_replies}")
             except TypeError as e:
-                log.warn(f"TypeError: bot.reply probably got an unexpected keyword argument 'context': {e}")
+                log.warning(f"TypeError: bot.reply probably got an unexpected keyword argument 'context': {e}")
                 bot_replies = bot.reply(statement)
             except Exception as e:
                 log.error(f'Error trying to run {bot.__self__.__class__}.reply("{statement}", context={context})')
