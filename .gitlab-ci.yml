@@ -51,8 +51,8 @@ py36:
   script:
     - pytest --cov-report=xml --cov=./
 
-  after_script:
-    - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+  # after_script:
+  #   - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
 
 
 py37:
@@ -69,8 +69,8 @@ py37:
   script:
     - pytest --cov-report=xml --cov=./
 
-  after_script:
-    - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+  # after_script:
+  #   - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
 
 
 # windows-py37:
