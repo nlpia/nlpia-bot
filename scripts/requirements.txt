@@ -8,8 +8,6 @@ pyscaffold>=3.1a0,<3.2a0
 # conda environment.yml "dependencies:"
 ConfigArgParse==1.2.2
 html5lib
-hunspell
-hunspell-en
 pip
 pre_commit==2.3.0
 pytest-cov
