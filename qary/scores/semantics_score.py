@@ -57,12 +57,23 @@ class Doc:
     global nlp
 
     def __init__(self, text='', nlp=nlp):
+        """ Create a Doc object with an API similar to spacy.Doc
+
+        >>> len(Doc('Hello').vector)
+        300
+        """
         self.nlp = nlp if nlp is not None else self.nlp
         self.text = text
         self.doc = nlp(text)
         self.vector = self.doc.vector
 
     def similarity(self, other_doc):
+        """ Similarity of self Doc object meaning to the meaning of another Doc object
+
+        >>> doc = Doc('USA')
+        >>> doc.similarity(Doc('United States'))
+        0.5...
+        """
         return self.doc.similarity(other_doc)
 
 
