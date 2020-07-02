@@ -19,7 +19,7 @@ import qary.etl.knowledge_extraction
 import qary.etl.qa_datasets
 import qary.etl.fileutils
 
-import qary.scores.semantics_score
+import qary.scores.semantic_score
 # import qary.template_generators
 
 
@@ -130,7 +130,7 @@ def test_glossary_bots():
 
 
 def test_semantics_score():
-    results = doctest.testmod(qary.scores.semantics_score, **DOCTEST_KWARGS)
+    results = doctest.testmod(qary.scores.semantic_score, **DOCTEST_KWARGS)
     assert results.failed < 1
     assert results.attempted >= 1
 
