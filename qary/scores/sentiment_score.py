@@ -1,4 +1,4 @@
-def sentiment(reply, stmt=None, **kwargs):
+def score(reply, stmt=None, **kwargs):
     if kwargs is None or kwargs['sentiment_analyzer'] is None:
         return 0.0
 
