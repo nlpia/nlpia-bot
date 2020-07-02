@@ -194,3 +194,23 @@
 -
   Q: Imagine rolling a two on a pair of dice. What does it look like? It's often called "snake eyes". There's only one way that can happen. What are all the combinations of rolls you can get on a pair of dice? You could roll a one and a one, or a one and a two, or a one and a three and so on. Or you could roll a two and a one, a two and a two, or a two and a three and so on. If you counted up all the different ways you could roll two dice, how many would there be? It's not twelve.
   A: Thirty Six.
+-
+  Q: Why is my root mean square error (RMSE) so much smaller than mean absolute error (MAE)?
+  A: That means you must have some outliers in your predictions that have large error. These can cause the RMSE to shift much more than the MAE.
+-
+  Q: What have you heard about Data Science in Telcom working in Quality Assurance?
+  A: It's often used to mine historical data for customer behavior prediction and predicting customer satisfaction or mobile phone coverage outages.
+-
+  Q: What is Google Colab?
+  A: It is a Jupyter Notebook service that allows you to run Jupyter Notebooks in a browser and share them with other without installing python or Anaconda on your computer.
+-
+  Q: What's a good visualization to use for EDA on categorical variables or `isnull()` binary variables?
+  A: You can visualize categorical variables on a scatter plot of other continuous variables using the color or the marker style to represent the categorical variable values. You can visualize a categorical variable on a histogram of a continuous variable by creating a histogram for each category as groups. Each category can be a different color, as on the scatterplot. And the histogram bars can be transparent so that the overlap between categories is apparent.
+-
+  Q: What do I need to create a natural language pipeline for sentiment analysis like predicting hate-speech?
+  A: You need a collection of texts labeled with whether or not each text represents hateful speech.
+-
+  Q: Can I use a collection of YouTube comments to build a sentiment analyzer?
+  A: Only if you have a numerical or categorical rating for the sentiment for each comment.
+
+

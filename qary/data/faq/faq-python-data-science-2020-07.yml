@@ -1,0 +1,36 @@
+# 2020-07-01 DS FAQ
+-
+  Q: "
+  As per our discussion last night I've cleaned the target variable, developed an initial model (I used a logistic regression rather than a linear regression) and loaded the text in to the dataframe. Do you have any recommendations for NLP models or EDA I can examine before our next meeting? See the notebook here: https://github.com/HechtYehuda/Hate-speech-modeler/blob/master/Hate%20speech%20modeler.ipynb  #email #student #YeHe"
+  A: "
+  Excellent! Good choice on logistic regression.
+  1. First, I would create an new numerical feature based on the text column. Something like the length of the text (number of characters) or the number words.
+  2. Retrain your model and with both your features and see if accuracy improves.
+  3. Then look for the presence or absence of a hateful word in each string and make that a new binary feature. retrain and get an accuracy.
+  4. Then look at using CountVectorizer to do that automatically on all the words in your texts.
+  5. Then use TfidfVectorizer to divide that count by the number of documents each word is in.
+  6. At this point you'll get great accuracy. But it will be overfitting. So you'll need to do your train test split to see how badly it does on a test set.
+  7. Once you have a training set and test set and a TFIDF vectorizer tuned up (playing with min_df and max_df to maximize testset accuracy) then you'll need to read up on more advanced techniques to reduce dimensionality for NL data.    #email #student #YeHe"
+-
+  Q: "The [shap package](https://github.com/slundberg/shap) produces nice feature maps for image classification deep learning. The `DeepExplainer.image_plot()` overlays red pixels for regions where the filter (convolutional layer output) was negatively correlated with the target class. It uses blue to indicate positive correlation with the target class. But my rectangular images seem to be misaligned with the red and blue overlay of feature importances from shap."
+  A: "The shap package may have a bug or you may need to rotate your images before passing them to the image_plot(). `DeepExplainer.image_plot() works fine on the MNIST dataset which is square. So try clipping your images to make them square before passing into shap."
+-
+  Q: My git commits aren't appearing on my repository on gitlab.  #student
+  A: What error messages do you see?  #teacher #socratic
+  Q1: "When I type `git push` it just says \"Everything up-to-date\"" #student
+  A1: What does `git status` say?
+  Q2: "When I type `git status` it shows the file I changed in red and says the changes are not yet staged to be committed" #student
+  A2: How do you do what it says and stage those changes to be committed? #socratic #teacher
+  Q3: Using the `git add` command or using the `--all` or `-m`
+-
+  Q: Should I use RandomForestRegressor or RandomForestClassifier for my 911 response time machine learning model? #student
+  A: What is the difference between a _classifier_ and a _regressor_? #teacher #socratic
+  Q1: My problem has a variety of categorical and numerical features. A regressor uses those features to predict the probability of a variable falling into a particular bucket or class or category. But my model is predicting a numerical quantity, the response time in minutes. It's not a probability, so should I use a classifier? #student
+  A1: You're probably thinking of a famous classifier called LogisticRegression. The _LogisticRegression_ name is unfortunate, because it does predict a continuous value, the probability of being in a particular class. But it's purpose and use is as a classifier. It predicts this class (or category, or bucket) in which a particular example belongs. So your problem that is predicting a numerical quantity like time in minutes is not a classifier. #teacher #socratic
+  Q2: So I should use a RandomForestRegressor to predict the response time for 911 calls? #student
+  A2: Yes, whenever your target variable is a continuous numerical value, a regressor is the right kind of model to use. #teacher
+-
+  Q: When do I reject the null hypothesis and accept the alternative hypothesis that I proposed at the beginning of the project?
+  A: When the P-value for your results is below 0.05 (5%) you can usually reject the null hypothesis. This means that your results are statistically significant and not likely to be caused by chance and your hypothesis represents a probable relationship between your feature variable and your target variable proposed in your hypothesis.
+
+
