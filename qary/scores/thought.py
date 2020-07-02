@@ -87,12 +87,12 @@ class Doc:
             return self.doc.similarity(getattr(other_doc, 'doc', other_doc))
 
 
-def semantic_similarity(text1, text2):
+def similarity(text1, text2):
     """ Similarity between two natural language texts (words, phrases, documents) 1 = 100%, -1 = -100%
 
-    >>> semantic_similarity('Hello', 'hello') > 0.99
+    >>> similarity('Hello', 'hello') > 0.99
     True
-    >>> .8 > semantic_similarity('Hello!', 'Hi?') > 0.75
+    >>> .8 > similarity('Hello!', 'Hi?') > 0.75
     True
     """
     return Doc(text1).similarity(Doc(text2).doc)
