@@ -4,9 +4,13 @@ from qary import spacy_language_model
 
 log = logging.getLogger(__name__)
 nlp = spacy_language_model.nlp
-if nlp._meta['vectors']['width'] < 300:  # len(nlp('word vector').vector) < 300:
+
+try:
+    assert nlp._meta['vectors']['width'] == 300  # len(nlp('word vector').vector) < 300:
+except AssertionError:
     log.warning(f"SpaCy Language model ({nlp._meta['name']}) doesn't contain 300D word2vec word vectors.")
     nlp = spacy_language_model.nlp = spacy_language_model.load('en_core_web_md')
+assert nlp._meta['vectors']['width'] == 300
 
 
 def iou(a, b):
@@ -59,8 +63,11 @@ class Doc:
     def __init__(self, text='', nlp=nlp):
         """ Create a Doc object with an API similar to spacy.Doc
 
-        >>> len(Doc('Hello').vector)
+        >>> d = Doc('Hello').vector
+        >>> len(d)
         300
+        >>> d.doc.similarity(d.doc) > .99
+        True
         """
         self.nlp = nlp if nlp is not None else self.nlp
         self.text = text
