@@ -1,4 +1,4 @@
-def spell(reply, stmt=None, **kwargs):
+def score(reply, stmt=None, **kwargs):
     if kwargs is None or kwargs['nlp'] is None:
         return 0.0
 

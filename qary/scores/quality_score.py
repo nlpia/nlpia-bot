@@ -32,7 +32,7 @@ class QualityScore:
         metrics_scores = [[reply[0] for reply in replies]]
         for i in range(len(self.metrics)):
             metric = self.metrics[i]
-            metrics_scores.append([getattr(self.modules[metric], metric)(
+            metrics_scores.append([getattr(self.modules[metric], 'score')(
                 reply[1], stmt=stmt, **self.kwargs) for reply in replies])
             metrics_scores[-1] = [float(score + 1) / (max(metrics_scores[-1]) + 1) * self.weights[i]
                                   for score in metrics_scores[-1]]
@@ -43,3 +43,8 @@ class QualityScore:
             updated_replies.append(((reply[0] * sum(replies_scores[i])) / (len(self.metrics) + 1), reply[1]))
 
         return updated_replies
+
+
+def score(reply, stmnt=None):
+    """ Combine multiple scores into a single quality score """
+    raise NotImplementedError()

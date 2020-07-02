@@ -55,7 +55,7 @@ BOT = None
 class CLIBot:
     """ Conversation manager intended to interact with the user on the command line, but can be used by other plugins/
 
-    >>> CLIBot(bots='parul,pattern'.split(','), num_top_replies=1, semantics=1.0).reply('Hi')
+    >>> CLIBot(bots='parul,pattern'.split(','), num_top_replies=1).reply('Hi')
     'Hello!'
     """
     bot_names = []

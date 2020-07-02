@@ -35,7 +35,7 @@ def bleu():
     raise NotImplementedError()
 
 
-def semantics(reply, stmt=None, **kwargs):
+def score(reply, stmt=None, **kwargs):
     """ Compute word2vec docvec cosine similarity (fall back to character IOU)
 
     >>> semantics('Hello world!', 'Goodbye big earth!') > .5
