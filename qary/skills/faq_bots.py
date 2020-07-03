@@ -38,7 +38,7 @@ class Bot:
     def reply(self, statement):
         """ Suggest responses to a user statement string with [(score, reply_string)..]"""
         responses = []
-        question_vector = nlp(statement).vector
+        question_vector = self.nlp(statement).vector
         log.debug(f"question_vector is {question_vector}")
         question_vector /= np.linalg.norm(question_vector)
         log.debug(f"faq['question_vectors'].shape is {self.faq['question_vectors'].shape}")

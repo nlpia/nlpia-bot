@@ -35,10 +35,10 @@ def bleu():
     raise NotImplementedError()
 
 
-def score(reply, stmt=None, **kwargs):
+def semantics(reply, stmt=None, **kwargs):
     """ Compute word2vec docvec cosine similarity (fall back to character IOU)
 
-    >>> score('Hello world!', 'Goodbye big earth!') > .5
+    >>> semantics('Hello world!', 'Goodbye big earth!') > .5
     True
     """
     global nlp
@@ -63,8 +63,8 @@ class Doc:
     def __init__(self, text='', nlp=nlp):
         """ Create a Doc object with an API similar to spacy.Doc
 
-        >>> d = Doc('Hello')
-        >>> len(d.vector)
+        >>> d = Doc('Hello').vector
+        >>> len(d)
         300
         >>> d.doc.similarity(d.doc) > .99
         True
@@ -81,10 +81,7 @@ class Doc:
         >>> doc.similarity(Doc('United States'))
         0.5...
         """
-        if hasattr(other_doc, 'vector_norm'):
-            return self.doc.similarity(other_doc)
-        else:
-            return self.doc.similarity(getattr(other_doc, 'doc', other_doc))
+        return self.doc.similarity(other_doc)
 
 
 def similarity(text1, text2):
