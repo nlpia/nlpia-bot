@@ -38,7 +38,7 @@ def bleu():
 def score(reply, stmt=None, **kwargs):
     """ Compute word2vec docvec cosine similarity (fall back to character IOU)
 
-    >>> semantics('Hello world!', 'Goodbye big earth!') > .5
+    >>> score('Hello world!', 'Goodbye big earth!') > .5
     True
     """
     global nlp
@@ -63,8 +63,8 @@ class Doc:
     def __init__(self, text='', nlp=nlp):
         """ Create a Doc object with an API similar to spacy.Doc
 
-        >>> d = Doc('Hello').vector
-        >>> len(d)
+        >>> d = Doc('Hello')
+        >>> len(d.vector)
         300
         >>> d.doc.similarity(d.doc) > .99
         True
