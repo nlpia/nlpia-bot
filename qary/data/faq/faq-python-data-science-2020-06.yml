@@ -164,10 +164,10 @@
   Q: What is a CDG (clinical decision guidelines)?
   A: An example is the _Schmitt-Thompson Nurse Triage Guidelines_ a manual for nurse triage decisions.
 -
-  Q: Where should I deploy my first chatbot?
+  Q: Where should I deploy my first chatbot?  #student
   A: "Within a messaging platform or forum where people are already interacting with you or your team or each other. Ideally this should be an internal system that isn't exposed to customers or beneficiaries until it is deemed useful. For example use it on Slack internally with your team before you deploy it to Twitter, Reddit, Facebook, or SMS."
 -
-  Q: I don't have enough RAM to use `read_csv` on a large CSV file.
+  Q: I don't have enough RAM to use `read_csv` on a large CSV file.  #student
   A: "Create a skip_rows list of integers that skips 99% of the rows. `skip_rows = np.random.sample(range(1, n + 1))`  #student #springboard #LjHe #202006241030"
 -
   Q: "What's a good way to sample a large CSV file for machine learning?  #student #springboard #LjHe #202006241030"
@@ -176,7 +176,7 @@
   Q: How can I count the number of rows in a CSV file without loading it all into RAM.  #student #springboard #LjHe #202006241030
   A: "You can count the lines by opening the file and iterating through it like this: `num_lines = sum(1 for line in open('filename.csv'))`. You may need to subtrace 1 from the total number of lines if there's a header row that you don't want to include in your count."
 -
-  Q: "Where should I deploy my first chatbot?"
+  Q: "Where should I deploy my first chatbot?"  #student
   A: "Within a messaging platform or forum where people are already interacting with you or your team or each other. Ideally this should be an internal system that isn't exposed to customers or beneficiaries until it is deemed useful. For example use it on Slack internally with your team before you deploy it to Twitter, Reddit, Facebook, or SMS."
 -
   Q: "How can I use the `scipy.t.ppf()` function to calculate the critical value for a one-sided 95% confidence interval so that I could be 95% confident that a random draw would be above this value? #student #springboard #JuCh #202006241800"
@@ -184,3 +184,33 @@
 -
   Q: How can I use the `scipy.t.ppf()` function to calculate the critical value for a one-sided 95% confidence interval so that I could be 95% confident that a random draw would be above this value? #student #springboard #JuCh #202006241800
   A: "`scipy.t.ppf(0.05, len(samples)-1)` will give you the t-score for the critical value. You can then multiply that by the standard deviation and add the mean to get the minimum expected value for your 1-sided 95% confidence interval."
+-
+  Q: I have downloaded an activity recognition dataset that includes recordings of dozens of parameters over time for thousands of sessions. Is this a good beginner project? #student #202006291530 #StKi
+  A1: What do you think? Is the dataset taller than it is wide? How many examples do you have for each dimension or feature in your dataset? Do you have a clear feature of the kind of variable in each feature? Is each of your features among the basic types your are familiar with, numeric, categorical, and ordinal? Are there many special features like date or time variables, location variables, or natural language variables? How many of these special variables are there? Are there any variables that are not among these basic and special variables that you are familiar with? #teacher #socratic
+  A2: No, this is a very advanced project. It is more complicated even than time series analysis or image recognition and classification. Each example record is multidimensional time series so it's another level more complicated than modeling a single time series, which is itself quite difficult. Just splitting your dataset into training and test sets would be challenging. Expanding window cross-validation might be required which is computationally expensive and complicated to set up correctly.
+-
+  Q: Imagine rolling a pair of dice. What is the probability of rolling a two (one plus one)?  #teacher
+  A-wrong: One out of six? One out of twelve?  #wrong #student
+-
+  Q: Imagine rolling a two on a pair of dice. What does it look like? It's often called "snake eyes". There's only one way that can happen. What are all the combinations of rolls you can get on a pair of dice? You could roll a one and a one, or a one and a two, or a one and a three and so on. Or you could roll a two and a one, a two and a two, or a two and a three and so on. If you counted up all the different ways you could roll two dice, how many would there be? It's not twelve.
+  A: Thirty Six.
+-
+  Q: Why is my root mean square error (RMSE) so much smaller than mean absolute error (MAE)?
+  A: That means you must have some outliers in your predictions that have large error. These can cause the RMSE to shift much more than the MAE.
+-
+  Q: What have you heard about Data Science in Telcom working in Quality Assurance?
+  A: It's often used to mine historical data for customer behavior prediction and predicting customer satisfaction or mobile phone coverage outages.
+-
+  Q: What is Google Colab?
+  A: It is a Jupyter Notebook service that allows you to run Jupyter Notebooks in a browser and share them with other without installing python or Anaconda on your computer.
+-
+  Q: What's a good visualization to use for EDA on categorical variables or `isnull()` binary variables?
+  A: You can visualize categorical variables on a scatter plot of other continuous variables using the color or the marker style to represent the categorical variable values. You can visualize a categorical variable on a histogram of a continuous variable by creating a histogram for each category as groups. Each category can be a different color, as on the scatterplot. And the histogram bars can be transparent so that the overlap between categories is apparent.
+-
+  Q: What do I need to create a natural language pipeline for sentiment analysis like predicting hate-speech?
+  A: You need a collection of texts labeled with whether or not each text represents hateful speech.
+-
+  Q: Can I use a collection of YouTube comments to build a sentiment analyzer?
+  A: Only if you have a numerical or categorical rating for the sentiment for each comment.
+
+

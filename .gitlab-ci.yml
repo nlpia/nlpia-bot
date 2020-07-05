@@ -73,6 +73,14 @@ py37:
     - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
 
 
+# windows-py37:
+#   stage:
+#     - build
+#   tags:
+#     - windows
+#   script:
+#     - echo Hello, %USERNAME%!
+
 # This deploy job uses a simple deploy flow to Heroku, other providers, e.g. AWS Elastic Beanstalk
 # are supported too: https://github.com/travis-ci/dpl
 #deploy:
