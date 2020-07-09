@@ -32,5 +32,29 @@
 -
   Q: When do I reject the null hypothesis and accept the alternative hypothesis that I proposed at the beginning of the project?
   A: When the P-value for your results is below 0.05 (5%) you can usually reject the null hypothesis. This means that your results are statistically significant and not likely to be caused by chance and your hypothesis represents a probable relationship between your feature variable and your target variable proposed in your hypothesis.
-
-
+-
+  Q: What does a good data story look like?  #student
+  A: What kind of story does your audience like to hear? Try making it interesting by setting the stage with a mystery, a plot of your data that looks interesting or unusual or boring. Then say something that interests you about it. Talk about surprising relationships between variables or unusual shapes or values or outliers in the plots. Look for patterns in the plots. First describe those patterns. Then make some guesses at what causes those patterns and how they might be useful in understanding the real world, which is what your stakeholders and the audience for your data story cares about.  #teacher #socratic
+-
+  Q: How do I come up with a problem statement for data science?  #student
+  A: "Start with the data. What columns do you have? What kinds of variables are there in each column? Categorical? Numerical? If you have a categorical variable and a numerical variable you can start with the question (problem statement) \"What is the mean of the numerical variable within each of the categories for the categorical variable?\" #teacher"
+-
+  Q: If your model to predict the prices of something has a standard error of $42, how often are your predictions to underestimate the price by more than $42?
+  A: 16% of the time your predictions will be lower than 1 sigma ($42) below the true price. This can be calculated using your understanding of the 68, 95, 99.7 rule. 100% minus 68%/2 plus 50% is 100 - 84 which is 16%.
+-
+  Q: What is a good exercise to get up to speed on Data Science?
+  A: Load a DataFrame of home prices and calculate some mean and average prices in various categories of homes.
+-
+  Q: When you are interviewing a Data Scientist what do you look for?
+  A: I like to have the candidate talk about their thinking as they solve a data science problem for me verbally. I will describe a dataset and a problem I'm having at work and ask how they would solve it. I look for good data science habbits, like asking me questions about the data, and an agile software development and data science approach. I look for them to pay attention to the both test set error and the training set error to make decisions about what to do next after each new feature engineering or preprocessing step.
+-
+  Q: When should I use lemmatization on a sentiment analysis or other NLP problem?  #student
+  A: When it improves your test set performance metric like F1 score or accuracy.  #teacher
+  Q1: Does lemmatization reduce or increase the number of features in your dataset?  #teacher #socratic
+  A1: It reduces the number of features, so it can help with overfitting.
+-
+  Q: About regularization. Why does reducing the values of coefficients from the optimal solution cause the accuracy to go up?
+  A: Regularization doesn't improve the accuracy for all of your data. It will always make your training set accuracy worse. And sometimes it can even make your test set accuracy worse. But in some situations it will help your model avoid paying too much attention to your training set and trying to fit it too closely (called over fitting). This will sometime help it pay attention to the features that are most important in the test set. So sometimes it may help close the gap between your training set accuracy and your test set accuracy by increasing your test set accuracy and reducing your training set accuracy.
+-
+  Q: I'm starting to learn Data Science and python software development. What operating system should I install on my laptop?
+  A: If you chose a Linux operating system, you'll never have to learn how to use another one. Linux based OSes (Operating Systems) like Ubuntu, Mint, Centos, and Alpine will always be here. And most of the servers and supercomputers you use for Data Science will be Linux-based. Plus you'll keep manipulative, deceptive, extractive corporations and their closed APIs and expensive products out of your life. Embrace the penguin! You won't regret it.

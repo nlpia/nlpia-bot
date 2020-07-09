@@ -11,7 +11,6 @@ html5lib
 pip
 pre_commit==2.3.0
 pytest-cov
-python>=3.7.6,<3.8.0
 watchdog
 
 # setup.cfg "install_requires ="
@@ -33,10 +32,8 @@ m2r==0.2.1
 nltk==3.5
 pandas==1.0.3
 pre_commit==2.3.0
-# python>=3.7.6,<3.8.0
 python-dotenv>=0.13.0,<0.14.0
 python-slugify==4.0.0
-# psycopg2==2.8.5
 rapidfuzz==0.9.1
 recommonmark==0.6.0
 regex==2020.4.4
