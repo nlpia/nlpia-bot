@@ -5,4 +5,4 @@ django-channels==0.7.0
 django-elasticsearch-dsl==7.1.1
 django-elasticsearch-dsl-drf==0.20.8
 django-extensions==2.2.9
-djangorestframework==3.11.0
+djangorestframework==3.11.2
