@@ -18,7 +18,7 @@ boto3==1.13.19
 botocore==1.16.19
 ConfigArgParse==1.2.2
 docutils==0.15.2
-django==3.0.7
+django==3.0.14
 editdistance==0.5.3
 elasticsearch>=7.6.0
 environment==1.0.0
