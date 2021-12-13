@@ -27,7 +27,7 @@ environment==1.0.0
 gitpython==3.1.1
 html5lib
 jupyter>=1.0.0
-lxml==4.5.0
+lxml==4.6.5
 m2r==0.2.1
 nltk==3.5
 pandas==1.0.3
